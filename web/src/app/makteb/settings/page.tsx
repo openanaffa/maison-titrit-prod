@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Megaphone, Clock, Loader2, Check } from "lucide-react";
+import { Megaphone, Clock, Loader2, Check, Activity, ShieldCheck, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,17 +15,106 @@ const DAYS = [
   { key: "sun", label: "Dimanche" },
 ];
 
+type AnalyticsForm = { gtmId: string; ga4Id: string; fbPixelId: string };
+type VerificationForm = {
+  google: string;
+  facebook: string;
+  instagram: string;
+  tiktok: string;
+  customText: string; // paste <meta …> tags — parsed server-side
+};
+
+const VERIFICATION_HINTS: { key: keyof Omit<VerificationForm, "customText">; label: string; meta: string }[] = [
+  { key: "google", label: "Google Search Console", meta: "google-site-verification" },
+  { key: "facebook", label: "Facebook (Meta)", meta: "facebook-domain-verification" },
+  { key: "instagram", label: "Instagram", meta: "instagram-site-verification" },
+  { key: "tiktok", label: "TikTok", meta: "tiktok-domain-verification" },
+];
+
+const EMPTY_ANALYTICS: AnalyticsForm = { gtmId: "", ga4Id: "", fbPixelId: "" };
+const EMPTY_VERIFICATION: VerificationForm = {
+  google: "",
+  facebook: "",
+  instagram: "",
+  tiktok: "",
+  customText: "",
+};
+
 export default function SettingsClient() {
   const { toast } = useToast();
   const [ann, setAnn] = React.useState({ active: false, message: "", link: "" });
-  const [saving, setSaving] = React.useState<"ann" | "hours" | null>(null);
+  const [ints, setInts] = React.useState({
+    analytics: EMPTY_ANALYTICS,
+    verification: EMPTY_VERIFICATION,
+  });
+  const [savedIds, setSavedIds] = React.useState<string[]>([]);
+  const [saving, setSaving] = React.useState<"ann" | "hours" | "ints" | null>(null);
 
   React.useEffect(() => {
     fetch("/api/settings/announcement")
       .then((r) => r.json())
       .then((d) => setAnn(d.bar ?? { active: false, message: "", link: "" }))
       .catch(() => {});
+    fetchIntegrations();
   }, []);
+
+  function fetchIntegrations() {
+    fetch("/api/settings/integrations")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.error) return;
+        const storedA = d.analyticsValue ?? {};
+        const customTags: { name: string; content: string }[] = d.verificationValue?.custom ?? [];
+        setInts({
+          analytics: {
+            gtmId: storedA.gtmId ?? d.effective?.analytics?.gtmId ?? "",
+            ga4Id: storedA.ga4Id ?? d.effective?.analytics?.ga4Id ?? "",
+            fbPixelId: storedA.fbPixelId ?? d.effective?.analytics?.fbPixelId ?? "",
+          },
+          verification: {
+            google: d.verificationValue?.google ?? "",
+            facebook: d.verificationValue?.facebook ?? "",
+            instagram: d.verificationValue?.instagram ?? "",
+            tiktok: d.verificationValue?.tiktok ?? "",
+            customText: customTags
+              .map((m) => `<meta name="${m.name}" content="${m.content}" />`)
+              .join("\n"),
+          },
+        });
+        const effective = d.effective?.analytics ?? {};
+        setSavedIds(
+          Object.values(effective).filter((v) => typeof v === "string" && v) as string[],
+        );
+      })
+      .catch(() => {});
+  }
+
+  async function saveIntegrations(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving("ints");
+    const res = await fetch("/api/settings/integrations", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        analytics: ints.analytics,
+        verification: {
+          google: ints.verification.google,
+          facebook: ints.verification.facebook,
+          instagram: ints.verification.instagram,
+          tiktok: ints.verification.tiktok,
+          custom: ints.verification.customText, // raw paste, sanitized server-side
+        },
+      }),
+    });
+    const json = await res.json();
+    setSaving(null);
+    if (res.ok) {
+      toast({ title: "Intégrations enregistrées — actives dans ~60s sur tout le site." });
+      fetchIntegrations();
+    } else {
+      toast({ title: json.error || "Erreur", variant: "destructive" });
+    }
+  }
 
   async function saveAnnouncement(e: React.FormEvent) {
     e.preventDefault();
@@ -126,6 +215,112 @@ export default function SettingsClient() {
           L'édition des horaires arrive dans une prochaine itération.
         </p>
       </div>
+
+      {/* Integrations: trackers */}
+      <form onSubmit={saveIntegrations} className="card-vintage rounded-sm p-6 space-y-8">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+            <Activity className="size-5" />
+          </span>
+          <div>
+            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Trackers &amp; mesure</h2>
+            <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+              Actifs seulement si le visiteur accepte les cookies correspondants.
+            </p>
+          </div>
+        </div>
+
+        {savedIds.length > 0 && (
+          <p className="font-serif text-xs text-ink-soft/75 dark:text-cream/60">
+            IDs effectifs : {savedIds.join(" · ")}
+          </p>
+        )}
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Tag Manager</Label>
+            <Input
+              value={ints.analytics.gtmId}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, gtmId: e.target.value } })}
+              placeholder="GTM-XXXXXXX"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Analytics 4</Label>
+            <Input
+              value={ints.analytics.ga4Id}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, ga4Id: e.target.value } })}
+              placeholder="G-XXXXXXXXXX"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel Facebook</Label>
+            <Input
+              value={ints.analytics.fbPixelId}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, fbPixelId: e.target.value } })}
+              placeholder="123456789012345"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+        </div>
+
+        {/* Domain verification */}
+        <div className="flex items-center gap-3 pt-2">
+          <span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+            <ShieldCheck className="size-5" />
+          </span>
+          <div>
+            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Vérification du domaine</h2>
+            <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+              Collez le code fourni par chaque plateforme.
+            </p>
+          </div>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {VERIFICATION_HINTS.map((h) => (
+            <div key={h.key}>
+              <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{h.label}</Label>
+              <Input
+                value={ints.verification[h.key]}
+                onChange={(e) =>
+                  setInts({
+                    ...ints,
+                    verification: { ...ints.verification, [h.key]: e.target.value },
+                  })
+                }
+                placeholder={h.meta}
+                className="mt-1.5 rounded-sm border-bronze/45 font-mono text-[0.72rem]"
+              />
+              <p className="mt-1 font-serif text-[0.68rem] text-ink-soft/60 dark:text-cream/50">
+                &lt;meta name=&quot;{h.meta}&quot; /&gt; — collez le contenu (ou la balise entière, on extrait le code).
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div>
+          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">
+            Autres balises de vérification (Pinterest, Bing, Clarity…)
+          </Label>
+          <Textarea
+            value={ints.verification.customText}
+            onChange={(e) => setInts({ ...ints, verification: { ...ints.verification, customText: e.target.value } })}
+            rows={3}
+            placeholder={"<meta name=\"p:domain_verify\" content=\"abcdef123456789\" />"}
+            className="mt-1.5 rounded-sm border-bronze/45 font-mono text-[0.72rem]"
+          />
+          <p className="mt-1 font-serif text-[0.68rem] text-ink-soft/60 dark:text-cream/50">
+            Une balise par ligne — seul le couple nom/contenu est extrait (l'HTML brut n'est jamais stocké).
+          </p>
+        </div>
+
+        <Button type="submit" disabled={saving === "ints"} className="h-10 rounded-full bg-ink font-label text-[0.68rem] uppercase tracking-[0.16em] text-cream hover:bg-terracotta dark:bg-cream dark:text-ink">
+          {saving === "ints" ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
+          Enregistrer les intégrations
+        </Button>
+      </form>
 
       {/* SEO files */}
       <div className="card-vintage rounded-sm p-6">

@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useSyncExternalStore } from "react";
 import Script from "next/script";
-import { analytics } from "@/config/site";
 import { getConsent, loadConsent, subscribe } from "@/lib/analytics";
 
 /** Re-render any consumer when consent changes. */
@@ -14,17 +13,26 @@ export function useConsent() {
 /**
  * Analytics scripts — GTM, GA4, and Meta Pixel.
  * Mounted only after the visitor accepts the matching consent category.
- * Placeholder IDs (GTM-XXXXXXX, G-XXXXXXXXXX, all-zeros) are ignored so nothing
- * fires until you add your real IDs in src/config/site.ts (or via env vars).
+ * IDs are runtime-editable (dashboard → Réglages → Intégrations) with the
+ * env/config placeholders as fallback — placeholder IDs
+ * (GTM-XXXXXXX, G-XXXXXXXXXX, all-zeros) are ignored so nothing fires until
+ * a real ID lands either way.
  */
-export function AnalyticsScripts() {
+export function AnalyticsScripts({
+  gtmId,
+  ga4Id,
+  fbPixelId,
+}: {
+  gtmId: string;
+  ga4Id: string;
+  fbPixelId: string;
+}) {
   // hydrate consent from localStorage on mount
   React.useEffect(() => {
     loadConsent();
   }, []);
 
   const consent = useConsent();
-  const { gtmId, ga4Id, fbPixelId } = analytics;
 
   const gtmReady = gtmId && !gtmId.startsWith("GTM-XXXX");
   const gaReady = ga4Id && !ga4Id.startsWith("G-XXXX");

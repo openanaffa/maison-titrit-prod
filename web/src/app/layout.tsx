@@ -11,14 +11,30 @@ import {
   CookiePreferencesButton,
 } from "@/components/analytics/cookie-consent";
 import { SiteJsonLd } from "@/components/seo/json-ld";
-import { site, analytics } from "@/config/site";
+import { site } from "@/config/site";
 import { baseUrl } from "@/lib/seo";
+import { VERIFICATION_META, getIntegrations } from "@/lib/integrations";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
 
 const SITE_URL = baseUrl();
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
 
-export const metadata: Metadata = {
+/* Integration settings are runtime-editable (see /makteb/settings) — the root
+ * layout revalidates them every 60s and re-emits the verification metas and
+ * analytics scripts accordingly. Re-renders the whole subtree on that cadence. */
+export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { verification } = await getIntegrations();
+
+  const other: Record<string, string> = {};
+  if (verification.google) other[VERIFICATION_META.google] = verification.google;
+  if (verification.facebook) other[VERIFICATION_META.facebook] = verification.facebook;
+  if (verification.instagram) other[VERIFICATION_META.instagram] = verification.instagram;
+  if (verification.tiktok) other[VERIFICATION_META.tiktok] = verification.tiktok;
+  for (const { name, content } of verification.custom) other[name] = content;
+
+  return {
   metadataBase: new URL(SITE_URL),
   title: {
     default: `${site.name} — ${site.nameAmazigh} | Modest Fashion · Made in Morocco`,
@@ -80,12 +96,16 @@ export const metadata: Metadata = {
     "max-video-preview": -1,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
-  // Meta domain verification (Facebook / Meta) — set NEXT_PUBLIC_META_DOMAIN env
-  verification: analytics.metaDomainVerification
-    ? { other: { "facebook-domain-verification": analytics.metaDomainVerification } }
-    : undefined,
+  // Domain verification tags — editor-managed (see /makteb/settings), env as fallback
+  verification:
+    Object.keys(other).length > 0
+      ? {
+          other,
+        }
+      : undefined,
   category: "shopping",
-};
+  };
+}
 
 /**
  * All Google fonts are loaded via <link> tags in <head> (below).
@@ -107,9 +127,10 @@ const FONT_HREF =
   ].join("&") +
   "&display=swap";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const { analytics } = await getIntegrations();
   return (
     <html lang="fr" dir="ltr" suppressHydrationWarning>
       <head>
@@ -124,8 +145,8 @@ export default function RootLayout({
             <NextAuthProvider>
               <AttributionCapture />
               <AnnouncementBar />
+              <AnalyticsScripts gtmId={analytics.gtmId} ga4Id={analytics.ga4Id} fbPixelId={analytics.fbPixelId} />
               {children}
-              <AnalyticsScripts />
               <CookieConsent />
               <CookiePreferencesButton />
             </NextAuthProvider>
