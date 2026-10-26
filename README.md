@@ -71,6 +71,45 @@ Required: `DATABASE_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_SITE_U
 
 `tsc --noEmit` + `bun run lint` (0 errors, 0 warnings) + `next build` (all routes) + `strapi build` + docker image smoke test — all green at repo seed time (see git log).
 
+## Bootstrap with a coding agent
+
+Paste this to any coding agent with repo access (it will ask you for the few secret values it cannot invent):
+
+```text
+You are bootstrapping the Maison Titrit production repo at
+https://github.com/openanaffa/maison-titrit-prod (branch main).
+Read README.md, AGENTS.md, and docs/DEPLOYMENT.md FIRST — they are the
+conventions and the source of truth. Package manager is Bun (never npm on the host).
+
+Do, in order, verifying each step before the next:
+1. Clone the repo, run `bun install` at the repo root (Bun workspaces).
+2. web/: set DATABASE_URL to a local `file:./db/custom.db`, `bunx prisma generate`,
+   `bunx prisma db push`, then seed with ADMIN_EMAIL/ADMIN_PASSWORD + `bun run seed:prod`.
+   Verify: `bunx tsc --noEmit -p web`, `bun run lint` (0/0), `bun run build` (all routes green).
+3. Supabase (project rrhzxrcgphlaxybahhep, eu-west-1 — ask me to resume it if paused;
+   ask me for the DB password, never guess it):
+   - web: `DATABASE_URL` = postgresql://postgres.<ref>:<PW>@aws-0-eu-west-1.pooler.supabase.com:5432/postgres
+     then `bunx prisma db push --schema=prisma/schema.postgres.prisma` + re-run `seed:prod`
+     against that URL.
+   - cms: create database `titrit_strapi` + a `strapi` role scoped to it (not superuser);
+     put pooler credentials in cms/.env (DATABASE_CLIENT=postgres, DATABASE_SSL=true).
+4. Vercel: link the repo, set Root Directory = web/, Build = turbo pipeline
+   (vercel.json already wires `cd ../.. && bun install` + `turbo run vercel:build --filter=web`).
+   Set env vars per docs/DEPLOYMENT.md (DATABASE_URL, NEXTAUTH_URL/SECRET,
+   NEXT_PUBLIC_SITE_URL, ADMIN_EMAIL/PASSWORD for seed, R2_* if media, CMS_BASE_URL/CMS_TOKEN
+   once the blog moves to Strapi). Deploy to production for maisontitrit.ma and
+   verify: fonts render, /produit/MT-LORA, /blog, /makteb redirects to sign-in,
+   robots/sitemap use absolute URLs.
+5. Oracle Cloud (Strapi): ask me for VPS details (ssh user/IP), install Docker,
+   deploy with docker/docker-compose.yml or push the prebuilt
+   openanaffa/maison-titrit-cms:latest image to a registry and pull it.
+   Point cms.maisontitrit.ma in Cloudflare (proxied, SSL Full-strict) at the VPS.
+   Verify: https://cms.maisontitrit.ma loads the admin panel.
+6. Never commit or echo secrets. Create/keep all .env files local (gitignored);
+   copy values from .env.example files. If any verification fails, stop and report
+   the exact error before retrying with a fix.
+```
+
 ## Git
 
 This repo is standalone (`github.com/openanaffa/maison-titrit-prod`, branch `main`). Commit here, never inside a parent workspace repo. Vercel: import this GitHub repo with **Root Directory = `web/`**.
