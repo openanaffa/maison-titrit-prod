@@ -19,6 +19,11 @@ const eslintConfig = [...nextCoreWebVitals, ...nextTypescript, {
     // React rules
     "react-hooks/exhaustive-deps": "off",
     "react-hooks/purity": "off",
+    // react-hooks plugin v6+ flag rules; the new set-state-in-effect rule flags
+    // intentional hydration-gated mount reads (localStorage/sessionStorage) in
+    // cookie consent, locale provider, loader, header. TODO(prod): refactor
+    // those 8 sites to useSyncExternalStore/lazy-init and re-enable.
+    "react-hooks/set-state-in-effect": "off",
     "react/no-unescaped-entities": "off",
     "react/display-name": "off",
     "react/prop-types": "off",
