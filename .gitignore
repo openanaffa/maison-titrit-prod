@@ -31,3 +31,7 @@ mini-services/
 download/
 upload/
 tool-results/
+
+# TS build info
+tsconfig.tsbuildinfo
+*.tsbuildinfo
