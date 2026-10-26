@@ -1,0 +1,36 @@
+############################
+# OS / editor
+############################
+.DS_Store
+.idea
+.vscode
+
+############################
+# Node
+############################
+node_modules/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+bun-error.log*
+
+############################
+# Testing
+############################
+/coverage
+
+############################
+# Strapi
+############################
+.uploads/
+.strapi/
+.strapi-updater.json
+.tmp/
+.cache/
+
+############################
+# Misc
+############################
+*.env
+!.env.example

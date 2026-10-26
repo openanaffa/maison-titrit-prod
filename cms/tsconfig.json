@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "target": "es2022",
+    "strict": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "noEmit": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["./", "./**/*.ts", "./**/*.js"],
+  "exclude": [
+    "node_modules/",
+    "build/",
+    "dist/",
+    ".cache/",
+    ".tmp/",
+    "public/",
+    "src/admin/",
+    "src/*.test.ts",
+    "src/**/*.test.ts"
+  ]
+}
