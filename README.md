@@ -3,10 +3,16 @@
 Stack: **Next.js 16 (web, Vercel) + Supabase (Postgres/auth/storage) + Strapi (CMS, Oracle Cloud)**.
 Seeded from `ws-2/` in the parent repo — read `../ws-2/worklog.md` and `../ws-2/DEPLOYMENT.md` for the design-decision history this inherits.
 
+Monorepo (Bun workspaces + Turborepo), published at `https://github.com/openanaffa/maison-titrit-prod`:
+
 ```
 prod/
-├── web/   Next.js app — see its own README section below + ../ws-2/DEPLOYMENT.md
-└── cms/   Strapi 5 app — self-hosted on Oracle Cloud, Postgres-backed
+├── web/                  Next.js 16 storefront + backoffice → Vercel (root dir = web)
+├── cms/                  Strapi 5 CMS → Docker image on Oracle Cloud
+├── docker/cms.Dockerfile Production image for the CMS (multi-stage, node runtime)
+├── docker-compose.yml    Local stack: cms + throwaway Postgres (dev only)
+├── turbo.json            task graph (build / dev / lint / vercel:build)
+└── package.json          workspace root (bun) — turbo orchestration
 ```
 
 ## Topology
@@ -38,8 +44,9 @@ Changed:
 
 ## Strapi on Oracle Cloud (roadmap)
 
+0. **Local**: `docker compose -f docker-compose.yml up --build cms` — Strapi on :1337 against a disposable Postgres on :5433 (dev only; swap `DATABASE_*` in `cms/.env` to the Supabase `titrit_strapi` database for a shared dev staging).
 1. Provision VPS, point `cms.maisontitrit.ma` in Cloudflare (proxied, Full-strict SSL).
-2. Install Postgres client libs are inside Strapi already (pg); run Strapi with `pm2` or Docker, `NODE_ENV=production`.
+2. Deploy via `docker/cms.Dockerfile` (built by compose, or pushed to a registry and pulled by the VPS) behind Caddy or Cloudflare origin TLS; run with restart policy.
 3. Strapi DB: create a dedicated database `titrit_strapi` + role on the Supabase project (Supabase supports multiple databases only via SQL — otherwise use the same `postgres` DB with a separate schema; `cms/config/env/database.ts` hides tables from Prisma introspection is NOT needed — Prisma is schema-scoped via search_path, so a dedicated role with its own `search_path` is the clean way).
 4. Expose only through HTTPS with an API token; let Vercel fetch content (`CMS_TOKEN` scoped read-only).
 5. Future: move blog to Strapi content types, add `/blog` fetch layer in `web/src/lib/cms.ts`.

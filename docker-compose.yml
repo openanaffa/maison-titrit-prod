@@ -1,0 +1,45 @@
+# =============================================================================
+#  Maison Titrit — local stack for the CMS
+#  by default: Strapi against a throwaway local Postgres (dev ONLY).
+#  To point Strapi at Supabase instead: set DATABASE_* vars in cms/.env to the
+#  Supabase pooler credentials and remove the `db` service from this file.
+#
+#  Usage:
+#    docker compose -f docker-compose.yml up --build cms   # cms + local db
+# =============================================================================
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: titrit_strapi
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi-dev
+    ports:
+      - "5433:5432" # 5433 on host avoids clashing with any local Postgres
+    volumes:
+      - cmsdb:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strapi -d titrit_strapi"]
+      interval: 5s
+      retries: 10
+
+  cms:
+    build:
+      context: .
+      dockerfile: docker/cms.Dockerfile
+    restart: unless-stopped
+    ports:
+      - "1337:1337"
+    env_file:
+      - cms/.env
+    environment:
+      # override for the bundled dev DB (cms/.env may point elsewhere)
+      DATABASE_HOST: db
+      DATABASE_PORT: "5432"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  cmsdb:

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turbo.build/repo/docs/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", ".strapi/**", "dist/**"]
+    },
+    "vercel:build": {
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "strapi": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
