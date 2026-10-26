@@ -1,0 +1,29 @@
+/* TEAM */
+Founders: Maison Titrit (two designers)
+Atelier: Bouskoura, Casablanca, Morocco
+
+/* SITE */
+Last update: 2025
+Language: French / Arabic / English + Tifinagh (ⵜⵉⵟⵔⵉⵜ) accents
+Standards: HTML5, WCAG AA, responsive, RTL-aware
+
+/* TECHNOLOGY */
+Framework: Next.js 16 (App Router) + TypeScript 5
+Styling: Tailwind CSS 4 + shadcn/ui (New York)
+Database: Prisma ORM (SQLite dev / Postgres — Supabase prod)
+Auth: NextAuth.js v4 (Credentials + Google + Email magic links, RBAC)
+State: Zustand (cart) + TanStack Query
+Analytics: Google Tag Manager + GA4 + Meta Pixel (consent-gated)
+Maps: Google Maps embed + OpenStreetMap fallback
+Fonts: Cinzel (wordmark), Playfair Display, Cormorant Garamond, Marcellus,
+       Jost, Allura, Noto Sans Tifinagh
+
+/* CRAFT */
+Heritage: Amazigh (Berber) — "Titrit" = ⵜⵉⵟⵔⵉⵜ = "star"
+Mood: vintage Moroccan, modest fashion, made in Morocco 🇲🇦
+
+/* THANKS */
+OpenStreetMap contributors
+Google Fonts
+shadcn/ui
+lucide-react

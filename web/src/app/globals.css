@@ -1,0 +1,454 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: ui-monospace, SFMono-Regular, monospace;
+  --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
+  --font-label: var(--font-label);
+  --font-wordmark: var(--font-wordmark);
+  --font-script: var(--font-script);
+  --font-tifinagh: "Noto Sans Tifinagh", system-ui, sans-serif;
+
+  /* Brand palette */
+  --color-cream: var(--cream);
+  --color-cream-light: var(--cream-light);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-bronze: var(--bronze);
+  --color-bronze-light: var(--bronze-light);
+  --color-terracotta: var(--terracotta);
+  --color-henna: var(--henna);
+  --color-olive: var(--olive);
+  --color-sand: var(--sand);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  /* Vintage Maison Titrit — warm parchment light theme */
+  --radius: 0.18rem;
+
+  /* Font families — loaded via <link> in layout.tsx (see FONT_HREF) */
+  --font-sans: "Jost", system-ui, -apple-system, sans-serif;
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-label: "Marcellus", Georgia, serif;
+  --font-wordmark: "Cinzel", Georgia, "Times New Roman", serif;
+  --font-script: "Allura", "Brush Script MT", cursive;
+
+  --cream: #f4ead5;
+  --cream-light: #fbf6ea;
+  --ink: #1c1a17;
+  --ink-soft: #3a352c;
+  --bronze: #9a6a3a;
+  --bronze-light: #b8915a;
+  --terracotta: #b0532f;
+  --henna: #6b2d1f;
+  --olive: #6b6b3a;
+  --sand: #e8dbc0;
+
+  --background: #f4ead5;
+  --foreground: #1c1a17;
+  --card: #fbf6ea;
+  --card-foreground: #1c1a17;
+  --popover: #fbf6ea;
+  --popover-foreground: #1c1a17;
+  --primary: #1c1a17;
+  --primary-foreground: #f4ead5;
+  --secondary: #e8dbc0;
+  --secondary-foreground: #1c1a17;
+  --muted: #efe4ca;
+  --muted-foreground: #6b5e47;
+  --accent: #e8dbc0;
+  --accent-foreground: #1c1a17;
+  --destructive: #8b3a2b;
+  --border: #d9c7a1;
+  --input: #d9c7a1;
+  --ring: #9a6a3a;
+  --chart-1: #9a6a3a;
+  --chart-2: #b0532f;
+  --chart-3: #6b2d1f;
+  --chart-4: #6b6b3a;
+  --chart-5: #b8915a;
+  --sidebar: #fbf6ea;
+  --sidebar-foreground: #1c1a17;
+  --sidebar-primary: #1c1a17;
+  --sidebar-primary-foreground: #f4ead5;
+  --sidebar-accent: #e8dbc0;
+  --sidebar-accent-foreground: #1c1a17;
+  --sidebar-border: #d9c7a1;
+  --sidebar-ring: #9a6a3a;
+}
+
+.dark {
+  /* Vintage Maison Titrit — deep ink night theme */
+  --radius: 0.18rem;
+
+  --cream: #f4ead5;
+  --cream-light: #fbf6ea;
+  --ink: #1c1a17;
+  --ink-soft: #cfc6b0;
+  --bronze: #b8915a;
+  --bronze-light: #cfa978;
+  --terracotta: #c4633c;
+  --henna: #a0492f;
+  --olive: #8a8a4f;
+  --sand: #3a352c;
+
+  --background: #1c1a17;
+  --foreground: #f4ead5;
+  --card: #26221c;
+  --card-foreground: #f4ead5;
+  --popover: #26221c;
+  --popover-foreground: #f4ead5;
+  --primary: #f4ead5;
+  --primary-foreground: #1c1a17;
+  --secondary: #2e2922;
+  --secondary-foreground: #f4ead5;
+  --muted: #2a2620;
+  --muted-foreground: #b8915a;
+  --accent: #2e2922;
+  --accent-foreground: #f4ead5;
+  --destructive: #b5533f;
+  --border: #3a352c;
+  --input: #3a352c;
+  --ring: #b8915a;
+  --chart-1: #b8915a;
+  --chart-2: #c4633c;
+  --chart-3: #a0492f;
+  --chart-4: #8a8a4f;
+  --chart-5: #cfa978;
+  --sidebar: #26221c;
+  --sidebar-foreground: #f4ead5;
+  --sidebar-primary: #f4ead5;
+  --sidebar-primary-foreground: #1c1a17;
+  --sidebar-accent: #2e2922;
+  --sidebar-accent-foreground: #f4ead5;
+  --sidebar-border: #3a352c;
+  --sidebar-ring: #b8915a;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+    font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
+  }
+  ::selection {
+    background: var(--terracotta);
+    color: var(--cream-light);
+  }
+  /* Custom scrollbar for long lists */
+  .scroll-vintage {
+    scrollbar-width: thin;
+    scrollbar-color: var(--bronze) transparent;
+  }
+  .scroll-vintage::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-vintage::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-vintage::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--bronze) 55%, transparent);
+    border-radius: 999px;
+  }
+  .scroll-vintage::-webkit-scrollbar-thumb:hover {
+    background: var(--bronze);
+  }
+}
+
+@layer components {
+  /* Vintage parchment paper texture overlay */
+  .vintage-paper {
+    background-color: var(--background);
+    background-image:
+      radial-gradient(
+        ellipse at top,
+        color-mix(in srgb, var(--cream-light) 70%, transparent) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse at bottom,
+        color-mix(in srgb, var(--sand) 40%, transparent) 0%,
+        transparent 60%
+      ),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.11  0 0 0 0 0.10  0 0 0 0 0.09  0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  .dark .vintage-paper {
+    background-color: var(--background);
+    background-image:
+      radial-gradient(
+        ellipse at top,
+        color-mix(in srgb, var(--ink) 60%, transparent) 0%,
+        transparent 55%
+      ),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.92  0 0 0 0 0.84  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* Tracked uppercase label — Marcellus */
+  .eyebrow {
+    font-family: var(--font-label), serif;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--bronze);
+  }
+
+  /* Wordmark — Cinzel (per brand font audit) */
+  .wordmark {
+    font-family: var(--font-wordmark), serif;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+  }
+  .wordmark-tight {
+    font-family: var(--font-wordmark), serif;
+    letter-spacing: 0.14em;
+    font-weight: 500;
+  }
+
+  /* Script tagline — Allura (per brand font audit) */
+  .script-tagline {
+    font-family: var(--font-script), cursive;
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  /* Tifinagh accent */
+  .tifinagh {
+    font-family: var(--font-tifinagh);
+    letter-spacing: 0.04em;
+  }
+
+  /* Ornamental double frame (business-card inspired) */
+  .vintage-frame {
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--bronze) 70%, transparent);
+    background:
+      linear-gradient(var(--card), var(--card)) padding-box,
+      color-mix(in srgb, var(--bronze) 30%, transparent) border-box;
+  }
+  .vintage-frame::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid color-mix(in srgb, var(--bronze) 35%, transparent);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Hairline rule used under wordmarks */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--bronze) 80%, transparent),
+      transparent
+    );
+  }
+
+  /* Bronze gradient text for display accents */
+  .text-bronze-gradient {
+    background: linear-gradient(
+      96deg,
+      var(--bronze) 0%,
+      var(--bronze-light) 45%,
+      var(--terracotta) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Soft elevated card */
+  .card-vintage {
+    background: var(--card);
+    border: 1px solid color-mix(in srgb, var(--bronze) 28%, transparent);
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--ink) 4%, transparent),
+      0 12px 28px -18px color-mix(in srgb, var(--ink) 40%, transparent);
+  }
+}
+
+@layer utilities {
+  .text-shadow-vintage {
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+  .dark .text-shadow-vintage {
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+  }
+  /* Subtle entrance */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Titrit intro loader (ported from titrit-loader-demo.html)          */
+/* ------------------------------------------------------------------ */
+.titrit-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 37%, rgba(255, 255, 255, 0.46), transparent 56%),
+    repeating-linear-gradient(37deg, rgba(110, 78, 44, 0.025) 0 1px, transparent 1px 4px),
+    var(--cream);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.72s ease, visibility 0.72s ease;
+}
+.dark .titrit-loader {
+  background:
+    radial-gradient(ellipse at 50% 37%, rgba(244, 234, 213, 0.06), transparent 56%),
+    repeating-linear-gradient(37deg, rgba(184, 145, 90, 0.04) 0 1px, transparent 1px 4px),
+    var(--ink);
+}
+.titrit-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.titrit-loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+.titrit-loader__logo {
+  display: block;
+  width: min(62vw, 380px);
+  height: auto;
+  max-height: 62svh;
+  filter: drop-shadow(0 8px 8px rgba(80, 49, 18, 0.08));
+  opacity: 0;
+  transform: translateY(10px) scale(0.985);
+  animation: titrit-logo-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+.titrit-loader__meter {
+  width: 92px;
+  height: 1px;
+  margin-top: 24px;
+  background: rgba(112, 76, 31, 0.15);
+  overflow: hidden;
+}
+.titrit-loader__meter::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #714510, #f3d18a, #91601e);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: titrit-meter-fill 3s cubic-bezier(0.2, 0.65, 0.15, 1) forwards;
+}
+.titrit-loader__status {
+  margin-top: 14px;
+  color: #886942;
+  font: 9px/1.2 var(--font-sans), system-ui, sans-serif;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.dark .titrit-loader__status {
+  color: var(--bronze-light);
+}
+@keyframes titrit-logo-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes titrit-meter-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .titrit-loader__logo {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .titrit-loader__meter::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
+/* Titrit logo mark — gold by default, monochrome (cream) in dark mode */
+.titrit-logo-mark {
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+.dark .titrit-logo-mark {
+  /* hide the gold file, show the mono (currentColor) file in cream */
+  content: url("/assets/titrit-logo-mono.svg");
+  filter: invert(1) sepia(0.18) saturate(1.4) hue-rotate(-12deg) brightness(1.08);
+}
+.titrit-logo-mark--mono {
+  content: url("/assets/titrit-logo-mono.svg");
+  filter: none;
+}
+/* a gentle gold shimmer on hover for interactive lockups */
+a:hover .titrit-logo-mark,
+.group:hover .titrit-logo-mark {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--bronze-light) 60%, transparent));
+}
+.dark a:hover .titrit-logo-mark,
+.dark .group:hover .titrit-logo-mark {
+  filter: invert(1) sepia(0.18) saturate(1.4) hue-rotate(-12deg) brightness(1.08)
+    drop-shadow(0 0 10px color-mix(in srgb, var(--bronze-light) 55%, transparent));
+}

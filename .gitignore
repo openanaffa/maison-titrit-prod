@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Builds
+.next/
+dist/
+build/
+.strapi/
+out/
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs & runtime state
+*.log
+.tmp/
+.uploads/
+dev.log
+server.log
+
+# OS / editor
+.DS_Store
+
+# Sandbox leftovers (must not reappear in prod)
+tests/
+examples/
+mini-services/
+download/
+upload/
+tool-results/
