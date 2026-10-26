@@ -14,6 +14,16 @@ import { useT } from "@/i18n/locale-provider";
 type Mode = "signin" | "signup" | "magic";
 
 export default function AuthPage() {
+  // useSearchParams within the inner tree — the outer static shell lets this
+  // page prerender during `next build` without a CSR bailout.
+  return (
+    <React.Suspense>
+      <AuthPageInner />
+    </React.Suspense>
+  );
+}
+
+function AuthPageInner() {
   const router = useRouter();
   const params = useSearchParams();
   // Default callback depends on intent: explicit /makteb callback → staff; else /compte.

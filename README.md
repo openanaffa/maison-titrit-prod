@@ -26,13 +26,15 @@ prod/
 
 ## web/ — how it differs from ws-2
 
-Inherited as-is: `src/` (site + admin + cart + WhatsApp COD deeplinks), `public/assets` (Amazigh design system, fonts via Google Fonts `<link>` — Turbopack-safe), `prisma/` schema (String pseudo-enums — keep them, schema must stay providers-compatible), SEO helpers `src/lib/seo.ts`.
+Inherited as-is: `src/` (site + admin + cart + WhatsApp COD deeplinks), `public/assets` (Amazigh design system, fonts via Google Fonts `<link>` — Turbopack-safe), SEO helpers `src/lib/seo.ts`. Prisma schema uses String pseudo-enums — keep them, schema must stay providers-compatible.
 
 Changed:
 
 - **`package.json`** renamed `maison-titrit-web`; correct `build`/`start` (no `standalone` copy hacks); dropped `z-ai-web-dev-sdk` (sandbox VLM), `next-intl` (installed but never used), `pg` (was only a Supabase-region probe).
 - **`scripts/dev.sh`** no longer hardcodes the z.ai sandbox path.
 - **`.env`** points at Supabase Postgres (pooler) — replace `SUPABASE_DB_PASSWORD` with the real project DB password.
+- **Prisma provider split**: local dev stays `sqlite` (`prisma/schema.prisma`); `prisma/schema.postgres.prisma` is the deploy-time schema. `vercel:build` now runs `prisma generate --schema=prisma/schema.postgres.prisma` so Vercel builds speak Postgres; locally use `bunx prisma generate` (sqlite) and `DATABASE_URL=file:./db/custom.db bunx prisma db push` to bootstrap the local DB.
+- **`/auth/signin` Suspense fix**: `useSearchParams()` now sits inside a `React.Suspense` boundary — `next build` prerender previously bailed out on it (a latent ws-2 bug; `next build` was never run locally in the sandbox).
 
 ## Strapi on Oracle Cloud (roadmap)
 
