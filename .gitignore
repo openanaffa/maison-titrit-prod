@@ -35,3 +35,6 @@ tool-results/
 # TS build info
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+
+# Turborepo run cache
+.turbo/

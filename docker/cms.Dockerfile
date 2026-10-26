@@ -29,8 +29,8 @@ RUN npm prune --omit=dev
 # --- Stage 2: runtime --------------------------------------------------------
 FROM node:22-alpine AS runtime
 
-# libvips runtime libs only
-RUN apk add --no-cache libvips
+# libvips runtime libs (Alpine package name: vips)
+RUN apk add --no-cache vips
 
 WORKDIR /opt/app
 ENV NODE_ENV=production
