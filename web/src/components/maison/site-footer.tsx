@@ -1,6 +1,6 @@
 "use client";
 
-import { legal, site } from "@/config/site";
+import { legalNotice, site } from "@/config/site";
 import { whatsappCatalog } from "@/lib/brand";
 import { useT } from "@/i18n/locale-provider";
 import {
@@ -9,6 +9,13 @@ import {
   WhatsAppIcon,
 } from "@/components/maison/motifs";
 import { SocialIcons } from "@/components/maison/social-icons";
+
+/** A legal field is rendered only when it carries a real value — empty
+ * strings and TODO placeholders stay hidden (see config/site.ts). */
+function rendered(value: string): boolean {
+  const v = value.trim();
+  return v !== "" && !/^todo/i.test(v);
+}
 
 export function SiteFooter() {
   const { t } = useT();
@@ -113,30 +120,38 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Legal — Moroccan Law 09-08 (CNDP) + EU GDPR. Values come from
-            src/config/site.ts (`legal`); a field with an empty value is
-            hidden until the founder fills it in. Labels RC / ICE / CNDP / DPO
-            are international registry abbreviations. */}
+        {/* Legal — Auto-Entrepreneur (Law 114-13) · Moroccan Law 09-08 (CNDP)
+            + EU GDPR. Values come from src/config/site.ts (`legalNotice`).
+            A field with an empty or TODO-placeholder value is hidden until the
+            owner fills it in. Labels: ICE / RNAE-RC (Auto-Entrepreneurs
+            register with the RNAE, not the RC — both names shown for
+            tolerance) / CNDP / DPO. */}
         <div className="mt-12 border-t border-cream/15 pt-6">
           <p className="max-w-4xl font-serif text-xs leading-relaxed text-cream/60">
             {t("footer.legal")}
           </p>
           <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 font-serif text-xs text-cream/70">
             <li className="font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze-light">
-              {legal.companyName}
+              {legalNotice.companyName}
             </li>
-            {legal.rc && <li>RC&nbsp;: {legal.rc}</li>}
-            {legal.ice && <li>ICE&nbsp;: {legal.ice}</li>}
-            {legal.cndpDeclaration && (
-              <li>Déclaration CNDP&nbsp;: {legal.cndpDeclaration}</li>
+            {rendered(legalNotice.rcNumber) && (
+              <li>RNAE/RC&nbsp;: {legalNotice.rcNumber}</li>
             )}
-            {legal.dpoEmail && (
+            {rendered(legalNotice.iceNumber) && (
+              <li>ICE&nbsp;: {legalNotice.iceNumber}</li>
+            )}
+            {rendered(legalNotice.cndpDeclarationNumber) && (
+              <li>
+                Déclaration CNDP&nbsp;: {legalNotice.cndpDeclarationNumber}
+              </li>
+            )}
+            {rendered(legalNotice.dpoEmail) && (
               <li>
                 <a
-                  href={`mailto:${legal.dpoEmail}`}
+                  href={`mailto:${legalNotice.dpoEmail}`}
                   className="hover:text-terracotta"
                 >
-                  DPO&nbsp;: {legal.dpoEmail}
+                  DPO&nbsp;: {legalNotice.dpoEmail}
                 </a>
               </li>
             )}
