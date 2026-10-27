@@ -27,7 +27,7 @@ prod/
 | Postgres + auth data | Supabase (`rrhzxrcgphlaxybahhep`, eu-west-1) | session pooler host `aws-0-eu-west-1.pooler.supabase.com:5432` (direct host is IPv6-only) |
 | Media uploads | Cloudflare R2 bucket `maison-titrit` | env-gated in `web/src/lib/storage.ts`; local `/public/uploads` fallback in dev only |
 | Strapi CMS | Oracle Cloud VPS (Docker) | editorial content: blog / lookbook; DB = dedicated `titrit_strapi` database on the same Supabase project |
-| DNS / CDN | Cloudflare | `maisontitrit.ma` → Vercel, `cdn.maisontitrit.ma` → R2, `cms.maisontitrit.ma` → Oracle VPS behind TLS |
+| DNS / CDN | Cloudflare | `maisontitrit.com` → Vercel, `cdn.maisontitrit.com` → R2, `cms.maisontitrit.com` → Oracle VPS behind TLS |
 
 ## Division of content ownership
 
@@ -57,7 +57,7 @@ bun run build                    # build all workspaces
 ## Strapi on Oracle Cloud (roadmap)
 
 1. Local first: `docker compose up --build cms` (above); swap `cms/.env` `DATABASE_*` to the Supabase `titrit_strapi` database once it exists.
-2. Provision VPS, point `cms.maisontitrit.ma` in Cloudflare (proxied, Full-strict SSL).
+2. Provision VPS, point `cms.maisontitrit.com` in Cloudflare (proxied, Full-strict SSL).
 3. Deploy via `docker/cms.Dockerfile` (built by compose, or pushed to a registry and pulled by the VPS) behind Caddy or Cloudflare origin TLS; run with restart policy.
 4. Strapi DB: dedicated database `titrit_strapi` on the same Supabase project, with a `strapi` role scoped to it (`search_path`) — Prisma on the web side is role-scoped, so the two schema spaces stay separated.
 5. Expose only through HTTPS with an API token; let Vercel fetch content (`CMS_TOKEN` scoped read-only). Future: move blog to Strapi content types + a `/blog` fetch layer in `web/src/lib/cms.ts`.
@@ -97,14 +97,14 @@ Do, in order, verifying each step before the next:
    (vercel.json already wires `cd ../.. && bun install` + `turbo run vercel:build --filter=web`).
    Set env vars per docs/DEPLOYMENT.md (DATABASE_URL, NEXTAUTH_URL/SECRET,
    NEXT_PUBLIC_SITE_URL, ADMIN_EMAIL/PASSWORD for seed, R2_* if media, CMS_BASE_URL/CMS_TOKEN
-   once the blog moves to Strapi). Deploy to production for maisontitrit.ma and
+   once the blog moves to Strapi). Deploy to production for maisontitrit.com and
    verify: fonts render, /produit/MT-LORA, /blog, /makteb redirects to sign-in,
    robots/sitemap use absolute URLs.
 5. Oracle Cloud (Strapi): ask me for VPS details (ssh user/IP), install Docker,
    deploy with docker/docker-compose.yml or push the prebuilt
    openanaffa/maison-titrit-cms:latest image to a registry and pull it.
-   Point cms.maisontitrit.ma in Cloudflare (proxied, SSL Full-strict) at the VPS.
-   Verify: https://cms.maisontitrit.ma loads the admin panel.
+   Point cms.maisontitrit.com in Cloudflare (proxied, SSL Full-strict) at the VPS.
+   Verify: https://cms.maisontitrit.com loads the admin panel.
 6. Never commit or echo secrets. Create/keep all .env files local (gitignored);
    copy values from .env.example files. If any verification fails, stop and report
    the exact error before retrying with a fix.

@@ -11,7 +11,7 @@ import { site } from "@/config/site";
 
 export function siteBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  return "https://maisontitrit.ma";
+  return "https://maisontitrit.com";
 }
 
 export function orgLogoUrl(): string {

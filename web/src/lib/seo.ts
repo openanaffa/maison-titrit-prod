@@ -11,7 +11,7 @@ import type { Metadata } from "next";
 import { site } from "@/config/site";
 
 export function baseUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.ma";
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.com";
 }
 
 const DEFAULT_OG = "/og-default.png";

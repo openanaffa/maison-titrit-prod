@@ -4,7 +4,7 @@ import { site } from "@/config/site";
 export const dynamic = "force-dynamic";
 
 function baseUrl() {
-  return process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.ma";
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.com";
 }
 
 /** Google Merchant Center XML feed (RSS 2.0 + g: namespace).

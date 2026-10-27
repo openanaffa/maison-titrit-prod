@@ -37,4 +37,4 @@ User-agent: Google-Extended
 Allow: /
 
 # Sitemap
-Sitemap: https://maisontitrit.ma/sitemap.xml
+Sitemap: https://maisontitrit.com/sitemap.xml

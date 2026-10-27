@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 function baseUrl() {
-  return process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.ma";
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.com";
 }
 
 /** Dynamic sitemap.xml — homepage, static sections, product detail pages, blog. */

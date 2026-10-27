@@ -88,7 +88,7 @@ export const authOptions: NextAuthOptions = {
           pass: process.env.EMAIL_SERVER_PASSWORD,
         },
       },
-      from: process.env.EMAIL_FROM ?? "Maison Titrit <hello@maisontitrit.ma>",
+      from: process.env.EMAIL_FROM ?? "Maison Titrit <hello@maisontitrit.com>",
       ...(process.env.NODE_ENV !== "production" ? { sendVerificationRequest: devConsoleEmailTransport().sendVerificationRequest } : {}),
     }),
   ],

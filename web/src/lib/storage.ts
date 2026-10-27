@@ -34,7 +34,7 @@ function r2Config() {
   const bucket = process.env.R2_BUCKET;
   const accessKeyId = process.env.R2_ACCESS_KEY_ID;
   const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
-  const publicUrl = process.env.R2_PUBLIC_URL; // e.g. https://cdn.maisontitrit.ma
+  const publicUrl = process.env.R2_PUBLIC_URL; // e.g. https://cdn.maisontitrit.com
   if (accountId && bucket && accessKeyId && secretAccessKey) {
     return { accountId, bucket, accessKeyId, secretAccessKey, publicUrl };
   }

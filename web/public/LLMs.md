@@ -22,7 +22,7 @@ Prices are in **Moroccan Dirham (MAD)**. Payment is **cash on delivery (COD)**
 across Morocco. Orders are placed via **WhatsApp** to the atelier.
 
 ## How to order
-1. Browse the collection at https://maisontitrit.ma/#collection
+1. Browse the collection at https://maisontitrit.com/#collection
 2. Open a product detail page (e.g. /produit/MT-LORA), choose a size and quantity
 3. Click "Ajouter au panier" (add to cart) then "Commander" (checkout)
 4. Fill the COD form — name, phone, city, address

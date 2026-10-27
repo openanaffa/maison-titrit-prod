@@ -14,7 +14,7 @@ import { PRODUCTS, CATEGORIES } from "@/config/products";
 const db = new PrismaClient();
 
 async function main() {
-  const founderEmail = (process.env.ADMIN_EMAIL || "founder@maisontitrit.ma").toLowerCase();
+  const founderEmail = (process.env.ADMIN_EMAIL || "founder@maisontitrit.com").toLowerCase();
   const founderPass = process.env.ADMIN_PASSWORD || "titrit-admin-2024";
 
   // 1) Founder user
