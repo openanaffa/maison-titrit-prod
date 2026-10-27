@@ -15,6 +15,12 @@ docker compose up --build cms   # local Strapi :1337 + disposable Postgres :5433
 docker build -f docker/cms.Dockerfile -t openanaffa/maison-titrit-cms:latest .
 ```
 
+## Branching (git flow)
+- `main` = production. Vercel auto-deploys it to https://maisontitrit.com. Only merge `release/*` or `hotfix/*` into it.
+- `develop` = integration (GitHub default branch). Pushes get Vercel preview URLs.
+- Work on `feature/<name>` off `develop`; urgent prod fixes on `hotfix/<name>` off `main`, merged back to both.
+- Both `main` and `develop` block force-push and deletion.
+
 ## Conventions & gotchas
 - Package manager is **Bun** for the repo. `docker/cms.Dockerfile` is the one sanctioned npm/node usage (container runtime parity with Strapi's supported target) — don't "fix" it.
 - Prisma provider split: local dev = `sqlite` (`web/prisma/schema.prisma`), deploy = `web/prisma/schema.postgres.prisma` (used by `vercel:build`). Keep schemas in lockstep when models change; output client files via the matching `bunx prisma generate --schema=...`. Do not un-comment real `enum` blocks (SQLite compatibility).
