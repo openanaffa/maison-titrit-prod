@@ -1,3 +1,4 @@
 export default {
-  config: {},
+  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
 };

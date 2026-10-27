@@ -132,6 +132,37 @@ Visit `https://maisontitrit.com`:
 
 ---
 
+## 5b. CMS — self-hosted Strapi (OCI VM)
+
+**Live:** `https://cms.maisontitrit.com/admin` (Strapi 5.59 + Postgres `titrit_strapi` on Supabase).
+
+| What | Value |
+|---|---|
+| VM | `maison-titrit-cms`, OCI tenant `maison-titrit` (`cloud account: maison-titrit`), admin `maisontitrit167@gmail.com` (password in pass `accounts/oracle/cloud/maison-titrit`) |
+| Shape | Always-Free `VM.Standard.A1.Flex` 2 OCPU / 12 GB, Ubuntu 22.04, region af-casablanca-1 |
+| Public IP | `51.170.135.240` (managed via Terraform `terraform/`; may change on instance replace — terraform rewrites the Cloudflare `cms` A record automatically) |
+| SSH | `ssh cms` (alias in `~/.ssh/config`; key `~/.ssh/oci_strapi_ed25519`, host key verified) |
+| Stack | docker compose under `/srv/cms` (`docker-compose.yml` + `.env`, secrets from pass `maison-titrit/strapi/*` + `supabase/titrit/strapi-role`) |
+
+Stack layout: Cloudflare (proxied, TLS) → nginx on VM (80 + self-signed 443) → docker compose `cms` → Strapi `127.0.0.1:1337` → Supabase Postgres (pooler `aws-0-eu-west-1.pooler.supabase.com`, user `strapi.rrhzxrcgphlaxybahhep`, SSL).
+
+Content types: `api::article.article` (blog) and `api::lookbook.lookbook` (seasonal lookbooks) — schema in `cms/src/api/*/content-types/*/schema.json`, draft-and-publish on. Products/orders stay in the web app's Prisma DB, not in Strapi. Public API permissions for these types (Settings → Roles → Public: `find`, `findOne`) must be enabled once before the storefront can read `/api/articles` + `/api/lookbooks`.
+
+Rebuild the CMS image (ARM! must build on the VM — the local dev box is x86):
+```sh
+tar -czf /tmp/cms-src.tar.gz --exclude='cms/node_modules' --exclude='cms/dist' cms docker/cms.Dockerfile
+scp -i ~/.ssh/oci_strapi_ed25519 /tmp/cms-src.tar.gz cms:/tmp/
+ssh cms 'tar -xzf /tmp/cms-src.tar.gz -C /tmp && docker build -f /tmp/docker/cms.Dockerfile -t openanaffa/maison-titrit-cms:latest /tmp && systemctl --version >/dev/null && cd /srv/cms && docker compose up -d'
+```
+
+**VM gotchas (bit us once — keep these):**
+1. **iptables**: OCI Ubuntu images ship a default `REJECT all` on INPUT after SSH — 80/443 must be opened explicitly before UFW adds anything (`sudo iptables -I INPUT 5 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT`, same for 443, then `iptables-save > /etc/iptables/rules.v4`). UFW alone is not enough.
+2. **Docker build**: Docker 29 defaulted to the containerd snapshotter which choked on large npm trees — `/etc/docker/daemon.json` pins `{"features":{"containerd-snapshotter":false}}` (overlay2 works).
+3. **nginx sites**: `cms.conf` under `/etc/nginx/sites-available` (self-signed cert `/etc/ssl/certs/cms-self.crt`, 10 yrs) — `default` site removed.
+4. Runtime deps live in `/srv/cms/.env` only; rotate secrets by editing + `docker compose up -d`.
+
+---
+
 ## 6. SEO submission
 
 1. **Google Search Console** → add property `maisontitrit.com` → verify (Cloudflare TXT or HTML) → submit `https://maisontitrit.com/sitemap.xml`
