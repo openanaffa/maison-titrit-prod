@@ -1,4 +1,6 @@
-export default ({ env }) => ([
+import type { Core } from "@strapi/strapi";
+
+export default ({ env }: Core.Config.Shared.ConfigParams) => ([
   'strapi::logger',
   'strapi::errors',
   'strapi::security',

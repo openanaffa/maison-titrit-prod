@@ -3,7 +3,7 @@
  * Run:  bun run scripts/seed.ts
  *
  *  - creates categories + products + images (from src/config/products.ts)
- *  - creates the founder user (env ADMIN_EMAIL / ADMIN_PASSWORD, or defaults)
+ *  - creates the founder user (env ADMIN_EMAIL / ADMIN_PASSWORD — REQUIRED)
  *  - creates one demo order (so the dashboard isn't empty)
  *  Idempotent: upserts by unique keys; wipes products/images/orders first.
  */
@@ -15,7 +15,15 @@ const db = new PrismaClient();
 
 async function main() {
   const founderEmail = (process.env.ADMIN_EMAIL || "founder@maisontitrit.com").toLowerCase();
-  const founderPass = process.env.ADMIN_PASSWORD || "titrit-admin-2024";
+  const founderPass = process.env.ADMIN_PASSWORD;
+  // Never fall back to a shipped default password — fail loudly instead.
+  if (!founderPass) {
+    console.error(
+      "✗ ADMIN_PASSWORD is not set. Provide it via the environment (never commit it):\n" +
+        '  ADMIN_PASSWORD="<your-strong-password>" bun run scripts/seed.ts',
+    );
+    process.exit(1);
+  }
 
   // 1) Founder user
   const passwordHash = await bcrypt.hash(founderPass, 10);
@@ -162,7 +170,7 @@ confortables, modestes — et fièrement marocaines. **100% Made in Morocco.**
     "| Orders:",
     await db.order.count(),
   );
-  console.log("\n  Founder login → email:", founderEmail, "| password:", founderPass);
+  console.log("\n  Founder login → email:", founderEmail, "| password: (from ADMIN_PASSWORD env)");
 }
 
 main()

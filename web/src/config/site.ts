@@ -111,6 +111,37 @@ export const analytics = {
   metaDomainVerification: process.env.NEXT_PUBLIC_META_DOMAIN || "",
 } as const;
 
+/* ============================================================================
+ *  LEGAL NOTICE — Auto-Entrepreneur (Morocco, Law 114-13) · Law 09-08 · GDPR
+ * ----------------------------------------------------------------------------
+ *  Mandatory legal notice rendered in the site footer (site-footer.tsx).
+ *  The legal entity IS the site owner: an Auto-Entrepreneur (Moroccan
+ *  regime, Law 114-13). Auto-Entrepreneurs register with the RNAE (Registre
+ *  National de l'Auto-Entrepreneur), not the RC — the `rcNumber` key keeps
+ *  its name (matches the schema) but its VALUE is the RNAE number.
+ *  ⚠️ TODO (user action required) — fill in the real values below:
+ *     - rcNumber:            <RNAE number>
+ *     - iceNumber:           TODO (15-digit ICE)
+ *     - cndpDeclarationNumber: CNDP declaration reference number
+ *     - dpoEmail:            derived from site.email (the owner's email)
+ *  Until a value is filled in (or is still a TODO placeholder), its field
+ *  is hidden in the footer.
+ * ============================================================================
+ */
+export const legalNotice = {
+  /** Official legal name shown on the notice */
+  companyName: "Mohamed Moughamir — Auto-Entrepreneur",
+  /** TODO: RNAE number (Auto-Entrepreneur regime — Law 114-13). Key kept as
+   *  `rcNumber` to match the schema, but the value is the RNAE number. */
+  rcNumber: "",
+  /** TODO: 15-digit ICE (Identifiant Commun de l'Entreprise) */
+  iceNumber: "",
+  /** TODO: CNDP declaration reference number */
+  cndpDeclarationNumber: "",
+  /** DPO / privacy contact — the site owner's existing email */
+  dpoEmail: site.email,
+} as const;
+
 /* --- Default consent categories ----------------------------------------- */
 export type ConsentCategory = "analytics" | "marketing";
 export const CONSENT_VERSION = 1; // bump to re-show banner after policy change

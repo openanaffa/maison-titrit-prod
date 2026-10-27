@@ -17,6 +17,11 @@ export function useConsent() {
  * env/config placeholders as fallback — placeholder IDs
  * (GTM-XXXXXXX, G-XXXXXXXXXX, all-zeros) are ignored so nothing fires until
  * a real ID lands either way.
+ *
+ * Google Consent Mode v2: the consent DEFAULT (all denied, wait_for_update:
+ * 500) is injected beforeInteractive from app/layout.tsx <head> (Next only
+ * allows that strategy in the root layout); consent 'update' commands are
+ * pushed from lib/analytics.ts on any consent change or restoration.
  */
 export function AnalyticsScripts({
   gtmId,

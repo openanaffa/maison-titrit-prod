@@ -179,6 +179,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.rights": "© {year} Maison Titrit · Tous droits réservés",
     "footer.made": "Made with care in Morocco",
     "footer.menu": "Menu de navigation de la maison de couture Maison Titrit.",
+    "footer.legal":
+      "Conformément à la loi marocaine 09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679), vos données personnelles sont collectées et traitées avec votre consentement, en toute transparence et de manière limitée aux finalités de commande et de communication. Vous disposez d'un droit d'accès, de rectification et d'opposition — contactez notre responsable de la protection des données.",
 
     "detail.home": "Accueil",
     "detail.collection": "Collection",
@@ -444,6 +446,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.rights": "© {year} ميزون تيتريت · جميع الحقوق محفوظة",
     "footer.made": "صُنع بعناية في المغرب",
     "footer.menu": "قائمة تنقل دار خياطة ميزون تيتريت.",
+    "footer.legal":
+      "وفقاً للقانون المغربي 09-08 المتعلق بحماية الأشخاص الذاتيين تجاه معالجة المعطيات ذات الطابع الشخصي، وللائحة الأوروبية العامة لحماية البيانات (GDPR — 2016/679)، تُجمع بياناتكم الشخصية بموافقتكم وتُعالج بشفافية ولمصلحة الطلبيات والتواصل فقط. لكم حق الوصول والتصحيح والمعارضة — تواصوا مع مسؤول حماية البيانات لدينا.",
 
     "detail.home": "الرئيسية",
     "detail.collection": "المجموعة",
@@ -706,6 +710,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.rights": "© {year} Maison Titrit · All rights reserved",
     "footer.made": "Made with care in Morocco",
     "footer.menu": "Navigation menu of the Maison Titrit couture house.",
+    "footer.legal":
+      "In accordance with Moroccan Law 09-08 on the protection of individuals with regard to the processing of personal data and the EU General Data Protection Regulation (GDPR — Regulation (EU) 2016/679), your personal data is collected with your consent and processed transparently, limited to order and communication purposes. You have the right to access, rectify and object — contact our data protection officer.",
 
     "detail.home": "Home",
     "detail.collection": "Collection",
