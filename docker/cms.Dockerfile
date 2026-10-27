@@ -23,6 +23,13 @@ COPY cms .
 ARG DATABASE_CLIENT=postgres
 RUN npm run build
 
+# tsc emits only JS/M — but Strapi 5 loads content-type schema.json from
+# dist/src/api/**/content-types/*/ (see @strapi/core get-dirs: dist.api).
+# Copy schema.json next to the compiled controllers/routes/services.
+RUN for f in $(find src/api -name schema.json); do \
+      mkdir -p "dist/$(dirname "$f")" && cp "$f" "dist/$f"; \
+    done
+
 # Prune dev dependencies for a slim runtime layer
 RUN npm prune --omit=dev
 
