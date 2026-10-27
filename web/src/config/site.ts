@@ -131,12 +131,12 @@ export const analytics = {
 export const legalNotice = {
   /** Official legal name shown on the notice */
   companyName: "Mohamed Moughamir — Auto-Entrepreneur",
-  /** TODO: RNAE number (Auto-Entrepreneur regime — Law 114-13). Key kept as
-   *  `rcNumber` to match the schema, but the value is the RNAE number. */
-  rcNumber: "",
-  /** TODO: 15-digit ICE (Identifiant Commun de l'Entreprise) */
-  iceNumber: "",
-  /** TODO: CNDP declaration reference number */
+  /** RNAE number from the AE attestation (AE-150916-367170; key kept as
+   *  `rcNumber` to match the schema — AE regimes register in the RNAE). */
+  rcNumber: "001609783000007",
+  /** 15-digit ICE — for auto-entrepreneurs this equals the AE identifiant. */
+  iceNumber: "001609783000007",
+  /** TODO: file the Law 09-08 declaration on cndp.ma and set the reference. */
   cndpDeclarationNumber: "",
   /** DPO / privacy contact — the site owner's existing email */
   dpoEmail: site.email,
