@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -15,6 +16,7 @@ import { site } from "@/config/site";
 import { baseUrl } from "@/lib/seo";
 import { VERIFICATION_META, getIntegrations } from "@/lib/integrations";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
+import { Analytics } from '@vercel/analytics/next';
 
 const SITE_URL = baseUrl();
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
@@ -138,6 +140,22 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={FONT_HREF} rel="stylesheet" />
         <SiteJsonLd />
+        {/* Google Consent Mode v2 — consent DEFAULT (all denied). Runs before
+            anything interactive so GTM/GA4 see denied consent before they are
+            enabled; consent 'update' commands are pushed from
+            lib/analytics.ts when the visitor chooses. No tag actually loads
+            until the matching consent category is granted (AnalyticsScripts). */}
+        <Script id="consent-default" strategy="beforeInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  'analytics_storage': 'denied',
+  'ad_storage': 'denied',
+  'ad_user_data': 'denied',
+  'ad_personalization': 'denied',
+  'wait_for_update': 500
+});`}
+        </Script>
       </head>
       <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
@@ -153,6 +171,7 @@ export default async function RootLayout({
           </LocaleProvider>
         </ThemeProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
