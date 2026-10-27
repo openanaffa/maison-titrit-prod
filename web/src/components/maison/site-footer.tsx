@@ -1,6 +1,6 @@
 "use client";
 
-import { site } from "@/config/site";
+import { legal, site } from "@/config/site";
 import { whatsappCatalog } from "@/lib/brand";
 import { useT } from "@/i18n/locale-provider";
 import {
@@ -113,7 +113,37 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-cream/15 pt-6 sm:flex-row">
+        {/* Legal — Moroccan Law 09-08 (CNDP) + EU GDPR. Values come from
+            src/config/site.ts (`legal`); a field with an empty value is
+            hidden until the founder fills it in. Labels RC / ICE / CNDP / DPO
+            are international registry abbreviations. */}
+        <div className="mt-12 border-t border-cream/15 pt-6">
+          <p className="max-w-4xl font-serif text-xs leading-relaxed text-cream/60">
+            {t("footer.legal")}
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 font-serif text-xs text-cream/70">
+            <li className="font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze-light">
+              {legal.companyName}
+            </li>
+            {legal.rc && <li>RC&nbsp;: {legal.rc}</li>}
+            {legal.ice && <li>ICE&nbsp;: {legal.ice}</li>}
+            {legal.cndpDeclaration && (
+              <li>Déclaration CNDP&nbsp;: {legal.cndpDeclaration}</li>
+            )}
+            {legal.dpoEmail && (
+              <li>
+                <a
+                  href={`mailto:${legal.dpoEmail}`}
+                  className="hover:text-terracotta"
+                >
+                  DPO&nbsp;: {legal.dpoEmail}
+                </a>
+              </li>
+            )}
+          </ul>
+        </div>
+
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="font-serif text-xs text-cream/60">
             {t("footer.rights", { year })}
           </p>

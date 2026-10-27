@@ -111,6 +111,31 @@ export const analytics = {
   metaDomainVerification: process.env.NEXT_PUBLIC_META_DOMAIN || "",
 } as const;
 
+/* ============================================================================
+ *  LEGAL — Moroccan Law 09-08 & EU GDPR (CNDP)
+ * ----------------------------------------------------------------------------
+ *  Mandatory legal notice rendered in the site footer (site-footer.tsx).
+ *  ⚠️ TODO (user action required) — fill in the real values below:
+ *     - rc:              Registre de Commerce number
+ *     - ice:             Identifiant Commun de l'Entreprise (ICE) number
+ *     - cndpDeclaration: CNDP declaration reference number
+ *     - dpoEmail:        DPO / privacy contact email
+ *  Until a value is filled in, its field is hidden in the footer.
+ * ============================================================================
+ */
+export const legal = {
+  /** Official company name shown on the notice */
+  companyName: "Maison Titrit",
+  /** TODO: Registre de Commerce number */
+  rc: "",
+  /** TODO: Identifiant Commun de l'Entreprise (ICE) number */
+  ice: "",
+  /** TODO: CNDP declaration reference number */
+  cndpDeclaration: "",
+  /** TODO: DPO / privacy contact email */
+  dpoEmail: "",
+} as const;
+
 /* --- Default consent categories ----------------------------------------- */
 export type ConsentCategory = "analytics" | "marketing";
 export const CONSENT_VERSION = 1; // bump to re-show banner after policy change
