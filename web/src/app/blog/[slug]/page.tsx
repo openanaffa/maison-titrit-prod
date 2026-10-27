@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { db } from "@/lib/db";
+import { fetchCmsArticleBySlug } from "@/lib/cms";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { ArticleBody } from "@/components/maison/article-body";
 import { buildPageMetadata, articleJsonLd } from "@/lib/seo";
-
-export const dynamic = "force-dynamic";
 
 type Params = { slug: string };
 
@@ -16,7 +14,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await db.article.findUnique({ where: { slug } });
+  const post = await fetchCmsArticleBySlug(slug);
   if (!post) return { title: "Article introuvable", robots: { index: false, follow: false } };
   return buildPageMetadata({
     title: post.title,
@@ -37,15 +35,15 @@ export default async function BlogPostPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const post = await db.article.findUnique({ where: { slug } });
-  if (!post || !post.published) notFound();
+  const post = await fetchCmsArticleBySlug(slug);
+  if (!post) notFound();
 
   const jsonLd = articleJsonLd({
     slug: post.slug,
     title: post.title,
     description: post.excerpt,
     image: post.coverImage ?? undefined,
-    publishedTime: post.publishedAt?.toISOString() ?? post.createdAt.toISOString(),
+    publishedTime: (post.publishedAt ?? post.updatedAt).toISOString(),
     modifiedTime: post.updatedAt.toISOString(),
     author: post.authorName,
   });
@@ -95,7 +93,7 @@ export default async function BlogPostPage({
         )}
 
         <Reveal delay={0.12} className="mt-8">
-          <ArticleBody markdown={post.body} />
+          <ArticleBody markdown={post.body ?? ""} />
         </Reveal>
 
         <div className="mt-10 border-t border-bronze/25 pt-6 text-center">
