@@ -13,7 +13,7 @@ import { useT } from "@/i18n/locale-provider";
 import { site } from "@/config/site";
 import { useSession } from "next-auth/react";
 import { AmazighStar, OrnamentDivider, WhatsAppIcon } from "@/components/maison/motifs";
-import { trackFacebook, trackBeginCheckout, trackPurchase } from "@/lib/analytics";
+import { trackBeginCheckout, trackPurchase } from "@/lib/analytics";
 
 export default function CheckoutPage() {
   const { t } = useT();
@@ -79,16 +79,17 @@ export default function CheckoutPage() {
         setError(json.error || "Erreur");
         return;
       }
-      trackFacebook("Purchase", {
-        value: total,
-        currency: "MAD",
-        num_items: items.length,
-      });
-      trackPurchase({
+      // Purchase is dispatched server-first via trackPurchase (See
+      // src/lib/analytics.ts division of labor) — no separate client fbq fire,
+      // which would double-send the event.
+      await trackPurchase({
         number: json.order.number,
         total,
         currency: "MAD",
         items: items.map((i) => ({ ref: i.ref, name: i.name, price: i.price, qty: i.qty })),
+      }, {
+        email: form.email || undefined,
+        phone: form.phone || undefined,
       });
       setSuccess({ number: json.order.number, whatsapp: json.whatsapp });
       clear();
