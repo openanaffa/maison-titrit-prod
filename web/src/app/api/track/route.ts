@@ -17,6 +17,7 @@
  * NEVER persisted or logged; there is no storage here.
  */
 import { NextRequest, NextResponse } from "next/server";
+import { rejectBots } from "@/lib/bot";
 import { createHash } from "crypto";
 
 type ConsentFlag = { analytics: boolean; marketing: boolean };
@@ -200,6 +201,8 @@ async function sendMetaCapi(
 /* --- route ------------------------------------------------------------------- */
 
 export async function POST(req: NextRequest) {
+  const blocked = await rejectBots();
+  if (blocked) return blocked;
   let payload: TrackPayload;
   try {
     payload = (await req.json()) as TrackPayload;
