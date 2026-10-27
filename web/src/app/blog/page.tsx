@@ -1,10 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { db } from "@/lib/db";
+import { fetchCmsArticles } from "@/lib/cms";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { buildPageMetadata } from "@/lib/seo";
-
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Journal — Histoires & héritage amazigh",
@@ -15,10 +13,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function BlogPage() {
-  const posts = await db.article.findMany({
-    where: { published: true },
-    orderBy: { publishedAt: "desc" },
-  });
+  const posts = await fetchCmsArticles();
 
   return (
     <section className="vintage-paper min-h-[80vh] py-16 sm:py-20">
