@@ -1,0 +1,5 @@
+# Copy to terraform.tfvars (gitignored) and fill in.
+# The token lives in pass: cloudflare/maisontitrit/api-token
+cloudflare_api_token = "REPLACE_ME"
+
+zone_id = "9c65bf2d00e9df7d88d4712b0eb7c08f"
