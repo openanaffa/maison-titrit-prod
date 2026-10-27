@@ -3,14 +3,15 @@
  *
  *  Production CMS lives behind Cloudflare at NEXT_PUBLIC_CMS_URL (default
  *  https://cms.maisontitrit.com). Drafts never leak: draft-and-publish types
- *  only expose published entries unless publicationState=draft (never sent).
+ *  only expose published entries; status=published is sent explicitly anyway.
+ *  shortcut: lists cap at 100 entries (Strapi maxLimit), paginate past that.
  *
  *  Responses are cached with Next's fetch cache: tag "cms", ISR 5 min.
  *  Publishing from the CMS can purge immediately by POSTing to
  *  /api/cms/revalidate with the CMS_REVALIDATE_TOKEN secret header.
  * ===========================================================================*/
 
-const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL ?? "https://cms.maisontitrit.com";
+export const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL ?? "https://cms.maisontitrit.com";
 
 /** Blog article as the UI consumes it (mirrors the old Prisma `Article`). */
 export type CmsArticle = {
@@ -101,7 +102,7 @@ function fetchCms<T>(
 /** Newest-first list of published articles. */
 export async function fetchCmsArticles(): Promise<CmsArticle[]> {
   const json = await fetchCms<StrapiArticleAttrs>(
-    "/api/articles?populate=cover&sort=publishedAt:desc",
+    "/api/articles?populate=cover&sort=publishedAt:desc&status=published&pagination[pageSize]=100",
   );
   if (!json?.data) return [];
   return json.data.map((entry) => {
@@ -126,7 +127,7 @@ export async function fetchCmsArticles(): Promise<CmsArticle[]> {
 export async function fetchCmsArticleBySlug(slug: string): Promise<CmsArticle | null> {
   if (!/^[a-z0-9-]+$/i.test(slug)) return null;
   const json = await fetchCms<StrapiArticleAttrs>(
-    `/api/articles?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=cover&limit=1`,
+    `/api/articles?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=cover&status=published&pagination[pageSize]=1`,
   );
   const raw = json?.data?.[0];
   if (!raw) return null;
@@ -149,7 +150,7 @@ export async function fetchCmsArticleBySlug(slug: string): Promise<CmsArticle | 
 /** Published lookbooks, newest-first (for the future lookbook section). */
 export async function fetchCmsLookbooks(): Promise<CmsLookbook[]> {
   const json = await fetchCms<StrapiLookbookAttrs>(
-    "/api/lookbooks?populate=cover&populate=gallery&sort=publishedAt:desc",
+    "/api/lookbooks?populate=cover&populate=gallery&sort=publishedAt:desc&status=published&pagination[pageSize]=100",
   );
   if (!json?.data) return [];
   return json.data

@@ -1,19 +1,7 @@
-import { db } from "@/lib/db";
-import { ArticlesTableClient } from "@/components/admin/articles-table-client";
+import { redirect } from "next/navigation";
+import { CMS_URL } from "@/lib/cms";
 
-export const dynamic = "force-dynamic";
-
-export default async function MaktebArticlesPage() {
-  const articles = await db.article.findMany({
-    orderBy: { createdAt: "desc" },
-  });
-  const rows = articles.map((a) => ({
-    id: a.id,
-    slug: a.slug,
-    title: a.title,
-    published: a.published,
-    publishedAt: a.publishedAt?.toISOString() ?? null,
-    updatedAt: a.updatedAt.toISOString(),
-  }));
-  return <ArticlesTableClient rows={rows} />;
+// The journal is edited in Strapi; the storefront reads it from there (lib/cms).
+export default function MaktebBlogPage() {
+  redirect(`${CMS_URL}/admin/content-manager/collection-types/api::article.article`);
 }
