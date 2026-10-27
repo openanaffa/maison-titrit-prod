@@ -1,0 +1,8 @@
+# Local env files must never ship; Vercel injects project env vars.
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules
+**/.next
+**/.turbo
+graft

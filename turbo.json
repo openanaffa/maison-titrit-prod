@@ -2,11 +2,30 @@
   "$schema": "https://turbo.build/repo/docs/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", ".strapi/**", "dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        ".strapi/**",
+        "dist/**"
+      ]
     },
     "vercel:build": {
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ],
+      "env": [
+        "DATABASE_URL",
+        "NEXTAUTH_*",
+        "NEXT_PUBLIC_*",
+        "R2_*",
+        "EMAIL_*",
+        "GOOGLE_*",
+        "ADMIN_*"
+      ]
     },
     "dev": {
       "cache": false,

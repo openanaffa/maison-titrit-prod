@@ -38,3 +38,10 @@ tsconfig.tsbuildinfo
 
 # Turborepo run cache
 .turbo/
+.vercel
+.env*
+.mcp.json
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+supabase/.temp/
