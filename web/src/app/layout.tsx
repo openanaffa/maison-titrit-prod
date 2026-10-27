@@ -15,6 +15,7 @@ import { site } from "@/config/site";
 import { baseUrl } from "@/lib/seo";
 import { VERIFICATION_META, getIntegrations } from "@/lib/integrations";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
+import { Analytics } from '@vercel/analytics/next';
 
 const SITE_URL = baseUrl();
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
@@ -153,6 +154,7 @@ export default async function RootLayout({
           </LocaleProvider>
         </ThemeProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
