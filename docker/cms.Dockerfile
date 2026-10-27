@@ -37,6 +37,10 @@ ENV NODE_ENV=production
 
 COPY --from=build /opt/app ./
 
+# Strapi writes DB migrations and uploads at runtime — hand ownership to `node`.
+RUN mkdir -p /opt/app/database /opt/app/public/uploads \
+  && chown -R node:node /opt/app/database /opt/app/public/uploads
+
 EXPOSE 1337
 
 USER node

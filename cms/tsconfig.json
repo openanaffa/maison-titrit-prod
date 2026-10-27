@@ -9,7 +9,6 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "jsx": "react",
-    "noEmit": true,
     "incremental": true,
     "skipLibCheck": true,
     "types": ["node"]
