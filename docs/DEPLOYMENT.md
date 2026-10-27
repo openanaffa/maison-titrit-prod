@@ -146,6 +146,8 @@ Visit `https://maisontitrit.com`:
 
 Stack layout: Cloudflare (proxied, TLS) → nginx on VM (80 + self-signed 443) → docker compose `cms` → Strapi `127.0.0.1:1337` → Supabase Postgres (pooler `aws-0-eu-west-1.pooler.supabase.com`, user `strapi.rrhzxrcgphlaxybahhep`, SSL).
 
+Content types: `api::article.article` (blog) and `api::lookbook.lookbook` (seasonal lookbooks) — schema in `cms/src/api/*/content-types/*/schema.json`, draft-and-publish on. Products/orders stay in the web app's Prisma DB, not in Strapi. Public API permissions for these types (Settings → Roles → Public: `find`, `findOne`) must be enabled once before the storefront can read `/api/articles` + `/api/lookbooks`.
+
 Rebuild the CMS image (ARM! must build on the VM — the local dev box is x86):
 ```sh
 tar -czf /tmp/cms-src.tar.gz --exclude='cms/node_modules' --exclude='cms/dist' cms docker/cms.Dockerfile
