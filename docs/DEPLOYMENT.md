@@ -146,7 +146,7 @@ Visit `https://maisontitrit.com`:
 
 Stack layout: Cloudflare (proxied, TLS) → nginx on VM (80 + self-signed 443) → docker compose `cms` → Strapi `127.0.0.1:1337` → Supabase Postgres (pooler `aws-0-eu-west-1.pooler.supabase.com`, user `strapi.rrhzxrcgphlaxybahhep`, SSL).
 
-Content types: `api::article.article` (blog) and `api::lookbook.lookbook` (seasonal lookbooks) — schema in `cms/src/api/*/content-types/*/schema.json`, draft-and-publish on. Products/orders stay in the web app's Prisma DB, not in Strapi. Public API permissions for these types (Settings → Roles → Public: `find`, `findOne`) must be enabled once before the storefront can read `/api/articles` + `/api/lookbooks`.
+Content types: `api::article.article` (blog) and `api::lookbook.lookbook` (seasonal lookbooks) — schema in `cms/src/api/*/content-types/*/schema.json`, draft-and-publish on. Products/orders stay in the web app's Prisma DB, not in Strapi. Public API permissions for these types (`find`, `findOne`, enabled 2026-10-27 via `up_permissions` + `up_permissions_role_lnk` seeded for role `public`, verified `/api/articles` + `/api/lookbooks` → 200). Gotcha: tsc only emits JS — the image build copies `schema.json` into `dist/src/api/**` (docker/cms.Dockerfile), since Strapi 5 loads content-type schemas from `dist`.
 
 Rebuild the CMS image (ARM! must build on the VM — the local dev box is x86):
 ```sh
