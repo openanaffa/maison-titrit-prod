@@ -26,7 +26,8 @@
       "required": false
     },
     "description": {
-      "type": "blocks"
+      "type": "richtext",
+      "required": false
     },
     "cover": {
       "type": "media",

@@ -27,7 +27,8 @@
       "maxLength": 300
     },
     "body": {
-      "type": "blocks"
+      "type": "richtext",
+      "required": false
     },
     "cover": {
       "type": "media",
@@ -36,6 +37,11 @@
       "allowedTypes": ["images"]
     },
     "author": {
+      "type": "string",
+      "required": false,
+      "default": "Maison Titrit"
+    },
+    "tags": {
       "type": "string",
       "required": false
     }
