@@ -1,13 +1,12 @@
 # Maison Titrit — Production Codebase (Next.js + Supabase)
 
 Stack: **Next.js 16 (storefront + `/makteb` backoffice, Vercel) + Supabase Postgres + Cloudflare R2/DNS**. No separate CMS: catalog, orders, customers and blog are all managed in `/makteb`.
-Monorepo (Bun workspaces + Turborepo), published at `https://github.com/openanaffa/maison-titrit-prod`.
+Bun workspace (single app, `web/`), published at `https://github.com/openanaffa/maison-titrit-prod`.
 
 ```
 prod/
 ├── web/                  Next.js 16 storefront + backoffice → Vercel (root dir = web)
-├── turbo.json            task graph (build / dev / lint / vercel:build)
-├── package.json          workspace root (bun) — turbo orchestration
+├── package.json          workspace root (bun) — scripts forward to web/
 └── docs/                 deployment runbook + build history (self-contained)
 ```
 
@@ -45,7 +44,7 @@ Production-specific changes vs the inherited sandbox:
 ```bash
 bun install                      # workspace root
 bun run dev:web                  # Next.js dev server :3000
-bun run build                    # turbo build
+bun run build                    # next build
 ```
 
 ## Environment variables (web)
@@ -77,8 +76,8 @@ Do, in order, verifying each step before the next:
    - web: `DATABASE_URL` = postgresql://postgres.<ref>:<PW>@aws-0-eu-west-1.pooler.supabase.com:5432/postgres
      then `bunx prisma db push --schema=prisma/schema.postgres.prisma` + re-run `seed:prod`
      against that URL.
-4. Vercel: link the repo, set Root Directory = web/, Build = turbo pipeline
-   (vercel.json already wires `cd ../.. && bun install` + `turbo run vercel:build --filter=web`).
+4. Vercel: link the repo, set Root Directory = web/, build is wired in web/vercel.json
+   (`cd .. && bun install` + `bun run vercel:build`).
    Set env vars per docs/DEPLOYMENT.md (DATABASE_URL, NEXTAUTH_URL/SECRET,
    NEXT_PUBLIC_SITE_URL, ADMIN_EMAIL/PASSWORD for seed, R2_* for media).
    Deploy to production for maisontitrit.com and

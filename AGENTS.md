@@ -1,16 +1,16 @@
 # Maison Titrit — production repo agent notes
 
 ## Layout
-- Turborepo + Bun workspace: `web/` (Next.js 16 storefront + `/makteb` backoffice on Vercel; Prisma → Supabase Postgres; media on Cloudflare R2). No CMS: Strapi was removed in 2026-10, don't reintroduce a second backend. `docs/` carries the deployment runbook and the inherited build history.
+- Bun workspace (no Turborepo): `web/` (Next.js 16 storefront + `/makteb` backoffice on Vercel; Prisma → Supabase Postgres; media on Cloudflare R2). No CMS: Strapi was removed in 2026-10, don't reintroduce a second backend. `docs/` carries the deployment runbook and the inherited build history.
 - Everything a developer or agent needs lives inside this repo: `README.md` (topology + quickstart), `docs/DEPLOYMENT.md` (full env table, R2/DNS, checklists), `docs/history/worklog-ws2.md` (design-decision trail: vintage Amazigh design system, brand assets, RBAC, SEO).
 
 ## Commands (from repo root)
 ```sh
 bun install           # root, installs both workspaces
 bun run dev:web       # Next dev :3000
-bun run lint          # turbo → web eslint (must stay 0 errors / 0 warnings)
+bun run lint          # web eslint (must stay 0 errors / 0 warnings)
 bunx tsc --noEmit -p web
-bun run build         # turbo build all
+bun run build         # next build
 ```
 
 ## Branching (git flow)

@@ -36,7 +36,6 @@ tsconfig.tsbuildinfo
 *.tsbuildinfo
 
 # Turborepo run cache
-.turbo/
 .vercel
 .env*
 .mcp.json
