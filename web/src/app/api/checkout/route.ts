@@ -1,4 +1,5 @@
 import { NextResponse, after } from "next/server";
+import { rejectBots } from "@/lib/bot";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { site } from "@/config/site";
@@ -15,6 +16,8 @@ export const dynamic = "force-dynamic";
  * Returns { order: { number, total }, whatsapp: <deeplink with summary> }
  */
 export async function POST(req: Request) {
+  const blocked = await rejectBots();
+  if (blocked) return blocked;
   const user = await getCurrentUser();
   try {
     const body = await req.json();

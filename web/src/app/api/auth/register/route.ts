@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { rejectBots } from "@/lib/bot";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
@@ -10,6 +11,8 @@ export const dynamic = "force-dynamic";
  * Idempotent-ish: 409 if email exists.
  */
 export async function POST(req: Request) {
+  const blocked = await rejectBots();
+  if (blocked) return blocked;
   try {
     const body = await req.json();
     const name = String(body.name ?? "").trim();
