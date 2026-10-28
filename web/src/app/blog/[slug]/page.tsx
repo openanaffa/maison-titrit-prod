@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getPublishedArticle } from "@/lib/blog";
@@ -82,11 +83,13 @@ export default async function BlogPostPage({
 
         {post.coverImage && (
           <Reveal delay={0.08} className="mt-8">
-            <div className="vintage-frame overflow-hidden rounded-sm">
-              <img
+            <div className="vintage-frame relative aspect-[16/9] w-full overflow-hidden rounded-sm">
+              <Image
                 src={post.coverImage}
                 alt={post.title}
-                className="aspect-[16/9] w-full object-cover"
+                fill
+                sizes="(min-width: 768px) 42rem, 100vw"
+                className="object-cover"
               />
             </div>
           </Reveal>

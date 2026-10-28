@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { site } from "@/config/site";
 import { whatsappCatalog } from "@/lib/brand";
@@ -44,11 +45,12 @@ export function ProductCard({ product }: { product: ProductDTO }) {
   return (
     <article className="card-vintage group flex h-full flex-col overflow-hidden rounded-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-30px_rgba(28,26,23,0.55)]">
       <Link href={detailHref} className="relative block aspect-[4/5] overflow-hidden bg-sand/40" aria-label={product.name}>
-        <img
+        <Image
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-          loading="lazy"
+          fill
+          sizes="(min-width: 1024px) 21rem, (min-width: 640px) 50vw, 100vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent opacity-60" />
         {/* hover hint */}

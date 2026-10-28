@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, ArrowLeft, Upload, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -245,7 +246,7 @@ export function ProductForm({
                   <div className="flex gap-3">
                     <div className="size-20 shrink-0 overflow-hidden rounded-sm bg-sand/40">
                       {img.url ? (
-                        <img src={img.url} alt={img.alt || ""} className="h-full w-full object-cover" />
+                        <Image src={img.url} alt={img.alt || ""} width={80} height={80} className="h-full w-full object-cover" />
                       ) : (
                         <div className="flex h-full items-center justify-center text-bronze/40">
                           {uploading ? <Loader2 className="size-5 animate-spin" /> : <Upload className="size-5" />}
