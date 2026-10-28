@@ -1,15 +1,3 @@
-/**
- * ============================================================================
- *  MAISON TITRIT — Branded email templates (no new deps)
- * ----------------------------------------------------------------------------
- *  Inline-styled, table-based HTML + plain-text fallbacks for:
- *   - the NextAuth magic-link sign-in email (used by lib/auth.ts)
- *   - the staff "new order" notification (lib/notify.ts; `text` doubles as the
- *     WAFINE WhatsApp message)
- *  Palette is locked to the design system (web/src/app/globals.css):
- *  cream #F4EAD5 · ink #1C1A17 · bronze #7A5229 · terracotta #B0532F
- * ============================================================================
- */
 import { site } from "@/config/site";
 
 /** Minimal order shape passed along with a fresh checkout (see /api/checkout). */

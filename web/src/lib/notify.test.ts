@@ -1,8 +1,3 @@
-/**
- * Self-check for staff notifications: notifyStaffNewOrder must NEVER throw and
- * must skip channels whose env vars are missing. fetch + nodemailer are fully
- * mocked — no network, no SMTP.
- */
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 
 type MailMessage = { from?: string; to?: string; subject?: string; html?: string; text?: string };
@@ -15,7 +10,6 @@ const state = {
   fetchError: null as Error | null,
 };
 
-// Must be registered BEFORE the dynamic import of ./notify below.
 mock.module("nodemailer", () => {
   const createTransport = () => ({
     sendMail: async (msg: MailMessage) => {
@@ -115,7 +109,7 @@ describe("notifyStaffNewOrder", () => {
     setEnvs();
     state.fetchError = new Error("network down");
     await expect(notifyStaffNewOrder(order)).resolves.toBeUndefined();
-    expect(state.fetchCalls).toHaveLength(2); // both numbers attempted
+    expect(state.fetchCalls).toHaveLength(2);
     expect(state.sendMailCalls).toHaveLength(1);
   });
 

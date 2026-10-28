@@ -1,15 +1,3 @@
-/**
- * Staff notifications for new orders — email + WhatsApp.
- *  - email: nodemailer, same EMAIL_SERVER_* / EMAIL_FROM config as the auth
- *    magic-link transport (lib/auth.ts)
- *  - WhatsApp: WAFINE (OpenWA) gateway — POST /api/sessions/{id}/messages/send-text
- * Each channel is skipped silently (one console.info) when its env vars are
- * missing, and NO failure here ever propagates — the checkout must not depend
- * on notifications succeeding.
- *
- * Env vars (see .env.example): STAFF_EMAILS, STAFF_WHATSAPP, WAFINE_API_URL,
- * WAFINE_API_KEY, WAFINE_SESSION_ID.
- */
 import nodemailer from "nodemailer";
 import { staffNewOrderEmail, type StaffOrderPayload } from "./email-templates";
 
@@ -20,7 +8,7 @@ const smtpPort = Number(process.env.EMAIL_SERVER_PORT ?? 587);
 export const smtpServer = {
   host: process.env.EMAIL_SERVER_HOST,
   port: smtpPort,
-  secure: smtpPort === 465, // implicit TLS on 465, STARTTLS otherwise
+  secure: smtpPort === 465,
   auth: {
     user: process.env.EMAIL_SERVER_USER,
     pass: process.env.EMAIL_SERVER_PASSWORD,

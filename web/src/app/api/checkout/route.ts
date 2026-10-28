@@ -80,8 +80,6 @@ export async function POST(req: Request) {
     const text = encodeURIComponent(lines.join("\n"));
     const whatsapp = `https://wa.me/${site.whatsapp.chat}?text=${text}`;
 
-    // Staff notification runs after the response is sent (never delays or
-    // fails the checkout — see lib/notify.ts for the never-throw contract).
     after(() => notifyStaffNewOrder({
       number: order.number,
       customerName: order.customerName,
