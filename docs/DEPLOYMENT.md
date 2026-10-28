@@ -132,9 +132,18 @@ Visit `https://maisontitrit.com`:
 
 ---
 
-## 5b. CMS — self-hosted Strapi (OCI VM)
+## 5b. CMS — self-hosted Strapi (OCI VM) — DECOMMISSIONING
 
-**Live:** `https://cms.maisontitrit.com/admin` (Strapi 5.59 + Postgres `titrit_strapi` on Supabase).
+Strapi was removed from the codebase (2026-10, `feature/drop-strapi`); the blog reads Prisma `Article` again. The VM below still runs until this checklist is done. Each step is destructive — run it yourself or approve it explicitly:
+
+1. [ ] Drop-strapi PR merged to `main`, prod `/blog` and `/sitemap.xml` return 200 with no request to `cms.maisontitrit.com`.
+2. [ ] Optional archive: `pg_dump` the `titrit_strapi` database (0 published entries, so this is only belt-and-braces).
+3. [ ] Terraform (`terraform/` also manages the apex/www/mail DNS records — never `destroy` the whole state): delete `oci.tf`, `oci-variables.tf`, `cloud-init/`, the OCI provider/vars, and `cloudflare_record.cms_a` from `dns.tf`; then `tofu plan` must list **only** OCI resources + `cms_a` to destroy; then `tofu apply`.
+4. [ ] Supabase: `DROP DATABASE titrit_strapi;` and `DROP ROLE strapi;`
+5. [ ] Secrets: remove `CMS_REVALIDATE_TOKEN` / `NEXT_PUBLIC_CMS_URL` from Vercel env; prune `pass maison-titrit/strapi/*`, `supabase/titrit/strapi-role`; delete `~/.ssh/oci_strapi_ed25519` and the `cms` ssh alias.
+6. [ ] Delete this section.
+
+**Was live:** `https://cms.maisontitrit.com/admin` (Strapi 5.59 + Postgres `titrit_strapi` on Supabase).
 
 | What | Value |
 |---|---|
