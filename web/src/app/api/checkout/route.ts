@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
 import { site } from "@/config/site";
 import { parseCartLines, priceCart } from "@/lib/checkout";
+import { notifyStaffNewOrder } from "@/lib/notify";
 import { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -78,6 +79,14 @@ export async function POST(req: Request) {
     ].filter(Boolean);
     const text = encodeURIComponent(lines.join("\n"));
     const whatsapp = `https://wa.me/${site.whatsapp.chat}?text=${text}`;
+
+    after(() => notifyStaffNewOrder({
+      number: order.number,
+      customerName: order.customerName,
+      customerPhone: order.customerPhone,
+      items: items.map(({ name, size, price, quantity }) => ({ name, size, price, quantity })),
+      total,
+    }));
 
     return NextResponse.json({ order: { number: order.number, total }, whatsapp });
   } catch (e) {
