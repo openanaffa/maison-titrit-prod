@@ -81,8 +81,6 @@
   --ink-soft: #3a352c;
   --bronze: #9a6a3a;
   --bronze-light: #b8915a;
-  /* Text-only bronze — darker than the brand bronze so tiny tracked labels
-     (0.58–0.72rem Marcellus) clear WCAG AA. Not for borders/ornaments. */
   --bronze-deep: #7a552c;
   --terracotta: #b0532f;
   --henna: #6b2d1f;
@@ -132,7 +130,6 @@
   --ink-soft: #cfc6b0;
   --bronze: #b8915a;
   --bronze-light: #cfa978;
-  /* Night counterpart measured on ink (#1C1A17) */
   --bronze-deep: #b8915a;
   --terracotta: #c4633c;
   --henna: #a0492f;
@@ -321,12 +318,6 @@
 }
 
 @layer utilities {
-  /* Small bronze text must clear WCAG AA 4.5:1 on cream (#F4EAD5) — brand
-     #9A6A3A measures only 3.9:1 there (~80 tiny tracked labels). Routing
-     small label *text* through bronze-deep fixes it without touching any
-     component: :where() keeps the rule at 0,1,0 specificity so
-     hover:text-terracotta and future size utilities still win ties.
-     Borders, ornaments and display-size bronze keep the brand shade. */
   .font-label:where(.text-bronze, .text-bronze\/70, .text-bronze\/80) {
     color: var(--bronze-deep);
   }
@@ -336,8 +327,6 @@
   .eyebrow {
     color: var(--bronze-deep);
   }
-  /* The product breadcrumb is the one tiny bronze text without a label
-     class (product-detail.tsx) — caught by its static size class. */
   .text-\[0\.66rem\]:is(.text-bronze) {
     color: var(--bronze-deep);
   }

@@ -1,8 +1,5 @@
 "use client";
 
-/* Rendered in place of the root layout when the tree fails hard — carries
- * its own <html>/<body> and inline styles only, since layout CSS and the
- * Google Fonts <link> may never load. */
 export default function GlobalError({
   error,
   reset,

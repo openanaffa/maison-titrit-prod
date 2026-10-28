@@ -12,7 +12,6 @@ export default function ErrorPage({
   reset: () => void;
 }) {
   useEffect(() => {
-    // digest is surfaced server-side in logs — never shown to the visitor
     console.error(error);
   }, [error]);
 
