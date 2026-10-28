@@ -1,6 +1,7 @@
 "use client";
 
 import { site } from "@/config/site";
+import Image from "next/image";
 import { useT } from "@/i18n/locale-provider";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 
@@ -48,12 +49,13 @@ export function About() {
 
           <Reveal delay={0.12} y={24}>
             <figure className="relative">
-              <div className="vintage-frame overflow-hidden rounded-sm">
-                <img
+              <div className="vintage-frame relative aspect-[4/3] w-full overflow-hidden rounded-sm">
+                <Image
                   src="/images/maison-titrit/about-craft.png"
                   alt={t("hero.imageSub")}
-                  className="aspect-[4/3] w-full object-cover"
-                  loading="lazy"
+                  fill
+                  sizes="(min-width: 1024px) 32rem, 92vw"
+                  className="object-cover"
                 />
               </div>
               <div className="mt-4 flex items-start gap-3">

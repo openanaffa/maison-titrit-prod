@@ -3,6 +3,7 @@
 import * as React from "react";
 import { X, ShoppingBag, Minus, Plus, Trash2, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -90,9 +91,11 @@ export function CartDrawer() {
                     key={`${item.productId}-${item.size}`}
                     className="flex gap-3 rounded-sm border border-bronze/20 p-3"
                   >
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.name}
+                      width={64}
+                      height={64}
                       className="size-16 shrink-0 rounded-sm object-cover"
                     />
                     <div className="min-w-0 flex-1">

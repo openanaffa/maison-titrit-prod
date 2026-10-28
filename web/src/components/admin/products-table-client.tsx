@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Plus, Search, Pencil, Trash2, Star, StarOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -142,9 +143,11 @@ export function ProductsTableClient({
                     <td className="p-3">
                       <div className="flex items-center gap-3">
                         {r.image && (
-                          <img
+                          <Image
                             src={r.image}
                             alt={r.name}
+                            width={48}
+                            height={48}
                             className="size-12 shrink-0 rounded-sm object-cover"
                           />
                         )}
