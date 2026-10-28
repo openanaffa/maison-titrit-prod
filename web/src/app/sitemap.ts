@@ -38,7 +38,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Published blog posts
   let blogPages: MetadataRoute.Sitemap = [];
   try {
     const posts = await getPublishedArticles();
@@ -57,7 +56,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   } catch {
-    // DB unreachable — skip blog URLs rather than failing the whole sitemap
   }
 
   return [...staticPages, ...productPages, ...blogPages];
