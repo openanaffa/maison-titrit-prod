@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         currency: site.currency,
         payment: "COD",
         userId: user?.id ?? null,
-        items: { create: items }, // nested write: order + items are atomic
+        items: { create: items },
     });
 
     // Note: GA4/Meta purchase tracking happens client-side on the checkout

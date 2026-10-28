@@ -81,7 +81,7 @@ export default function CheckoutPage() {
       // which would double-send the event.
       await trackPurchase({
         number: json.order.number,
-        total: json.order.total, // server-priced
+        total: json.order.total,
         currency: "MAD",
         items: items.map((i) => ({ ref: i.ref, name: i.name, price: i.price, qty: i.qty })),
       }, {

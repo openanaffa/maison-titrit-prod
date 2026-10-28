@@ -15,14 +15,14 @@ export type PricedProduct = {
   price: number;
   salePrice: number | null;
   inStock: boolean;
-  sizes: string; // "S · M · L · XL"
+  sizes: string;
 };
 
 export type PricedLine = {
   productId: string;
   ref: string;
   name: string;
-  price: number; // unit, MAD
+  price: number;
   quantity: number;
   size: string | null;
 };
