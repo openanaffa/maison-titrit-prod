@@ -97,10 +97,10 @@ Vercel's filesystem is **ephemeral** — uploaded images won't persist. R2 is S3
    | `R2_ACCESS_KEY_ID` | `<from R2>` | Production |
    | `R2_SECRET_ACCESS_KEY` | `<from R2>` | Production |
    | `R2_PUBLIC_URL` | `https://cdn.maisontitrit.com` | Production |
-   | `EMAIL_SERVER_HOST` | `smtp.resend.com` | Production (optional) |
+   | `EMAIL_SERVER_HOST` | `smtp-relay.brevo.com` | Production (optional) |
    | `EMAIL_SERVER_PORT` | `587` | Production |
-   | `EMAIL_SERVER_USER` | `resend` | Production |
-   | `EMAIL_SERVER_PASSWORD` | `<Resend API key>` | Production |
+   | `EMAIL_SERVER_USER` | `<Brevo SMTP login, xxx@smtp-brevo.com>` | Production |
+   | `EMAIL_SERVER_PASSWORD` | `<Brevo SMTP key>` | Production |
    | `EMAIL_FROM` | `Maison Titrit <hello@maisontitrit.com>` | Production |
    | `GOOGLE_CLIENT_ID` | `<from Google Cloud>` | Production (optional) |
    | `GOOGLE_CLIENT_SECRET` | `<from Google Cloud>` | Production (optional) |

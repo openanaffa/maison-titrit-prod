@@ -10,7 +10,7 @@
  *  Env vars needed (production):
  *   NEXTAUTH_URL, NEXTAUTH_SECRET
  *   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
- *   EMAIL_SERVER_HOST/PORT/USER/PASSWORD (or NEXT_PUBLIC_RESEND_API_KEY)
+ *   EMAIL_SERVER_HOST/PORT/USER/PASSWORD
  *   ADMIN_EMAIL, ADMIN_PASSWORD (for the seeded founder)
  */
 import type { NextAuthOptions } from "next-auth";
