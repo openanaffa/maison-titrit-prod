@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { fetchCmsArticles } from "@/lib/cms";
+import { getPublishedArticles } from "@/lib/blog";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function BlogPage() {
-  const posts = await fetchCmsArticles();
+  const posts = await getPublishedArticles();
 
   return (
     <section className="vintage-paper min-h-[80vh] py-16 sm:py-20">

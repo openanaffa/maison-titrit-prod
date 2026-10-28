@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { fetchCmsArticleBySlug } from "@/lib/cms";
+import { getPublishedArticle } from "@/lib/blog";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { ArticleBody } from "@/components/maison/article-body";
 import { buildPageMetadata, articleJsonLd } from "@/lib/seo";
@@ -14,7 +14,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await fetchCmsArticleBySlug(slug);
+  const post = await getPublishedArticle(slug);
   if (!post) return { title: "Article introuvable", robots: { index: false, follow: false } };
   return buildPageMetadata({
     title: post.title,
@@ -35,7 +35,7 @@ export default async function BlogPostPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const post = await fetchCmsArticleBySlug(slug);
+  const post = await getPublishedArticle(slug);
   if (!post) notFound();
 
   const jsonLd = articleJsonLd({
