@@ -336,15 +336,24 @@
   .dark .text-shadow-vintage {
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
   }
-  /* Subtle entrance */
+  /* Subtle entrance — CSS-only, no framer-motion (P4: removes ~1.6s main-thread chunk) */
   .reveal {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(var(--reveal-y, 16px));
     transition: opacity 0.7s ease, transform 0.7s ease;
+    transition-delay: var(--reveal-delay, 0s);
   }
   .reveal.is-visible {
     opacity: 1;
     transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      animation: none;
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 }
 
