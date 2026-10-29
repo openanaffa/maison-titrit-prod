@@ -179,27 +179,27 @@ export default function CheckoutPage() {
                 {t("compte.profile")}
               </h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                <Field label={t("checkout.name")}>
-                  <Input required value={form.name} onChange={(e) => set("name", e.target.value)} className="rounded-sm border-bronze/45" />
+                <Field id="checkout-name" label={t("checkout.name")}>
+                  <Input id="checkout-name" name="name" autoComplete="name" required value={form.name} onChange={(e) => set("name", e.target.value)} className="rounded-sm border-bronze/45" />
                 </Field>
-                <Field label={t("checkout.phone")}>
-                  <Input required type="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} className="rounded-sm border-bronze/45" />
+                <Field id="checkout-phone" label={t("checkout.phone")}>
+                  <Input id="checkout-phone" name="phone" autoComplete="tel" required type="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} className="rounded-sm border-bronze/45" />
                 </Field>
-                <Field label={t("checkout.email")}>
-                  <Input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} className="rounded-sm border-bronze/45" />
+                <Field id="checkout-email" label={t("checkout.email")}>
+                  <Input id="checkout-email" name="email" autoComplete="email" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} className="rounded-sm border-bronze/45" />
                 </Field>
-                <Field label={t("checkout.city")}>
-                  <Input required value={form.city} onChange={(e) => set("city", e.target.value)} className="rounded-sm border-bronze/45" />
-                </Field>
-              </div>
-              <div className="mt-4">
-                <Field label={t("checkout.address")}>
-                  <Textarea required value={form.address} onChange={(e) => set("address", e.target.value)} rows={2} className="rounded-sm border-bronze/45" />
+                <Field id="checkout-city" label={t("checkout.city")}>
+                  <Input id="checkout-city" name="city" autoComplete="address-level2" required value={form.city} onChange={(e) => set("city", e.target.value)} className="rounded-sm border-bronze/45" />
                 </Field>
               </div>
               <div className="mt-4">
-                <Field label={t("checkout.notes")}>
-                  <Textarea value={form.notes} onChange={(e) => set("notes", e.target.value)} rows={2} className="rounded-sm border-bronze/45" />
+                <Field id="checkout-address" label={t("checkout.address")}>
+                  <Textarea id="checkout-address" name="address" autoComplete="street-address" required value={form.address} onChange={(e) => set("address", e.target.value)} rows={2} className="rounded-sm border-bronze/45" />
+                </Field>
+              </div>
+              <div className="mt-4">
+                <Field id="checkout-notes" label={t("checkout.notes")}>
+                  <Textarea id="checkout-notes" name="notes" autoComplete="off" value={form.notes} onChange={(e) => set("notes", e.target.value)} rows={2} className="rounded-sm border-bronze/45" />
                 </Field>
               </div>
             </div>
@@ -249,10 +249,10 @@ export default function CheckoutPage() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
   return (
     <div>
-      <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{label}</Label>
+      <Label htmlFor={id} className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{label}</Label>
       <div className="mt-1.5">{children}</div>
     </div>
   );
