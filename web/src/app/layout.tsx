@@ -64,7 +64,14 @@ export async function generateMetadata(): Promise<Metadata> {
   creator: site.name,
   publisher: site.name,
   applicationName: site.name,
-  alternates: { canonical: SITE_URL },
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      fr: SITE_URL,
+      ar: SITE_URL,
+      en: SITE_URL,
+    },
+  },
   openGraph: {
     title: `${site.name} — Modest Fashion · Made in Morocco`,
     description:
