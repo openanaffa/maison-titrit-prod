@@ -65,9 +65,6 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           items: items.map((i) => ({
             productId: i.productId,
-            ref: i.ref,
-            name: i.name,
-            price: i.price,
             qty: i.qty,
             size: i.size,
           })),
@@ -84,7 +81,7 @@ export default function CheckoutPage() {
       // which would double-send the event.
       await trackPurchase({
         number: json.order.number,
-        total,
+        total: json.order.total,
         currency: "MAD",
         items: items.map((i) => ({ ref: i.ref, name: i.name, price: i.price, qty: i.qty })),
       }, {

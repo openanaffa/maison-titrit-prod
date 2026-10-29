@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";
-import { fetchCmsArticles } from "@/lib/cms";
+import { getPublishedArticles } from "@/lib/blog";
 
 export const dynamic = "force-dynamic";
 
@@ -38,10 +38,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Blog posts from the Strapi CMS (pulls the fetch cache, tag "cms")
   let blogPages: MetadataRoute.Sitemap = [];
   try {
-    const posts = await fetchCmsArticles();
+    const posts = await getPublishedArticles();
     blogPages = posts.map((p) => ({
       url: `${base}/blog/${p.slug}`,
       lastModified: p.updatedAt,
@@ -57,7 +56,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   } catch {
-    // CMS unreachable — skip blog URLs rather than failing the whole sitemap
   }
 
   return [...staticPages, ...productPages, ...blogPages];

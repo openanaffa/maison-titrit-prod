@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowLeft, Minus, Plus, Share2, ShoppingBag, Sparkles, Truck } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { site } from "@/config/site";
 import { whatsappCatalog } from "@/lib/brand";
@@ -171,11 +172,13 @@ export function ProductDetailClient({
           {/* Image gallery */}
           <Reveal y={20}>
             <figure className="vintage-frame relative aspect-[4/5] overflow-hidden rounded-sm bg-sand/30">
-              <img
+              <Image
                 src={images[activeImg]?.url ?? product.image}
                 alt={images[activeImg]?.alt ?? product.name}
-                className="h-full w-full object-cover transition-opacity duration-300"
-                loading="eager"
+                fill
+                sizes="(min-width: 1024px) 31.5rem, 92vw"
+                className="object-cover transition-opacity duration-300"
+                priority
               />
               {product.featured && (
                 <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-cream/90 px-2.5 py-1 font-label text-[0.6rem] uppercase tracking-[0.18em] text-terracotta backdrop-blur dark:bg-ink/80">
@@ -206,7 +209,13 @@ export function ProductDetailClient({
                       i === activeImg ? "border-terracotta" : "border-transparent opacity-70 hover:opacity-100"
                     }`}
                   >
-                    <img src={img.url} alt={img.alt} className="h-full w-full object-cover" />
+                    <Image
+                      src={img.url}
+                      alt={img.alt}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
                   </button>
                 ))}
               </div>

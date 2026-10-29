@@ -19,20 +19,36 @@ import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
+import nodemailer from "nodemailer";
 import { db } from "@/lib/db";
+import { magicLinkEmail } from "@/lib/email-templates";
+import { smtpServer } from "@/lib/notify";
 
-/** Dev email transport: logs the magic link to the server console.
- *  Prod: set EMAIL_SERVER_* env to point to SMTP/Resend. */
-function devConsoleEmailTransport() {
-  return {
-    sendVerificationRequest: async ({ identifier, url, provider }: { identifier: string; url: string; provider: { from: string } }) => {
-      console.log("\n━━━━━━━━━━━━━━ MAGIC LINK ━━━━━━━━━━━━━━");
-      console.log(`  To: ${identifier}`);
-      console.log(`  From: ${provider.from}`);
-      console.log(`  URL:  ${url}`);
-      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-    },
-  };
+/**
+ * Branded magic-link verification email.
+ *  - dev: log the link to the server console (no SMTP needed)
+ *  - prod: send via nodemailer with the EMAIL_SERVER_* config below
+ */
+async function sendVerificationRequest({
+  identifier,
+  url,
+  provider,
+}: {
+  identifier: string;
+  url: string;
+  provider: { from: string };
+}) {
+  if (process.env.NODE_ENV !== "production") {
+    console.log("\n━━━━━━━━━━━━━━ MAGIC LINK ━━━━━━━━━━━━━━");
+    console.log(`  To: ${identifier}`);
+    console.log(`  From: ${provider.from}`);
+    console.log(`  URL:  ${url}`);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    return;
+  }
+  const transport = nodemailer.createTransport(smtpServer);
+  const { subject, html, text } = magicLinkEmail(url);
+  await transport.sendMail({ to: identifier, from: provider.from, subject, html, text });
 }
 
 export const authOptions: NextAuthOptions = {
@@ -80,16 +96,9 @@ export const authOptions: NextAuthOptions = {
         ]
       : []),
     EmailProvider({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: Number(process.env.EMAIL_SERVER_PORT ?? 587),
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
-      },
+      server: smtpServer,
       from: process.env.EMAIL_FROM ?? "Maison Titrit <hello@maisontitrit.com>",
-      ...(process.env.NODE_ENV !== "production" ? { sendVerificationRequest: devConsoleEmailTransport().sendVerificationRequest } : {}),
+      sendVerificationRequest,
     }),
   ],
   callbacks: {

@@ -5,7 +5,6 @@ node_modules/
 .next/
 dist/
 build/
-.strapi/
 out/
 
 # Env
@@ -37,7 +36,6 @@ tsconfig.tsbuildinfo
 *.tsbuildinfo
 
 # Turborepo run cache
-.turbo/
 .vercel
 .env*
 .mcp.json
@@ -45,3 +43,6 @@ tsconfig.tsbuildinfo
 # graft's local graph cache — regenerable, not committed (run `graft build`).
 /graft/
 supabase/.temp/
+
+# local SQLite dev database (recreate: cd web && bun run db:push && bun run scripts/seed.ts)
+web/prisma/db/*.db

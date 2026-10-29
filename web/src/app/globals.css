@@ -22,6 +22,7 @@
   --color-ink-soft: var(--ink-soft);
   --color-bronze: var(--bronze);
   --color-bronze-light: var(--bronze-light);
+  --color-bronze-deep: var(--bronze-deep);
   --color-terracotta: var(--terracotta);
   --color-henna: var(--henna);
   --color-olive: var(--olive);
@@ -80,6 +81,7 @@
   --ink-soft: #3a352c;
   --bronze: #9a6a3a;
   --bronze-light: #b8915a;
+  --bronze-deep: #7a552c;
   --terracotta: #b0532f;
   --henna: #6b2d1f;
   --olive: #6b6b3a;
@@ -128,6 +130,7 @@
   --ink-soft: #cfc6b0;
   --bronze: #b8915a;
   --bronze-light: #cfa978;
+  --bronze-deep: #b8915a;
   --terracotta: #c4633c;
   --henna: #a0492f;
   --olive: #8a8a4f;
@@ -315,6 +318,18 @@
 }
 
 @layer utilities {
+  .font-label:where(.text-bronze, .text-bronze\/70, .text-bronze\/80) {
+    color: var(--bronze-deep);
+  }
+  .tifinagh:where(.text-bronze) {
+    color: var(--bronze-deep);
+  }
+  .eyebrow {
+    color: var(--bronze-deep);
+  }
+  .text-\[0\.66rem\]:is(.text-bronze) {
+    color: var(--bronze-deep);
+  }
   .text-shadow-vintage {
     text-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 6%, transparent);
   }

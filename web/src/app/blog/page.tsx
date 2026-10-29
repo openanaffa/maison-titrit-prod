@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
-import { fetchCmsArticles } from "@/lib/cms";
+import { getPublishedArticles } from "@/lib/blog";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -13,7 +14,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function BlogPage() {
-  const posts = await fetchCmsArticles();
+  const posts = await getPublishedArticles();
 
   return (
     <section className="vintage-paper min-h-[80vh] py-16 sm:py-20">
@@ -43,12 +44,14 @@ export default async function BlogPage() {
                 {post.coverImage && (
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="block sm:w-56 sm:shrink-0"
+                    className="relative block h-48 w-full overflow-hidden sm:h-auto sm:w-56 sm:shrink-0"
                   >
-                    <img
+                    <Image
                       src={post.coverImage}
                       alt={post.title}
-                      className="h-48 w-full object-cover sm:h-full"
+                      fill
+                      sizes="(min-width: 640px) 14rem, 100vw"
+                      className="object-cover"
                     />
                   </Link>
                 )}

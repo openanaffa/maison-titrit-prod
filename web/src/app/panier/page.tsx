@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -51,9 +52,11 @@ export default function CartPage() {
                   key={`${item.productId}-${item.size}`}
                   className="card-vintage flex gap-4 rounded-sm p-4"
                 >
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.name}
+                    width={96}
+                    height={96}
                     className="size-24 shrink-0 rounded-sm object-cover"
                   />
                   <div className="flex-1">
