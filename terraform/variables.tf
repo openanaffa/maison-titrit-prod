@@ -25,13 +25,13 @@ variable "www_cname_target" {
 
 variable "spf_record" {
   type        = string
-  description = "Apex SPF record. Locked down: no third-party mail service may ever send as this domain."
-  default     = "v=spf1 -all"
+  description = "Apex SPF record. Allows Cloudflare Email Routing (inbound forwarding); Brevo passes DMARC via its own DKIM, so it needs no entry here."
+  default     = "v=spf1 include:_spf.mx.cloudflare.net ~all"
 }
 
 variable "dkim_record" {
   type        = string
-  description = "Wildcard DKIM refusal record — declares no DKIM signer, protects the domain from forged DKIM."
+  description = "Wildcard DKIM refusal record — any selector without its own record (e.g. Brevo's brevo1/brevo2._domainkey) resolves to an empty key."
   default     = "v=DKIM1; p="
 }
 

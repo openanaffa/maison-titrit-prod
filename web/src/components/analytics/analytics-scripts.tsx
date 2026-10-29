@@ -12,7 +12,11 @@ export function useConsent() {
 
 /**
  * Analytics scripts — GTM, GA4, and Meta Pixel.
- * Mounted only after the visitor accepts the matching consent category.
+ * Google Consent Mode v2, *advanced*: GTM/GA4 always load and start denied,
+ * so Google gets cookieless pings and can model declined visitors; consent
+ * updates flip them to granted. Meta Pixel has no consent mode, so it still
+ * mounts only after marketing consent. Non-Google tags inside GTM must carry
+ * their own consent checks (GTM → tag → Consent settings).
  * IDs are runtime-editable (dashboard → Réglages → Intégrations) with the
  * env/config placeholders as fallback — placeholder IDs
  * (GTM-XXXXXXX, G-XXXXXXXXXX, all-zeros) are ignored so nothing fires until
@@ -45,7 +49,7 @@ export function AnalyticsScripts({
 
   return (
     <>
-      {consent.analytics && gtmReady && (
+      {gtmReady && (
         <>
           <Script id="gtm-base" strategy="afterInteractive">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -66,7 +70,7 @@ export function AnalyticsScripts({
         </>
       )}
 
-      {consent.analytics && gaReady && (
+      {gaReady && (
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}

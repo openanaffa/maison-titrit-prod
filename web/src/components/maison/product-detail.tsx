@@ -20,16 +20,10 @@ import {
 } from "@/components/maison/motifs";
 import { useT } from "@/i18n/locale-provider";
 import { track, trackViewItem, trackAddToCart, trackFacebook } from "@/lib/analytics";
-import { ProductCard } from "@/components/maison/product-card";
+import { ProductCard, parseSizes } from "@/components/maison/product-card";
 import type { ProductDTO } from "@/lib/products";
 
 /** Parse "S · M · L · XL" → ["S","M","L","XL"]. */
-function parseSizes(s: string): string[] {
-  return s
-    .split(/[·,/\-]/)
-    .map((x) => x.trim())
-    .filter(Boolean);
-}
 
 export function ProductDetailClient({
   product,
