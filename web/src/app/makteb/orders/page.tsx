@@ -3,8 +3,24 @@ import { OrdersTableClient } from "@/components/admin/orders-table-client";
 
 export const dynamic = "force-dynamic";
 
-export default async function MaktebOrdersPage() {
+export default async function MaktebOrdersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+  const where = q
+    ? {
+        OR: [
+          { number: { contains: q } },
+          { customerName: { contains: q } },
+          { customerPhone: { contains: q } },
+        ],
+      }
+    : {};
+
   const orders = await db.order.findMany({
+    where,
     orderBy: { createdAt: "desc" },
     include: { items: true, user: true },
   });
