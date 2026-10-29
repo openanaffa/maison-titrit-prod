@@ -64,7 +64,14 @@ export async function generateMetadata(): Promise<Metadata> {
   creator: site.name,
   publisher: site.name,
   applicationName: site.name,
-  alternates: { canonical: SITE_URL },
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      fr: SITE_URL,
+      ar: SITE_URL,
+      en: SITE_URL,
+    },
+  },
   openGraph: {
     title: `${site.name} — Modest Fashion · Made in Morocco`,
     description:
@@ -143,8 +150,8 @@ export default async function RootLayout({
         {/* Google Consent Mode v2 — consent DEFAULT (all denied). Runs before
             anything interactive so GTM/GA4 see denied consent before they are
             enabled; consent 'update' commands are pushed from
-            lib/analytics.ts when the visitor chooses. Advanced mode: GTM loads
-            regardless and sends cookieless pings while denied (AnalyticsScripts). */}
+            lib/analytics.ts when the visitor chooses. No tag actually loads
+            until the matching consent category is granted (AnalyticsScripts). */}
         <Script id="consent-default" strategy="beforeInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -154,8 +161,7 @@ gtag('consent', 'default', {
   'ad_user_data': 'denied',
   'ad_personalization': 'denied',
   'wait_for_update': 500
-});
-gtag('set', 'ads_data_redaction', true);`}
+});`}
         </Script>
       </head>
       <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
