@@ -14,6 +14,7 @@ import { site } from "@/config/site";
 import { useSession } from "next-auth/react";
 import { AmazighStar, OrnamentDivider, WhatsAppIcon } from "@/components/maison/motifs";
 import { trackBeginCheckout, trackPurchase } from "@/lib/analytics";
+import { getAttribution } from "@/lib/analytics";
 
 export default function CheckoutPage() {
   const { t } = useT();
@@ -34,6 +35,13 @@ export default function CheckoutPage() {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState<{ number: string; whatsapp: string } | null>(null);
+  const [utm, setUtm] = React.useState<Record<string, string> | null>(null);
+
+  // Capture UTM attribution on first visit (consent-gated via sessionStorage)
+  React.useEffect(() => {
+    const attribution = getAttribution();
+    if (attribution) setUtm(attribution);
+  }, []);
 
   // Fire begin_checkout once when checkout loads with items (consent-gated)
   React.useEffect(() => {
@@ -68,7 +76,14 @@ export default function CheckoutPage() {
             qty: i.qty,
             size: i.size,
           })),
-          customer: form,
+          customer: {
+            ...form,
+            utmSource: utm?.source ?? undefined,
+            utmMedium: utm?.medium ?? undefined,
+            utmCampaign: utm?.campaign ?? undefined,
+            utmContent: utm?.content ?? undefined,
+            utmTerm: utm?.term ?? undefined,
+          },
         }),
       });
       const json = await res.json();
