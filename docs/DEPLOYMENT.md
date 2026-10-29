@@ -220,3 +220,20 @@ Vercel keeps every deploy. Project → Deployments → any previous deploy → *
 6. Submit sitemap + feed to Google
 
 You're live. 🚀
+
+## Backups & restore
+
+Nightly at 02:17 UTC, `.github/workflows/db-backup.yml` dumps the Supabase `public` schema (`pg_dump` 17, custom format), encrypts it with `age`, and uploads it to the private R2 bucket `maison-titrit-backups` under `db/YYYY/MM/DD/`. Objects under `db/` expire after 30 days (R2 lifecycle rule `expire-db-30d`). A run fails, and GitHub emails you, if the dump has fewer than 10 tables.
+
+GitHub Actions secrets: `BACKUP_DATABASE_URL` (session pooler `aws-0-eu-west-1.pooler.supabase.com:5432`, user `postgres.<project-ref>`, `sslmode=require`; the direct `db.*.supabase.co` host is IPv6-only and unreachable from Actions), `R2_BACKUP_ACCESS_KEY_ID`, `R2_BACKUP_SECRET_ACCESS_KEY` (an R2 token scoped to this bucket only), `R2_ACCOUNT_ID`. The age private key is only in `pass maison-titrit/backup/age-identity`.
+
+Run one now: GitHub → Actions → db-backup → Run workflow.
+
+Restore (into a scratch database first, never straight over prod):
+
+```sh
+aws s3 cp s3://maison-titrit-backups/db/<date>/<file>.pgc.age . --endpoint-url https://<account-id>.r2.cloudflarestorage.com
+age -d -i <(pass show maison-titrit/backup/age-identity) <file>.pgc.age > dump.pgc
+pg_restore --list dump.pgc | grep -c 'TABLE DATA'            # sanity check
+pg_restore --no-owner --no-privileges --clean --if-exists -d "$TARGET_DATABASE_URL" dump.pgc
+```
