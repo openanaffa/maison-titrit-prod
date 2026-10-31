@@ -40,6 +40,11 @@ type OrderView = {
   city: string | null;
   address: string | null;
   notes: string | null;
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+  utmContent: string | null;
+  utmTerm: string | null;
   total: number;
   currency: string;
   payment: string;
@@ -329,6 +334,51 @@ export function OrderDetailClient({ order }: { order: OrderView }) {
         {pendingStatus && (
           <p className="mt-2 font-label text-[0.55rem] text-ink-soft dark:text-cream/60">
             {t("admin.orders.detail.updating")}
+          </p>
+        )}
+      </div>
+
+      {/* UTM / provenance */}
+      <div className="card-vintage p-4">
+        <p className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze mb-3 block">
+          {t("admin.orders.detail.provenance")}
+        </p>
+        {order.utmSource || order.utmMedium || order.utmCampaign || order.utmContent || order.utmTerm ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm font-serif text-ink dark:text-cream">
+            {order.utmSource && (
+              <div className="flex justify-between pb-1 border-b border-bronze/10 last:border-0">
+                <span className="text-ink-soft dark:text-cream/60">{t("admin.orders.detail.utmSource")}</span>
+                <span className="text-ink dark:text-cream">{order.utmSource}</span>
+              </div>
+            )}
+            {order.utmMedium && (
+              <div className="flex justify-between pb-1 border-b border-bronze/10 last:border-0">
+                <span className="text-ink-soft dark:text-cream/60">{t("admin.orders.detail.utmMedium")}</span>
+                <span className="text-ink dark:text-cream">{order.utmMedium}</span>
+              </div>
+            )}
+            {order.utmCampaign && (
+              <div className="flex justify-between pb-1 border-b border-bronze/10 last:border-0">
+                <span className="text-ink-soft dark:text-cream/60">{t("admin.orders.detail.utmCampaign")}</span>
+                <span className="text-ink dark:text-cream">{order.utmCampaign}</span>
+              </div>
+            )}
+            {order.utmContent && (
+              <div className="flex justify-between pb-1 border-b border-bronze/10 last:border-0">
+                <span className="text-ink-soft dark:text-cream/60">{t("admin.orders.detail.utmContent")}</span>
+                <span className="text-ink dark:text-cream">{order.utmContent}</span>
+              </div>
+            )}
+            {order.utmTerm && (
+              <div className="flex justify-between pb-1 border-b border-bronze/10 last:border-0">
+                <span className="text-ink-soft dark:text-cream/60">{t("admin.orders.detail.utmTerm")}</span>
+                <span className="text-ink dark:text-cream">{order.utmTerm}</span>
+              </div>
+            )}
+          </div>
+        ) : (
+          <p className="font-label text-[0.6rem] text-ink-soft dark:text-cream/60">
+            {t("admin.orders.detail.noUtm")}
           </p>
         )}
       </div>

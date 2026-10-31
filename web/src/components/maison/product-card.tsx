@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
+import { ShoppingBag, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { site } from "@/config/site";
@@ -11,14 +11,52 @@ import { AmazighStar, WhatsAppIcon } from "@/components/maison/motifs";
 import { CategoryIcon } from "@/components/maison/category-icons";
 import { CATEGORIES } from "@/config/products";
 import { useT } from "@/i18n/locale-provider";
-import { track, trackFacebook } from "@/lib/analytics";
+import { track, trackAddToCart, trackFacebook } from "@/lib/analytics";
+import { useCart } from "@/lib/cart";
+import { useToast } from "@/hooks/use-toast";
 import type { ProductDTO } from "@/lib/products";
+
+export function parseSizes(s: string): string[] {
+  return s
+    .split(/[·,/\-]/)
+    .map((x) => x.trim())
+    .filter(Boolean);
+}
 
 export function ProductCard({ product }: { product: ProductDTO }) {
   const { t } = useT();
   const detailHref = `/produit/${product.ref}`;
   const slugFor = (name: string) => CATEGORIES.find((c) => c.name === name)?.slug;
+  
+  const sizes = React.useMemo(() => parseSizes(product.sizes), [product.sizes]);
+  const [size, setSize] = React.useState("");
+  const [sizePrompt, setSizePrompt] = React.useState(false);
+  const addToCart = useCart((s) => s.add);
+  const { toast } = useToast();
+  const sizeId = React.useId();
+  
   const currentPrice = product.salePrice ?? product.price;
+
+  const handleAddToCart = () => {
+    if (!size && sizes.length > 1) {
+      setSizePrompt(true);
+      return;
+    }
+    setSizePrompt(false);
+    const chosen = size || (sizes[0] ?? "—");
+    const price = product.salePrice ?? product.price;
+    addToCart({
+      productId: product.id,
+      ref: product.ref,
+      name: product.name,
+      price,
+      currency: product.currency,
+      image: product.image,
+      size: chosen,
+    }, 1);
+    trackAddToCart({ ref: product.ref, name: product.name, price, currency: product.currency, qty: 1 });
+    toast({ title: t("cart.itemAdded"), description: `${product.name} — ${chosen}` });
+  };
 
   const orderMsg = t("card.orderMsg", {
     name: product.name,
@@ -97,10 +135,31 @@ export function ProductCard({ product }: { product: ProductDTO }) {
             <dd className="font-serif">{product.materials}</dd>
           </div>
           <div className="flex gap-2">
-            <dt className="font-label shrink-0 uppercase tracking-[0.18em] text-bronze/80">
+            <dt id={sizeId} className="font-label shrink-0 uppercase tracking-[0.18em] text-bronze/80">
               {t("card.sizesLabel")}
             </dt>
-            <dd className="font-serif">{product.sizes}</dd>
+            <dd className="font-serif">
+              {sizes.length > 1 ? (
+                <span role="group" aria-labelledby={sizeId} className="flex flex-wrap gap-1.5">
+                  {sizes.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      aria-pressed={size === s}
+                      onClick={() => {
+                        setSize(s);
+                        setSizePrompt(false);
+                      }}
+                      className="min-h-8 min-w-8 rounded-full border border-bronze/40 px-2.5 font-label text-[0.68rem] uppercase tracking-[0.12em] transition-colors hover:border-terracotta aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-cream dark:aria-pressed:border-cream dark:aria-pressed:bg-cream dark:aria-pressed:text-ink"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </span>
+              ) : (
+                product.sizes
+              )}
+            </dd>
           </div>
         </dl>
 
@@ -125,11 +184,23 @@ export function ProductCard({ product }: { product: ProductDTO }) {
             <AmazighStar className="mb-1 size-6 text-bronze/50" strokeWidth={1.4} />
           </div>
 
-          <div className="mt-4 flex gap-2">
+          <p aria-live="polite" className="mt-3 min-h-4 font-label text-[0.62rem] uppercase tracking-[0.16em] text-terracotta">
+            {sizePrompt ? t("detail.sizePrompt") : ""}
+          </p>
+          <div className="mt-1 flex flex-col gap-2">
+            <Button
+              type="button"
+              onClick={handleAddToCart}
+              variant="outline"
+              className="h-11 w-full rounded-full border-ink font-label text-[0.72rem] uppercase tracking-[0.14em] text-ink transition-all hover:bg-ink hover:text-cream dark:border-cream dark:text-cream dark:hover:bg-cream dark:hover:text-ink"
+            >
+              <ShoppingBag className="size-4" />
+              {t("cta.addToCart")}
+            </Button>
             <Button
               asChild
               onClick={handleOrder}
-              className="h-11 flex-1 rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream transition-all hover:bg-terracotta dark:bg-cream dark:text-ink dark:hover:bg-terracotta dark:hover:text-cream"
+              className="h-11 w-full rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream transition-all hover:bg-terracotta dark:bg-cream dark:text-ink dark:hover:bg-terracotta dark:hover:text-cream"
             >
               <a href={orderHref} target="_blank" rel="noopener noreferrer">
                 <WhatsAppIcon className="size-4" />

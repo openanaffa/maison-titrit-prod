@@ -12,6 +12,11 @@ type OrderView = {
   city: string | null;
   address: string | null;
   notes: string | null;
+  utmSource: string | null;
+  utmMedium: string | null;
+  utmCampaign: string | null;
+  utmContent: string | null;
+  utmTerm: string | null;
   total: number;
   currency: string;
   payment: string;
@@ -67,6 +72,11 @@ export default async function OrderDetailPage({
     total: order.total,
     currency: order.currency,
     payment: order.payment,
+    utmSource: order.utmSource ?? null,
+    utmMedium: order.utmMedium ?? null,
+    utmCampaign: order.utmCampaign ?? null,
+    utmContent: order.utmContent ?? null,
+    utmTerm: order.utmTerm ?? null,
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
     user: order.user ? { id: order.user.id, name: order.user.name } : null,

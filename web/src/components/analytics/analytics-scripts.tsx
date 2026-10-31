@@ -12,7 +12,11 @@ export function useConsent() {
 
 /**
  * Analytics scripts — GTM, GA4, and Meta Pixel.
- * Mounted only after the visitor accepts the matching consent category.
+ * Google Consent Mode v2, *advanced*: GTM/GA4 always load and start denied,
+ * so Google gets cookieless pings and can model declined visitors; consent
+ * updates flip them to granted. Meta Pixel has no consent mode, so it still
+ * mounts only after marketing consent. Non-Google tags inside GTM must carry
+ * their own consent checks (GTM → tag → Consent settings).
  * IDs are runtime-editable (dashboard → Réglages → Intégrations) with the
  * env/config placeholders as fallback — placeholder IDs
  * (GTM-XXXXXXX, G-XXXXXXXXXX, all-zeros) are ignored so nothing fires until
@@ -45,9 +49,9 @@ export function AnalyticsScripts({
 
   return (
     <>
-      {consent.analytics && gtmReady && (
+      {gtmReady && (
         <>
-          <Script id="gtm-base" strategy="afterInteractive">
+          <Script id="gtm-base" strategy="lazyOnload">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -66,13 +70,13 @@ export function AnalyticsScripts({
         </>
       )}
 
-      {consent.analytics && gaReady && (
+      {gaReady && (
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
-            strategy="afterInteractive"
+            strategy="lazyOnload"
           />
-          <Script id="ga4-init" strategy="afterInteractive">
+          <Script id="ga4-init" strategy="lazyOnload">
             {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
