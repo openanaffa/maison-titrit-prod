@@ -27,12 +27,14 @@ export function ProductCard({ product }: { product: ProductDTO }) {
   const { t } = useT();
   const detailHref = `/produit/${product.ref}`;
   const slugFor = (name: string) => CATEGORIES.find((c) => c.name === name)?.slug;
+  
   const sizes = React.useMemo(() => parseSizes(product.sizes), [product.sizes]);
   const [size, setSize] = React.useState("");
   const [sizePrompt, setSizePrompt] = React.useState(false);
   const addToCart = useCart((s) => s.add);
   const { toast } = useToast();
   const sizeId = React.useId();
+  
   const currentPrice = product.salePrice ?? product.price;
 
   const handleAddToCart = () => {
