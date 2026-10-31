@@ -17,6 +17,7 @@ import { baseUrl } from "@/lib/seo";
 import { VERIFICATION_META, getIntegrations } from "@/lib/integrations";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const SITE_URL = baseUrl();
 const OG_IMAGE = `${SITE_URL}/og-default.png`;
@@ -179,6 +180,7 @@ gtag('consent', 'default', {
         </ThemeProvider>
         <Toaster />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
