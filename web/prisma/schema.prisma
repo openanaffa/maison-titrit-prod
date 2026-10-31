@@ -172,6 +172,11 @@ model Order {
   city        String?
   address     String?
   notes       String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
   total       Int
   currency    String      @default("MAD")
   payment     String      @default("COD")

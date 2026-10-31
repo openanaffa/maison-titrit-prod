@@ -27,12 +27,15 @@ export function ProductCard({ product }: { product: ProductDTO }) {
   const { t } = useT();
   const detailHref = `/produit/${product.ref}`;
   const slugFor = (name: string) => CATEGORIES.find((c) => c.name === name)?.slug;
+  
   const sizes = React.useMemo(() => parseSizes(product.sizes), [product.sizes]);
   const [size, setSize] = React.useState("");
   const [sizePrompt, setSizePrompt] = React.useState(false);
   const addToCart = useCart((s) => s.add);
   const { toast } = useToast();
   const sizeId = React.useId();
+  
+  const currentPrice = product.salePrice ?? product.price;
 
   const handleAddToCart = () => {
     if (!size && sizes.length > 1) {
@@ -59,7 +62,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
     name: product.name,
     ref: product.ref,
     size: "à confirmer",
-    price: product.price,
+    price: currentPrice,
   });
   const orderHref = `https://wa.me/${site.whatsapp.chat}?text=${encodeURIComponent(orderMsg)}`;
 
@@ -67,13 +70,13 @@ export function ProductCard({ product }: { product: ProductDTO }) {
     track("select_item", {
       item_id: product.ref,
       item_name: product.name,
-      price: product.price,
+      price: currentPrice,
       currency: product.currency,
     });
     trackFacebook("InitiateCheckout", {
       content_ids: [product.ref],
       content_name: product.name,
-      value: product.price,
+      value: currentPrice,
       currency: "MAD",
     });
   };
@@ -167,7 +170,12 @@ export function ProductCard({ product }: { product: ProductDTO }) {
                 {t("card.priceLabel")}
               </p>
               <p className="font-display text-2xl font-semibold text-ink dark:text-cream">
-                {product.price.toLocaleString("fr-FR")}{" "}
+                {product.salePrice !== null && product.salePrice !== product.price && (
+                  <del className="me-2 text-base font-normal text-ink-soft/70 dark:text-cream/60">
+                    {product.price.toLocaleString("fr-FR")}
+                  </del>
+                )}
+                {currentPrice.toLocaleString("fr-FR")}{" "}
                 <span className="text-base font-normal text-bronze">
                   {product.currency}
                 </span>
