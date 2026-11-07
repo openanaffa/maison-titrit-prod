@@ -3,3 +3,7 @@
 !graft/
 graft/.cache/
 graft/.graph/
+
+# Deepwork orchestrator state: keep greppable despite .gitignore
+!.slim/deepwork/
+!.slim/deepwork/**
