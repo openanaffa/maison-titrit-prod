@@ -114,6 +114,7 @@ export function productSchema(opts: {
   price: number;
   currency: string;
   category?: string;
+  inStock?: boolean;
 }) {
   return {
     "@context": "https://schema.org",
@@ -130,7 +131,9 @@ export function productSchema(opts: {
       url: `${siteBaseUrl()}/produit/${opts.ref}`,
       price: opts.price,
       priceCurrency: opts.currency,
-      availability: "https://schema.org/InStock",
+      availability: opts.inStock === false
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       priceSpecification: {
         "@type": "PriceSpecification",

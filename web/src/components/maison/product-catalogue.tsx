@@ -70,7 +70,7 @@ export function ProductCatalogue() {
 
         <Reveal delay={0.1}>
           <div
-            role="tablist"
+            role="group"
             aria-label="Filtrer par catégorie"
             className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3"
           >
@@ -81,8 +81,8 @@ export function ProductCatalogue() {
               return (
                 <button
                   key={c}
-                  role="tab"
-                  aria-selected={isActive}
+                  type="button"
+                  aria-pressed={isActive}
                   onClick={() => setActive(c)}
                   className={`inline-flex h-10 items-center gap-2 rounded-full border px-4 font-label text-[0.72rem] uppercase tracking-[0.18em] transition-all ${
                     isActive

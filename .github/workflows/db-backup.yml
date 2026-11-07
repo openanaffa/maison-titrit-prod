@@ -1,0 +1,60 @@
+name: db-backup
+
+# Nightly encrypted pg_dump of the Supabase `public` schema to the private R2
+# bucket maison-titrit-backups (db/ objects expire after 30 days via an R2
+# lifecycle rule). Restore steps: docs/DEPLOYMENT.md "Backups & restore".
+on:
+  schedule:
+    - cron: "17 2 * * *" # 02:17 UTC, off the top of the hour
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+env:
+  # Public half of the age key; the identity lives in pass: maison-titrit/backup/age-identity
+  AGE_RECIPIENT: age1eq67kc4p5pl96sqyucsef558fwyh7hlylwqmlcahfgkeepkey55sxpfpqh
+  BUCKET: maison-titrit-backups
+
+jobs:
+  backup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Install age
+        run: sudo apt-get install -y --no-install-recommends age >/dev/null
+
+      - name: Dump (pg_dump 17 matches the Supabase server major)
+        env:
+          DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          docker run --rm -e DATABASE_URL postgres:17-alpine \
+            sh -c 'pg_dump "$DATABASE_URL" --format=custom --no-owner --no-privileges --schema=public' > dump.pgc
+          tables=$(docker run --rm -i postgres:17-alpine pg_restore --list < dump.pgc | grep -c 'TABLE DATA' || true)
+          echo "tables with data: $tables, size: $(stat -c %s dump.pgc) bytes"
+          # An empty or truncated dump must fail the run, not overwrite a good night.
+          [ "$tables" -ge 10 ] || { echo "::error::dump has only $tables tables"; exit 1; }
+
+      - name: Encrypt
+        run: |
+          set -euo pipefail
+          age -r "$AGE_RECIPIENT" -o dump.pgc.age dump.pgc
+          shred -u dump.pgc
+
+      - name: Upload to R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_BACKUP_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_BACKUP_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          key="db/$(date -u +%Y/%m/%d)/titrit-$(date -u +%Y%m%dT%H%M%SZ).pgc.age"
+          aws s3 cp dump.pgc.age "s3://$BUCKET/$key" \
+            --endpoint-url "https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com" --only-show-errors
+          echo "uploaded $key"

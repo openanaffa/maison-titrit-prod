@@ -21,7 +21,7 @@ datasource db {
 
 /* ============================================================================
  *  NextAuth — user/account/session/verification/token (Prisma adapter)
- * ==========================================================================*/
+ *  ==========================================================================*/
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -85,7 +85,7 @@ model VerificationToken {
 /* ============================================================================
  *  Invite-only admin onboarding
  *  FOUNDER/ADMIN generate a signed token; recipient completes signup.
- * ==========================================================================*/
+ *  ==========================================================================*/
 model Invite {
   id        String   @id @default(cuid())
   email     String
@@ -104,7 +104,7 @@ model Invite {
 
 /* ============================================================================
  *  Catalogue: Category + Product + Image (1:N)
- * ==========================================================================*/
+ *  ==========================================================================*/
 model Category {
   id        String   @id @default(cuid())
   name      String   @unique
@@ -137,7 +137,7 @@ model Product {
   updatedAt   DateTime @updatedAt
 
   images Image[]
-  items   OrderItem[]
+  items  OrderItem[]
 
   @@index([categoryId])
   @@index([featured])
@@ -159,26 +159,31 @@ model Image {
 
 /* ============================================================================
  *  Orders (COD) + items
- * ==========================================================================*/
+ *  ==========================================================================*/
 // enum OrderStatus { PENDING CONFIRMED SHIPPED DELIVERED CANCELLED }  // (Postgres-ready; String for SQLite)
 
 model Order {
-  id          String    @id @default(cuid())
-  number      String    @unique // human-friendly, e.g. MT-1042
-  status      String    @default("PENDING") // PENDING | CONFIRMED | SHIPPED | DELIVERED | CANCELLED
+  id            String    @id @default(cuid())
+  number        String    @unique // human-friendly, e.g. MT-1042
+  status        String    @default("PENDING") // PENDING | CONFIRMED | SHIPPED | DELIVERED | CANCELLED
   customerName  String
   customerPhone String
   customerEmail String?
-  city        String?
-  address     String?
-  notes       String?
-  total       Int
-  currency    String      @default("MAD")
-  payment     String      @default("COD")
-  userId      String?
-  user        User?       @relation(fields: [userId], references: [id])
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  city          String?
+  address       String?
+  notes         String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  utmContent    String?
+  utmTerm       String?
+  total         Int
+  currency      String    @default("MAD")
+  payment       String    @default("COD")
+  userId        String?
+  user          User?     @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   items OrderItem[]
 
@@ -205,7 +210,7 @@ model OrderItem {
 
 /* ============================================================================
  *  Content — Articles (blog) for reach + SEO
- * ==========================================================================*/
+ *  ==========================================================================*/
 model Article {
   id          String   @id @default(cuid())
   slug        String   @unique
@@ -225,7 +230,7 @@ model Article {
 
 /* ============================================================================
  *  Key-value settings (announcement bar, store hours override, etc.)
- * ==========================================================================*/
+ *  ==========================================================================*/
 model Setting {
   key       String   @id
   value     String   // JSON string

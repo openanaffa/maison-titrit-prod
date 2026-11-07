@@ -32,3 +32,15 @@ terraform init
 terraform plan   # review drift against the live zone
 terraform apply
 ```
+
+## State
+
+State is in the private R2 bucket `maison-titrit-backups` at `tfstate/maison-titrit/terraform.tfstate` (migrated from local on 2026-10-29). Before any `tofu` command:
+
+```sh
+export AWS_ACCESS_KEY_ID=$(pass show maison-titrit/backup/r2-access-key-id)
+export AWS_SECRET_ACCESS_KEY=$(pass show maison-titrit/backup/r2-secret-access-key)
+tofu init
+```
+
+No state locking: run one `tofu apply` at a time.

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Loader2 } from "lucide-react";
+import { Plus, Trash2, Pencil, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CategoryIcon } from "@/components/maison/category-icons";
@@ -18,6 +18,9 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
   const [cats, setCats] = React.useState(initial);
   const [name, setName] = React.useState("");
   const [saving, setSaving] = React.useState(false);
+  const [editingId, setEditingId] = React.useState<string | null>(null);
+  const [editName, setEditName] = React.useState("");
+  const [editSaving, setEditSaving] = React.useState<string | null>(null);
 
   async function onAdd(e: React.FormEvent) {
     e.preventDefault();
@@ -38,12 +41,47 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
     }
   }
 
+  async function beginEdit(c: Category) {
+    setEditingId(c.id);
+    setEditName(c.name);
+  }
+
+  async function cancelEdit() {
+    setEditingId(null);
+    setEditName("");
+  }
+
+  async function saveEdit(id: string) {
+    const n = editName.trim();
+    if (!n) return;
+    setEditSaving(id);
+    const res = await fetch(`/api/admin/categories/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: n }),
+    });
+    setEditSaving(null);
+    if (res.ok) {
+      const json = await res.json();
+      setCats((prev) => prev.map((c) => (c.id === id ? { ...c, name: json.category.name } : c)));
+      setEditingId(null);
+      setEditName("");
+      toast({ title: "Catégorie modifiée" });
+    } else {
+      toast({ title: "Erreur", variant: "destructive" });
+      setEditingId(null);
+      setEditName("");
+    }
+  }
+
   async function onDelete(id: string, n: string) {
     if (!confirm(`Supprimer « ${n} » ?`)) return;
     const res = await fetch(`/api/admin/categories/${id}`, { method: "DELETE" });
     if (res.ok) {
+      setCats((prev) => prev.filter((c) => c.id !== id));
       toast({ title: "Supprimée" });
-      router.refresh();
+    } else {
+      toast({ title: "Erreur", variant: "destructive" });
     }
   }
 
@@ -74,24 +112,65 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
           {cats.length === 0 && (
             <li className="p-6 font-serif text-sm text-ink-soft dark:text-cream/70">Aucune catégorie.</li>
           )}
-          {cats.map((c) => (
-            <li key={c.id} className="flex items-center justify-between p-4">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-bronze">
-                  <CategoryIcon slug={c.slug} className="size-5" />
-                </span>
-                <div>
-                  <p className="font-display text-sm font-semibold text-ink dark:text-cream">{c.name}</p>
-                  <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
-                    /{c.slug} · {c.count} produit(s)
-                  </p>
+          {cats.map((c) => {
+            const isEditing = editingId === c.id;
+            return (
+              <li key={c.id} className="flex items-center justify-between p-4">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+                    <CategoryIcon slug={c.slug} className="size-5" />
+                  </span>
+                  <div>
+                    {isEditing ? (
+                      <div className="flex items-center gap-2">
+                        <Input
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                          autoFocus
+                          className="rounded-sm border-bronze/45 text-sm font-display"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") saveEdit(c.id);
+                            if (e.key === "Escape") cancelEdit();
+                          }}
+                        />
+                        <Button
+                          size="icon"
+                          className="size-8"
+                          disabled={editSaving === c.id}
+                          onClick={() => saveEdit(c.id)}
+                        >
+                          {editSaving === c.id ? <Loader2 className="size-3 animate-spin" /> : <Pencil className="size-3" />}
+                        </Button>
+                        <Button variant="ghost" size="icon" className="size-8 text-bronze hover:bg-bronze/10" onClick={cancelEdit}>
+                          <Trash2 className="size-3" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <>
+                        <p className="font-display text-sm font-semibold text-ink dark:text-cream">{c.name}</p>
+                        <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+                          /{c.slug} · {c.count} produit(s)
+                        </p>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <Button variant="ghost" size="icon" className="size-8 text-terracotta hover:bg-terracotta/10" onClick={() => onDelete(c.id, c.name)}>
-                <Trash2 className="size-3.5" />
-              </Button>
-            </li>
-          ))}
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 text-bronze hover:bg-bronze/10"
+                    onClick={() => beginEdit(c)}
+                  >
+                    <Pencil className="size-3.5" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="size-8 text-terracotta hover:bg-terracotta/10" onClick={() => onDelete(c.id, c.name)}>
+                    <Trash2 className="size-3.5" />
+                  </Button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

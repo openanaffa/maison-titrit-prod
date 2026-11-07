@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useT } from "@/i18n/locale-provider";
 import { useToast } from "@/hooks/use-toast";
 import { StatusBadge, STATUS_LABELS } from "@/components/admin/status-badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 type Row = {
   id: string;
@@ -32,9 +34,17 @@ const FLOW: string[] = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELL
 export function OrdersTableClient({ rows }: { rows: Row[] }) {
   const { t } = useT();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const [filter, setFilter] = React.useState<string>("all");
   const [selected, setSelected] = React.useState<Row | null>(null);
+
+  const currentQ = searchParams.get("q") ?? "";
+
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    router.push(`/makteb/orders?q=${encodeURIComponent(value)}`);
+  }
 
   const filtered = rows.filter((r) => filter === "all" || r.status === filter);
 
@@ -64,8 +74,18 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
         </p>
       </div>
 
-      {/* Status filter */}
-      <div className="flex flex-wrap items-center gap-2">
+      {/* Search + status filter */}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="relative w-full md:w-72">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-soft dark:text-cream/60" />
+          <input
+            type="search"
+            placeholder={t("admin.common.search")}
+            defaultValue={currentQ}
+            onChange={handleSearchChange}
+            className="w-full pl-9 pr-3 py-2 rounded border border-bronze/45 bg-transparent text-sm text-ink dark:text-cream placeholder-ink-soft dark:placeholder-cream/60 focus:border-bronze outline-none"
+          />
+        </div>
         <button
           onClick={() => setFilter("all")}
           className={`rounded-full border px-3 py-1.5 font-label text-[0.62rem] uppercase tracking-[0.14em] ${filter === "all" ? "border-ink bg-ink text-cream" : "border-bronze/45 text-ink-soft dark:text-cream/70"}`}
@@ -92,12 +112,24 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
           <table className="w-full text-sm">
             <thead className="border-b border-bronze/20 bg-muted/40">
               <tr>
-                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">{t("admin.orders.col.number")}</th>
-                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">{t("admin.orders.col.customer")}</th>
-                <th className="p-3 text-end font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">{t("admin.orders.col.total")}</th>
-                <th className="p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">{t("admin.orders.col.status")}</th>
-                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">{t("admin.orders.col.date")}</th>
-                <th className="p-3 text-end font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">{t("admin.orders.col.actions")}</th>
+                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                  {t("admin.orders.col.number")}
+                </th>
+                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                  {t("admin.orders.col.customer")}
+                </th>
+                <th className="p-3 text-end font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                  {t("admin.orders.col.total")}
+                </th>
+                <th className="p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                  {t("admin.orders.col.status")}
+                </th>
+                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                  {t("admin.orders.col.date")}
+                </th>
+                <th className="p-3 text-end font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                  {t("admin.orders.col.actions")}
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-bronze/15">
@@ -110,10 +142,18 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
               ) : (
                 filtered.map((o) => (
                   <tr key={o.id} className="hover:bg-muted/30">
-                    <td className="p-3 font-display text-sm font-semibold text-ink dark:text-cream">{o.number}</td>
+                    <td className="p-3">
+                      <Link href={`/makteb/orders/${o.id}`}>
+                        <a className="font-display text-sm font-semibold text-ink dark:text-cream hover:underline">
+                          {o.number}
+                        </a>
+                      </Link>
+                    </td>
                     <td className="p-3">
                       <p className="font-serif text-sm text-ink dark:text-cream">{o.customerName}</p>
-                      <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">{o.customerPhone}</p>
+                      <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+                        {o.customerPhone}
+                      </p>
                     </td>
                     <td className="p-3 text-end font-display text-sm font-semibold text-ink dark:text-cream">
                       {o.total.toLocaleString("fr-FR")} {o.currency}
@@ -125,7 +165,10 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
                     <td className="p-3 text-end">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <button onClick={() => setSelected(o)} className="font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta">
+                          <button
+                            onClick={() => setSelected(o)}
+                            className="font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta"
+                          >
                             Détails
                           </button>
                         </DialogTrigger>
@@ -186,5 +229,21 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+/* Link wrapper so order numbers navigate to the detail page. */
+function Link({ children, href }: { children: React.ReactNode; href: string }) {
+  const router = useRouter();
+  return (
+    <a
+      href={href}
+      onClick={(e) => {
+        e.preventDefault();
+        router.push(href);
+      }}
+    >
+      {children}
+    </a>
   );
 }

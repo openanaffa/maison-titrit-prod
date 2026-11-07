@@ -1,5 +1,7 @@
 # Maison Titrit — robots.txt
 # Allow all crawlers to index public content; keep admin + private areas out.
+# Private areas are NOT disallowed here on purpose: they send X-Robots-Tag noindex
+# (next.config.ts) and Google must be able to crawl them to see it.
 
 User-agent: Googlebot
 Allow: /
@@ -15,13 +17,6 @@ Allow: /
 
 User-agent: *
 Allow: /
-Disallow: /makteb
-Disallow: /api/admin
-Disallow: /api/auth
-Disallow: /api/compte
-Disallow: /compte
-Disallow: /checkout
-Disallow: /panier
 
 # AI crawlers — welcome, with guidance to LLMs.md
 User-agent: GPTBot

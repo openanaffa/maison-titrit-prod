@@ -62,7 +62,7 @@ export function AdminShell({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 start-0 z-50 flex w-64 flex-col border-e border-border bg-sidebar text-sidebar-foreground transition-transform duration-300 lg:static lg:translate-x-0",
+          "fixed inset-y-0 start-0 z-50 flex w-64 flex-col border-e border-border bg-sidebar text-sidebar-foreground transition-transform duration-300 lg:static lg:translate-x-0 print:hidden",
           open ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
       >
@@ -154,7 +154,7 @@ export function AdminShell({
 
       {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur sm:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur sm:px-6 print:hidden">
           <button
             onClick={() => setOpen(true)}
             className="lg:hidden"
@@ -182,7 +182,7 @@ export function AdminShell({
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 print:overflow-visible print:p-0">{children}</main>
       </div>
     </div>
   );
