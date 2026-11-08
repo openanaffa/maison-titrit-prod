@@ -74,7 +74,7 @@ export default function CartPage() {
                         <button
                           onClick={() => setQty(item.productId, item.size, item.qty - 1)}
                           aria-label="-"
-                          className="inline-flex size-8 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
+                          className="inline-flex size-11 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
                         >
                           <Minus className="size-3.5" />
                         </button>
@@ -82,7 +82,7 @@ export default function CartPage() {
                         <button
                           onClick={() => setQty(item.productId, item.size, item.qty + 1)}
                           aria-label="+"
-                          className="inline-flex size-8 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
+                          className="inline-flex size-11 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
                         >
                           <Plus className="size-3.5" />
                         </button>
@@ -95,7 +95,7 @@ export default function CartPage() {
                   <button
                     onClick={() => remove(item.productId, item.size)}
                     aria-label={t("cart.remove")}
-                    className="self-start text-ink-soft/60 hover:text-terracotta"
+                    className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 hover:text-terracotta"
                   >
                     <Trash2 className="size-4" />
                   </button>

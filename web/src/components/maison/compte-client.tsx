@@ -78,16 +78,16 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
             </div>
             <form onSubmit={onSave} className="mt-5 space-y-4">
               <div>
-                <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.name")}</Label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5 rounded-sm border-bronze/45" />
+                <Label htmlFor="compte-name" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.name")}</Label>
+                <Input id="compte-name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5 rounded-sm border-bronze/45" />
               </div>
               <div>
-                <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.email")}</Label>
-                <Input value={user.email} disabled className="mt-1.5 rounded-sm border-bronze/45 bg-muted/40" />
+                <Label htmlFor="compte-email" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.email")}</Label>
+                <Input id="compte-email" value={user.email} disabled className="mt-1.5 rounded-sm border-bronze/45 bg-muted/40" />
               </div>
               <div>
-                <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.phone")}</Label>
-                <Input value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" className="mt-1.5 rounded-sm border-bronze/45" />
+                <Label htmlFor="compte-phone" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.phone")}</Label>
+                <Input id="compte-phone" value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" className="mt-1.5 rounded-sm border-bronze/45" />
               </div>
               <Button type="submit" disabled={saving} className="h-10 w-full rounded-full bg-ink font-label text-[0.68rem] uppercase tracking-[0.16em] text-cream hover:bg-terracotta dark:bg-cream dark:text-ink">
                 {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}

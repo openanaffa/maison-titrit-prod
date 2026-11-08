@@ -150,7 +150,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
                         setSize(s);
                         setSizePrompt(false);
                       }}
-                      className="min-h-8 min-w-8 rounded-full border border-bronze/40 px-2.5 font-label text-[0.68rem] uppercase tracking-[0.12em] transition-colors hover:border-terracotta aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-cream dark:aria-pressed:border-cream dark:aria-pressed:bg-cream dark:aria-pressed:text-ink"
+                      className="min-h-11 min-w-11 rounded-full border border-bronze/40 px-2.5 font-label text-[0.68rem] uppercase tracking-[0.12em] transition-colors hover:border-terracotta aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-cream dark:aria-pressed:border-cream dark:aria-pressed:bg-cream dark:aria-pressed:text-ink"
                     >
                       {s}
                     </button>

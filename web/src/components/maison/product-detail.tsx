@@ -285,7 +285,7 @@ export function ProductDetailClient({
                           setSizePrompt(false);
                         }}
                         aria-pressed={active}
-                        className={`h-10 min-w-11 rounded-full border px-4 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-all ${
+                        className={`h-11 min-w-11 rounded-full border px-4 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-all ${
                           active
                             ? "border-ink bg-ink text-cream dark:border-cream dark:bg-cream dark:text-ink"
                             : "border-bronze/45 text-ink/80 hover:border-terracotta hover:text-terracotta dark:text-cream/80"
@@ -314,7 +314,7 @@ export function ProductDetailClient({
                       type="button"
                       onClick={() => setQty((q) => Math.max(1, q - 1))}
                       aria-label="-"
-                      className="inline-flex size-9 items-center justify-center text-ink transition-colors hover:text-terracotta dark:text-cream"
+                      className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta dark:text-cream"
                     >
                       <Minus className="size-4" />
                     </button>
@@ -323,7 +323,7 @@ export function ProductDetailClient({
                       type="button"
                       onClick={() => setQty((q) => Math.min(10, q + 1))}
                       aria-label="+"
-                      className="inline-flex size-9 items-center justify-center text-ink transition-colors hover:text-terracotta dark:text-cream"
+                      className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta dark:text-cream"
                     >
                       <Plus className="size-4" />
                     </button>
@@ -412,6 +412,9 @@ export function ProductDetailClient({
           <div className="mt-20">
             <Reveal className="text-center">
               <p className="eyebrow">{t("detail.related")}</p>
+              <h2 className="mt-2 font-display text-3xl font-semibold text-ink sm:text-4xl dark:text-cream">
+                {t("detail.related")}
+              </h2>
               <OrnamentDivider className="mt-5" width={180} />
             </Reveal>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

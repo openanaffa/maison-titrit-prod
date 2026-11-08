@@ -32,7 +32,7 @@ export type SocialVariant = "outline" | "solid";
  * business catalog (full online store).
  */
 export function SocialIcons({
-  size = 40,
+  size = 44,
   variant = "outline",
   className,
   onNavigate,

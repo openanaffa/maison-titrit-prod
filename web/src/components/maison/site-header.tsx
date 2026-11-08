@@ -33,7 +33,7 @@ function ThemeToggle() {
       type="button"
       aria-label="Changer de thème"
       onClick={() => setTheme(current === "dark" ? "light" : "dark")}
-      className="inline-flex size-9 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
+      className="inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
     >
       {mounted ? (
         current === "dark" ? (
@@ -91,7 +91,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-2 sm:gap-3">
           <a
             href={`tel:${site.phones[0].e164}`}
-            className="hidden size-9 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 sm:inline-flex dark:text-cream"
+            className="hidden size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 sm:inline-flex dark:text-cream"
             aria-label={t("cta.call")}
           >
             <Phone className="size-4" />
@@ -102,7 +102,7 @@ export function SiteHeader() {
           <CartDrawer />
           <Button
             asChild
-            className="hidden h-9 rounded-full bg-ink px-5 font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream hover:bg-ink/90 sm:inline-flex dark:bg-cream dark:text-ink dark:hover:bg-cream/90"
+            className="hidden h-11 rounded-full bg-ink px-5 font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream hover:bg-ink/90 sm:inline-flex dark:bg-cream dark:text-ink dark:hover:bg-cream/90"
           >
             <a
               href={whatsappContactLink(t("float.msg"))}
@@ -120,7 +120,7 @@ export function SiteHeader() {
               <button
                 type="button"
                 aria-label={t("cta.openMenu")}
-                className="inline-flex size-9 items-center justify-center rounded-full border border-bronze/40 text-ink md:hidden dark:text-cream"
+                className="inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink md:hidden dark:text-cream"
               >
                 <Menu className="size-4" />
               </button>
@@ -204,7 +204,7 @@ function AccountButton() {
       <Link
         href="/auth/signin?callbackUrl=/compte"
         aria-label="Sign in"
-        className="inline-flex size-9 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
+        className="inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
       >
         <User className="size-4" />
       </Link>
@@ -216,7 +216,7 @@ function AccountButton() {
     <Link
       href={isStaff ? "/makteb" : "/compte"}
       aria-label="Account"
-      className="inline-flex size-9 items-center justify-center rounded-full bg-ink font-display text-sm font-semibold text-cream transition-colors hover:bg-terracotta dark:bg-cream dark:text-ink"
+      className="inline-flex size-11 items-center justify-center rounded-full bg-ink font-display text-sm font-semibold text-cream transition-colors hover:bg-terracotta dark:bg-cream dark:text-ink"
     >
       {initial}
     </Link>
