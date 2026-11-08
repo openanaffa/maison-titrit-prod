@@ -79,10 +79,10 @@
   --cream-light: #fbf6ea;
   --ink: #1c1a17;
   --ink-soft: #3a352c;
-  --bronze: #9a6a3a;
+  --bronze: #85592b;
   --bronze-light: #b8915a;
   --bronze-deep: #7a552c;
-  --terracotta: #b0532f;
+  --terracotta: #9c4525;
   --henna: #6b2d1f;
   --olive: #6b6b3a;
   --sand: #e8dbc0;
@@ -131,7 +131,7 @@
   --bronze: #b8915a;
   --bronze-light: #cfa978;
   --bronze-deep: #b8915a;
-  --terracotta: #c4633c;
+  --terracotta: #c9704a;
   --henna: #a0492f;
   --olive: #8a8a4f;
   --sand: #3a352c;
@@ -172,6 +172,10 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
   body {
     @apply bg-background text-foreground;
@@ -314,6 +318,16 @@
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--ink) 4%, transparent),
       0 12px 28px -18px color-mix(in srgb, var(--ink) 40%, transparent);
+  }
+
+  /* Enlarge the shadcn sheet/dialog close control to a ≥44px touch target
+     (the default is an icon-only button sized to the glyph). */
+  [data-slot="sheet-content"] > button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 

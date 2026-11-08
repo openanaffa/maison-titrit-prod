@@ -26,7 +26,7 @@ export function productImageUrl(path: string): string {
 export function localBusinessSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": ["ClothingStore", "Store"],
+    "@type": "LocalBusiness",
     "@id": `${siteBaseUrl()}/#organization`,
     name: site.name,
     alternateName: "Titrit",
@@ -54,6 +54,9 @@ export function localBusinessSchema() {
     hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
       site.map.query,
     )}`,
+    // Textual opening hours — kept consistent with the structured
+    // openingHoursSpecification below (Google Business Profile uses the text).
+    openingHours: "Mo-Fr 10:00-20:00; Sa 10:00-21:00",
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",

@@ -87,7 +87,7 @@ export function AdminShell({
           </Link>
           <button
             onClick={() => setOpen(false)}
-            className="lg:hidden"
+            className="lg:hidden inline-flex size-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
             aria-label="Fermer"
           >
             <X className="size-5" />
@@ -157,7 +157,7 @@ export function AdminShell({
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur sm:px-6 print:hidden">
           <button
             onClick={() => setOpen(true)}
-            className="lg:hidden"
+            className="lg:hidden inline-flex size-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
             aria-label="Menu"
           >
             <Menu className="size-5" />

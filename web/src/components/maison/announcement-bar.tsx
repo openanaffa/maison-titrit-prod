@@ -55,7 +55,7 @@ export function AnnouncementBar() {
         <button
           onClick={dismiss}
           aria-label="Fermer"
-          className="absolute end-2 top-1/2 -translate-y-1/2 text-cream/70 transition-colors hover:text-cream"
+          className="absolute end-2 top-1/2 -translate-y-1/2 inline-flex size-11 items-center justify-center rounded-full text-cream/70 transition-colors hover:text-cream"
         >
           <X className="size-3.5" />
         </button>

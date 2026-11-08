@@ -113,6 +113,14 @@ export async function generateMetadata(): Promise<Metadata> {
           other,
         }
       : undefined,
+  // Geographic targeting hints for local SEO (LocalBusiness NAP coords live in
+  // src/lib/json-ld.ts — schema.org GeoCoordinates use the same values).
+  other: {
+    "geo.region": "MA",
+    "geo.placename": "Bouskoura",
+    "geo.country": "MA",
+    "geo.position": "33.4496; -7.652",
+  },
   category: "shopping",
   };
 }
@@ -166,12 +174,26 @@ gtag('consent', 'default', {
         </Script>
       </head>
       <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
+        {/* Skip link — first focusable target for keyboard / reader-tree users */}
+        <a
+          href="#accueil"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-[100] focus:inline-flex focus:items-center focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream focus:font-label focus:text-[0.7rem] focus:uppercase focus:tracking-[0.2em] focus:outline-none"
+        >
+          Aller au contenu
+        </a>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LocaleProvider>
             <NextAuthProvider>
               <AttributionCapture />
               <AnnouncementBar />
-              <AnalyticsScripts gtmId={analytics.gtmId} ga4Id={analytics.ga4Id} fbPixelId={analytics.fbPixelId} />
+              <AnalyticsScripts
+                gtmId={analytics.gtmId}
+                ga4Id={analytics.ga4Id}
+                fbPixelId={analytics.fbPixelId}
+                pinterestTagId={analytics.pinterestTagId}
+                tiktokPixelId={analytics.tiktokPixelId}
+                youtubeChannelId={analytics.youtubeChannelId}
+              />
               {children}
               <CookieConsent />
               <CookiePreferencesButton />

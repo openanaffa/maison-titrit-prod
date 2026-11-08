@@ -109,6 +109,13 @@ export const analytics = {
   fbPixelId: process.env.NEXT_PUBLIC_FB_PIXEL_ID || "000000000000000",
   // Domain for Meta verification (optional)
   metaDomainVerification: process.env.NEXT_PUBLIC_META_DOMAIN || "",
+  /* --- Phase-2 marketing SDK IDs (each activates only when set + real) ---- */
+  // Pinterest Tag ID — numeric, from Pinterest Ads → Conversions → Tag Manager → Install tag
+  pinterestTagId: process.env.NEXT_PUBLIC_PINTEREST_TAG_ID || "",
+  // TikTok Pixel ID — numeric, from TikTok Ads → Events → Pixel
+  tiktokPixelId: process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID || "",
+  // YouTube channel handle or channel ID (e.g. "@maison__titrit" or "UC…")
+  youtubeChannelId: process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_ID || "",
 } as const;
 
 /* ============================================================================

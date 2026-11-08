@@ -61,7 +61,8 @@ export function TitritLoader() {
         <img
           className="titrit-loader__logo"
           src="/assets/titrit-logo-gold.svg"
-          alt={t("loader.aria")}
+          alt=""
+          aria-hidden="true"
         />
         <div className="titrit-loader__meter" aria-hidden="true" />
         <div className="titrit-loader__status">{t("loader.status")}</div>

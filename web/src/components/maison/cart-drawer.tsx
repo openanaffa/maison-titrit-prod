@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { X, ShoppingBag, Minus, Plus, Trash2, ArrowRight } from "lucide-react";
+import { ShoppingBag, Minus, Plus, Trash2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,7 @@ export function CartDrawer() {
         <button
           type="button"
           aria-label={t("cart.title")}
-          className="relative inline-flex size-9 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
+          className="relative inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
         >
           <ShoppingBag className="size-4" />
           {count > 0 && (
@@ -57,11 +57,6 @@ export function CartDrawer() {
             <h2 className="font-display text-xl font-semibold text-ink dark:text-cream">
               {t("cart.title")}
             </h2>
-            <SheetClose asChild>
-              <button aria-label="Close" className="text-ink-soft hover:text-terracotta dark:text-cream/70">
-                <X className="size-5" />
-              </button>
-            </SheetClose>
           </div>
 
           {/* Items */}
@@ -110,7 +105,7 @@ export function CartDrawer() {
                           <button
                             onClick={() => setQty(item.productId, item.size, item.qty - 1)}
                             aria-label="-"
-                            className="inline-flex size-7 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
+                            className="inline-flex size-11 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
                           >
                             <Minus className="size-3" />
                           </button>
@@ -118,7 +113,7 @@ export function CartDrawer() {
                           <button
                             onClick={() => setQty(item.productId, item.size, item.qty + 1)}
                             aria-label="+"
-                            className="inline-flex size-7 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
+                            className="inline-flex size-11 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
                           >
                             <Plus className="size-3" />
                           </button>
@@ -131,7 +126,7 @@ export function CartDrawer() {
                     <button
                       onClick={() => remove(item.productId, item.size)}
                       aria-label={t("cart.remove")}
-                      className="self-start text-ink-soft/60 hover:text-terracotta"
+                      className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 hover:text-terracotta"
                     >
                       <Trash2 className="size-4" />
                     </button>

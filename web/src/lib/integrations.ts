@@ -15,6 +15,9 @@ export type AnalyticsConfig = {
   gtmId: string;
   ga4Id: string;
   fbPixelId: string;
+  pinterestTagId: string;
+  tiktokPixelId: string;
+  youtubeChannelId: string;
 };
 
 export type CustomMeta = { name: string; content: string };
@@ -36,6 +39,9 @@ const DEFAULT_ANALYTICS: AnalyticsConfig = {
   gtmId: siteAnalytics.gtmId,
   ga4Id: siteAnalytics.ga4Id,
   fbPixelId: siteAnalytics.fbPixelId,
+  pinterestTagId: siteAnalytics.pinterestTagId,
+  tiktokPixelId: siteAnalytics.tiktokPixelId,
+  youtubeChannelId: siteAnalytics.youtubeChannelId,
 };
 
 const DEFAULT_VERIFICATION: VerificationConfig = {
@@ -55,6 +61,12 @@ export function sanitizeAnalytics(input: unknown): AnalyticsConfig {
   const raw = (input ?? {}) as Record<string, unknown>;
   const pick = (v: unknown): string =>
     typeof v === "string" && VALID_TRACKER_ID.test(v.trim()) ? v.trim() : "";
+  const pickNumeric = (v: unknown, minDigits = 6): string =>
+    typeof v === "string" && new RegExp(`^\\d{${minDigits},}$`).test(v.trim())
+      ? v.trim()
+      : "";
+  const pickChannel = (v: unknown): string =>
+    typeof v === "string" && /^[A-Za-z0-9_-]{3,}$/.test(v.trim()) ? v.trim() : "";
   return {
     gtmId: pick(raw.gtmId),
     ga4Id: pick(raw.ga4Id),
@@ -62,6 +74,9 @@ export function sanitizeAnalytics(input: unknown): AnalyticsConfig {
       typeof raw.fbPixelId === "string" && /^\d{10,20}$/.test(raw.fbPixelId.trim())
         ? raw.fbPixelId.trim()
         : "",
+    pinterestTagId: pickNumeric(raw.pinterestTagId),
+    tiktokPixelId: pickNumeric(raw.tiktokPixelId),
+    youtubeChannelId: pickChannel(raw.youtubeChannelId),
   };
 }
 
@@ -144,6 +159,9 @@ async function readIntegrations(): Promise<Integrations> {
       gtmId: storedAnalytics.gtmId || DEFAULT_ANALYTICS.gtmId,
       ga4Id: storedAnalytics.ga4Id || DEFAULT_ANALYTICS.ga4Id,
       fbPixelId: storedAnalytics.fbPixelId || DEFAULT_ANALYTICS.fbPixelId,
+      pinterestTagId: storedAnalytics.pinterestTagId || DEFAULT_ANALYTICS.pinterestTagId,
+      tiktokPixelId: storedAnalytics.tiktokPixelId || DEFAULT_ANALYTICS.tiktokPixelId,
+      youtubeChannelId: storedAnalytics.youtubeChannelId || DEFAULT_ANALYTICS.youtubeChannelId,
     },
     verification: {
       google: storedVerification.google || DEFAULT_VERIFICATION.google,

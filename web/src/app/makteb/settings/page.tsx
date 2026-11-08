@@ -15,7 +15,7 @@ const DAYS = [
   { key: "sun", label: "Dimanche" },
 ];
 
-type AnalyticsForm = { gtmId: string; ga4Id: string; fbPixelId: string };
+type AnalyticsForm = { gtmId: string; ga4Id: string; fbPixelId: string; pinterestTagId: string; tiktokPixelId: string; youtubeChannelId: string };
 type VerificationForm = {
   google: string;
   facebook: string;
@@ -31,7 +31,7 @@ const VERIFICATION_HINTS: { key: keyof Omit<VerificationForm, "customText">; lab
   { key: "tiktok", label: "TikTok", meta: "tiktok-domain-verification" },
 ];
 
-const EMPTY_ANALYTICS: AnalyticsForm = { gtmId: "", ga4Id: "", fbPixelId: "" };
+const EMPTY_ANALYTICS: AnalyticsForm = { gtmId: "", ga4Id: "", fbPixelId: "", pinterestTagId: "", tiktokPixelId: "", youtubeChannelId: "" };
 const EMPTY_VERIFICATION: VerificationForm = {
   google: "",
   facebook: "",
@@ -70,6 +70,9 @@ export default function SettingsClient() {
             gtmId: storedA.gtmId ?? d.effective?.analytics?.gtmId ?? "",
             ga4Id: storedA.ga4Id ?? d.effective?.analytics?.ga4Id ?? "",
             fbPixelId: storedA.fbPixelId ?? d.effective?.analytics?.fbPixelId ?? "",
+            pinterestTagId: storedA.pinterestTagId ?? d.effective?.analytics?.pinterestTagId ?? "",
+            tiktokPixelId: storedA.tiktokPixelId ?? d.effective?.analytics?.tiktokPixelId ?? "",
+            youtubeChannelId: storedA.youtubeChannelId ?? d.effective?.analytics?.youtubeChannelId ?? "",
           },
           verification: {
             google: d.verificationValue?.google ?? "",
@@ -162,8 +165,9 @@ export default function SettingsClient() {
             Active
           </label>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Message</Label>
+            <Label htmlFor="ann-message" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Message</Label>
             <Textarea
+              id="ann-message"
               value={ann.message}
               onChange={(e) => setAnn({ ...ann, message: e.target.value })}
               rows={2}
@@ -173,8 +177,9 @@ export default function SettingsClient() {
             />
           </div>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Lien (optionnel)</Label>
+            <Label htmlFor="ann-link" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Lien (optionnel)</Label>
             <Input
+              id="ann-link"
               value={ann.link}
               onChange={(e) => setAnn({ ...ann, link: e.target.value })}
               placeholder="/#collection ou https://…"
@@ -238,8 +243,9 @@ export default function SettingsClient() {
 
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Tag Manager</Label>
+            <Label htmlFor="int-gtm" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Tag Manager</Label>
             <Input
+              id="int-gtm"
               value={ints.analytics.gtmId}
               onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, gtmId: e.target.value } })}
               placeholder="GTM-XXXXXXX"
@@ -247,8 +253,9 @@ export default function SettingsClient() {
             />
           </div>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Analytics 4</Label>
+            <Label htmlFor="int-ga4" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Analytics 4</Label>
             <Input
+              id="int-ga4"
               value={ints.analytics.ga4Id}
               onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, ga4Id: e.target.value } })}
               placeholder="G-XXXXXXXXXX"
@@ -256,11 +263,42 @@ export default function SettingsClient() {
             />
           </div>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel Facebook</Label>
+            <Label htmlFor="int-fb" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel Facebook</Label>
             <Input
+              id="int-fb"
               value={ints.analytics.fbPixelId}
               onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, fbPixelId: e.target.value } })}
               placeholder="123456789012345"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pinterest Tag</Label>
+            <Input
+              value={ints.analytics.pinterestTagId}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, pinterestTagId: e.target.value } })}
+              placeholder="1234567890123"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel TikTok</Label>
+            <Input
+              value={ints.analytics.tiktokPixelId}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, tiktokPixelId: e.target.value } })}
+              placeholder="1234567890"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">YouTube channel</Label>
+            <Input
+              value={ints.analytics.youtubeChannelId}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, youtubeChannelId: e.target.value } })}
+              placeholder="@maison__titrit"
               className="mt-1.5 rounded-sm border-bronze/45"
             />
           </div>
@@ -281,8 +319,9 @@ export default function SettingsClient() {
         <div className="grid gap-4 sm:grid-cols-2">
           {VERIFICATION_HINTS.map((h) => (
             <div key={h.key}>
-              <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{h.label}</Label>
+              <Label htmlFor={`int-${h.key}`} className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{h.label}</Label>
               <Input
+                id={`int-${h.key}`}
                 value={ints.verification[h.key]}
                 onChange={(e) =>
                   setInts({
@@ -301,10 +340,11 @@ export default function SettingsClient() {
         </div>
 
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">
+          <Label htmlFor="int-custom" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">
             Autres balises de vérification (Pinterest, Bing, Clarity…)
           </Label>
           <Textarea
+            id="int-custom"
             value={ints.verification.customText}
             onChange={(e) => setInts({ ...ints, verification: { ...ints.verification, customText: e.target.value } })}
             rows={3}
