@@ -31,7 +31,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
         aria-label={t("lang.aria")}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="inline-flex h-9 items-center gap-1.5 rounded-full border border-bronze/40 px-3 font-label text-[0.66rem] uppercase tracking-[0.16em] text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
+        className="inline-flex h-11 items-center gap-1.5 rounded-full border border-bronze/40 px-3 font-label text-[0.66rem] uppercase tracking-[0.16em] text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
       >
         <Globe className="size-3.5 text-bronze" />
         <span>{current.short}</span>
@@ -53,7 +53,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
                   setLocale(l.code as Locale);
                   setOpen(false);
                 }}
-                className={`flex w-full items-center justify-between gap-2 px-3 py-2.5 text-start transition-colors ${
+                className={`flex w-full min-h-11 items-center justify-between gap-2 px-3 text-start transition-colors ${
                   active
                     ? "bg-bronze/15 text-terracotta"
                     : "text-ink hover:bg-bronze/10 dark:text-cream"

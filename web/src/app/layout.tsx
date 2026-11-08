@@ -166,6 +166,13 @@ gtag('consent', 'default', {
         </Script>
       </head>
       <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
+        {/* Skip link — first focusable target for keyboard / reader-tree users */}
+        <a
+          href="#accueil"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-[100] focus:inline-flex focus:items-center focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream focus:font-label focus:text-[0.7rem] focus:uppercase focus:tracking-[0.2em] focus:outline-none"
+        >
+          Aller au contenu
+        </a>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LocaleProvider>
             <NextAuthProvider>

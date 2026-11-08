@@ -19,7 +19,6 @@ export function Hero() {
 
   return (
     <section
-      id="accueil"
       className="vintage-paper relative overflow-hidden pt-10 sm:pt-16"
     >
       <AmazighStar

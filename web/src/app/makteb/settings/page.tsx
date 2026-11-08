@@ -162,8 +162,9 @@ export default function SettingsClient() {
             Active
           </label>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Message</Label>
+            <Label htmlFor="ann-message" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Message</Label>
             <Textarea
+              id="ann-message"
               value={ann.message}
               onChange={(e) => setAnn({ ...ann, message: e.target.value })}
               rows={2}
@@ -173,8 +174,9 @@ export default function SettingsClient() {
             />
           </div>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Lien (optionnel)</Label>
+            <Label htmlFor="ann-link" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Lien (optionnel)</Label>
             <Input
+              id="ann-link"
               value={ann.link}
               onChange={(e) => setAnn({ ...ann, link: e.target.value })}
               placeholder="/#collection ou https://…"
@@ -238,8 +240,9 @@ export default function SettingsClient() {
 
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Tag Manager</Label>
+            <Label htmlFor="int-gtm" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Tag Manager</Label>
             <Input
+              id="int-gtm"
               value={ints.analytics.gtmId}
               onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, gtmId: e.target.value } })}
               placeholder="GTM-XXXXXXX"
@@ -247,8 +250,9 @@ export default function SettingsClient() {
             />
           </div>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Analytics 4</Label>
+            <Label htmlFor="int-ga4" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Analytics 4</Label>
             <Input
+              id="int-ga4"
               value={ints.analytics.ga4Id}
               onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, ga4Id: e.target.value } })}
               placeholder="G-XXXXXXXXXX"
@@ -256,8 +260,9 @@ export default function SettingsClient() {
             />
           </div>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel Facebook</Label>
+            <Label htmlFor="int-fb" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel Facebook</Label>
             <Input
+              id="int-fb"
               value={ints.analytics.fbPixelId}
               onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, fbPixelId: e.target.value } })}
               placeholder="123456789012345"
@@ -281,8 +286,9 @@ export default function SettingsClient() {
         <div className="grid gap-4 sm:grid-cols-2">
           {VERIFICATION_HINTS.map((h) => (
             <div key={h.key}>
-              <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{h.label}</Label>
+              <Label htmlFor={`int-${h.key}`} className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{h.label}</Label>
               <Input
+                id={`int-${h.key}`}
                 value={ints.verification[h.key]}
                 onChange={(e) =>
                   setInts({
@@ -301,10 +307,11 @@ export default function SettingsClient() {
         </div>
 
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">
+          <Label htmlFor="int-custom" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">
             Autres balises de vérification (Pinterest, Bing, Clarity…)
           </Label>
           <Textarea
+            id="int-custom"
             value={ints.verification.customText}
             onChange={(e) => setInts({ ...ints, verification: { ...ints.verification, customText: e.target.value } })}
             rows={3}
