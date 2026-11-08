@@ -13,7 +13,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = baseUrl();
   const now = new Date();
 
-  // Static pages + in-page sections
+  // Static pages + in-page sections — public commerce + content only.
+  // Private/noindex surfaces (/auth, /panier, /checkout) are deliberately
+  // absent from the sitemap (they carry X-Robots-Tag noindex in next.config).
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/#maison`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
@@ -21,9 +23,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/#atelier`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/#nous-trouver`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/#contact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/auth/signin`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${base}/panier`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${base}/checkout`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
 
   // Product detail pages

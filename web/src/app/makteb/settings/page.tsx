@@ -15,7 +15,7 @@ const DAYS = [
   { key: "sun", label: "Dimanche" },
 ];
 
-type AnalyticsForm = { gtmId: string; ga4Id: string; fbPixelId: string };
+type AnalyticsForm = { gtmId: string; ga4Id: string; fbPixelId: string; pinterestTagId: string; tiktokPixelId: string; youtubeChannelId: string };
 type VerificationForm = {
   google: string;
   facebook: string;
@@ -31,7 +31,7 @@ const VERIFICATION_HINTS: { key: keyof Omit<VerificationForm, "customText">; lab
   { key: "tiktok", label: "TikTok", meta: "tiktok-domain-verification" },
 ];
 
-const EMPTY_ANALYTICS: AnalyticsForm = { gtmId: "", ga4Id: "", fbPixelId: "" };
+const EMPTY_ANALYTICS: AnalyticsForm = { gtmId: "", ga4Id: "", fbPixelId: "", pinterestTagId: "", tiktokPixelId: "", youtubeChannelId: "" };
 const EMPTY_VERIFICATION: VerificationForm = {
   google: "",
   facebook: "",
@@ -70,6 +70,9 @@ export default function SettingsClient() {
             gtmId: storedA.gtmId ?? d.effective?.analytics?.gtmId ?? "",
             ga4Id: storedA.ga4Id ?? d.effective?.analytics?.ga4Id ?? "",
             fbPixelId: storedA.fbPixelId ?? d.effective?.analytics?.fbPixelId ?? "",
+            pinterestTagId: storedA.pinterestTagId ?? d.effective?.analytics?.pinterestTagId ?? "",
+            tiktokPixelId: storedA.tiktokPixelId ?? d.effective?.analytics?.tiktokPixelId ?? "",
+            youtubeChannelId: storedA.youtubeChannelId ?? d.effective?.analytics?.youtubeChannelId ?? "",
           },
           verification: {
             google: d.verificationValue?.google ?? "",
@@ -261,6 +264,36 @@ export default function SettingsClient() {
               value={ints.analytics.fbPixelId}
               onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, fbPixelId: e.target.value } })}
               placeholder="123456789012345"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pinterest Tag</Label>
+            <Input
+              value={ints.analytics.pinterestTagId}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, pinterestTagId: e.target.value } })}
+              placeholder="1234567890123"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel TikTok</Label>
+            <Input
+              value={ints.analytics.tiktokPixelId}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, tiktokPixelId: e.target.value } })}
+              placeholder="1234567890"
+              className="mt-1.5 rounded-sm border-bronze/45"
+            />
+          </div>
+          <div>
+            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">YouTube channel</Label>
+            <Input
+              value={ints.analytics.youtubeChannelId}
+              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, youtubeChannelId: e.target.value } })}
+              placeholder="@maison__titrit"
               className="mt-1.5 rounded-sm border-bronze/45"
             />
           </div>

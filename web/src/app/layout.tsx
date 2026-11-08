@@ -113,6 +113,14 @@ export async function generateMetadata(): Promise<Metadata> {
           other,
         }
       : undefined,
+  // Geographic targeting hints for local SEO (LocalBusiness NAP coords live in
+  // src/lib/json-ld.ts — schema.org GeoCoordinates use the same values).
+  other: {
+    "geo.region": "MA",
+    "geo.placename": "Bouskoura",
+    "geo.country": "MA",
+    "geo.position": "33.4496; -7.652",
+  },
   category: "shopping",
   };
 }
@@ -171,7 +179,14 @@ gtag('consent', 'default', {
             <NextAuthProvider>
               <AttributionCapture />
               <AnnouncementBar />
-              <AnalyticsScripts gtmId={analytics.gtmId} ga4Id={analytics.ga4Id} fbPixelId={analytics.fbPixelId} />
+              <AnalyticsScripts
+                gtmId={analytics.gtmId}
+                ga4Id={analytics.ga4Id}
+                fbPixelId={analytics.fbPixelId}
+                pinterestTagId={analytics.pinterestTagId}
+                tiktokPixelId={analytics.tiktokPixelId}
+                youtubeChannelId={analytics.youtubeChannelId}
+              />
               {children}
               <CookieConsent />
               <CookiePreferencesButton />

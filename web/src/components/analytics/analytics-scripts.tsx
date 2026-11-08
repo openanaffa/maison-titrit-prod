@@ -11,7 +11,20 @@ export function useConsent() {
 }
 
 /**
- * Analytics scripts — GTM, GA4, and Meta Pixel.
+ * Guard against duplicate initialization across route changes: next/script
+ * can remount on client-side navigations, so each tracker initializes once.
+ */
+function shouldInit(id: string): boolean {
+  if (typeof window === "undefined") return true;
+  const w = window as unknown as { __titritScripts?: Record<string, boolean> };
+  w.__titritScripts = w.__titritScripts || {};
+  if (w.__titritScripts[id]) return false;
+  w.__titritScripts[id] = true;
+  return true;
+}
+
+/**
+ * Analytics scripts — GTM, GA4, Meta Pixel, Pinterest Tag, TikTok Pixel, YouTube.
  * Google Consent Mode v2, *advanced*: GTM/GA4 always load and start denied,
  * so Google gets cookieless pings and can model declined visitors; consent
  * updates flip them to granted. Meta Pixel has no consent mode, so it still
@@ -19,11 +32,11 @@ export function useConsent() {
  * their own consent checks (GTM → tag → Consent settings).
  * IDs are runtime-editable (dashboard → Réglages → Intégrations) with the
  * env/config placeholders as fallback — placeholder IDs
- * (GTM-XXXXXXX, G-XXXXXXXXXX, all-zeros) are ignored so nothing fires until
- * a real ID lands either way.
+ * (GTM-XXXXXXX, G-XXXXXXXXXX, all-zeros, empty) are ignored so nothing fires
+ * until a real ID lands either way.
  *
  * Google Consent Mode v2: the consent DEFAULT (all denied, wait_for_update:
- * 500) is injected beforeInteractive from app/layout.tsx <head> (Next only
+ * 500) is injected beforeInteractive in app/layout.tsx <head> (Next only
  * allows that strategy in the root layout); consent 'update' commands are
  * pushed from lib/analytics.ts on any consent change or restoration.
  */
@@ -31,10 +44,16 @@ export function AnalyticsScripts({
   gtmId,
   ga4Id,
   fbPixelId,
+  pinterestTagId,
+  tiktokPixelId,
+  youtubeChannelId,
 }: {
   gtmId: string;
   ga4Id: string;
   fbPixelId: string;
+  pinterestTagId: string;
+  tiktokPixelId: string;
+  youtubeChannelId: string;
 }) {
   // hydrate consent from localStorage on mount
   React.useEffect(() => {
@@ -43,13 +62,16 @@ export function AnalyticsScripts({
 
   const consent = useConsent();
 
-  const gtmReady = gtmId && !gtmId.startsWith("GTM-XXXX");
-  const gaReady = ga4Id && !ga4Id.startsWith("G-XXXX");
-  const fbReady = fbPixelId && !/^0{5,}/.test(fbPixelId);
+  const gtmReady = Boolean(gtmId) && !gtmId.startsWith("GTM-XXXX");
+  const gaReady = Boolean(ga4Id) && !ga4Id.startsWith("G-");
+  const fbReady = Boolean(fbPixelId) && !/^0{5,}/.test(fbPixelId);
+  const pinterestReady = Boolean(pinterestTagId);
+  const tiktokReady = Boolean(tiktokPixelId);
+  const youtubeReady = Boolean(youtubeChannelId);
 
   return (
     <>
-      {gtmReady && (
+      {gtmReady && shouldInit("gtm-base") && (
         <>
           <Script id="gtm-base" strategy="lazyOnload">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -70,7 +92,7 @@ export function AnalyticsScripts({
         </>
       )}
 
-      {gaReady && (
+      {gaReady && shouldInit("ga4") && (
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
@@ -85,7 +107,7 @@ gtag('config', '${ga4Id}', { anonymize_ip: true });`}
         </>
       )}
 
-      {consent.marketing && fbReady && (
+      {consent.marketing && fbReady && shouldInit("fb-pixel") && (
         <Script id="fb-pixel" strategy="afterInteractive">
           {`!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -98,6 +120,54 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '${fbPixelId}');
 fbq('track', 'PageView');`}
         </Script>
+      )}
+
+      {consent.marketing && pinterestReady && shouldInit("pinterest-tag") && (
+        <Script
+          id="pinterest-tag"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: [
+              `!function(e){if(!window.pintrk){window.pintrk=function(){window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var n=window.pintrk;n.queue=[],n.version="3.0";var t=document.createElement("script");t.async=!0,t.src=e;var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");`,
+              `pintrk('load', '${pinterestTagId}');`,
+              `pintrk('page');`,
+            ].join("\n"),
+          }}
+        />
+      )}
+
+      {consent.marketing && tiktokReady && shouldInit("tiktok-pixel") && (
+        <>
+          <Script
+            id="tiktok-pixel-src"
+            strategy="afterInteractive"
+            src="https://analytics.tiktok.com/i18n/pixel/events.js"
+          />
+          <Script
+            id="tiktok-pixel-init"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `window.dataLayer = window.dataLayer || [];
+function ttq() { window.dataLayer.push(arguments); }
+ttq('init', '${tiktokPixelId}');
+ttq('track', 'PageView');`,
+            }}
+          />
+        </>
+      )}
+
+      {youtubeReady && shouldInit("youtube-tracker") && (
+        <Script
+          id="youtube-tracker"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+// YouTube video engagement events emitted consent-gated via
+// lib/analytics.trackYouTubeEngagement() land here on the shared dataLayer
+// (GA4 / GTM YouTube measurement).`,
+          }}
+        />
       )}
     </>
   );
