@@ -133,6 +133,40 @@ export function trackFacebook(event: string, params?: Record<string, unknown>) {
   fbq?.("track", event, params);
 }
 
+/** Pinterest Tag event (only after marketing consent).
+ *  Pushes onto the pintrk queue created by the base code in analytics-scripts. */
+export function trackPinterest(event: string, params?: Record<string, unknown>) {
+  const s = getConsent();
+  if (!s.marketing) return;
+  if (typeof window === "undefined") return;
+  const pintrk = (window as unknown as { pintrk?: (...a: unknown[]) => void }).pintrk;
+  pintrk?.("track", event, params);
+}
+
+/** TikTok pixel event (only after marketing consent) — pushes onto the ttq dataLayer queue. */
+export function trackTikTok(event: string, params?: Record<string, unknown>) {
+  const s = getConsent();
+  if (!s.marketing) return;
+  if (typeof window === "undefined") return;
+  const w = window as unknown as { dataLayer?: unknown[] };
+  w.dataLayer = w.dataLayer || [];
+  (w.dataLayer as unknown[]).push(["track", event, params ?? {}]);
+}
+
+/** YouTube video engagement (only after analytics consent) → shared dataLayer
+ *  (GA4 / GTM YouTube measurement picks these up). */
+export function trackYouTubeEngagement(videoId: string, state: string, extra?: Record<string, unknown>) {
+  const s = getConsent();
+  if (!s.analytics) return;
+  if (typeof window === "undefined") return;
+  pushDataLayer({
+    event: "youtube_video_engaged",
+    video_id: videoId,
+    engagement_state: state,
+    ...extra,
+  });
+}
+
 /** Convenience: has the visitor consented to a category? */
 export function hasConsent(cat: ConsentCategory): boolean {
   return getConsent()[cat];
@@ -246,6 +280,8 @@ export async function trackAddToCart(p: { ref: string; name: string; price: numb
   if (!legs.meta) {
     trackFacebook("AddToCart", { content_ids: [p.ref], content_name: p.name, value: p.price * p.qty, currency: p.currency, contents: [{ id: p.ref, quantity: p.qty }] });
   }
+  // Pinterest conversion event (marketing consent; browser-side tag)
+  trackPinterest("addtocart", { value: p.price * p.qty, order_quantity: p.qty, currency: p.currency });
 }
 export function trackBeginCheckout(items: { ref: string; name: string; price: number; qty: number }[], total: number, currency: string) {
   track("begin_checkout", { currency, value: total, items: items.map((i) => ({ ...toGtmItem(i), quantity: i.qty })) });
@@ -270,10 +306,13 @@ export async function trackPurchase(
   if (!legs.meta) {
     trackFacebook("Purchase", { value: order.total, currency: order.currency, num_items: order.items.length, contents: order.items.map((i) => ({ id: i.ref, quantity: i.qty })), order_id: order.number });
   }
+  // Pinterest checkout / conversion event (marketing consent; browser-side tag)
+  trackPinterest("checkout", { value: order.total, order_quantity: order.items.reduce((s, i) => s + i.qty, 0), currency: order.currency, order_id: order.number });
 }
 export function trackLead(email?: string) {
   track("sign_up", { method: "email" });
   trackFacebook("Lead", { content_name: "sign_up", ...(email ? { em: email.toLowerCase() } : {}) });
+  trackTikTok("Lead", { content_name: "sign_up", ...(email ? { email: email.toLowerCase() } : {}) });
 }
 
 function toGtmItem(p: { ref: string; name: string; price: number; category?: string }): Record<string, unknown> {
