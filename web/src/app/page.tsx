@@ -27,7 +27,6 @@ const WhatsAppFloat = dynamicImport(
   () => import("@/components/maison/whatsapp-float").then((m) => m.WhatsAppFloat),
   { ssr: true, loading: () => null },
 );
-
 export const metadata: Metadata = buildPageMetadata({
   title: "Maison Titrit — Modest Fashion · 100% Made in Morocco",
   description:
