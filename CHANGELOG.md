@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Staff new-order alerts (email + WAFINE WhatsApp), branded emails
 - Vercel BotID on checkout, register, and track
 - Nightly encrypted Supabase backups to R2
+- Runtime-configurable trackers and domain-verification tags editable via `/makteb/settings` without a redeploy: GTM, GA4, Meta Pixel, Pinterest Tag, TikTok Pixel, YouTube channel, plus Google, Facebook, Instagram, TikTok and custom verification tags
 
 ### Changed
 - Align Postgres Prisma schema with the order/UTM fields used by the app and production deployment
@@ -29,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### SEO
 - SEO S0: crawlable `noindex` instead of `Disallow` in `robots.txt`
 - Mission 6 SEO + P4 speed/a11y completion
+- JSON-LD structured data layer for Organization, LocalBusiness, WebSite, Product, Breadcrumb, ItemList, and FAQPage
+- AI/LLM discovery surface: `/llms.txt`, `/llms-full.txt`, `/feed.xml` (Merchant Center), and dynamic `sitemap.xml`
 
 ## [1.0.0] - 2026-10-29
 
