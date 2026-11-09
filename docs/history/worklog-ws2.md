@@ -194,7 +194,7 @@ Task: Build embedded Next.js + Prisma admin (/makteb) with RBAC, NextAuth (Crede
 Work Log:
 - Prisma schema extended: User (role FOUNDER/ADMIN/MANAGER/CUSTOMER, password bcrypt, phone), Account/Session/VerificationToken (NextAuth adapter), Invite (token-based admin onboarding), Category (name/slug/position), Product (ref,name,nameAmazigh,description,shortStory,materials,colors,sizes,price,salePrice,currency,inStock,featured,categoryId), Image (1:N Product, url/alt/position), Order (number,status,customerName/Phone/Email,city,address,notes,total,currency,payment,userId), OrderItem (snapshot ref/name/price + quantity/size + productId). Enums as String (SQLite); Postgres-ready.
 - Installed @auth/prisma-adapter, bcryptjs, nodemailer (+ types).
-- Seed script: creates founder (founder@maisontitrit.ma / titrit-admin-2024), 5 categories, 6 products with multi-images, 1 demo order. DB force-reset + seeded.
+- Seed script: creates founder (founder@maisontitrit.ma / (set via ADMIN_PASSWORD at seed time)), 5 categories, 6 products with multi-images, 1 demo order. DB force-reset + seeded.
 - NextAuth (src/lib/auth.ts): Credentials + Google + Email (magic-link) providers; PrismaAdapter; JWT strategy; role merged in jwt callback (fetched from DB); custom pages (signin/verify/error); dev console magic-link transport. Added NEXTAUTH_URL + NEXTAUTH_SECRET to .env.
 - RBAC (src/lib/roles.ts): ROLES, STAFF_ROLES, can(role, action) permission matrix. src/lib/session.ts: getCurrentUser/requireStaff/requirePermission server helpers.
 - Middleware (src/middleware.ts): withAuth protects /makteb/* + /api/admin/* (staff only), /compte/* + /api/checkout (any auth).
@@ -210,7 +210,7 @@ Work Log:
 - Added admin i18n keys (admin.nav.*, admin.dashboard.*, admin.products.*, admin.orders.*, admin.categories.*, admin.common.*) in FR/AR/EN.
 
 Verification (agent-browser):
-- Founder login (founder@maisontitrit.ma / titrit-admin-2024) → 302 to /makteb → dashboard "Bienvenue, Fondatrice Maison Titrit".
+- Founder login (founder@maisontitrit.ma / (set via ADMIN_PASSWORD at seed time)) → 302 to /makteb → dashboard "Bienvenue, Fondatrice Maison Titrit".
 - Dashboard: 6 products, 1 order, 190 MAD revenue, 3 featured, 0 customers.
 - Sidebar: Dashboard/Produits(6)/Commandes(1)/Catégories(5)/Clients/Réglages.
 - /makteb/products → 6-row table with images, prices, stock/featured badges, edit/delete actions.
@@ -221,7 +221,7 @@ Verification (agent-browser):
 
 Stage Summary:
 - Phase 1 complete: enterprise-grade backoffice at /makteb with RBAC (FOUNDER/ADMIN/MANAGER), NextAuth (Credentials+Google+Email magic-link), product CRUD with multi-image upload, orders workflow, categories, dashboard.
-- Founder login: founder@maisontitrit.ma / titrit-admin-2024 (change via ADMIN_EMAIL/ADMIN_PASSWORD env).
+- Founder login: founder@maisontitrit.ma / (set via ADMIN_PASSWORD at seed time) (change via ADMIN_EMAIL/ADMIN_PASSWORD env).
 - Production migration: set DATABASE_URL to Supabase Postgres, NEXTAUTH_URL/SECRET, GOOGLE_CLIENT_ID/SECRET, EMAIL_SERVER_* (SMTP/Resend). Swap /api/admin/upload for Cloudflare R2/Vercel Blob when deploying to Vercel (ephemeral FS).
 - Phase 2 (next): client signup/cart/checkout, /compte order history, invite-token admin onboarding, content (LLMs.md/humans.txt/sitemap/merchant feed/blog), SEO files.
 
@@ -340,7 +340,7 @@ Verification results (agent-browser + curl):
 - Admin (/makteb/*) unauth → 307 redirect to signin (RBAC ✓); admin APIs unauth → 307 (auth required ✓)
 - Client: /panier 200, /checkout 200, /compte 307 (auth required ✓), /auth/signin 200, /blog 200, /blog/[slug] 200
 - Auth: /api/auth/providers 200; /api/checkout POST (guest) → 400 validation (guest allowed ✓)
-- Login as founder (founder@maisontitrit.ma / titrit-admin-2024) → /makteb dashboard "Bienvenue, Fondatrice Maison Titrit" ✓
+- Login as founder (founder@maisontitrit.ma / (set via ADMIN_PASSWORD at seed time)) → /makteb dashboard "Bienvenue, Fondatrice Maison Titrit" ✓
 - Dashboard stats: 6 products, 3 orders, 2090 MAD revenue, 3 customers, 3 featured
 - Admin sidebar: Dashboard/Produits/Commandes/Catégories/Journal/Clients/Réglages
 - Add to cart (MT-LORA, size L) → localStorage titrit-cart populated, toast "Ajouté" ✓
@@ -408,7 +408,7 @@ Verification:
 
 Stage Summary:
 - Production DB is now Supabase Postgres (eu-west-1). Schema + seed applied. App reads/writes Supabase in dev.
-- Founder login works against Supabase: founder@maisontitrit.ma / titrit-admin-2024 (change ADMIN_PASSWORD in .env before seeding prod for real).
+- Founder login works against Supabase: founder@maisontitrit.ma / (set via ADMIN_PASSWORD at seed time) (change ADMIN_PASSWORD in .env before seeding prod for real).
 - Next steps for the user: (1) set this same DATABASE_URL in Vercel env vars; (2) create Cloudflare R2 bucket + set R2_* env vars; (3) set NEXTAUTH_URL/SECRET, NEXT_PUBLIC_SITE_URL; (4) deploy to Vercel; (5) point Cloudflare DNS.
 - Note: dev server must be started with `unset DATABASE_URL` in this sandbox because the shell has a global SQLite DATABASE_URL export that overrides .env. On Vercel this is a non-issue (Vercel injects env vars directly).
 
