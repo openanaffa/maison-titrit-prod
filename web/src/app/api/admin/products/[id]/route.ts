@@ -73,6 +73,16 @@ export async function DELETE(
     return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
   }
   const { id } = await params;
+  const orderedCount = await db.orderItem.count({ where: { productId: id } });
+  if (orderedCount > 0) {
+    return NextResponse.json(
+      {
+        error:
+          "Ce produit figure dans des commandes passées : il ne peut pas être supprimé. Désactivez-le ou modifiez-le à la place.",
+      },
+      { status: 409 },
+    );
+  }
   try {
     await db.product.delete({ where: { id } });
     return NextResponse.json({ ok: true });
