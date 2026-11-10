@@ -20,6 +20,7 @@ import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
+import { randomBytes } from "crypto";
 import { db } from "@/lib/db";
 import { magicLinkEmail } from "@/lib/email-templates";
 import { smtpServer } from "@/lib/notify";
@@ -51,12 +52,30 @@ async function sendVerificationRequest({
   await transport.sendMail({ to: identifier, from: provider.from, subject, html, text });
 }
 
+/** Resolve the NextAuth secret at config load time.
+ *  - Production: fail fast when NEXTAUTH_SECRET is unset — never ship a
+ *    committed fallback secret (that is an auth/security anti-pattern).
+ *  - Development: use an ephemeral per-process random value so auth keeps
+ *    working without a committed literal; it regenerates on each restart,
+ *    which is fine because dev sessions are throwaway.
+ */
+function resolveNextAuthSecret(): string {
+  const envSecret = process.env.NEXTAUTH_SECRET;
+  if (process.env.NODE_ENV === "production") {
+    if (!envSecret) {
+      throw new Error(
+        "NEXTAUTH_SECRET is required in production. Set it before starting the app (never commit a fallback secret).",
+      );
+    }
+    return envSecret;
+  }
+  return envSecret ?? randomBytes(32).toString("hex");
+}
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  // Always have a secret: prefer env, fall back to a dev-only value so auth
-  // never throws "NO_SECRET" (which surfaces as error=Configuration to users).
-  secret: process.env.NEXTAUTH_SECRET || "titrit-dev-fallback-secret-please-set-NEXTAUTH_SECRET-in-production",
+  secret: resolveNextAuthSecret(),
   pages: {
     signIn: "/auth/signin",
     signOut: "/auth/signout",

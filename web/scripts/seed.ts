@@ -14,9 +14,16 @@ import { PRODUCTS, CATEGORIES } from "@/config/products";
 const db = new PrismaClient();
 
 async function main() {
-  const founderEmail = (process.env.ADMIN_EMAIL || "founder@maisontitrit.com").toLowerCase();
+  const founderEmail = process.env.ADMIN_EMAIL?.toLowerCase();
   const founderPass = process.env.ADMIN_PASSWORD;
-  // Never fall back to a shipped default password — fail loudly instead.
+  // Never fall back to shipped defaults — fail loudly for both.
+  if (!founderEmail) {
+    console.error(
+      "✗ ADMIN_EMAIL is not set. Provide it via the environment (never commit it):\n" +
+        '  ADMIN_EMAIL="<founder-email>" bun run scripts/seed.ts',
+    );
+    process.exit(1);
+  }
   if (!founderPass) {
     console.error(
       "✗ ADMIN_PASSWORD is not set. Provide it via the environment (never commit it):\n" +

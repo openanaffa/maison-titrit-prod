@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { Permission } from "@/lib/roles";
-import { can } from "@/lib/roles";
+import { can, isStaffRole } from "@/lib/roles";
 
 export async function getSession() {
   return getServerSession(authOptions);
@@ -25,7 +25,7 @@ export async function getCurrentUser() {
 /** Require a staff session; throws/redirects if missing. */
 export async function requireStaff() {
   const user = await getCurrentUser();
-  if (!user || !["FOUNDER", "ADMIN", "MANAGER"].includes(user.role)) {
+  if (!user || !isStaffRole(user.role)) {
     return { user: null, ok: false as const };
   }
   return { user, ok: true as const };

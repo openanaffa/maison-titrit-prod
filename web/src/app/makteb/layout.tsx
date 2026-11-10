@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/session";
+import { isStaffRole } from "@/lib/roles";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { db } from "@/lib/db";
 
@@ -12,7 +13,7 @@ export default async function MaktebLayout({
 }) {
   const user = await getCurrentUser();
   if (!user) redirect("/auth/signin?callbackUrl=/makteb");
-  const ok = ["FOUNDER", "ADMIN", "MANAGER"].includes(user.role);
+  const ok = isStaffRole(user.role);
   if (!ok) redirect("/compte");
 
   // counts for sidebar badges
