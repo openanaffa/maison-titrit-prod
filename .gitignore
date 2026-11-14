@@ -45,6 +45,7 @@ tsconfig.tsbuildinfo
 supabase/.temp/
 
 # local SQLite dev database (recreate: cd web && bun run db:push && bun run scripts/seed.ts)
+web/prisma/*.db
 web/prisma/db/*.db
 
 # Deepwork orchestrator state (resume index, not committed)
