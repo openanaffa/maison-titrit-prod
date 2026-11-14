@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -100,7 +101,21 @@ function AuthPageInner() {
         </div>
 
         <p className="mt-4 text-center font-serif text-xs text-ink-soft/70 dark:text-cream/60">
-          {t("auth.terms")}
+          {t("auth.termsBefore")}
+          <Link
+            href="/cgv"
+            className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-terracotta"
+          >
+            {t("auth.termsConditions")}
+          </Link>
+          {t("auth.termsAnd")}
+          <Link
+            href="/confidentialite"
+            className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-terracotta"
+          >
+            {t("auth.termsPrivacy")}
+          </Link>
+          {t("auth.termsAfter")}
         </p>
       </div>
     </section>

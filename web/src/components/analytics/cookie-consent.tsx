@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Cookie, X, Check, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -84,6 +85,14 @@ export function CookieConsent() {
             </h2>
             <p className="mt-1 font-serif text-sm leading-relaxed text-ink-soft dark:text-cream/75">
               {t("cookie.body")}
+            </p>
+            <p className="mt-1 font-serif text-xs text-ink-soft/80 dark:text-cream/60">
+              <Link
+                href="/confidentialite"
+                className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-terracotta"
+              >
+                {t("cookie.privacy")}
+              </Link>
             </p>
           </div>
         </div>
