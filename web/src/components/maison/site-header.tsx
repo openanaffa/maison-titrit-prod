@@ -22,6 +22,7 @@ import { useT } from "@/i18n/locale-provider";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { SocialIcons } from "@/components/maison/social-icons";
 import { CartDrawer } from "@/components/maison/cart-drawer";
+import { isStaffRole } from "@/lib/roles";
 
 function ThemeToggle() {
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -211,7 +212,7 @@ function AccountButton() {
     );
   }
   const initial = (session.user.name?.[0] || session.user.email?.[0] || "U").toUpperCase();
-  const isStaff = ["FOUNDER", "ADMIN", "MANAGER"].includes(session.user.role ?? "");
+  const isStaff = isStaffRole(session.user.role ?? undefined);
   return (
     <Link
       href={isStaff ? "/makteb" : "/compte"}
