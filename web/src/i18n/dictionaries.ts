@@ -109,7 +109,11 @@ export const dictionaries: Record<Locale, Dict> = {
     "auth.googleCustomerHint": "Connectez-vous pour suivre vos commandes.",
     "auth.googleStaffHint": "Espace réservé à l'équipe — connectez-vous avec votre compte Google.",
     "auth.googleError": "La connexion avec Google a échoué. Veuillez réessayer.",
-    "auth.terms": "En continuant, vous acceptez nos conditions et notre politique de confidentialité.",
+    "auth.termsBefore": "En continuant, vous acceptez nos ",
+    "auth.termsConditions": "conditions de vente",
+    "auth.termsAnd": " et notre ",
+    "auth.termsPrivacy": "politique de confidentialité",
+    "auth.termsAfter": ".",
     "cta.openOsm": "Ouvrir dans la carte",
     "cta.replayIntro": "Revoir l'intro",
 
@@ -190,6 +194,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.menu": "Menu de navigation de la maison de couture Maison Titrit.",
     "footer.legal":
       "Conformément à la loi marocaine 09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679), vos données personnelles sont collectées et traitées avec votre consentement, en toute transparence et de manière limitée aux finalités de commande et de communication. Vous disposez d'un droit d'accès, de rectification et d'opposition — contactez notre responsable de la protection des données.",
+
+    "legal.privacy": "Politique de confidentialité",
+    "legal.terms": "Conditions générales de vente",
 
     "detail.home": "Accueil",
     "detail.collection": "Collection",
@@ -419,7 +426,11 @@ export const dictionaries: Record<Locale, Dict> = {
     "auth.googleCustomerHint": "سجّل الدخول لمتابعة طلباتك.",
     "auth.googleStaffHint": "مساحة مخصصة للفريق — سجّل الدخول بحسابك عبر Google.",
     "auth.googleError": "فشل تسجيل الدخول عبر Google. حاول مرة أخرى.",
-    "auth.terms": "بالمتابعة، أنت توافق على شروطنا وسياسة الخصوصية.",
+    "auth.termsBefore": "بالمتابعة، أنت توافق على ",
+    "auth.termsConditions": "شروط البيع",
+    "auth.termsAnd": " و",
+    "auth.termsPrivacy": "سياسة الخصوصية",
+    "auth.termsAfter": ".",
     "cta.openOsm": "افتح الخريطة",
     "cta.replayIntro": "أعد العرض",
 
@@ -500,6 +511,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.menu": "قائمة تنقل دار خياطة ميزون تيتريت.",
     "footer.legal":
       "وفقاً للقانون المغربي 09-08 المتعلق بحماية الأشخاص الذاتيين تجاه معالجة المعطيات ذات الطابع الشخصي، وللائحة الأوروبية العامة لحماية البيانات (GDPR — 2016/679)، تُجمع بياناتكم الشخصية بموافقتكم وتُعالج بشفافية ولمصلحة الطلبيات والتواصل فقط. لكم حق الوصول والتصحيح والمعارضة — تواصوا مع مسؤول حماية البيانات لدينا.",
+
+    "legal.privacy": "سياسة الخصوصية",
+    "legal.terms": "شروط البيع العامة",
 
     "detail.home": "الرئيسية",
     "detail.collection": "المجموعة",
@@ -726,7 +740,11 @@ export const dictionaries: Record<Locale, Dict> = {
     "auth.googleCustomerHint": "Sign in to track your orders.",
     "auth.googleStaffHint": "Team area — sign in with your Google account.",
     "auth.googleError": "Sign in with Google failed. Please try again.",
-    "auth.terms": "By continuing, you accept our terms and privacy policy.",
+    "auth.termsBefore": "By continuing, you accept our ",
+    "auth.termsConditions": "terms of sale",
+    "auth.termsAnd": " and our ",
+    "auth.termsPrivacy": "privacy policy",
+    "auth.termsAfter": ".",
     "cta.openOsm": "Open the map",
     "cta.replayIntro": "Replay intro",
 
@@ -807,6 +825,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.menu": "Navigation menu of the Maison Titrit couture house.",
     "footer.legal":
       "In accordance with Moroccan Law 09-08 on the protection of individuals with regard to the processing of personal data and the EU General Data Protection Regulation (GDPR — Regulation (EU) 2016/679), your personal data is collected with your consent and processed transparently, limited to order and communication purposes. You have the right to access, rectify and object — contact our data protection officer.",
+
+    "legal.privacy": "Privacy policy",
+    "legal.terms": "Terms of sale",
 
     "detail.home": "Home",
     "detail.collection": "Collection",
