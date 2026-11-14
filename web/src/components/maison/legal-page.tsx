@@ -16,7 +16,7 @@ import {
  * Rendered publicly at /confidentialite and /cgv.
  */
 export function LegalPage({ doc }: { doc: LegalDocKey }) {
-  const { locale } = useT();
+  const { locale, t } = useT();
   const d = legalDocs[locale][doc];
 
   return (
@@ -60,6 +60,12 @@ export function LegalPage({ doc }: { doc: LegalDocKey }) {
 
         <Reveal className="mt-12 border-t border-bronze/30 pt-8">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+            <Link
+              href="/"
+              className="font-label text-[0.7rem] uppercase tracking-[0.18em] text-bronze transition-colors hover:text-terracotta"
+            >
+              {t("detail.home")}
+            </Link>
             {d.related.map((r) => (
               <Link
                 key={r.href}
