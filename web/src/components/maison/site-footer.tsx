@@ -32,6 +32,8 @@ export function SiteFooter() {
                 src="/assets/titrit-logo-mono.svg"
                 alt=""
                 aria-hidden="true"
+                width={44}
+                height={44}
                 className="h-11 w-11 shrink-0 select-none"
                 style={{
                   filter:
@@ -115,7 +117,7 @@ export function SiteFooter() {
               </li>
             </ul>
             <div className="mt-5">
-              <SocialIcons size={36} variant="solid" />
+              <SocialIcons size={44} variant="solid" />
             </div>
           </div>
         </div>

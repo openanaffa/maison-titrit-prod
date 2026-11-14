@@ -72,17 +72,21 @@ export default function CartPage() {
                     <div className="mt-3 flex items-center justify-between">
                       <div className="inline-flex items-center rounded-full border border-bronze/40">
                         <button
+                          type="button"
                           onClick={() => setQty(item.productId, item.size, item.qty - 1)}
-                          aria-label="-"
-                          className="inline-flex size-11 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
+                          disabled={item.qty <= 1}
+                          aria-label={t("cart.decreaseQty")}
+                          className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
                         >
                           <Minus className="size-3.5" />
                         </button>
-                        <span className="w-8 text-center font-serif text-sm text-ink dark:text-cream">{item.qty}</span>
+                        <span aria-live="polite" className="w-8 text-center font-serif text-sm text-ink dark:text-cream">{item.qty}</span>
                         <button
+                          type="button"
                           onClick={() => setQty(item.productId, item.size, item.qty + 1)}
-                          aria-label="+"
-                          className="inline-flex size-11 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
+                          disabled={item.qty >= 20}
+                          aria-label={t("cart.increaseQty")}
+                          className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
                         >
                           <Plus className="size-3.5" />
                         </button>
@@ -93,9 +97,10 @@ export default function CartPage() {
                     </div>
                   </div>
                   <button
+                    type="button"
                     onClick={() => remove(item.productId, item.size)}
                     aria-label={t("cart.remove")}
-                    className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 hover:text-terracotta"
+                    className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
                   >
                     <Trash2 className="size-4" />
                   </button>
@@ -135,9 +140,9 @@ export default function CartPage() {
               </Button>
               <Link
                 href="/#collection"
-                className="mt-3 flex items-center justify-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta"
+                className="mt-3 flex items-center justify-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
               >
-                <ArrowLeft className="size-3" />
+                <ArrowLeft className="size-3 rtl:rotate-180" />
                 {t("cta.continueShopping")}
               </Link>
             </div>

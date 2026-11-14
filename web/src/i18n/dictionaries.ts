@@ -62,6 +62,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "cart.qty": "Qté",
     "cart.size": "Taille",
     "cart.remove": "Retirer",
+    "cart.decreaseQty": "Diminuer la quantité",
+    "cart.increaseQty": "Augmenter la quantité",
     "cart.itemAdded": "Ajouté au panier",
     "cart.items": "{count} article(s)",
 
@@ -168,7 +170,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "contact.subtitle":
       "Écrivez-nous sur WhatsApp pour réserver une pièce, demander le sur-mesure ou prendre rendez-vous à l'atelier. Paiement à la livraison partout au Maroc.",
     "contact.phone": "Téléphone",
+    "contact.phoneAria": "Appeler par téléphone",
     "contact.email": "Email",
+    "contact.emailAria": "Envoyer un email",
     "contact.instagram": "Instagram",
 
     "footer.tagline": "Là où la tradition rencontre l'élégance",
@@ -211,6 +215,8 @@ export const dictionaries: Record<Locale, Dict> = {
 
     "lang.aria": "Changer de langue",
     "lang.switch": "Langue",
+    "theme.aria": "Changer de thème",
+    "common.close": "Fermer",
 
     "cookie.title": "Vos préférences de confidentialité",
     "cookie.body":
@@ -361,6 +367,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "cart.qty": "الكمية",
     "cart.size": "المقاس",
     "cart.remove": "إزالة",
+    "cart.decreaseQty": "تقليل الكمية",
+    "cart.increaseQty": "زيادة الكمية",
     "cart.itemAdded": "أُضيف إلى السلة",
     "cart.items": "{count} قطعة",
 
@@ -467,7 +475,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "contact.subtitle":
       "راسلنا على واتساب لحجز قطعة، أو طلب حسب المقاس، أو موعد في المشغل. الدفع عند الاستلام في كل المغرب.",
     "contact.phone": "الهاتف",
+    "contact.phoneAria": "الاتصال عبر الهاتف",
     "contact.email": "البريد",
+    "contact.emailAria": "إرسال بريد إلكتروني",
     "contact.instagram": "إنستغرام",
 
     "footer.tagline": "حيث يلتقي الأصالة بالأناقة",
@@ -510,6 +520,8 @@ export const dictionaries: Record<Locale, Dict> = {
 
     "lang.aria": "تغيير اللغة",
     "lang.switch": "اللغة",
+    "theme.aria": "تغيير المظهر",
+    "common.close": "إغلاق",
 
     "cookie.title": "تفضيلاتك للخصوصية",
     "cookie.body":
@@ -657,6 +669,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "cart.qty": "Qty",
     "cart.size": "Size",
     "cart.remove": "Remove",
+    "cart.decreaseQty": "Decrease quantity",
+    "cart.increaseQty": "Increase quantity",
     "cart.itemAdded": "Added to cart",
     "cart.items": "{count} item(s)",
 
@@ -763,7 +777,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "contact.subtitle":
       "Message us on WhatsApp to reserve a piece, request made-to-measure, or book an atelier appointment. Cash on delivery across Morocco.",
     "contact.phone": "Phone",
+    "contact.phoneAria": "Call by phone",
     "contact.email": "Email",
+    "contact.emailAria": "Send an email",
     "contact.instagram": "Instagram",
 
     "footer.tagline": "Where tradition meets elegance",
@@ -806,6 +822,8 @@ export const dictionaries: Record<Locale, Dict> = {
 
     "lang.aria": "Change language",
     "lang.switch": "Language",
+    "theme.aria": "Change theme",
+    "common.close": "Close",
 
     "cookie.title": "Your privacy preferences",
     "cookie.body":

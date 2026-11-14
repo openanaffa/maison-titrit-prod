@@ -21,7 +21,7 @@ export function TitritLogo({
   showWordmark?: boolean;
   logoClassName?: string;
   wordmarkClassName?: string;
-  variant?: "auto" | "gold" | "mono";
+  variant?: "auto" | "mono";
 }) {
   const { t } = useT();
   return (
@@ -30,6 +30,8 @@ export function TitritLogo({
         src="/assets/titrit-logo-gold.svg"
         alt=""
         aria-hidden="true"
+        width={44}
+        height={44}
         className={cn(
           "titrit-logo-mark h-9 w-9 shrink-0 select-none sm:h-11 sm:w-11",
           variant === "mono" && "titrit-logo-mark--mono",

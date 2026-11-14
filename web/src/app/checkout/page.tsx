@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, Loader2, ShoppingBag, Truck } from "lucide-react";
+import { ArrowLeft, Check, Loader2, ShoppingBag, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -243,19 +243,33 @@ export default function CheckoutPage() {
             </p>
 
             {error && (
-              <p className="mt-4 rounded-sm bg-terracotta/10 p-3 text-center font-serif text-sm text-terracotta">{error}</p>
+              <p
+                role="alert"
+                aria-live="assertive"
+                className="mt-4 rounded-sm bg-terracotta/10 p-3 text-center font-serif text-sm text-terracotta"
+              >
+                {error}
+              </p>
             )}
 
             <Button
               type="submit"
               disabled={loading}
-              className="mt-5 h-12 w-full rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream hover:bg-terracotta dark:bg-cream dark:text-ink"
+              className="mt-5 h-12 w-full rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:bg-cream dark:text-ink"
             >
-              {loading ? <Loader2 className="size-4 animate-spin" /> : <WhatsAppIcon className="size-4" />}
+              {loading ? (
+                <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
+              ) : (
+                <WhatsAppIcon className="size-4" />
+              )}
               {t("checkout.placeOrder")}
             </Button>
-            <Link href="/panier" className="mt-3 block text-center font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta">
-              ← {t("cart.title")}
+            <Link
+              href="/panier"
+              className="mt-3 flex items-center justify-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
+            >
+              <ArrowLeft className="size-3 rtl:rotate-180" />
+              {t("cart.title")}
             </Link>
           </div>
         </form>
