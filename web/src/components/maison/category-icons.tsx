@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
  */
 
 const ICONS: Record<string, React.FC<{ className?: string }>> = {
+  modern: RobeIcon,
+  moroccan: CaftanIcon,
   robes: RobeIcon,
   tuniques: TuniqueIcon,
   ensembles: EnsembleIcon,

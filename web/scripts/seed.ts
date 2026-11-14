@@ -10,10 +10,64 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { PRODUCTS, CATEGORIES } from "@/config/products";
+import { SEED_ARTICLES } from "@/config/articles";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
 const db = new PrismaClient();
+const publishedAt = new Date("2026-11-14T12:00:00.000Z");
+
+function validateSeedContent() {
+  const refs = new Set(PRODUCTS.map((product) => product.ref));
+  if (refs.size !== PRODUCTS.length) {
+    throw new Error("Seed catalogue contains duplicate product references.");
+  }
+
+  for (const category of CATEGORIES) {
+    const count = PRODUCTS.filter((product) => product.category === category.name).length;
+    if (count !== 7) {
+      throw new Error(`Expected exactly 7 products in ${category.name}; found ${count}.`);
+    }
+  }
+
+  for (const product of PRODUCTS) {
+    if (!CATEGORIES.some((category) => category.name === product.category)) {
+      throw new Error(`Unknown category for product ${product.ref}: ${product.category}`);
+    }
+    if (product.images.length === 0) {
+      throw new Error(`Product ${product.ref} has no images.`);
+    }
+    for (const image of product.images) {
+      if (!image.url.startsWith("/") || !existsSync(resolve(process.cwd(), "public", image.url.slice(1)))) {
+        throw new Error(`Missing local product image for ${product.ref}: ${image.url}`);
+      }
+    }
+  }
+
+  const slugs = new Set(SEED_ARTICLES.map((article) => article.slug));
+  if (slugs.size !== SEED_ARTICLES.length) {
+    throw new Error("Seed articles contain duplicate slugs.");
+  }
+  const productArticles = SEED_ARTICLES.filter((article) => article.productRef);
+  if (
+    productArticles.length !== PRODUCTS.length ||
+    productArticles.some((article) => !article.productRef || !refs.has(article.productRef))
+  ) {
+    throw new Error("Each seeded product must have exactly one matching feature article.");
+  }
+  for (const article of SEED_ARTICLES) {
+    if (article.tags[0] !== article.category) {
+      throw new Error(`Article ${article.slug} must use ${article.category} as its first tag.`);
+    }
+    if (!existsSync(resolve(process.cwd(), "public", article.coverImage.slice(1)))) {
+      throw new Error(`Missing local cover image for article ${article.slug}: ${article.coverImage}`);
+    }
+  }
+}
 
 async function main() {
+  validateSeedContent();
+
   const founderEmail = process.env.ADMIN_EMAIL?.toLowerCase();
   const founderPass = process.env.ADMIN_PASSWORD;
   // Never fall back to shipped defaults — fail loudly for both.
@@ -63,6 +117,9 @@ async function main() {
   await db.orderItem.deleteMany({});
   await db.image.deleteMany({});
   await db.product.deleteMany({});
+  await db.category.deleteMany({
+    where: { slug: { notIn: CATEGORIES.map((category) => category.slug) } },
+  });
   for (const p of PRODUCTS) {
     const catId = catMap.get(p.category) ?? null;
     const product = await db.product.create({
@@ -128,52 +185,33 @@ async function main() {
     console.log("  ✓ demo order:", order.number);
   }
 
-  // 5) Blog article (Amazigh heritage / modest fashion story)
-  await db.article.upsert({
-    where: { slug: "lheritage-amazigh-chez-maison-titrit" },
-    update: {},
-    create: {
-      slug: "lheritage-amazigh-chez-maison-titrit",
-      title: "L'héritage amazigh chez Maison Titrit",
-      excerpt:
-        "« Titrit » signifie étoile en tamazight. Comment l'héritage amazigh guide chaque pièce de notre maison de couture.",
-      body: `## Une étoile nommée Titrit
-
-« Titrit » (ⵜⵉⵟⵔⵉⵜ) signifie **étoile** en tamazight, la langue des Amazighs (Berbères) du Maroc. Ce nom n'est pas anodin : il porte l'héritage de millénaires de savoir-faire textiles, du Haut Atlas aux plaines du Souss.
-
-## Le geste, le fil, l'étoile
-
-Chaque pièce Maison Titrit naît d'un geste patient hérité des couturières de l'Atlas :
-
-- **Broderie main** — fil à fil, comme l'étoile à huit branches des tapis amazighs
-- **Sfifa** — la passementerie dorée qui borde les caftans
-- **Tissus nobles** — lin, soie, velours, choisis pour leur tombé et leur longévité
-
-## Mode modeste, fierté amazigh
-
-La mode modeste n'est pas une contrainte — c'est une élégance. Celle des femmes
-amazighs qui, depuis toujours, drapent et brodent avec une liberté totale de
-couleur et de motif, tout en gardant le corps couvert et fluide.
-
-Chez Maison Titrit, nous poursuivons cette tradition : des pièces intemporelles,
-confortables, modestes — et fièrement marocaines. **100% Made in Morocco.**
-
-> مرحبا ب طلباتكم 🥰
-`,
-      coverImage: "/images/maison-titrit/about-craft.png",
+  // 5) Maison + Craft editorial and one linked feature for each product
+  for (const article of SEED_ARTICLES) {
+    const data = {
+      title: article.title,
+      excerpt: article.excerpt,
+      body: article.body,
+      coverImage: article.coverImage,
       authorName: "Maison Titrit",
-      tags: "amazigh,heritage,mode modeste,made in morocco",
+      tags: article.tags.join(", "),
       published: true,
-      publishedAt: new Date(),
-    },
-  });
-  console.log("  ✓ article: lheritage-amazigh-chez-maison-titrit");
+      publishedAt,
+    };
+    await db.article.upsert({
+      where: { slug: article.slug },
+      update: data,
+      create: { slug: article.slug, ...data },
+    });
+    console.log("  ✓ article:", article.slug, `(${article.category})`);
+  }
 
   console.log(
     "\nDone. Products:",
     await db.product.count(),
     "| Categories:",
     await db.category.count(),
+    "| Seed articles:",
+    SEED_ARTICLES.length,
     "| Orders:",
     await db.order.count(),
   );
