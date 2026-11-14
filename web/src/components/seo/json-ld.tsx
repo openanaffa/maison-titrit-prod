@@ -3,6 +3,7 @@ import {
   localBusinessSchema,
   websiteSchema,
 } from "@/lib/json-ld";
+import { serializeJsonLd } from "@/lib/seo";
 
 /**
  * Global JSON-LD — rendered once in <head> via layout.tsx.
@@ -21,7 +22,7 @@ export function SiteJsonLd() {
         <script
           key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(b) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(b) }}
         />
       ))}
     </>
