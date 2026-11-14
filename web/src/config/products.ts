@@ -2,7 +2,7 @@
  * ============================================================================
  *  MAISON TITRIT — PRODUCT CATALOGUE (seed source of truth)
  * ----------------------------------------------------------------------------
- *  Run `bun run scripts/seed.ts` from web/ to sync this catalogue to Prisma.
+ *  Run `bun run seed:prod` from web/ to sync this catalogue to Supabase Postgres.
  *  Product copy is French-first. Prices, stock, size runs, compositions and
  *  product-photo matches are editorial proposals that must be confirmed before
  *  the catalogue is made available for ordering.

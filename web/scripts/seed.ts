@@ -1,12 +1,4 @@
-/**
- * Seed script for Maison Titrit — full bootstrap.
- * Run:  bun run scripts/seed.ts
- *
- *  - creates categories + products + images (from src/config/products.ts)
- *  - creates the founder user (env ADMIN_EMAIL / ADMIN_PASSWORD — REQUIRED)
- *  - creates one demo order (so the dashboard isn't empty)
- *  Idempotent: upserts by unique keys; wipes products/images/orders first.
- */
+/** Synchronize catalog and editorial seed data to Supabase Postgres. */
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { PRODUCTS, CATEGORIES } from "@/config/products";
@@ -16,6 +8,22 @@ import { resolve } from "node:path";
 
 const db = new PrismaClient();
 const publishedAt = new Date("2026-11-14T12:00:00.000Z");
+
+function requirePostgresDatabaseUrl() {
+  const value = process.env.DATABASE_URL;
+  if (!value) {
+    throw new Error("DATABASE_URL must point to the Supabase Postgres database.");
+  }
+  let protocol: string;
+  try {
+    protocol = new URL(value).protocol;
+  } catch {
+    throw new Error("DATABASE_URL is not a valid Postgres connection URL.");
+  }
+  if (protocol !== "postgres:" && protocol !== "postgresql:") {
+    throw new Error("The content seed only writes to Postgres. Use the Supabase Postgres DATABASE_URL.");
+  }
+}
 
 function validateSeedContent() {
   const refs = new Set(PRODUCTS.map((product) => product.ref));
@@ -67,161 +75,130 @@ function validateSeedContent() {
 
 async function main() {
   validateSeedContent();
+  requirePostgresDatabaseUrl();
 
-  const founderEmail = process.env.ADMIN_EMAIL?.toLowerCase();
+  const founderEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
   const founderPass = process.env.ADMIN_PASSWORD;
-  // Never fall back to shipped defaults — fail loudly for both.
-  if (!founderEmail) {
-    console.error(
-      "✗ ADMIN_EMAIL is not set. Provide it via the environment (never commit it):\n" +
-        '  ADMIN_EMAIL="<founder-email>" bun run scripts/seed.ts',
-    );
-    process.exit(1);
-  }
-  if (!founderPass) {
-    console.error(
-      "✗ ADMIN_PASSWORD is not set. Provide it via the environment (never commit it):\n" +
-        '  ADMIN_PASSWORD="<your-strong-password>" bun run scripts/seed.ts',
-    );
-    process.exit(1);
+  if (Boolean(founderEmail) !== Boolean(founderPass)) {
+    throw new Error("Set both ADMIN_EMAIL and ADMIN_PASSWORD to optionally create the initial founder user.");
   }
 
-  // 1) Founder user
-  const passwordHash = await bcrypt.hash(founderPass, 10);
-  const founder = await db.user.upsert({
-    where: { email: founderEmail },
-    update: { role: "FOUNDER", password: passwordHash },
-    create: {
-      email: founderEmail,
-      name: "Fondatrice Maison Titrit",
-      role: "FOUNDER",
-      password: passwordHash,
-      emailVerified: new Date(),
-    },
-  });
-  console.log("  ✓ founder:", founder.email, "(role:", founder.role + ")");
-
-  // 2) Categories
-  const catMap = new Map<string, string>();
-  for (const c of CATEGORIES) {
-    const cat = await db.category.upsert({
-      where: { slug: c.slug },
-      update: { name: c.name, position: c.position ?? 0 },
-      create: { name: c.name, slug: c.slug, position: c.position ?? 0 },
+  await db.$transaction(async (tx) => {
+    const seedRefs = PRODUCTS.map((product) => product.ref);
+    const targetCategories = await tx.category.findMany({
+      where: { slug: { in: CATEGORIES.map((category) => category.slug) } },
+      select: { id: true },
     });
-    catMap.set(c.name, cat.id);
-    console.log("  ✓ category:", cat.name, "→", cat.slug);
-  }
-
-  // 3) Products + images (wipe first to keep idempotent, respecting FKs)
-  await db.orderItem.deleteMany({});
-  await db.image.deleteMany({});
-  await db.product.deleteMany({});
-  await db.category.deleteMany({
-    where: { slug: { notIn: CATEGORIES.map((category) => category.slug) } },
-  });
-  for (const p of PRODUCTS) {
-    const catId = catMap.get(p.category) ?? null;
-    const product = await db.product.create({
-      data: {
-        ref: p.ref,
-        name: p.name,
-        nameAmazigh: p.nameAmazigh,
-        description: p.description,
-        shortStory: p.shortStory,
-        materials: p.materials,
-        colors: p.colors,
-        sizes: p.sizes,
-        price: p.price,
-        salePrice: p.salePrice ?? null,
-        currency: "MAD",
-        inStock: p.inStock ?? true,
-        featured: p.featured ?? false,
-        categoryId: catId,
+    const unrelatedProducts = await tx.product.findMany({
+      where: {
+        categoryId: { in: targetCategories.map((category) => category.id) },
+        ref: { notIn: seedRefs },
       },
+      select: { ref: true },
     });
-    for (const img of p.images) {
-      await db.image.create({
-        data: {
-          productId: product.id,
-          url: img.url,
-          alt: img.alt ?? product.name,
-          position: img.position ?? 0,
-        },
+    if (unrelatedProducts.length > 0) {
+      throw new Error(
+        `Refusing to seed over unowned products in Modern/Moroccan: ${unrelatedProducts.map((product) => product.ref).join(", ")}`,
+      );
+    }
+
+    const categoryIds = new Map<string, string>();
+    for (const category of CATEGORIES) {
+      const saved = await tx.category.upsert({
+        where: { slug: category.slug },
+        update: { name: category.name, position: category.position ?? 0 },
+        create: { name: category.name, slug: category.slug, position: category.position ?? 0 },
+      });
+      categoryIds.set(category.name, saved.id);
+    }
+
+    for (const product of PRODUCTS) {
+      const categoryId = categoryIds.get(product.category);
+      if (!categoryId) throw new Error(`Missing database category for ${product.ref}.`);
+
+      const fields = {
+        name: product.name,
+        nameAmazigh: product.nameAmazigh ?? null,
+        description: product.description,
+        shortStory: product.shortStory,
+        materials: product.materials,
+        colors: product.colors,
+        sizes: product.sizes,
+        price: product.price,
+        salePrice: product.salePrice ?? null,
+        currency: "MAD",
+        inStock: product.inStock ?? true,
+        featured: product.featured ?? false,
+        categoryId,
+      };
+      const images = product.images.map((image) => ({
+        url: image.url,
+        alt: image.alt ?? product.name,
+        position: image.position ?? 0,
+      }));
+
+      await tx.product.upsert({
+        where: { ref: product.ref },
+        update: { ...fields, images: { deleteMany: {}, create: images } },
+        create: { ref: product.ref, ...fields, images: { create: images } },
       });
     }
-    console.log("  ✓ product:", product.ref, product.name, "— ", product.price, "MAD");
-  }
 
-  // 4) Demo order (so the dashboard has something to show)
-  const first = await db.product.findFirst({ orderBy: { createdAt: "asc" } });
-  if (first && (await db.order.count()) === 0) {
-    const order = await db.order.create({
-      data: {
-        number: "MT-1001",
-        status: "PENDING",
-        customerName: "Client Démo",
-        customerPhone: "+212600000000",
-        customerEmail: "demo@example.com",
-        city: "Casablanca",
-        address: "Demo address",
-        total: first.price,
-        currency: "MAD",
-        payment: "COD",
-        userId: founder.id,
-      },
-    });
-    await db.orderItem.create({
-      data: {
-        orderId: order.id,
-        productId: first.id,
-        ref: first.ref,
-        name: first.name,
-        price: first.price,
-        quantity: 1,
-        size: "M",
-      },
-    });
-    console.log("  ✓ demo order:", order.number);
-  }
+    for (const category of CATEGORIES) {
+      const categoryId = categoryIds.get(category.name);
+      if (!categoryId) throw new Error(`Missing database category for ${category.name}.`);
+      const count = await tx.product.count({ where: { categoryId } });
+      if (count !== 7) {
+        throw new Error(`Expected exactly 7 products in ${category.name} after seed; found ${count}.`);
+      }
+    }
 
-  // 5) Maison + Craft editorial and one linked feature for each product
-  for (const article of SEED_ARTICLES) {
-    const data = {
-      title: article.title,
-      excerpt: article.excerpt,
-      body: article.body,
-      coverImage: article.coverImage,
-      authorName: "Maison Titrit",
-      tags: article.tags.join(", "),
-      published: true,
-      publishedAt,
-    };
-    await db.article.upsert({
-      where: { slug: article.slug },
-      update: data,
-      create: { slug: article.slug, ...data },
-    });
-    console.log("  ✓ article:", article.slug, `(${article.category})`);
-  }
+    for (const article of SEED_ARTICLES) {
+      const fields = {
+        title: article.title,
+        excerpt: article.excerpt,
+        body: article.body,
+        coverImage: article.coverImage,
+        authorName: "Maison Titrit",
+        tags: article.tags.join(", "),
+        published: true,
+        publishedAt,
+      };
+      await tx.article.upsert({
+        where: { slug: article.slug },
+        update: fields,
+        create: { slug: article.slug, ...fields },
+      });
+    }
+
+    if (founderEmail && founderPass) {
+      const existing = await tx.user.findUnique({ where: { email: founderEmail } });
+      if (!existing) {
+        await tx.user.create({
+          data: {
+            email: founderEmail,
+            name: "Maison Titrit",
+            role: "FOUNDER",
+            password: await bcrypt.hash(founderPass, 10),
+            emailVerified: new Date(),
+          },
+        });
+      }
+    }
+  });
 
   console.log(
-    "\nDone. Products:",
-    await db.product.count(),
-    "| Categories:",
-    await db.category.count(),
-    "| Seed articles:",
-    SEED_ARTICLES.length,
-    "| Orders:",
-    await db.order.count(),
+    `Supabase content sync complete: ${PRODUCTS.length} products, ${CATEGORIES.length} categories, ${SEED_ARTICLES.length} articles.`,
   );
-  console.log("\n  Founder login → email:", founderEmail, "| password: (from ADMIN_PASSWORD env)");
+  if (founderEmail && founderPass) {
+    console.log("Founder bootstrap was requested; existing users and passwords were left unchanged.");
+  }
 }
 
 main()
   .catch((e) => {
     console.error(e);
-    process.exit(1);
+    process.exitCode = 1;
   })
   .finally(async () => {
     await db.$disconnect();

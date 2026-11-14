@@ -49,7 +49,7 @@ bun run build                    # next build
 
 ## Environment variables (web)
 
-Required: `DATABASE_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` (seed only), `R2_*` (uploads).
+Required: `DATABASE_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `R2_*` (uploads). `ADMIN_EMAIL` and `ADMIN_PASSWORD` are optional and used only to create a founder account when none exists.
 **Full table with optional vars** (Brevo SMTP email, Google OAuth, GTM/GA4/Meta Pixel) → [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## Verification bar
@@ -68,18 +68,20 @@ conventions and the source of truth. Package manager is Bun (never npm on the ho
 
 Do, in order, verifying each step before the next:
 1. Clone the repo, run `bun install` at the repo root (Bun workspaces).
-2. web/: set DATABASE_URL to a local `file:./db/custom.db`, `bunx prisma generate`,
-   `bunx prisma db push`, then seed with ADMIN_EMAIL/ADMIN_PASSWORD + `bun run seed:prod`.
+2. web/: for local development, set DATABASE_URL to a local `file:./db/custom.db`,
+   `bunx prisma generate --schema=prisma/schema.prisma`, and `bunx prisma db push`.
+   The production content seed targets Supabase Postgres only; it does not seed SQLite.
    Verify: `bunx tsc --noEmit -p web`, `bun run lint` (0/0), `bun run build` (all routes green).
 3. Supabase (project rrhzxrcgphlaxybahhep, eu-west-1 — ask me to resume it if paused;
    ask me for the DB password, never guess it):
-   - web: `DATABASE_URL` = postgresql://postgres.<ref>:<PW>@aws-0-eu-west-1.pooler.supabase.com:5432/postgres
-     then `bunx prisma db push --schema=prisma/schema.postgres.prisma` + re-run `seed:prod`
-     against that URL.
+   - web: set `DATABASE_URL` to the Supabase Postgres connection string.
+     Run `bunx prisma db push --schema=prisma/schema.postgres.prisma`, then
+     `bun run seed:prod`. The seed generates the Postgres Prisma client and upserts
+     catalog/article content without deleting orders, users, or unrelated records.
 4. Vercel: link the repo, set Root Directory = web/, build is wired in web/vercel.json
    (`cd .. && bun install` + `bun run vercel:build`).
    Set env vars per docs/DEPLOYMENT.md (DATABASE_URL, NEXTAUTH_URL/SECRET,
-   NEXT_PUBLIC_SITE_URL, ADMIN_EMAIL/PASSWORD for seed, R2_* for media).
+   NEXT_PUBLIC_SITE_URL, R2_* for media).
    Deploy to production for maisontitrit.com and
    verify: fonts render, /produit/MT-LORA, /blog, /makteb redirects to sign-in,
    robots/sitemap use absolute URLs.
