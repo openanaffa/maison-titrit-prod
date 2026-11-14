@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProduct, listProducts, type ProductDTO } from "@/lib/products";
 import { ProductDetailClient } from "@/components/maison/product-detail";
-import { buildPageMetadata, productJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import {
+  buildPageMetadata,
+  productJsonLd,
+  breadcrumbJsonLd,
+  serializeJsonLd,
+} from "@/lib/seo";
 
 /** Force dynamic so freshly seeded products appear immediately. */
 export const dynamic = "force-dynamic";
@@ -79,8 +84,8 @@ export default async function ProductPage({
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(bLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(pLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(bLd) }} />
       <ProductDetailClient product={product} related={related} />
     </>
   );

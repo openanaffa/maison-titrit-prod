@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getPublishedArticle } from "@/lib/blog";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { ArticleBody } from "@/components/maison/article-body";
-import { buildPageMetadata, articleJsonLd } from "@/lib/seo";
+import { buildPageMetadata, articleJsonLd, serializeJsonLd } from "@/lib/seo";
 
 type Params = { slug: string };
 
@@ -53,7 +53,7 @@ export default async function BlogPostPage({
     <article className="vintage-paper min-h-[80vh] py-12 sm:py-16">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
         <Link

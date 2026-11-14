@@ -6,7 +6,7 @@ import { ProductCatalogue } from "@/components/maison/product-catalogue";
 import { SiteFooter } from "@/components/maison/site-footer";
 import { TitritLoader } from "@/components/maison/titrit-loader";
 import { listProducts } from "@/lib/products";
-import { itemListJsonLd, buildPageMetadata } from "@/lib/seo";
+import { itemListJsonLd, buildPageMetadata, serializeJsonLd } from "@/lib/seo";
 import type { Metadata } from "next";
 import dynamicImport from "next/dynamic";
 
@@ -55,7 +55,7 @@ export default async function Home() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListLd) }}
       />
       <TitritLoader />
       <SiteHeader />

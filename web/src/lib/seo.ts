@@ -14,6 +14,10 @@ export function baseUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.com";
 }
 
+export function serializeJsonLd(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, "\\u003c");
+}
+
 const DEFAULT_OG = "/og-default.png";
 
 export type PageMetaInput = {
