@@ -115,7 +115,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
           {product.category}
         </p>
         <Link href={detailHref} className="mt-2">
-          <h3 className="font-display text-2xl font-semibold leading-tight text-ink transition-colors hover:text-terracotta dark:text-cream">
+          <h3 className="font-display text-2xl font-semibold leading-tight text-ink transition-colors duration-200 group-hover:text-terracotta dark:text-cream dark:group-hover:text-bronze-light">
             {product.name}
           </h3>
         </Link>
@@ -169,7 +169,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
               <p className="font-label text-[0.6rem] uppercase tracking-[0.22em] text-ink-soft/70 dark:text-cream/60">
                 {t("card.priceLabel")}
               </p>
-              <p className="font-display text-2xl font-semibold text-ink dark:text-cream">
+              <p className="font-display text-2xl font-semibold tabular-nums text-ink dark:text-cream">
                 {product.salePrice !== null && product.salePrice !== product.price && (
                   <del className="me-2 text-base font-normal text-ink-soft/70 dark:text-cream/60">
                     {product.price.toLocaleString("fr-FR")}

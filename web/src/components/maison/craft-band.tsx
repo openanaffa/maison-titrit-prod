@@ -16,7 +16,7 @@ export function CraftBand() {
   return (
     <section
       id="atelier"
-      className="relative scroll-mt-20 overflow-hidden border-y border-bronze/25 py-20 sm:py-24"
+      className="vintage-paper relative scroll-mt-20 overflow-hidden border-y border-bronze/25 py-20 sm:py-28"
     >
       <div
         className="absolute inset-0 opacity-[0.12] dark:opacity-[0.10]"
