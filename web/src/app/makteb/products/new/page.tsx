@@ -1,10 +1,15 @@
-import { db } from "@/lib/db";
 import { ProductForm, type ProductFormValues } from "@/components/admin/product-form";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function NewProductPage() {
-  const categories = await db.category.findMany({ orderBy: { position: "asc" } });
+  const supabase = await createSupabaseServerClient();
+  const { data: categories } = await supabase
+    .from("Category")
+    .select("*")
+    .order("position", { ascending: true })
+    .throwOnError();
   const initial: ProductFormValues = {
     ref: `MT-${Math.floor(Math.random() * 9000 + 1000)}`,
     name: "",

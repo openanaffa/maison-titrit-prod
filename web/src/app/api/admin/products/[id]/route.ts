@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { randomUUID } from "node:crypto";
 import { requirePermission } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { ImageRow, ProductRow } from "@/lib/supabase/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +16,21 @@ export async function GET(
     return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
   }
   const { id } = await params;
-  const product = await db.product.findUnique({
-    where: { id },
-    include: { images: { orderBy: { position: "asc" } }, category: true },
-  });
+  const supabase = await createSupabaseServerClient();
+  const { data: product } = await supabase
+    .from("Product")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle()
+    .throwOnError();
   if (!product) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
-  return NextResponse.json({ product });
+  const [{ data: images }, categoryResult] = await Promise.all([
+    supabase.from("Image").select("*").eq("productId", id).order("position").throwOnError(),
+    product.categoryId
+      ? supabase.from("Category").select("*").eq("id", product.categoryId).maybeSingle().throwOnError()
+      : Promise.resolve({ data: null }),
+  ]);
+  return NextResponse.json({ product: { ...product, images, category: categoryResult.data } });
 }
 
 /** Update a product. */
@@ -34,28 +45,46 @@ export async function PATCH(
   const { id } = await params;
   try {
     const body = await req.json();
-    const data: Record<string, unknown> = {};
+    const data: Partial<ProductRow> = {};
     for (const k of [
       "name", "nameAmazigh", "description", "shortStory", "materials", "colors",
       "sizes", "price", "salePrice", "currency", "inStock", "featured",
     ]) {
-      if (k in body) data[k] = body[k];
+      if (k in body) data[k as keyof ProductRow] = body[k];
     }
     if (body.categoryId !== undefined) data.categoryId = body.categoryId ?? null;
 
     if (Array.isArray(body.images)) {
       // replace images
-      await db.image.deleteMany({ where: { productId: id } });
-      for (let i = 0; i < body.images.length; i++) {
-        const img = body.images[i];
-        if (!img.url?.trim()) continue;
-        await db.image.create({
-          data: { productId: id, url: img.url.trim(), alt: img.alt ?? "", position: i },
-        });
+      const supabase = await createSupabaseServerClient();
+      await supabase.from("Image").delete().eq("productId", id).throwOnError();
+      const imageRows: ImageRow[] = body.images.flatMap(
+        (img: { url?: string; alt?: string | null }, index: number) => {
+          if (!img.url?.trim()) return [];
+          return [{
+            id: randomUUID(),
+            productId: id,
+            url: img.url.trim(),
+            alt: img.alt ?? "",
+            position: index,
+            createdAt: new Date().toISOString(),
+          }];
+        },
+      );
+      if (imageRows.length) {
+        await supabase.from("Image").insert(imageRows).throwOnError();
       }
     }
 
-    const product = await db.product.update({ where: { id }, data });
+    const supabase = await createSupabaseServerClient();
+    const { data: product } = await supabase
+      .from("Product")
+      .update({ ...data, updatedAt: new Date().toISOString() })
+      .eq("id", id)
+      .select("*")
+      .maybeSingle()
+      .throwOnError();
+    if (!product) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
     return NextResponse.json({ product });
   } catch (e) {
     console.error("PATCH /api/admin/products/[id] failed", e);
@@ -73,8 +102,13 @@ export async function DELETE(
     return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
   }
   const { id } = await params;
-  const orderedCount = await db.orderItem.count({ where: { productId: id } });
-  if (orderedCount > 0) {
+  const supabase = await createSupabaseServerClient();
+  const { count: orderedCount } = await supabase
+    .from("OrderItem")
+    .select("id", { count: "exact", head: true })
+    .eq("productId", id)
+    .throwOnError();
+  if ((orderedCount ?? 0) > 0) {
     return NextResponse.json(
       {
         error:
@@ -84,7 +118,8 @@ export async function DELETE(
     );
   }
   try {
-    await db.product.delete({ where: { id } });
+    await supabase.from("Image").delete().eq("productId", id).throwOnError();
+    await supabase.from("Product").delete().eq("id", id).throwOnError();
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("DELETE /api/admin/products/[id] failed", e);

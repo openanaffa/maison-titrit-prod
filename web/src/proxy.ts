@@ -1,45 +1,54 @@
-/**
- * Maison Titrit — edge middleware for route protection.
- *  /makteb/*      → staff only (FOUNDER, ADMIN, MANAGER)
- *  /compte/*      → any authenticated user
- *  /api/admin/*   → staff only
- *  /api/checkout  → authenticated (CUSTOMER or staff)
- */
-import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
-export default withAuth({
-  pages: { signIn: "/auth/signin" },
-  callbacks: {
-    authorized: ({ token, req }) => {
-      const path = req.nextUrl.pathname;
-      const role = token?.role as string | undefined;
+export default async function proxy(request: NextRequest) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anonKey) {
+    throw new Error(
+      "NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be configured.",
+    );
+  }
 
-      // /makteb and /api/admin — staff only
-      if (path.startsWith("/makteb") || path.startsWith("/api/admin")) {
-        return (
-          !!token &&
-          (role === "FOUNDER" || role === "ADMIN" || role === "MANAGER")
-        );
-      }
-
-      // /compte — any logged-in user
-      if (path.startsWith("/compte")) {
-        return !!token;
-      }
-
-      // /api/checkout — guest checkout allowed (order created without userId)
-      // /api/compte/* — requires auth
-      if (path.startsWith("/api/compte")) {
-        return !!token;
-      }
-
-      return true; // public by default
+  let response = NextResponse.next({ request });
+  const supabase = createServerClient(url, anonKey, {
+    cookies: {
+      getAll: () => request.cookies.getAll(),
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => {
+          request.cookies.set(name, value);
+        });
+        response = NextResponse.next({ request });
+        cookiesToSet.forEach(({ name, value, options }) => {
+          response.cookies.set(name, value, options);
+        });
+      },
     },
-  },
-});
+  });
+
+  const { data, error } = await supabase.auth.getUser();
+  if (error && error.status !== 401) {
+    console.error("Unable to verify Supabase auth session in proxy", error);
+  }
+
+  const path = request.nextUrl.pathname;
+  const isProtected = path.startsWith("/makteb") || path.startsWith("/compte") ||
+    path.startsWith("/api/admin") || path.startsWith("/api/compte");
+  if (!isProtected) return response;
+
+  if (!data.user) {
+    if (path.startsWith("/api/")) {
+      return NextResponse.json({ error: "Non authentifié." }, { status: 401 });
+    }
+    const signInUrl = new URL("/auth/signin", request.url);
+    signInUrl.searchParams.set("callbackUrl", `${path}${request.nextUrl.search}`);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  return response;
+}
 
 export const config = {
-  // Match the protected routes + their static assets exclusion
   matcher: ["/makteb/:path*", "/compte/:path*", "/api/admin/:path*", "/api/compte/:path*"],
 };

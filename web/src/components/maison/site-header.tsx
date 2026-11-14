@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { LogOut, Menu, Moon, Sun, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSession, signOut } from "next-auth/react";
 import {
   Sheet,
   SheetContent,
@@ -31,6 +30,8 @@ import { useT } from "@/i18n/locale-provider";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { CartDrawer } from "@/components/maison/cart-drawer";
 import { isStaffRole } from "@/lib/roles";
+import { useSupabaseAuth } from "@/components/maison/supabase-auth-provider";
+import { signOut } from "@/lib/supabase/auth-client";
 
 /**
  * Centered-logo navbar (1fr auto 1fr grid): primary links hug the centered
@@ -279,17 +280,21 @@ export function SiteHeader() {
 }
 
 function AccountButton({ darkSurface = false }: { darkSurface?: boolean }) {
-  const { data: session } = useSession();
+  const { user } = useSupabaseAuth();
   const { t } = useT();
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
 
-  const user = mounted ? session?.user : undefined;
-  const isStaff = isStaffRole(user?.role ?? undefined);
-  const initial = (user?.name?.[0] || user?.email?.[0] || "U").toUpperCase();
+  const isStaff = isStaffRole(user?.role);
+  const name = typeof user?.user_metadata?.name === "string"
+    ? user.user_metadata.name
+    : typeof user?.user_metadata?.full_name === "string"
+      ? user.user_metadata.full_name
+      : null;
+  const initial = (name?.[0] || user?.email?.[0] || "U").toUpperCase();
   const accountHref = isStaff ? "/makteb" : "/compte#profile";
 
-  if (!user) {
+  if (!mounted || !user) {
     return (
       <Link
         href="/auth/signin?callbackUrl=/compte"
@@ -325,7 +330,7 @@ function AccountButton({ darkSurface = false }: { darkSurface?: boolean }) {
             {t("compte.title")}
           </DialogTitle>
           <DialogDescription>
-            {user.name || user.email || ""}
+            {name || user.email || ""}
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2">
@@ -350,7 +355,7 @@ function AccountButton({ darkSurface = false }: { darkSurface?: boolean }) {
           <DialogClose asChild>
             <button
               type="button"
-              onClick={() => void signOut({ callbackUrl: "/" })}
+              onClick={() => void signOut("/")}
               className="flex min-h-11 items-center gap-2 rounded-sm px-4 text-start font-label text-sm text-ink transition-colors hover:bg-terracotta/10 hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:text-cream"
             >
               <LogOut className="size-4" />

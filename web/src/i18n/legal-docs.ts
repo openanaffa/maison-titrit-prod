@@ -6,7 +6,7 @@
  *  short UI strings only). Rendered by components/maison/legal-page.tsx and
  *  indexed publicly at /confidentialite and /cgv.
  *
- *  Content reflects the actual data practices of this codebase (Google OAuth,
+ *  Content reflects the actual data practices of this codebase (Supabase Auth,
  *  COD checkout fields, consent-gated pixels — see config/site.ts `analytics`).
  *  ⚠️ The return/exchange window (7 days) should be reviewed by the owner
  *  before go-live.
@@ -54,7 +54,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
         {
           h: "2. Données collectées",
           p: [
-            "Compte — lorsque vous vous connectez avec Google, nous recevons votre nom, votre adresse email et votre photo de profil depuis votre compte Google. Nous ne stockons jamais votre mot de passe.",
+            "Compte — l'authentification est assurée par Supabase Auth. Selon votre méthode de connexion (Google ou email/mot de passe), nous recevons votre nom, votre adresse email et, avec Google, votre photo de profil. Supabase gère vos identifiants; les mots de passe ne sont pas conservés dans les tables applicatives de Maison Titrit.",
             "Commandes — nom, téléphone, adresse email (facultative), ville, adresse de livraison, notes ainsi que le détail de vos articles. Ces informations sont indispensables pour traiter et livrer votre commande.",
             "Navigation — votre panier, votre langue et votre thème sont conservés localement dans votre navigateur. Des journaux techniques (adresse IP, date, pages consultées) sont conservés pour la sécurité du site.",
             "Consentement — vos choix en matière de cookies analytiques et marketing.",
@@ -75,7 +75,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
         {
           h: "5. Destinataires des données",
           p: [
-            "Vos données sont hébergées par Vercel (site), Supabase (base de données, Union européenne), Cloudflare R2 (images) et Brevo (alertes email internes). L'authentification passe par Google. Les services de mesure d'audience et de publicité ne sont chargés qu'après votre consentement. Le détail de votre commande est transmis à notre équipe via WhatsApp et email pour préparer l'expédition.",
+            "Vos données sont hébergées par Vercel (site), Supabase (base de données et authentification, Union européenne), Cloudflare R2 (images) et Brevo (alertes email internes). Les services de mesure d'audience et de publicité ne sont chargés qu'après votre consentement. Le détail de votre commande est transmis à notre équipe via WhatsApp et email pour préparer l'expédition.",
             "Nous ne vendons ni ne louons vos données personnelles à des tiers.",
           ],
         },
@@ -224,7 +224,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
         {
           h: "2. البيانات المجمَّعة",
           p: [
-            "الحساب — عند تسجيل الدخول عبر Google، نستقبل اسمك وعنوان بريدك الإلكتروني وصورة ملفك الشخصي من حساب Google. لا نخزّن كلمة مرورك أبدًا.",
+            "الحساب — تتم المصادقة عبر Supabase Auth. بحسب طريقة تسجيل الدخول (Google أو البريد الإلكتروني وكلمة المرور)، نستقبل اسمك وعنوان بريدك الإلكتروني، وصورة ملفك الشخصي عند استخدام Google. تدير Supabase بيانات الاعتماد ولا نخزن كلمات المرور في جداول تطبيق Maison Titrit.",
             "الطلبات — الاسم، الهاتف، البريد الإلكتروني (اختياري)، المدينة، عنوان التوصيل، الملاحظات وتفاصيل المنتجات. هذه المعلومات ضرورية لمعالجة طلبك وتوصيله.",
             "التصفح — يُحفظ سلة التفضيلات ولغتك وسمتك محليًا في متصفحك. كما نحتفظ بسجلات تقنية (عنوان IP، التاريخ، الصفحات المزارة) لحماية الموقع.",
             "الموافقة — اختياراتك بشأن ملفات تعريف الارتباط التحليلية والتسويقية.",
@@ -245,7 +245,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
         {
           h: "5. الجهات المتلقية للبيانات",
           p: [
-            "تُستضاف بياناتك لدى Vercel (الموقع) وSupabase (قاعدة البيانات، الاتحاد الأوروبي) وCloudflare R2 (الصور) وBrevo (تنبيهات البريد الداخلية). ويمر تسجيل الدخول عبر Google. ولا تُحمَّل خدمات قياس الجمهور والإعلانات إلا بعد موافقتك. ويُرسَل تفاصيل طلبك إلى فريقنا عبر واتساب والبريد لإعداد الشحنة.",
+            "تُستضاف بياناتك لدى Vercel (الموقع) وSupabase (قاعدة البيانات والمصادقة، الاتحاد الأوروبي) وCloudflare R2 (الصور) وBrevo (تنبيهات البريد الداخلية). ولا تُحمَّل خدمات قياس الجمهور والإعلانات إلا بعد موافقتك. ويُرسَل تفاصيل طلبك إلى فريقنا عبر واتساب والبريد لإعداد الشحنة.",
             "لا نبيع بياناتك الشخصية ولا نؤجّرها إلى أي طرف ثالث.",
           ],
         },
@@ -390,7 +390,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
         {
           h: "2. Data we collect",
           p: [
-            "Account — when you sign in with Google, we receive your name, email address and profile picture from your Google account. We never store your password.",
+            "Account — authentication is provided by Supabase Auth. Depending on your sign-in method (Google or email/password), we receive your name and email address and, with Google, your profile picture. Supabase manages credentials; passwords are not stored in Maison Titrit application tables.",
             "Orders — name, phone, email address (optional), city, delivery address, notes and the details of your items. This information is required to process and deliver your order.",
             "Browsing — your cart, language and theme preferences are stored locally in your browser. Technical logs (IP address, date, pages viewed) are kept for the security of the site.",
             "Consent — your choices regarding analytics and marketing cookies.",
@@ -411,7 +411,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
         {
           h: "5. Recipients",
           p: [
-            "Your data is hosted by Vercel (site), Supabase (database, European Union), Cloudflare R2 (images) and Brevo (internal email alerts). Sign-in goes through Google. Analytics and advertising services are only loaded after your consent. Your order details are sent to our team via WhatsApp and email to prepare the shipment.",
+            "Your data is hosted by Vercel (site), Supabase (database and authentication, European Union), Cloudflare R2 (images) and Brevo (internal email alerts). Analytics and advertising services are only loaded after your consent. Your order details are sent to our team via WhatsApp and email to prepare the shipment.",
             "We do not sell or rent your personal data to third parties.",
           ],
         },

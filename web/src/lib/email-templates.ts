@@ -54,7 +54,7 @@ function shell(content: string): string {
 </div>`;
 }
 
-/** Magic-link sign-in: one big button + fallback link (NextAuth 24 h expiry). */
+/** Auth email copy helper used by transactional notification templates. */
 export function magicLinkEmail(url: string): EmailTemplate {
   const html = shell(`
       <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#1C1A17;">Bonjour 👋</p>

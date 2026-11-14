@@ -1,24 +1,30 @@
 /**
- * Server-side auth helpers — wrap getServerSession for route handlers + pages.
+ * Server-side auth helpers — verify Supabase sessions and resolve app roles.
  */
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
 import type { Permission } from "@/lib/roles";
 import { can, isStaffRole } from "@/lib/roles";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function getSession() {
-  return getServerSession(authOptions);
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.getUser();
+  if (error && error.status !== 401) {
+    console.error("Unable to verify Supabase auth session", error);
+  }
+  return data.user;
 }
 
 /** Get the authenticated user (with role), or null. */
 export async function getCurrentUser() {
   const session = await getSession();
-  if (!session?.user?.email) return null;
-  const user = await db.user.findUnique({
-    where: { email: session.user.email },
-    select: { id: true, email: true, name: true, role: true, image: true, phone: true },
-  });
+  if (!session?.email_confirmed_at) return null;
+  const supabase = await createSupabaseServerClient();
+  const { data: user } = await supabase
+    .from("User")
+    .select("id,supabaseId,email,name,role,image,phone")
+    .eq("supabaseId", session.id)
+    .maybeSingle()
+    .throwOnError();
   return user;
 }
 

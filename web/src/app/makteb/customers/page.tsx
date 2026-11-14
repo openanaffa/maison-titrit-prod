@@ -1,13 +1,25 @@
-import { db } from "@/lib/db";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function MaktebCustomersPage() {
-  const customers = await db.user.findMany({
-    where: { role: "CUSTOMER" },
-    orderBy: { createdAt: "desc" },
-    include: { orders: { select: { id: true, total: true } } },
-  });
+  const supabase = await createSupabaseServerClient();
+  const { data: customers } = await supabase
+    .from("User")
+    .select("id,name,email,createdAt")
+    .eq("role", "CUSTOMER")
+    .order("createdAt", { ascending: false })
+    .throwOnError();
+  const customerIds = customers.map((customer) => customer.id);
+  const { data: orders } = customerIds.length
+    ? await supabase.from("Order").select("userId").in("userId", customerIds).throwOnError()
+    : { data: [] };
+  const orderCountByUser = new Map<string, number>();
+  for (const order of orders) {
+    if (order.userId) {
+      orderCountByUser.set(order.userId, (orderCountByUser.get(order.userId) ?? 0) + 1);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -48,7 +60,7 @@ export default async function MaktebCustomersPage() {
                       </div>
                     </td>
                     <td className="p-3 font-serif text-sm text-ink-soft dark:text-cream/80">{c.email}</td>
-                    <td className="p-3 text-end font-serif text-sm text-ink-soft dark:text-cream/80">{c.orders.length}</td>
+                    <td className="p-3 text-end font-serif text-sm text-ink-soft dark:text-cream/80">{orderCountByUser.get(c.id) ?? 0}</td>
                     <td className="p-3 font-serif text-xs text-ink-soft dark:text-cream/70">
                       {new Date(c.createdAt).toLocaleDateString("fr-FR")}
                     </td>
