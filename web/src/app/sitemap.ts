@@ -23,6 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/#atelier`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/#nous-trouver`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/#contact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${base}/confidentialite`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
+    { url: `${base}/cgv`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
   ];
 
   // Product detail pages

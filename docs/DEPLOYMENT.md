@@ -21,26 +21,24 @@ This is the single source of truth for taking the site live. Follow top to botto
 1. Create a Supabase project → note the **Project ref** + **DB password**
 2. Get the connection string (Project Settings → Database → Connection string → URI):
    ```
-   postgresql://postgres.[PROJECT]:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres
+   postgresql://postgres.[PROJECT]:[PASSWORD]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres
    ```
-3. **Swap the Prisma provider** in `prisma/schema.prisma`:
-   ```diff
-   datasource db {
-   -  provider = "sqlite"
-   +  provider = "postgresql"
-     url      = env("DATABASE_URL")
-   }
-   ```
-4. Push the schema + seed:
+3. Use the checked-in Postgres schema; keep `schema.prisma` on SQLite for local development.
+4. Push the Postgres schema and synchronize the catalog/editorial seed:
    ```sh
-   DATABASE_URL="postgresql://postgres.[PROJECT]:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres" \
-     bunx prisma db push --accept-data-loss
-   DATABASE_URL="postgresql://..." ADMIN_EMAIL="founder@maisontitrit.com" ADMIN_PASSWORD="your-strong-password" \
-     bun run scripts/seed.ts
+   cd web
+   DATABASE_URL="postgresql://postgres.[PROJECT]:[PASSWORD]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres" \
+     bunx prisma db push --schema=prisma/schema.postgres.prisma
+   DATABASE_URL="postgresql://postgres.[PROJECT]:[PASSWORD]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres" \
+     bun run seed:prod
    ```
-5. Verify: Supabase → Table Editor shows `Product`, `Category`, `Order`, `User`, `Article`, `Image`, `Setting`, `Account`, `Session`, `VerificationToken`, `Invite`, `OrderItem`.
+   `seed:prod` generates the Postgres Prisma client and upserts only the seeded categories, product references, and article slugs. It does not delete products, order items, orders, users, or unrelated categories. The script refuses SQLite URLs.
 
-> **Local dev** stays on SQLite (the `.env` `DATABASE_URL=file:...`). Only production uses Postgres. Keep the schema provider as `postgresql` once you've migrated; SQLite dev still works because Prisma maps enums to strings and the schema is Postgres-compatible.
+   To create the initial founder account as part of this run, additionally set `ADMIN_EMAIL` and `ADMIN_PASSWORD`. This is optional; the seed creates the account only if that email does not already exist and never changes an existing password.
+
+5. Verify in Supabase → Table Editor: 14 seeded `Product` rows, 7 each in `Modern` and `Moroccan`, and 16 seeded `Article` rows. Unseeded products, orders, users, and articles remain untouched.
+
+> **Local dev** stays on SQLite (`DATABASE_URL=file:...`). The production catalog seed intentionally targets Supabase Postgres only; local content tests validate the seed data and local media without writing to a database.
 
 ---
 
@@ -90,21 +88,18 @@ Vercel's filesystem is **ephemeral** — uploaded images won't persist. R2 is S3
    | `NEXTAUTH_URL` | `https://maisontitrit.com` | Production |
    | `NEXTAUTH_SECRET` | `openssl rand -base64 32` | Production + Preview |
    | `NEXT_PUBLIC_SITE_URL` | `https://maisontitrit.com` | Production |
-   | `ADMIN_EMAIL` | `founder@maisontitrit.com` | Production (seed only) |
-   | `ADMIN_PASSWORD` | `<your strong password>` | Production (seed only) |
    | `R2_ACCOUNT_ID` | `<from R2>` | Production |
    | `R2_BUCKET` | `maison-titrit` | Production |
    | `R2_ACCESS_KEY_ID` | `<from R2>` | Production |
    | `R2_SECRET_ACCESS_KEY` | `<from R2>` | Production |
    | `R2_PUBLIC_URL` | `https://cdn.maisontitrit.com` | Production |
-   | `EMAIL_SERVER_HOST` | `smtp-relay.brevo.com` | Production (optional) |
+   | `EMAIL_SERVER_HOST` | `smtp-relay.brevo.com` | Production (staff order alerts only — not used for auth) |
    | `EMAIL_SERVER_PORT` | `587` | Production |
    | `EMAIL_SERVER_USER` | `<Brevo SMTP login, xxx@smtp-brevo.com>` | Production |
    | `EMAIL_SERVER_PASSWORD` | `<Brevo SMTP key>` | Production |
    | `EMAIL_FROM` | `Maison Titrit <hello@maisontitrit.com>` | Production |
-   | `GOOGLE_CLIENT_ID` | `<from Google Cloud>` | Production (optional) |
-   | `GOOGLE_CLIENT_SECRET` | `<from Google Cloud>` | Production (optional) |
-   | `NEXT_PUBLIC_GOOGLE_ENABLED` | `1` | Production (optional) |
+   | `GOOGLE_CLIENT_ID` | `<from Google Cloud — Web OAuth client>` | **Production + Preview (required)** |
+   | `GOOGLE_CLIENT_SECRET` | `<from Google Cloud>` | **Production + Preview (required)** |
    | `NEXT_PUBLIC_GTM_ID` | `GTM-XXXXXXX` | Production (optional) |
    | `NEXT_PUBLIC_GA4_ID` | `G-XXXXXXXXXX` | Production (optional) |
    | `NEXT_PUBLIC_FB_PIXEL_ID` | `<15-digit ID>` | Production (optional) |
@@ -115,6 +110,8 @@ Vercel's filesystem is **ephemeral** — uploaded images won't persist. R2 is S3
    | `GA_API_SECRET` | `<from GA4>` | Production (optional, server) |
    | `META_PIXEL_ID` | `<Meta Pixel ID>` | Production (optional, server) |
    | `META_CAPI_ACCESS_TOKEN` | `<Meta CAPI token>` | Production (optional, server) |
+
+   `ADMIN_EMAIL` and `ADMIN_PASSWORD` are not required Vercel runtime variables. Use them only when intentionally creating a first founder account through `seed:prod`.
 
 4. **Build & Development Settings → Install command**: `bun install` (Vercel auto-detects Bun from `bun.lock`)
 5. Deploy. First deploy runs `next build`; Prisma client is generated by the `postinstall` (add `prisma generate` to a build step if not — see `vercel:build` script)
@@ -130,7 +127,7 @@ Visit `https://maisontitrit.com`:
 - [ ] `/produit/MT-LORA` product detail loads
 - [ ] `/blog` lists the seeded article
 - [ ] `/makteb` redirects to `/auth/signin`
-- [ ] Log in with `founder@maisontitrit.com` / your `ADMIN_PASSWORD` → dashboard shows 6 products
+- [ ] Log in with **Continue with Google** using the founder's Google account (email must match the seeded `ADMIN_EMAIL`) → dashboard shows the seeded catalog
 - [ ] Admin → Products → New → upload an image → it appears (R2 path active)
 - [ ] Language switch FR → AR (RTL) → EN works
 - [ ] `https://maisontitrit.com/robots.txt` shows disallows + sitemap
@@ -209,9 +206,10 @@ Vercel keeps every deploy. Project → Deployments → any previous deploy → *
 | Symptom | Fix |
 |---|---|
 | Login → `error=Configuration` | `NEXTAUTH_SECRET` not set in Vercel env |
+| Login → Google button fails at startup | `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` unset — Google is the only sign-in method, the app fails fast by design |
 | Image upload 500 in prod | R2 env vars not set; Vercel FS is ephemeral |
 | Sitemap URLs are localhost | `NEXT_PUBLIC_SITE_URL` not set to your domain |
-| Magic link not emailed | `EMAIL_SERVER_*` not set (works in dev via console log) |
+| Staff order alert email missing | `EMAIL_SERVER_*` not set (auth does not use SMTP) |
 | Prisma "database not found" | Supabase project paused (free tier); resume in Supabase |
 | `provider = sqlite` error after swap | Run `bunx prisma generate` after editing schema.prisma |
 

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Megaphone, X } from "lucide-react";
+import { useT } from "@/i18n/locale-provider";
 
 /**
  * Dismissible announcement bar — shows a short, prominent message at the
@@ -10,6 +11,7 @@ import { Megaphone, X } from "lucide-react";
  * sessionStorage so the bar re-appears on the next visit if still active.
  */
 export function AnnouncementBar() {
+  const { t } = useT();
   const [bar, setBar] = React.useState<{ message: string; active: boolean; link?: string } | null>(null);
   const [dismissed, setDismissed] = React.useState(false);
 
@@ -43,7 +45,7 @@ export function AnnouncementBar() {
         {bar.link ? (
           <a
             href={bar.link}
-            className="font-serif text-xs leading-tight text-cream/95 underline-offset-2 hover:text-bronze-light hover:underline sm:text-sm"
+            className="font-serif text-xs leading-tight text-cream/95 underline-offset-2 hover:text-bronze-light hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-bronze-light sm:text-sm"
           >
             {bar.message}
           </a>
@@ -53,9 +55,10 @@ export function AnnouncementBar() {
           </p>
         )}
         <button
+          type="button"
           onClick={dismiss}
-          aria-label="Fermer"
-          className="absolute end-2 top-1/2 -translate-y-1/2 inline-flex size-11 items-center justify-center rounded-full text-cream/70 transition-colors hover:text-cream"
+          aria-label={t("common.close")}
+          className="absolute end-2 top-1/2 -translate-y-1/2 inline-flex size-11 items-center justify-center rounded-full text-cream/70 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
         >
           <X className="size-3.5" />
         </button>

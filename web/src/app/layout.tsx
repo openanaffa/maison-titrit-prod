@@ -152,16 +152,22 @@ export default async function RootLayout({
   return (
     <html lang="fr" dir="ltr" suppressHydrationWarning>
       <head>
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="Maison Titrit" />
+        <link rel="manifest" href="/site.webmanifest" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={FONT_HREF} rel="stylesheet" />
         <SiteJsonLd />
+      </head>
+      <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
         {/* Google Consent Mode v2 — consent DEFAULT (all denied). Runs before
-            anything interactive so GTM/GA4 see denied consent before they are
-            enabled; consent 'update' commands are pushed from
-            lib/analytics.ts when the visitor chooses. No tag actually loads
-            until the matching consent category is granted (AnalyticsScripts). */}
-        <Script id="consent-default" strategy="beforeInteractive">
+            analytics tags load; consent 'update' commands are pushed from
+            lib/analytics.ts when the visitor chooses. */}
+        <Script id="consent-default" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('consent', 'default', {
@@ -172,8 +178,6 @@ gtag('consent', 'default', {
   'wait_for_update': 500
 });`}
         </Script>
-      </head>
-      <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
         {/* Skip link — first focusable target for keyboard / reader-tree users */}
         <a
           href="#accueil"

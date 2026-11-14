@@ -20,7 +20,7 @@ import { whatsappCatalog } from "@/lib/brand";
 import { WhatsAppIcon } from "@/components/maison/motifs";
 
 /** Cart drawer — slide-in from the end side. */
-export function CartDrawer() {
+export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
   const { t } = useT();
   const [open, setOpen] = React.useState(false);
   // Subscribe to item count for the badge + drawer contents
@@ -35,12 +35,23 @@ export function CartDrawer() {
       <SheetTrigger asChild>
         <button
           type="button"
-          aria-label={t("cart.title")}
-          className="relative inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 dark:text-cream"
+          aria-label={
+            count > 0
+              ? `${t("cart.title")} (${t("cart.items", { count })})`
+              : t("cart.title")
+          }
+          className={`relative inline-flex size-11 items-center justify-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light ${
+            darkSurface
+              ? "border-cream/35 text-cream hover:bg-cream/10"
+              : "border-bronze/40 text-ink hover:bg-bronze/10 dark:text-cream"
+          }`}
         >
           <ShoppingBag className="size-4" />
           {count > 0 && (
-            <span className="absolute -end-0.5 -top-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-terracotta px-1 font-label text-[0.5rem] text-cream">
+            <span
+              aria-hidden="true"
+              className="absolute -end-0.5 -top-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-terracotta px-1 font-label text-[0.5rem] text-cream"
+            >
               {count}
             </span>
           )}
@@ -103,17 +114,21 @@ export function CartDrawer() {
                       <div className="mt-2 flex items-center justify-between">
                         <div className="inline-flex items-center rounded-full border border-bronze/40">
                           <button
+                            type="button"
                             onClick={() => setQty(item.productId, item.size, item.qty - 1)}
-                            aria-label="-"
-                            className="inline-flex size-11 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
+                            disabled={item.qty <= 1}
+                            aria-label={t("cart.decreaseQty")}
+                            className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
                           >
                             <Minus className="size-3" />
                           </button>
-                          <span className="w-7 text-center font-serif text-sm text-ink dark:text-cream">{item.qty}</span>
+                          <span aria-live="polite" className="w-7 text-center font-serif text-sm text-ink dark:text-cream">{item.qty}</span>
                           <button
+                            type="button"
                             onClick={() => setQty(item.productId, item.size, item.qty + 1)}
-                            aria-label="+"
-                            className="inline-flex size-11 items-center justify-center text-ink hover:text-terracotta dark:text-cream"
+                            disabled={item.qty >= 20}
+                            aria-label={t("cart.increaseQty")}
+                            className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
                           >
                             <Plus className="size-3" />
                           </button>
@@ -124,9 +139,10 @@ export function CartDrawer() {
                       </div>
                     </div>
                     <button
+                      type="button"
                       onClick={() => remove(item.productId, item.size)}
                       aria-label={t("cart.remove")}
-                      className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 hover:text-terracotta"
+                      className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
                     >
                       <Trash2 className="size-4" />
                     </button>

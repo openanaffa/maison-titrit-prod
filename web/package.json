@@ -14,7 +14,7 @@
     "db:push:prod": "prisma db push --accept-data-loss --schema=prisma/schema.prisma",
     "db:generate:pg": "prisma generate --schema=prisma/schema.postgres.prisma",
     "db:push:pg": "prisma db push --accept-data-loss --schema=prisma/schema.postgres.prisma",
-    "seed:prod": "NODE_ENV=production bun run scripts/seed.ts",
+    "seed:prod": "prisma generate --schema=prisma/schema.postgres.prisma && bun run scripts/seed.ts",
     "vercel:build": "prisma generate --schema=prisma/schema.postgres.prisma && next build",
     "postinstall": "prisma generate"
   },

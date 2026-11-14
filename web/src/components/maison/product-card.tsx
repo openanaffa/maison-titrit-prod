@@ -115,7 +115,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
           {product.category}
         </p>
         <Link href={detailHref} className="mt-2">
-          <h3 className="font-display text-2xl font-semibold leading-tight text-ink transition-colors hover:text-terracotta dark:text-cream">
+          <h3 className="font-display text-2xl font-semibold leading-tight text-ink transition-colors duration-200 group-hover:text-terracotta dark:text-cream dark:group-hover:text-bronze-light">
             {product.name}
           </h3>
         </Link>
@@ -150,7 +150,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
                         setSize(s);
                         setSizePrompt(false);
                       }}
-                      className="min-h-11 min-w-11 rounded-full border border-bronze/40 px-2.5 font-label text-[0.68rem] uppercase tracking-[0.12em] transition-colors hover:border-terracotta aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-cream dark:aria-pressed:border-cream dark:aria-pressed:bg-cream dark:aria-pressed:text-ink"
+                      className="min-h-11 min-w-11 rounded-full border border-bronze/40 px-2.5 font-label text-[0.68rem] uppercase tracking-[0.12em] transition-colors hover:border-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-cream dark:aria-pressed:border-cream dark:aria-pressed:bg-cream dark:aria-pressed:text-ink"
                     >
                       {s}
                     </button>
@@ -169,7 +169,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
               <p className="font-label text-[0.6rem] uppercase tracking-[0.22em] text-ink-soft/70 dark:text-cream/60">
                 {t("card.priceLabel")}
               </p>
-              <p className="font-display text-2xl font-semibold text-ink dark:text-cream">
+              <p className="font-display text-2xl font-semibold tabular-nums text-ink dark:text-cream">
                 {product.salePrice !== null && product.salePrice !== product.price && (
                   <del className="me-2 text-base font-normal text-ink-soft/70 dark:text-cream/60">
                     {product.price.toLocaleString("fr-FR")}

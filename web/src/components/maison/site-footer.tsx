@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { legalNotice, site } from "@/config/site";
 import { whatsappCatalog } from "@/lib/brand";
 import { useT } from "@/i18n/locale-provider";
@@ -32,6 +33,8 @@ export function SiteFooter() {
                 src="/assets/titrit-logo-mono.svg"
                 alt=""
                 aria-hidden="true"
+                width={44}
+                height={44}
                 className="h-11 w-11 shrink-0 select-none"
                 style={{
                   filter:
@@ -115,7 +118,7 @@ export function SiteFooter() {
               </li>
             </ul>
             <div className="mt-5">
-              <SocialIcons size={36} variant="solid" />
+              <SocialIcons size={44} variant="solid" />
             </div>
           </div>
         </div>
@@ -133,6 +136,16 @@ export function SiteFooter() {
           <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 font-serif text-xs text-cream/70">
             <li className="font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze-light">
               {legalNotice.companyName}
+            </li>
+            <li>
+              <Link href="/confidentialite" className="hover:text-terracotta">
+                {t("legal.privacy")}
+              </Link>
+            </li>
+            <li>
+              <Link href="/cgv" className="hover:text-terracotta">
+                {t("legal.terms")}
+              </Link>
             </li>
             {rendered(legalNotice.rcNumber) && (
               <li>RNAE/RC&nbsp;: {legalNotice.rcNumber}</li>

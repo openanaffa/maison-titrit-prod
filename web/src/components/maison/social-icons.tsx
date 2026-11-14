@@ -62,11 +62,12 @@ export function SocialIcons({
             rel="noopener noreferrer"
             aria-label={label}
             onClick={onNavigate}
-            className={
+            className={cn(
+              "inline-flex items-center justify-center rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light",
               variant === "solid"
-                ? "inline-flex items-center justify-center rounded-full bg-ink text-cream transition-transform hover:-translate-y-0.5 hover:bg-terracotta dark:bg-cream dark:text-ink"
-                : "inline-flex items-center justify-center rounded-full border border-bronze/40 text-ink transition-all hover:-translate-y-0.5 hover:border-terracotta hover:bg-terracotta hover:text-cream dark:text-cream"
-            }
+                ? "border border-cream/20 bg-cream/10 text-cream hover:-translate-y-0.5 hover:border-terracotta hover:bg-terracotta dark:bg-cream dark:text-ink"
+                : "border border-bronze/40 text-ink hover:-translate-y-0.5 hover:border-terracotta hover:bg-terracotta hover:text-cream dark:text-cream",
+            )}
             style={{ width: size, height: size }}
           >
             <Icon className="size-[42%]" />
@@ -79,19 +80,20 @@ export function SocialIcons({
 
 /* Small contact icon group (phone, email) — used in the contact section. */
 export function ContactIcons({ className }: { className?: string }) {
+  const { t } = useT();
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <a
         href={`tel:${site.phones[0].e164}`}
-        aria-label="Phone"
-        className="inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-all hover:-translate-y-1 hover:border-terracotta hover:bg-terracotta hover:text-cream dark:text-cream"
+        aria-label={t("contact.phoneAria")}
+        className="inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-all hover:-translate-y-1 hover:border-terracotta hover:bg-terracotta hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
       >
         <Phone className="size-5" />
       </a>
       <a
         href={`mailto:${site.email}`}
-        aria-label="Email"
-        className="inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-all hover:-translate-y-1 hover:border-terracotta hover:bg-terracotta hover:text-cream dark:text-cream"
+        aria-label={t("contact.emailAria")}
+        className="inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-all hover:-translate-y-1 hover:border-terracotta hover:bg-terracotta hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
       >
         <Mail className="size-5" />
       </a>

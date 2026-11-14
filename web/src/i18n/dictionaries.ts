@@ -62,6 +62,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "cart.qty": "Qté",
     "cart.size": "Taille",
     "cart.remove": "Retirer",
+    "cart.decreaseQty": "Diminuer la quantité",
+    "cart.increaseQty": "Augmenter la quantité",
     "cart.itemAdded": "Ajouté au panier",
     "cart.items": "{count} article(s)",
 
@@ -103,6 +105,15 @@ export const dictionaries: Record<Locale, Dict> = {
     "auth.signin": "Se connecter",
     "auth.signupSuccess": "Compte créé. Connectez-vous.",
     "auth.signupError": "Cet email est déjà utilisé.",
+    "auth.continueGoogle": "Continuer avec Google",
+    "auth.googleCustomerHint": "Connectez-vous pour suivre vos commandes.",
+    "auth.googleStaffHint": "Espace réservé à l'équipe — connectez-vous avec votre compte Google.",
+    "auth.googleError": "La connexion avec Google a échoué. Veuillez réessayer.",
+    "auth.termsBefore": "En continuant, vous acceptez nos ",
+    "auth.termsConditions": "conditions de vente",
+    "auth.termsAnd": " et notre ",
+    "auth.termsPrivacy": "politique de confidentialité",
+    "auth.termsAfter": ".",
     "cta.openOsm": "Ouvrir dans la carte",
     "cta.replayIntro": "Revoir l'intro",
 
@@ -168,7 +179,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "contact.subtitle":
       "Écrivez-nous sur WhatsApp pour réserver une pièce, demander le sur-mesure ou prendre rendez-vous à l'atelier. Paiement à la livraison partout au Maroc.",
     "contact.phone": "Téléphone",
+    "contact.phoneAria": "Appeler par téléphone",
     "contact.email": "Email",
+    "contact.emailAria": "Envoyer un email",
     "contact.instagram": "Instagram",
 
     "footer.tagline": "Là où la tradition rencontre l'élégance",
@@ -181,6 +194,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.menu": "Menu de navigation de la maison de couture Maison Titrit.",
     "footer.legal":
       "Conformément à la loi marocaine 09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679), vos données personnelles sont collectées et traitées avec votre consentement, en toute transparence et de manière limitée aux finalités de commande et de communication. Vous disposez d'un droit d'accès, de rectification et d'opposition — contactez notre responsable de la protection des données.",
+
+    "legal.privacy": "Politique de confidentialité",
+    "legal.terms": "Conditions générales de vente",
 
     "detail.home": "Accueil",
     "detail.collection": "Collection",
@@ -211,6 +227,8 @@ export const dictionaries: Record<Locale, Dict> = {
 
     "lang.aria": "Changer de langue",
     "lang.switch": "Langue",
+    "theme.aria": "Changer de thème",
+    "common.close": "Fermer",
 
     "cookie.title": "Vos préférences de confidentialité",
     "cookie.body":
@@ -361,6 +379,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "cart.qty": "الكمية",
     "cart.size": "المقاس",
     "cart.remove": "إزالة",
+    "cart.decreaseQty": "تقليل الكمية",
+    "cart.increaseQty": "زيادة الكمية",
     "cart.itemAdded": "أُضيف إلى السلة",
     "cart.items": "{count} قطعة",
 
@@ -402,6 +422,15 @@ export const dictionaries: Record<Locale, Dict> = {
     "auth.signin": "تسجيل الدخول",
     "auth.signupSuccess": "تم إنشاء الحساب. سجّل الدخول.",
     "auth.signupError": "هذا البريد مستخدم بالفعل.",
+    "auth.continueGoogle": "المتابعة عبر Google",
+    "auth.googleCustomerHint": "سجّل الدخول لمتابعة طلباتك.",
+    "auth.googleStaffHint": "مساحة مخصصة للفريق — سجّل الدخول بحسابك عبر Google.",
+    "auth.googleError": "فشل تسجيل الدخول عبر Google. حاول مرة أخرى.",
+    "auth.termsBefore": "بالمتابعة، أنت توافق على ",
+    "auth.termsConditions": "شروط البيع",
+    "auth.termsAnd": " و",
+    "auth.termsPrivacy": "سياسة الخصوصية",
+    "auth.termsAfter": ".",
     "cta.openOsm": "افتح الخريطة",
     "cta.replayIntro": "أعد العرض",
 
@@ -467,7 +496,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "contact.subtitle":
       "راسلنا على واتساب لحجز قطعة، أو طلب حسب المقاس، أو موعد في المشغل. الدفع عند الاستلام في كل المغرب.",
     "contact.phone": "الهاتف",
+    "contact.phoneAria": "الاتصال عبر الهاتف",
     "contact.email": "البريد",
+    "contact.emailAria": "إرسال بريد إلكتروني",
     "contact.instagram": "إنستغرام",
 
     "footer.tagline": "حيث يلتقي الأصالة بالأناقة",
@@ -480,6 +511,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.menu": "قائمة تنقل دار خياطة ميزون تيتريت.",
     "footer.legal":
       "وفقاً للقانون المغربي 09-08 المتعلق بحماية الأشخاص الذاتيين تجاه معالجة المعطيات ذات الطابع الشخصي، وللائحة الأوروبية العامة لحماية البيانات (GDPR — 2016/679)، تُجمع بياناتكم الشخصية بموافقتكم وتُعالج بشفافية ولمصلحة الطلبيات والتواصل فقط. لكم حق الوصول والتصحيح والمعارضة — تواصوا مع مسؤول حماية البيانات لدينا.",
+
+    "legal.privacy": "سياسة الخصوصية",
+    "legal.terms": "شروط البيع العامة",
 
     "detail.home": "الرئيسية",
     "detail.collection": "المجموعة",
@@ -510,6 +544,8 @@ export const dictionaries: Record<Locale, Dict> = {
 
     "lang.aria": "تغيير اللغة",
     "lang.switch": "اللغة",
+    "theme.aria": "تغيير المظهر",
+    "common.close": "إغلاق",
 
     "cookie.title": "تفضيلاتك للخصوصية",
     "cookie.body":
@@ -657,6 +693,8 @@ export const dictionaries: Record<Locale, Dict> = {
     "cart.qty": "Qty",
     "cart.size": "Size",
     "cart.remove": "Remove",
+    "cart.decreaseQty": "Decrease quantity",
+    "cart.increaseQty": "Increase quantity",
     "cart.itemAdded": "Added to cart",
     "cart.items": "{count} item(s)",
 
@@ -698,6 +736,15 @@ export const dictionaries: Record<Locale, Dict> = {
     "auth.signin": "Sign in",
     "auth.signupSuccess": "Account created. Sign in.",
     "auth.signupError": "This email is already in use.",
+    "auth.continueGoogle": "Continue with Google",
+    "auth.googleCustomerHint": "Sign in to track your orders.",
+    "auth.googleStaffHint": "Team area — sign in with your Google account.",
+    "auth.googleError": "Sign in with Google failed. Please try again.",
+    "auth.termsBefore": "By continuing, you accept our ",
+    "auth.termsConditions": "terms of sale",
+    "auth.termsAnd": " and our ",
+    "auth.termsPrivacy": "privacy policy",
+    "auth.termsAfter": ".",
     "cta.openOsm": "Open the map",
     "cta.replayIntro": "Replay intro",
 
@@ -763,7 +810,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "contact.subtitle":
       "Message us on WhatsApp to reserve a piece, request made-to-measure, or book an atelier appointment. Cash on delivery across Morocco.",
     "contact.phone": "Phone",
+    "contact.phoneAria": "Call by phone",
     "contact.email": "Email",
+    "contact.emailAria": "Send an email",
     "contact.instagram": "Instagram",
 
     "footer.tagline": "Where tradition meets elegance",
@@ -776,6 +825,9 @@ export const dictionaries: Record<Locale, Dict> = {
     "footer.menu": "Navigation menu of the Maison Titrit couture house.",
     "footer.legal":
       "In accordance with Moroccan Law 09-08 on the protection of individuals with regard to the processing of personal data and the EU General Data Protection Regulation (GDPR — Regulation (EU) 2016/679), your personal data is collected with your consent and processed transparently, limited to order and communication purposes. You have the right to access, rectify and object — contact our data protection officer.",
+
+    "legal.privacy": "Privacy policy",
+    "legal.terms": "Terms of sale",
 
     "detail.home": "Home",
     "detail.collection": "Collection",
@@ -806,6 +858,8 @@ export const dictionaries: Record<Locale, Dict> = {
 
     "lang.aria": "Change language",
     "lang.switch": "Language",
+    "theme.aria": "Change theme",
+    "common.close": "Close",
 
     "cookie.title": "Your privacy preferences",
     "cookie.body":

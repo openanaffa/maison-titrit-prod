@@ -155,9 +155,9 @@ export function ProductDetailClient({
         {/* Back */}
         <Link
           href="/#collection"
-          className="mt-5 inline-flex items-center gap-2 font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink-soft transition-colors hover:text-terracotta dark:text-cream/70"
+          className="mt-5 inline-flex items-center gap-2 font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink-soft transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream/70"
         >
-          <ArrowLeft className="size-3.5" />
+          <ArrowLeft className="size-3.5 rtl:rotate-180" />
           {t("detail.back")}
         </Link>
 
@@ -197,9 +197,10 @@ export function ProductDetailClient({
                 {images.map((img, i) => (
                   <button
                     key={i}
+                    type="button"
                     onClick={() => setActiveImg(i)}
                     aria-label={`Image ${i + 1}`}
-                    className={`relative size-16 shrink-0 overflow-hidden rounded-sm border-2 transition-all ${
+                    className={`relative size-16 shrink-0 overflow-hidden rounded-sm border-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta ${
                       i === activeImg ? "border-terracotta" : "border-transparent opacity-70 hover:opacity-100"
                     }`}
                   >
@@ -285,7 +286,7 @@ export function ProductDetailClient({
                           setSizePrompt(false);
                         }}
                         aria-pressed={active}
-                        className={`h-11 min-w-11 rounded-full border px-4 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-all ${
+                        className={`h-11 min-w-11 rounded-full border px-4 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light ${
                           active
                             ? "border-ink bg-ink text-cream dark:border-cream dark:bg-cream dark:text-ink"
                             : "border-bronze/45 text-ink/80 hover:border-terracotta hover:text-terracotta dark:text-cream/80"
@@ -313,17 +314,19 @@ export function ProductDetailClient({
                     <button
                       type="button"
                       onClick={() => setQty((q) => Math.max(1, q - 1))}
-                      aria-label="-"
-                      className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta dark:text-cream"
+                      disabled={qty <= 1}
+                      aria-label={t("cart.decreaseQty")}
+                      className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
                     >
                       <Minus className="size-4" />
                     </button>
-                    <span className="w-10 text-center font-display text-lg text-ink dark:text-cream">{qty}</span>
+                    <span aria-live="polite" className="w-10 text-center font-display text-lg text-ink dark:text-cream">{qty}</span>
                     <button
                       type="button"
                       onClick={() => setQty((q) => Math.min(10, q + 1))}
-                      aria-label="+"
-                      className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta dark:text-cream"
+                      disabled={qty >= 10}
+                      aria-label={t("cart.increaseQty")}
+                      className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
                     >
                       <Plus className="size-4" />
                     </button>

@@ -25,12 +25,14 @@ type Order = {
 };
 
 export function CompteClient({ user, orders }: { user: CompteUser; orders: Order[] }) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const router = useRouter();
   const { toast } = useToast();
   const [name, setName] = React.useState(user.name ?? "");
   const [phone, setPhone] = React.useState(user.phone ?? "");
   const [saving, setSaving] = React.useState(false);
+
+  const dateLocale = locale === "ar" ? "ar-MA" : locale === "en" ? "en-US" : "fr-FR";
 
   async function onSave(e: React.FormEvent) {
     e.preventDefault();
@@ -62,7 +64,7 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
           {/* Profile */}
-          <div className="card-vintage rounded-sm p-6">
+          <div id="profile" className="scroll-mt-24 card-vintage rounded-sm p-6">
             <div className="flex items-center gap-3">
               <span className="inline-flex size-11 items-center justify-center rounded-full bg-bronze/20 text-bronze">
                 <User className="size-5" />
@@ -89,14 +91,15 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
                 <Label htmlFor="compte-phone" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.phone")}</Label>
                 <Input id="compte-phone" value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" className="mt-1.5 rounded-sm border-bronze/45" />
               </div>
-              <Button type="submit" disabled={saving} className="h-10 w-full rounded-full bg-ink font-label text-[0.68rem] uppercase tracking-[0.16em] text-cream hover:bg-terracotta dark:bg-cream dark:text-ink">
-                {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
+              <Button type="submit" disabled={saving} className="h-11 w-full rounded-full bg-ink font-label text-[0.68rem] uppercase tracking-[0.16em] text-cream transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:bg-cream dark:text-ink">
+                {saving ? <Loader2 className="size-4 animate-spin motion-reduce:animate-none" /> : <Check className="size-4" />}
                 {t("compte.save")}
               </Button>
             </form>
             <button
+              type="button"
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-bronze/50 py-2.5 font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink-soft hover:border-terracotta hover:text-terracotta dark:text-cream/70"
+              className="mt-4 flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-bronze/50 px-4 py-2.5 font-label text-[0.66rem] uppercase tracking-[0.16em] text-ink-soft transition-colors hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:text-cream/70"
             >
               <LogOut className="size-3.5" />
               {t("compte.signout")}
@@ -104,7 +107,7 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
           </div>
 
           {/* Orders */}
-          <div className="card-vintage rounded-sm p-6">
+          <div id="orders" className="scroll-mt-24 card-vintage rounded-sm p-6">
             <div className="flex items-center gap-3 border-b border-bronze/20 pb-4">
               <Package className="size-5 text-terracotta" />
               <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">
@@ -126,12 +129,12 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
                           {t("compte.orderNumber")} {o.number}
                         </p>
                         <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
-                          {new Date(o.createdAt).toLocaleDateString("fr-FR")} · {t("compte.items", { count: o.items.reduce((n, i) => n + i.quantity, 0) })}
+                          {new Date(o.createdAt).toLocaleDateString(dateLocale)} · {t("compte.items", { count: o.items.reduce((n, i) => n + i.quantity, 0) })}
                         </p>
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-display text-sm font-semibold text-ink dark:text-cream">
-                          {o.total.toLocaleString("fr-FR")} {o.currency}
+                          {o.total.toLocaleString(dateLocale)} {o.currency}
                         </span>
                         <StatusBadge status={o.status} />
                       </div>

@@ -1,109 +1,106 @@
 /**
- * Maison Titrit — NextAuth v4 configuration.
- *  - Credentials provider (email + password, bcrypt) — for founders/admins
- *  - Google OAuth provider — for client users (and founders)
- *  - Email magic-link provider — for client signup/login
+ * Maison Titrit — NextAuth v4 configuration (Google-only).
+ *  - Google OAuth provider — the ONLY sign-in path (customers + staff)
  *  - JWT session strategy (stateless, edge-friendly for middleware RBAC)
  *  - role + id injected into the JWT + session token
- *  - Prisma adapter for Google/Email account linking
+ *  - Prisma adapter for account linking (existing password/magic-link users
+ *    merge into their account on first Google sign-in when the email matches)
+ *
+ *  Why Google-only: one sign-in surface, no password storage/magic-link SMTP
+ *  coupling in auth. Staff roles (FOUNDER/ADMIN/MANAGER) are resolved from the
+ *  DB by email in the jwt callback — the founder must sign in with the Google
+ *  account whose email matches the seeded ADMIN_EMAIL.
  *
  *  Env vars needed (production):
  *   NEXTAUTH_URL, NEXTAUTH_SECRET
- *   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
- *   EMAIL_SERVER_HOST/PORT/USER/PASSWORD
- *   ADMIN_EMAIL, ADMIN_PASSWORD (for the seeded founder)
+ *   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET  (required — fail fast if unset)
  */
 import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import bcrypt from "bcryptjs";
-import nodemailer from "nodemailer";
+import { randomBytes } from "crypto";
 import { db } from "@/lib/db";
-import { magicLinkEmail } from "@/lib/email-templates";
-import { smtpServer } from "@/lib/notify";
 
 /**
- * Branded magic-link verification email.
- *  - dev: log the link to the server console (no SMTP needed)
- *  - prod: send via nodemailer with the EMAIL_SERVER_* config below
+ * `next build` runs with NODE_ENV=production and imports this module while
+ * collecting page data — but a build has no runtime env to validate against
+ * (and on Vercel, missing env should fail the deploy loudly at boot instead).
+ * Skip the fail-fast during the build phase only; real server boots still throw.
  */
-async function sendVerificationRequest({
-  identifier,
-  url,
-  provider,
-}: {
-  identifier: string;
-  url: string;
-  provider: { from: string };
-}) {
-  if (process.env.NODE_ENV !== "production") {
-    console.log("\n━━━━━━━━━━━━━━ MAGIC LINK ━━━━━━━━━━━━━━");
-    console.log(`  To: ${identifier}`);
-    console.log(`  From: ${provider.from}`);
-    console.log(`  URL:  ${url}`);
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-    return;
+function isBuildPhase(): boolean {
+  return process.env.NEXT_PHASE === "phase-production-build";
+}
+
+/**
+ * Resolve the NextAuth secret at config load time.
+ *  - Production: fail fast when NEXTAUTH_SECRET is unset — never ship a
+ *    committed fallback secret (that is an auth/security anti-pattern).
+ *  - Development: use an ephemeral per-process random value so auth keeps
+ *    working without a committed literal; it regenerates on each restart,
+ *    which is fine because dev sessions are throwaway.
+ */
+function resolveNextAuthSecret(): string {
+  const envSecret = process.env.NEXTAUTH_SECRET;
+  if (process.env.NODE_ENV === "production" && !isBuildPhase()) {
+    if (!envSecret) {
+      throw new Error(
+        "NEXTAUTH_SECRET is required in production. Set it before starting the app (never commit a fallback secret).",
+      );
+    }
+    return envSecret;
   }
-  const transport = nodemailer.createTransport(smtpServer);
-  const { subject, html, text } = magicLinkEmail(url);
-  await transport.sendMail({ to: identifier, from: provider.from, subject, html, text });
+  return envSecret ?? randomBytes(32).toString("hex");
+}
+
+/**
+ * Google is the only provider — if credentials are missing in production the
+ * app must fail loudly at boot instead of rendering a sign-in button that can
+ * never succeed. In development (and during `next build`, which has no runtime
+ * env) we degrade to an empty provider list so boot/build still succeed.
+ */
+function resolveGoogleProvider() {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  if (clientId && clientSecret) {
+    return [
+      GoogleProvider({
+        clientId,
+        clientSecret,
+        // Merge Google accounts into an existing user with the same email
+        // (seeded founder, prior magic-link signups) instead of erroring.
+        allowDangerousEmailAccountLinking: true,
+      }),
+    ];
+  }
+  if (process.env.NODE_ENV === "production" && !isBuildPhase()) {
+    throw new Error(
+      "GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET are required in production — Google is the only sign-in method. Configure them in the Google Cloud console (Web OAuth client) and set them in the deployment env before starting the app.",
+    );
+  }
+  // Silent during `next build` (page-data workers import this module without
+  // runtime env); warn only for a real dev boot so `next dev` stays usable.
+  if (!isBuildPhase()) {
+    console.warn(
+      "[auth] GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET not set — Google sign-in is disabled in this dev session.",
+    );
+  }
+  return [];
 }
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  // Always have a secret: prefer env, fall back to a dev-only value so auth
-  // never throws "NO_SECRET" (which surfaces as error=Configuration to users).
-  secret: process.env.NEXTAUTH_SECRET || "titrit-dev-fallback-secret-please-set-NEXTAUTH_SECRET-in-production",
+  secret: resolveNextAuthSecret(),
   pages: {
     signIn: "/auth/signin",
     signOut: "/auth/signout",
     verifyRequest: "/auth/verify",
     error: "/auth/error",
   },
-  providers: [
-    CredentialsProvider({
-      name: "Email & mot de passe",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Mot de passe", type: "password" },
-      },
-      async authorize(creds) {
-        if (!creds?.email || !creds?.password) return null;
-        const email = creds.email.toLowerCase().trim();
-        const user = await db.user.findUnique({ where: { email } });
-        if (!user || !user.password) return null;
-        const ok = await bcrypt.compare(creds.password, user.password);
-        if (!ok) return null;
-        // Minimal user; role is merged in the jwt callback (fetched from DB).
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name ?? undefined,
-          image: user.image ?? undefined,
-        };
-      },
-    }),
-    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
-      ? [
-          GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            allowDangerousEmailAccountLinking: true,
-          }),
-        ]
-      : []),
-    EmailProvider({
-      server: smtpServer,
-      from: process.env.EMAIL_FROM ?? "Maison Titrit <hello@maisontitrit.com>",
-      sendVerificationRequest,
-    }),
-  ],
+  providers: resolveGoogleProvider(),
   callbacks: {
     /** Inject user id + role into the JWT (fetch role from DB to stay fresh). */
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       // On first sign-in (user present), seed id + email, then fetch role from DB.
       if (user) {
         token.id = user.id;

@@ -19,6 +19,7 @@ import {
   PenLine,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isFounderRole } from "@/lib/roles";
 import { useT } from "@/i18n/locale-provider";
 
 type NavItem = {
@@ -54,7 +55,7 @@ export function AdminShell({
   const { t } = useT();
   const [open, setOpen] = React.useState(false);
 
-  const isFounder = user.role === "FOUNDER";
+  const isFounder = isFounderRole(user.role);
   const items = NAV.filter((n) => !n.founderOnly || isFounder);
 
   return (

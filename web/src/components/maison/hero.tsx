@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { site } from "@/config/site";
 import { whatsappCatalog, whatsappContactLink } from "@/lib/brand";
 import {
-  AmazighStar,
   NeedleThread,
   OrnamentDivider,
   WhatsAppIcon,
@@ -21,15 +20,6 @@ export function Hero() {
     <section
       className="vintage-paper relative overflow-hidden pt-10 sm:pt-16"
     >
-      <AmazighStar
-        className="pointer-events-none absolute -left-10 top-24 size-40 text-bronze/10"
-        strokeWidth={1}
-      />
-      <AmazighStar
-        className="pointer-events-none absolute -right-12 bottom-10 size-56 text-terracotta/10"
-        strokeWidth={1}
-      />
-
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-16 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:px-8 lg:pb-24 lg:pt-10">
         {/* Left — text */}
         <div className="order-2 lg:order-1">
@@ -46,7 +36,7 @@ export function Hero() {
             {t("hero.wordmark")}
           </h1>
 
-          <p className="script-tagline mt-3 text-2xl text-terracotta sm:text-3xl">
+          <p className="script-tagline mt-3 text-xl text-terracotta sm:text-2xl">
             {t("hero.script")}
           </p>
 

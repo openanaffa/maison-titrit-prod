@@ -15,13 +15,16 @@ export function TitritLogo({
   showWordmark = true,
   logoClassName,
   wordmarkClassName,
+  wordmarkContainerClassName,
   variant = "auto",
 }: {
   className?: string;
   showWordmark?: boolean;
   logoClassName?: string;
   wordmarkClassName?: string;
-  variant?: "auto" | "gold" | "mono";
+  /** Classes for the stacked wordmark + Tifinagh column (e.g. hide below lg). */
+  wordmarkContainerClassName?: string;
+  variant?: "auto" | "mono";
 }) {
   const { t } = useT();
   return (
@@ -30,6 +33,8 @@ export function TitritLogo({
         src="/assets/titrit-logo-gold.svg"
         alt=""
         aria-hidden="true"
+        width={44}
+        height={44}
         className={cn(
           "titrit-logo-mark h-9 w-9 shrink-0 select-none sm:h-11 sm:w-11",
           variant === "mono" && "titrit-logo-mark--mono",
@@ -38,7 +43,12 @@ export function TitritLogo({
         draggable={false}
       />
       {showWordmark && (
-        <span className="flex flex-col leading-none">
+        <span
+          className={cn(
+            "flex flex-col leading-none",
+            wordmarkContainerClassName,
+          )}
+        >
           <span
             className={cn(
               "wordmark text-[0.95rem] uppercase text-ink sm:text-[1.05rem] dark:text-cream",
