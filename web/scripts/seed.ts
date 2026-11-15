@@ -78,13 +78,14 @@ async function main() {
 
   const founderEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
 
-  await db.$transaction(async (tx) => {
-    const seedRefs = PRODUCTS.map((product) => product.ref);
-    const targetCategories = await tx.category.findMany({
+  // Individual upserts (not one big transaction) so Supabase PgBouncer's
+  // short interactive-transaction timeout never kills the seed.
+  const seedRefs = PRODUCTS.map((product) => product.ref);
+  const targetCategories = await db.category.findMany({
       where: { slug: { in: CATEGORIES.map((category) => category.slug) } },
       select: { id: true },
     });
-    const unrelatedProducts = await tx.product.findMany({
+    const unrelatedProducts = await db.product.findMany({
       where: {
         categoryId: { in: targetCategories.map((category) => category.id) },
         ref: { notIn: seedRefs },
@@ -99,7 +100,7 @@ async function main() {
 
     const categoryIds = new Map<string, string>();
     for (const category of CATEGORIES) {
-      const saved = await tx.category.upsert({
+      const saved = await db.category.upsert({
         where: { slug: category.slug },
         update: { name: category.name, position: category.position ?? 0 },
         create: { name: category.name, slug: category.slug, position: category.position ?? 0 },
@@ -132,7 +133,7 @@ async function main() {
         position: image.position ?? 0,
       }));
 
-      await tx.product.upsert({
+      await db.product.upsert({
         where: { ref: product.ref },
         update: { ...fields, images: { deleteMany: {}, create: images } },
         create: { ref: product.ref, ...fields, images: { create: images } },
@@ -142,7 +143,7 @@ async function main() {
     for (const category of CATEGORIES) {
       const categoryId = categoryIds.get(category.name);
       if (!categoryId) throw new Error(`Missing database category for ${category.name}.`);
-      const count = await tx.product.count({ where: { categoryId } });
+      const count = await db.product.count({ where: { categoryId } });
       if (count !== 7) {
         throw new Error(`Expected exactly 7 products in ${category.name} after seed; found ${count}.`);
       }
@@ -159,7 +160,7 @@ async function main() {
         published: true,
         publishedAt,
       };
-      await tx.article.upsert({
+      await db.article.upsert({
         where: { slug: article.slug },
         update: fields,
         create: { slug: article.slug, ...fields },
@@ -167,9 +168,9 @@ async function main() {
     }
 
     if (founderEmail) {
-      const existing = await tx.user.findUnique({ where: { email: founderEmail } });
+      const existing = await db.user.findUnique({ where: { email: founderEmail } });
       if (!existing) {
-        await tx.user.create({
+        await db.user.create({
           data: {
             email: founderEmail,
             name: "Maison Titrit",
@@ -178,7 +179,6 @@ async function main() {
         });
       }
     }
-  });
 
   console.log(
     `Supabase content sync complete: ${PRODUCTS.length} products, ${CATEGORIES.length} categories, ${SEED_ARTICLES.length} articles.`,
