@@ -48,6 +48,7 @@ create policy "profile_read_self_or_staff" on public."User"
   );
 
 drop policy if exists "founder_manage_invites" on public."Invite";
+drop policy if exists "owner_manage_invites" on public."Invite";
 create policy "owner_manage_invites" on public."Invite"
   for all to authenticated
   using ((select public.app_owner()))
@@ -100,6 +101,7 @@ create policy "staff_manage_articles" on public."Article"
   with check ((select public.app_catalog_writer()) or (select public.requesting_user_role()) = 'MARKETER');
 
 drop policy if exists "founder_manage_settings" on public."Setting";
+drop policy if exists "owner_manage_settings" on public."Setting";
 create policy "owner_manage_settings" on public."Setting"
   for all to authenticated
   using ((select public.app_owner()))
