@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -12,11 +12,15 @@ export async function PATCH(req: Request) {
     const body = await req.json();
     const name = String(body.name ?? "").trim() || null;
     const phone = String(body.phone ?? "").trim() || null;
-    const updated = await db.user.update({
-      where: { id: user.id },
-      data: { name, phone },
-      select: { id: true, name: true, phone: true },
-    });
+    const supabase = await createSupabaseServerClient();
+    const { data: updated } = await supabase
+      .from("User")
+      .update({ name, phone, updatedAt: new Date().toISOString() })
+      .eq("id", user.id)
+      .select("id,name,phone")
+      .maybeSingle()
+      .throwOnError();
+    if (!updated) return NextResponse.json({ error: "Profil introuvable." }, { status: 404 });
     return NextResponse.json({ user: updated });
   } catch (e) {
     console.error("PATCH /api/compte/profile failed", e);

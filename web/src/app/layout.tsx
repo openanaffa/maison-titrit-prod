@@ -4,7 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LocaleProvider } from "@/i18n/locale-provider";
-import { NextAuthProvider } from "@/components/maison/next-auth-provider";
+import { SupabaseAuthProvider } from "@/components/maison/supabase-auth-provider";
 import { AnnouncementBar } from "@/components/maison/announcement-bar";
 import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
 import {
@@ -188,7 +188,7 @@ gtag('consent', 'default', {
         </a>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <LocaleProvider>
-            <NextAuthProvider>
+            <SupabaseAuthProvider>
               <AttributionCapture />
               <AnnouncementBar />
               <AnalyticsScripts
@@ -202,7 +202,7 @@ gtag('consent', 'default', {
               {children}
               <CookieConsent />
               <CookiePreferencesButton />
-            </NextAuthProvider>
+            </SupabaseAuthProvider>
           </LocaleProvider>
         </ThemeProvider>
         <Toaster />

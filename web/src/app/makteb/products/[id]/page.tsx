@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { db } from "@/lib/db";
 import { ProductForm, type ProductFormValues } from "@/components/admin/product-form";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -10,14 +10,18 @@ export default async function EditProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [product, categories] = await Promise.all([
-    db.product.findUnique({
-      where: { id },
-      include: { images: { orderBy: { position: "asc" } } },
-    }),
-    db.category.findMany({ orderBy: { position: "asc" } }),
+  const supabase = await createSupabaseServerClient();
+  const [{ data: product }, { data: categories }] = await Promise.all([
+    supabase.from("Product").select("*").eq("id", id).maybeSingle().throwOnError(),
+    supabase.from("Category").select("*").order("position", { ascending: true }).throwOnError(),
   ]);
   if (!product) notFound();
+  const { data: images } = await supabase
+    .from("Image")
+    .select("*")
+    .eq("productId", id)
+    .order("position", { ascending: true })
+    .throwOnError();
 
   const initial: ProductFormValues = {
     ref: product.ref,
@@ -34,7 +38,7 @@ export default async function EditProductPage({
     inStock: product.inStock,
     featured: product.featured,
     categoryId: product.categoryId,
-    images: product.images.map((i) => ({ url: i.url, alt: i.alt ?? "" })),
+    images: images.map((i) => ({ url: i.url, alt: i.alt ?? "" })),
   };
 
   return (

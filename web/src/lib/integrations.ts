@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
-import { db } from "@/lib/db";
 import { analytics as siteAnalytics } from "@/config/site";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
 
 /* ============================================================================
  *  Integration settings — runtime-configurable trackers & domain verifications
@@ -138,11 +138,23 @@ export function sanitizeVerification(input: unknown): VerificationConfig {
 /* --- Read (server) --------------------------------------------------------- */
 
 async function readRow(key: string): Promise<Record<string, unknown>> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return {};
+  }
   try {
-    const row = await db.setting.findUnique({ where: { key } });
+    const { data: row, error } = await createSupabasePublicClient()
+      .from("Setting")
+      .select("value")
+      .eq("key", key)
+      .maybeSingle();
+    if (error) {
+      console.error(`Unable to load public integration setting "${key}"`, error);
+      return {};
+    }
     return row ? (JSON.parse(row.value) as Record<string, unknown>) : {};
-  } catch {
-    return {}; // DB unavailable (e.g. build prerender with placeholder URL)
+  } catch (error) {
+    console.error(`Unable to load public integration setting "${key}"`, error);
+    return {};
   }
 }
 

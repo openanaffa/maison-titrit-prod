@@ -1,14 +1,20 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { randomUUID } from "node:crypto";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   const { user, allowed } = await requirePermission("products:read");
   if (!user || !allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
-  const categories = await db.category.findMany({ orderBy: { position: "asc" } });
+  const supabase = await createSupabaseServerClient();
+  const { data: categories } = await supabase
+    .from("Category")
+    .select("*")
+    .order("position", { ascending: true })
+    .throwOnError();
   return NextResponse.json({ categories });
 }
 
@@ -20,10 +26,27 @@ export async function POST(req: Request) {
     const name = String(body.name ?? "").trim();
     if (!name) return NextResponse.json({ error: "Nom requis." }, { status: 400 });
     const slug = body.slug?.trim() ? slugify(body.slug) : slugify(name);
-    const max = await db.category.aggregate({ _max: { position: true } });
-    const category = await db.category.create({
-      data: { name, slug, position: (max._max.position ?? 0) + 1 },
-    });
+    const supabase = await createSupabaseServerClient();
+    const { data: lastCategory } = await supabase
+      .from("Category")
+      .select("position")
+      .order("position", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .throwOnError();
+    const { data: category } = await supabase
+      .from("Category")
+      .insert({
+        id: randomUUID(),
+        name,
+        slug,
+        position: (lastCategory?.position ?? 0) + 1,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })
+      .select("*")
+      .single()
+      .throwOnError();
     return NextResponse.json({ category });
   } catch (e) {
     console.error("POST /api/admin/categories failed", e);

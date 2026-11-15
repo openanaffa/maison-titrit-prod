@@ -10,109 +10,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/**
- * ============================================================================
- * RBAC roles (stored as String — SQLite has no native enum)
- * FOUNDER  — full control (manages admins, content, settings)
- * ADMIN    — products, orders, categories, content
- * MANAGER  — orders + products read/update (no user management)
- * CUSTOMER — client account (orders, profile)
- * ==========================================================================
- */
+/* ============================================================================
+ *  RBAC roles (stored as String — SQLite has no native enum)
+ *  FOUNDER  — full control (manages admins, content, settings)
+ *  ADMIN    — products, orders, categories, content
+ *  MANAGER  — orders + products read/update (no user management)
+ *  CUSTOMER — client account (orders, profile)
+ * ==========================================================================*/
 // enum Role { FOUNDER ADMIN MANAGER CUSTOMER }  // (Postgres-ready; String for SQLite)
 
-/**
- * ============================================================================
- * NextAuth — user/account/session/verification/token (Prisma adapter)
- * ==========================================================================
- */
+/* ============================================================================
+ *  Supabase Auth identities are linked to these application profiles by ID.
+ *  ==========================================================================*/
 model User {
   id            String    @id @default(cuid())
+  supabaseId    String?   @unique
   name          String?
   email         String    @unique
   emailVerified DateTime?
   image         String?
-  password      String? // for credentials provider (bcrypt hash)
   role          String    @default("CUSTOMER") // FOUNDER | ADMIN | MANAGER | CUSTOMER
   phone         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts    Account[]
-  sessions    Session[]
-  orders      Order[]
-  invitesSent Invite[]  @relation("InviteSender")
-  invitesUsed Invite?   @relation("InviteUsedBy")
+  orders        Order[]
+  invitesSent   Invite[]   @relation("InviteSender")
+  invitesUsed   Invite?    @relation("InviteUsedBy")
 
   @@index([role])
 }
 
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-  @@index([userId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-/**
- * ============================================================================
- * Invite-only admin onboarding
- * FOUNDER/ADMIN generate a signed token; recipient completes signup.
- * ==========================================================================
- */
+/* ============================================================================
+ *  Invite-only admin onboarding
+ *  FOUNDER/ADMIN generate a signed token; recipient completes signup.
+ *  ==========================================================================*/
 model Invite {
-  id        String    @id @default(cuid())
+  id        String   @id @default(cuid())
   email     String
   role      String    @default("ADMIN") // FOUNDER | ADMIN | MANAGER | CUSTOMER
-  token     String    @unique
+  token     String   @unique
   invitedBy String
-  sender    User      @relation("InviteSender", fields: [invitedBy], references: [id], onDelete: Cascade)
-  usedById  String?   @unique
+  sender    User     @relation("InviteSender", fields: [invitedBy], references: [id], onDelete: Cascade)
+  usedById  String?  @unique
   usedBy    User?     @relation("InviteUsedBy", fields: [usedById], references: [id])
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
 
   @@index([email])
 }
 
-/**
- * ============================================================================
- * Catalogue: Category + Product + Image (1:N)
- * ==========================================================================
- */
+/* ============================================================================
+ *  Catalogue: Category + Product + Image (1:N)
+ *  ==========================================================================*/
 model Category {
   id        String   @id @default(cuid())
   name      String   @unique
@@ -125,24 +76,24 @@ model Category {
 }
 
 model Product {
-  id          String    @id @default(cuid())
-  ref         String    @unique
+  id          String   @id @default(cuid())
+  ref         String   @unique
   name        String
   nameAmazigh String?
-  description String // long story / rich text (markdown)
-  shortStory  String // catalogue card copy
+  description String   // long story / rich text (markdown)
+  shortStory  String   // catalogue card copy
   materials   String
-  colors      String // "Beige · Bleu Ciel · Rose Baby"
-  sizes       String // "S · M · L · XL"
-  price       Int // MAD
-  salePrice   Int? // optional promotional price
-  currency    String    @default("MAD")
-  inStock     Boolean   @default(true)
-  featured    Boolean   @default(false)
+  colors      String   // "Beige · Bleu Ciel · Rose Baby"
+  sizes       String   // "S · M · L · XL"
+  price       Int      // MAD
+  salePrice   Int?     // optional promotional price
+  currency    String   @default("MAD")
+  inStock     Boolean  @default(true)
+  featured    Boolean  @default(false)
   categoryId  String?
   category    Category? @relation(fields: [categoryId], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   images Image[]
   items  OrderItem[]
@@ -165,17 +116,15 @@ model Image {
   @@index([productId])
 }
 
-/**
- * ============================================================================
- * Orders (COD) + items
- * ==========================================================================
- */
+/* ============================================================================
+ *  Orders (COD) + items
+ *  ==========================================================================*/
 // enum OrderStatus { PENDING CONFIRMED SHIPPED DELIVERED CANCELLED }  // (Postgres-ready; String for SQLite)
 
 model Order {
-  id            String   @id @default(cuid())
-  number        String   @unique // human-friendly, e.g. MT-1042
-  status        String   @default("PENDING") // PENDING | CONFIRMED | SHIPPED | DELIVERED | CANCELLED
+  id            String    @id @default(cuid())
+  number        String    @unique // human-friendly, e.g. MT-1042
+  status        String    @default("PENDING") // PENDING | CONFIRMED | SHIPPED | DELIVERED | CANCELLED
   customerName  String
   customerPhone String
   customerEmail String?
@@ -188,12 +137,12 @@ model Order {
   utmContent    String?
   utmTerm       String?
   total         Int
-  currency      String   @default("MAD")
-  payment       String   @default("COD")
+  currency      String    @default("MAD")
+  payment       String    @default("COD")
   userId        String?
-  user          User?    @relation(fields: [userId], references: [id])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  user          User?     @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   items OrderItem[]
 
@@ -208,7 +157,7 @@ model OrderItem {
   productId String
   ref       String // snapshot
   name      String // snapshot
-  price     Int // snapshot (unit)
+  price     Int    // snapshot (unit)
   quantity  Int
   size      String?
 
@@ -218,35 +167,31 @@ model OrderItem {
   @@index([orderId])
 }
 
-/**
- * ============================================================================
- * Content — Articles (blog) for reach + SEO
- * ==========================================================================
- */
+/* ============================================================================
+ *  Content — Articles (blog) for reach + SEO
+ *  ==========================================================================*/
 model Article {
-  id          String    @id @default(cuid())
-  slug        String    @unique
+  id          String   @id @default(cuid())
+  slug        String   @unique
   title       String
   excerpt     String
-  body        String // markdown
+  body        String   // markdown
   coverImage  String?
-  authorName  String    @default("Maison Titrit")
-  tags        String // comma-separated
-  published   Boolean   @default(false)
+  authorName  String   @default("Maison Titrit")
+  tags        String   // comma-separated
+  published   Boolean  @default(false)
   publishedAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([published])
 }
 
-/**
- * ============================================================================
- * Key-value settings (announcement bar, store hours override, etc.)
- * ==========================================================================
- */
+/* ============================================================================
+ *  Key-value settings (announcement bar, store hours override, etc.)
+ *  ==========================================================================*/
 model Setting {
   key       String   @id
-  value     String // JSON string
+  value     String   // JSON string
   updatedAt DateTime @updatedAt
 }
