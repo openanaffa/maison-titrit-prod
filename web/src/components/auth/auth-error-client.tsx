@@ -48,7 +48,10 @@ export function AuthErrorClient() {
     setParams(p);
   }, []);
 
-  const copy = params?.error ? MESSAGES[params.error] ?? GENERIC : GENERIC;
+  // Prefer the finer-grained error_code (e.g. unexpected_failure) over the
+  // coarse error family (server_error / access_denied).
+  const key = params?.code ?? params?.error;
+  const copy = key ? MESSAGES[key] ?? GENERIC : GENERIC;
 
   return (
     <section className="vintage-paper flex min-h-[100svh] items-center justify-center px-4 pt-12 pb-44 sm:pb-40">
