@@ -51,6 +51,16 @@ describe("RBAC role helpers", () => {
     expect(can("MARKETER", "users:manage")).toBe(false);
   });
 
+  test("integrations:write covers marketers and owners, not other staff", () => {
+    expect(can("MARKETER", "integrations:write")).toBe(true);
+    expect(can("FOUNDER", "integrations:write")).toBe(true);
+    expect(can("DEVELOPER", "integrations:write")).toBe(true);
+    expect(can("ADMIN", "integrations:write")).toBe(false);
+    expect(can("MANAGER", "integrations:write")).toBe(false);
+    expect(can("CUSTOMER", "integrations:write")).toBe(false);
+    expect(can(null, "integrations:write")).toBe(false);
+  });
+
   test("workspace-owner actions are owner-only", () => {
     for (const action of ["users:manage", "invites:manage", "settings:write"] as const) {
       expect(can("FOUNDER", action)).toBe(true);

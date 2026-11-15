@@ -1,123 +1,32 @@
 ﻿"use client";
 
 import * as React from "react";
-import { Megaphone, Clock, Loader2, Check, Activity, ShieldCheck, Trash2 } from "lucide-react";
+import { Megaphone, Clock, Loader2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { AmazighStar, OrnamentDivider } from "@/components/maison/motifs";
+import { AmazighStar } from "@/components/maison/motifs";
+import { IntegrationsForm } from "@/components/admin/integrations-form";
 
 const DAYS = [
-  { key: "mon-fri", label: "Lundi â€” Vendredi" },
+  { key: "mon-fri", label: "Lundi — Vendredi" },
   { key: "sat", label: "Samedi" },
   { key: "sun", label: "Dimanche" },
 ];
 
-type AnalyticsForm = { gtmId: string; ga4Id: string; fbPixelId: string; pinterestTagId: string; tiktokPixelId: string; youtubeChannelId: string };
-type VerificationForm = {
-  google: string;
-  facebook: string;
-  instagram: string;
-  tiktok: string;
-  customText: string; // paste <meta â€¦> tags â€” parsed server-side
-};
-
-const VERIFICATION_HINTS: { key: keyof Omit<VerificationForm, "customText">; label: string; meta: string }[] = [
-  { key: "google", label: "Google Search Console", meta: "google-site-verification" },
-  { key: "facebook", label: "Facebook (Meta)", meta: "facebook-domain-verification" },
-  { key: "instagram", label: "Instagram", meta: "instagram-site-verification" },
-  { key: "tiktok", label: "TikTok", meta: "tiktok-domain-verification" },
-];
-
-const EMPTY_ANALYTICS: AnalyticsForm = { gtmId: "", ga4Id: "", fbPixelId: "", pinterestTagId: "", tiktokPixelId: "", youtubeChannelId: "" };
-const EMPTY_VERIFICATION: VerificationForm = {
-  google: "",
-  facebook: "",
-  instagram: "",
-  tiktok: "",
-  customText: "",
-};
-
 export function SettingsClient() {
   const { toast } = useToast();
   const [ann, setAnn] = React.useState({ active: false, message: "", link: "" });
-  const [ints, setInts] = React.useState({
-    analytics: EMPTY_ANALYTICS,
-    verification: EMPTY_VERIFICATION,
-  });
-  const [savedIds, setSavedIds] = React.useState<string[]>([]);
-  const [saving, setSaving] = React.useState<"ann" | "hours" | "ints" | null>(null);
+  const [saving, setSaving] = React.useState<"ann" | null>(null);
 
   React.useEffect(() => {
     fetch("/api/settings/announcement")
       .then((r) => r.json())
       .then((d) => setAnn(d.bar ?? { active: false, message: "", link: "" }))
       .catch(() => {});
-    fetchIntegrations();
   }, []);
-
-  function fetchIntegrations() {
-    fetch("/api/settings/integrations")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.error) return;
-        const storedA = d.analyticsValue ?? {};
-        const customTags: { name: string; content: string }[] = d.verificationValue?.custom ?? [];
-        setInts({
-          analytics: {
-            gtmId: storedA.gtmId ?? d.effective?.analytics?.gtmId ?? "",
-            ga4Id: storedA.ga4Id ?? d.effective?.analytics?.ga4Id ?? "",
-            fbPixelId: storedA.fbPixelId ?? d.effective?.analytics?.fbPixelId ?? "",
-            pinterestTagId: storedA.pinterestTagId ?? d.effective?.analytics?.pinterestTagId ?? "",
-            tiktokPixelId: storedA.tiktokPixelId ?? d.effective?.analytics?.tiktokPixelId ?? "",
-            youtubeChannelId: storedA.youtubeChannelId ?? d.effective?.analytics?.youtubeChannelId ?? "",
-          },
-          verification: {
-            google: d.verificationValue?.google ?? "",
-            facebook: d.verificationValue?.facebook ?? "",
-            instagram: d.verificationValue?.instagram ?? "",
-            tiktok: d.verificationValue?.tiktok ?? "",
-            customText: customTags
-              .map((m) => `<meta name="${m.name}" content="${m.content}" />`)
-              .join("\n"),
-          },
-        });
-        const effective = d.effective?.analytics ?? {};
-        setSavedIds(
-          Object.values(effective).filter((v) => typeof v === "string" && v) as string[],
-        );
-      })
-      .catch(() => {});
-  }
-
-  async function saveIntegrations(e: React.FormEvent) {
-    e.preventDefault();
-    setSaving("ints");
-    const res = await fetch("/api/settings/integrations", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        analytics: ints.analytics,
-        verification: {
-          google: ints.verification.google,
-          facebook: ints.verification.facebook,
-          instagram: ints.verification.instagram,
-          tiktok: ints.verification.tiktok,
-          custom: ints.verification.customText, // raw paste, sanitized server-side
-        },
-      }),
-    });
-    const json = await res.json();
-    setSaving(null);
-    if (res.ok) {
-      toast({ title: "IntÃ©grations enregistrÃ©es â€” actives dans ~60s sur tout le site." });
-      fetchIntegrations();
-    } else {
-      toast({ title: json.error || "Erreur", variant: "destructive" });
-    }
-  }
 
   async function saveAnnouncement(e: React.FormEvent) {
     e.preventDefault();
@@ -128,16 +37,16 @@ export function SettingsClient() {
       body: JSON.stringify(ann),
     });
     setSaving(null);
-    if (res.ok) toast({ title: "Annonce enregistrÃ©e" });
+    if (res.ok) toast({ title: "Annonce enregistrée" });
     else toast({ title: "Erreur", variant: "destructive" });
   }
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">RÃ©glages</h1>
+        <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">Réglages</h1>
         <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
-          Barre d'annonce, horaires, et intÃ©grations.
+          Barre d&apos;annonce, horaires, et intégrations.
         </p>
       </div>
 
@@ -148,7 +57,7 @@ export function SettingsClient() {
             <Megaphone className="size-5" />
           </span>
           <div>
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Barre d'annonce</h2>
+            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Barre d&apos;annonce</h2>
             <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
               Affiche un message en haut du site (dissmissible).
             </p>
@@ -172,7 +81,7 @@ export function SettingsClient() {
               onChange={(e) => setAnn({ ...ann, message: e.target.value })}
               rows={2}
               maxLength={200}
-              placeholder="Livraison gratuite Ã  Casablanca ce week-end !"
+              placeholder="Livraison gratuite à Casablanca ce week-end !"
               className="mt-1.5 rounded-sm border-bronze/45"
             />
           </div>
@@ -182,7 +91,7 @@ export function SettingsClient() {
               id="ann-link"
               value={ann.link}
               onChange={(e) => setAnn({ ...ann, link: e.target.value })}
-              placeholder="/#collection ou https://â€¦"
+              placeholder="/#collection ou https://…"
               className="mt-1.5 rounded-sm border-bronze/45"
             />
           </div>
@@ -211,156 +120,18 @@ export function SettingsClient() {
             <li key={d.key} className="flex items-center justify-between border-b border-bronze/15 pb-2 font-serif text-sm">
               <span className="text-ink-soft dark:text-cream/80">{d.label}</span>
               <span className={d.key === "sun" ? "text-terracotta" : "text-ink dark:text-cream"}>
-                {d.key === "sun" ? "FermÃ©" : d.key === "sat" ? "10:00 â€” 21:00" : "10:00 â€” 20:00"}
+                {d.key === "sun" ? "Fermé" : d.key === "sat" ? "10:00 — 21:00" : "10:00 — 20:00"}
               </span>
             </li>
           ))}
         </ul>
         <p className="mt-4 font-serif text-xs text-ink-soft/70 dark:text-cream/60">
-          L'Ã©dition des horaires arrive dans une prochaine itÃ©ration.
+          L&apos;édition des horaires arrive dans une prochaine itération.
         </p>
       </div>
 
-      {/* Integrations: trackers */}
-      <form onSubmit={saveIntegrations} className="card-vintage rounded-sm p-6 space-y-8">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
-            <Activity className="size-5" />
-          </span>
-          <div>
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Trackers &amp; mesure</h2>
-            <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
-              Actifs seulement si le visiteur accepte les cookies correspondants.
-            </p>
-          </div>
-        </div>
-
-        {savedIds.length > 0 && (
-          <p className="font-serif text-xs text-ink-soft/75 dark:text-cream/60">
-            IDs effectifs : {savedIds.join(" Â· ")}
-          </p>
-        )}
-
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div>
-            <Label htmlFor="int-gtm" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Tag Manager</Label>
-            <Input
-              id="int-gtm"
-              value={ints.analytics.gtmId}
-              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, gtmId: e.target.value } })}
-              placeholder="GTM-XXXXXXX"
-              className="mt-1.5 rounded-sm border-bronze/45"
-            />
-          </div>
-          <div>
-            <Label htmlFor="int-ga4" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Analytics 4</Label>
-            <Input
-              id="int-ga4"
-              value={ints.analytics.ga4Id}
-              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, ga4Id: e.target.value } })}
-              placeholder="G-XXXXXXXXXX"
-              className="mt-1.5 rounded-sm border-bronze/45"
-            />
-          </div>
-          <div>
-            <Label htmlFor="int-fb" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel Facebook</Label>
-            <Input
-              id="int-fb"
-              value={ints.analytics.fbPixelId}
-              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, fbPixelId: e.target.value } })}
-              placeholder="123456789012345"
-              className="mt-1.5 rounded-sm border-bronze/45"
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pinterest Tag</Label>
-            <Input
-              value={ints.analytics.pinterestTagId}
-              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, pinterestTagId: e.target.value } })}
-              placeholder="1234567890123"
-              className="mt-1.5 rounded-sm border-bronze/45"
-            />
-          </div>
-          <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel TikTok</Label>
-            <Input
-              value={ints.analytics.tiktokPixelId}
-              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, tiktokPixelId: e.target.value } })}
-              placeholder="1234567890"
-              className="mt-1.5 rounded-sm border-bronze/45"
-            />
-          </div>
-          <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">YouTube channel</Label>
-            <Input
-              value={ints.analytics.youtubeChannelId}
-              onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, youtubeChannelId: e.target.value } })}
-              placeholder="@maison__titrit"
-              className="mt-1.5 rounded-sm border-bronze/45"
-            />
-          </div>
-        </div>
-
-        {/* Domain verification */}
-        <div className="flex items-center gap-3 pt-2">
-          <span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
-            <ShieldCheck className="size-5" />
-          </span>
-          <div>
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">VÃ©rification du domaine</h2>
-            <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
-              Collez le code fourni par chaque plateforme.
-            </p>
-          </div>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {VERIFICATION_HINTS.map((h) => (
-            <div key={h.key}>
-              <Label htmlFor={`int-${h.key}`} className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{h.label}</Label>
-              <Input
-                id={`int-${h.key}`}
-                value={ints.verification[h.key]}
-                onChange={(e) =>
-                  setInts({
-                    ...ints,
-                    verification: { ...ints.verification, [h.key]: e.target.value },
-                  })
-                }
-                placeholder={h.meta}
-                className="mt-1.5 rounded-sm border-bronze/45 font-mono text-[0.72rem]"
-              />
-              <p className="mt-1 font-serif text-[0.68rem] text-ink-soft/60 dark:text-cream/50">
-                &lt;meta name=&quot;{h.meta}&quot; /&gt; â€” collez le contenu (ou la balise entiÃ¨re, on extrait le code).
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div>
-          <Label htmlFor="int-custom" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">
-            Autres balises de vÃ©rification (Pinterest, Bing, Clarityâ€¦)
-          </Label>
-          <Textarea
-            id="int-custom"
-            value={ints.verification.customText}
-            onChange={(e) => setInts({ ...ints, verification: { ...ints.verification, customText: e.target.value } })}
-            rows={3}
-            placeholder={"<meta name=\"p:domain_verify\" content=\"abcdef123456789\" />"}
-            className="mt-1.5 rounded-sm border-bronze/45 font-mono text-[0.72rem]"
-          />
-          <p className="mt-1 font-serif text-[0.68rem] text-ink-soft/60 dark:text-cream/50">
-            Une balise par ligne â€” seul le couple nom/contenu est extrait (l'HTML brut n'est jamais stockÃ©).
-          </p>
-        </div>
-
-        <Button type="submit" disabled={saving === "ints"} className="h-10 rounded-full bg-ink font-label text-[0.68rem] uppercase tracking-[0.16em] text-cream hover:bg-terracotta dark:bg-cream dark:text-ink">
-          {saving === "ints" ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
-          Enregistrer les intÃ©grations
-        </Button>
-      </form>
+      {/* Integrations: trackers + domain verification */}
+      <IntegrationsForm mode="full" />
 
       {/* SEO files */}
       <div className="card-vintage rounded-sm p-6">
@@ -371,7 +142,7 @@ export function SettingsClient() {
           <div>
             <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Fichiers SEO</h2>
             <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
-              Auto-gÃ©nÃ©rÃ©s
+              Auto-générés
             </p>
           </div>
         </div>

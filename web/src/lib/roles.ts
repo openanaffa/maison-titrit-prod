@@ -39,6 +39,10 @@ export function can(role: string | null | undefined, action: Permission): boolea
       return isStaffRole(role);
     case "content:write":
       return role === "FOUNDER" || role === "DEVELOPER" || role === "ADMIN" || role === "MARKETER";
+    case "integrations:write":
+      // Marketing trackers (GTM, pixels…) — marketers manage tags; domain
+      // verifications stay behind settings:write (owners only).
+      return isOwnerRole(role) || role === "MARKETER";
     case "users:manage":
     case "invites:manage":
     case "settings:write":
@@ -57,6 +61,7 @@ export type Permission =
   | "categories:write"
   | "content:write"
   | "customers:read"
+  | "integrations:write"
   | "users:manage"
   | "invites:manage"
   | "settings:write";
