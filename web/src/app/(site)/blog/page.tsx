@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { getPublishedArticles } from "@/lib/blog";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
@@ -14,7 +15,8 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function BlogPage() {
-  const posts = await getPublishedArticles();
+  const locale = (await cookies()).get("titrit-locale")?.value ?? "fr";
+  const posts = await getPublishedArticles(locale);
 
   return (
     <section className="vintage-paper min-h-[80vh] py-16 sm:py-20">

@@ -157,11 +157,12 @@ async function main() {
         coverImage: article.coverImage,
         authorName: "Maison Titrit",
         tags: article.tags.join(", "),
+        locale: article.locale,
         published: true,
         publishedAt,
       };
       await db.article.upsert({
-        where: { slug: article.slug },
+        where: { slug_locale: { slug: article.slug, locale: article.locale } },
         update: fields,
         create: { slug: article.slug, ...fields },
       });

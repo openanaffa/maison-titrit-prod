@@ -26,8 +26,9 @@ describe("Maison Titrit seed content", () => {
   });
 
   test("has one distinct, linked Craft feature for every product and both editorial categories", () => {
-    const features = SEED_ARTICLES.filter((article) => article.productRef);
-    expect(SEED_ARTICLES).toHaveLength(PRODUCTS.length + 2);
+    const frArticles = SEED_ARTICLES.filter((article) => article.locale === "fr");
+    const features = frArticles.filter((article) => article.productRef);
+    expect(SEED_ARTICLES).toHaveLength((PRODUCTS.length + 2) * 3);
     expect(features).toHaveLength(PRODUCTS.length);
     expect(new Set(features.map((article) => article.slug)).size).toBe(PRODUCTS.length);
     expect(new Set(features.map((article) => article.productRef)).size).toBe(PRODUCTS.length);
@@ -39,7 +40,7 @@ describe("Maison Titrit seed content", () => {
     }
 
     for (const category of ["Maison", "Craft"]) {
-      expect(SEED_ARTICLES.some((article) => article.category === category && !article.productRef)).toBe(true);
+      expect(frArticles.some((article) => article.category === category && !article.productRef)).toBe(true);
     }
     for (const article of SEED_ARTICLES) {
       expect(existsSync(resolve(publicDir, article.coverImage.slice(1)))).toBe(true);

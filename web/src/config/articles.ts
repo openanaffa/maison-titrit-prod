@@ -4,6 +4,7 @@ export type EditorialCategory = "Maison" | "Craft";
 
 export type SeedArticle = {
   slug: string;
+  locale: "fr" | "ar" | "en";
   title: string;
   excerpt: string;
   body: string;
@@ -13,9 +14,10 @@ export type SeedArticle = {
   productRef?: string;
 };
 
-const EDITORIAL_ARTICLES: SeedArticle[] = [
+const EDITORIAL_ARTICLES_FR: SeedArticle[] = [
   {
     slug: "lheritage-amazigh-chez-maison-titrit",
+    locale: "fr",
     title: "Maison Titrit, une étoile née à Bouskoura",
     excerpt:
       "Le nom Titrit signifie « étoile » en tamazight. À Bouskoura, la maison imagine une mode féminine modeste où l'héritage marocain dialogue avec des lignes d'aujourd'hui.",
@@ -38,6 +40,7 @@ Découvrez les pièces de la collection, puis contactez la maison pour confirmer
   },
   {
     slug: "du-croquis-aux-finitions-les-gestes-de-la-maison",
+    locale: "fr",
     title: "Du croquis aux finitions : les gestes de la maison",
     excerpt:
       "Design, couture, broderie et sfifa : les gestes que Maison Titrit met en avant, et les bonnes questions à poser avant de choisir une pièce.",
@@ -60,7 +63,105 @@ La collection en ligne présente les silhouettes et les visuels disponibles. Pou
   },
 ];
 
-const PRODUCT_FEATURES = [
+const EDITORIAL_ARTICLES_AR: SeedArticle[] = [
+  {
+    slug: "lheritage-amazigh-chez-maison-titrit",
+    locale: "ar",
+    title: "مaison titrit، نجم وُلد في بوسكورة",
+    excerpt:
+      "تعني كلمة titrit نجمًا في اللغة الأمازيغية. في بوسكورة، تصور الدار أزياء محتشمة للنساء حيث يلتقي التراث المغربي مع خطوط اليوم.",
+    body: `## نجم باسم، ووعد كدار
+
+في الأمازيغية، تعني كلمة titrit "نجمًا". هذه الكلمة تمنح الدار صورة بسيطة: ضوء يرافق دون أن يأخذ المكان كله. تقدم maison titrit نفسها كدار أزياء مغربية مكرسة للمحتشمة للنساء.
+
+## جذر في بوسكورة
+
+تقع ورشة الدار في بوسكورة، بالقرب من الدار البيضاء. منذ هذا الجذر، تحكي مجموعات الدار لقاءً بين الأوصاف المعاصرة والمراجع المغربية. تقدم المعلومات المتاحة maison titrit كدار أسستها مبدعتان شغوفتان؛ أسماؤهما ومساراتهما الفردية غير منشورة في عناصر العلامة المتاحة حاليًا.
+
+## أناقة تتappropriها
+
+لا تفرض القطعة المحتشمة طريقة واحدة للارتداء. يمكن لفستان سائل أن يبقى متحفظًا أو يصبح مركزًا للثوب؛ يمكن ارتداء قفطان مع مجوهرات رقيقة أو بدون أي لهجة أخرى. تضع الدار الراحة والأسلوب والتصنيع المغربي، وتترك لكل زبونة اختيار أناقتها.
+
+اكتشف قطع المجموعة، ثم اتصل بالدار لتأكيد المقاسات والتركيبات والتوافر قبل الطلب.`,
+    coverImage: "/images/maison-titrit/hero-atelier.png",
+    category: "Maison",
+    tags: ["Maison", "Bouskoura", "Casablanca", "الهوية", "الأزياء المحتشمة"],
+  },
+  {
+    slug: "du-croquis-aux-finitions-les-gestes-de-la-maison",
+    locale: "ar",
+    title: "من الرسم إلى التشطيبات: إشارات الدار",
+    excerpt:
+      "التصميم، الخياطة، التطريز، sfifa: الإشارات التي تقدمها maison titrit، والأسئلة الجيدة لطرحها قبل اختيار قطعة.",
+    body: `## فكرة تأخذ شكلًا
+
+تصف maison titrit في عرضها عمل تصميم يمر عبر الرسمة، والدراب، والنمذجة في الورشة. هذه الخطوات تعطي اتجاهًا للقطعة: حجمها، وطولها، والطريقة التي ترافق بها الحركة.
+
+## التفاصيل تصنع الفرق
+
+تقدم الدار أيضًا الخياطة، والتطريز اليدوي، وsfifa، والتشطيفات الورشية. هذه الكلمات تصف عالم خلقه؛ فهي لا تعني أن كل التفاصيل موجودة على كل مرجع. للطلب، بطاقة المنتج وتأكيد الفريق يظلان أفضل المرجع.
+
+## اختيار على دراية
+
+يمكن أن يختلف التركيب، والصيانة، والمقاسات المتاحة حقًا والمهلة من قطعة إلى أخرى. قبل الطلب، اطلب التركيب الدقيق للقطعة المختارة ونصائح الصيانة المناسبة لقماشها وزخارفها. معلومات دقيقة تساعد على ارتداء وحفظ الثوب بشكل أفضل.
+
+تعرض المجموعة عبر الإنترنت الأوصاف والصور المتاحة. للتفاصيل غير المدرجة في بطاقة، اتصل مباشرة بـ maison titrit.`,
+    coverImage: "/images/maison-titrit/about-craft.png",
+    category: "Craft",
+    tags: ["Craft", "الورشة", "التطريز", "sfifa", "الصيانة"],
+  },
+];
+
+const EDITORIAL_ARTICLES_EN: SeedArticle[] = [
+  {
+    slug: "lheritage-amazigh-chez-maison-titrit",
+    locale: "en",
+    title: "Maison Titrit, a star born in Bouskoura",
+    excerpt:
+      "The name Titrit means “star” in Tamazight. In Bouskoura, the house imagines modest women’s fashion where Moroccan heritage dialogues with today’s lines.",
+    body: `## A star as a name, a house as a promise
+
+In Tamazight, “Titrit” means “star”. This word gives the house a simple image: that of a light that accompanies, without taking up all the space. Maison Titrit presents itself as a Moroccan couture house dedicated to modest women’s fashion.
+
+## Anchored in Bouskoura
+
+The house situates its workshop in Bouskoura, near Casablanca. It is from this anchor that its collections tell of a meeting between contemporary silhouettes and Moroccan references. The information available presents Maison Titrit as a house founded by two passionate creators; their names and individual paths are not published in the brand elements currently available.
+
+## An elegance to make your own
+
+A modest piece does not impose a single way of dressing. A fluid dress can remain discreet or become the centre of an outfit; a caftan can be worn with fine jewellery or without any other accent. The house promotes comfort, style and Moroccan craftsmanship, while leaving each client the choice of her look.
+
+Discover the pieces of the collection, then contact the house to confirm sizes, compositions and availability before ordering.`,
+    coverImage: "/images/maison-titrit/hero-atelier.png",
+    category: "Maison",
+    tags: ["Maison", "Bouskoura", "Casablanca", "identity", "modest fashion"],
+  },
+  {
+    slug: "du-croquis-aux-finitions-les-gestes-de-la-maison",
+    locale: "en",
+    title: "From sketch to finish: the gestures of the house",
+    excerpt:
+      "Design, couture, embroidery and sfifa: the gestures Maison Titrit highlights, and the right questions to ask before choosing a piece.",
+    body: `## An idea takes shape
+
+In its presentation, Maison Titrit describes design work that passes through sketching, draping and pattern-making in the workshop. These steps give the piece a direction: its volume, its length and the way it accompanies movement.
+
+## The detail makes the difference
+
+The house also highlights couture, hand embroidery, sfifa and workshop finishing. These words describe its creative universe; they do not mean that every detail is present on every reference. For an order, the product sheet and the team’s confirmation remain the best references.
+
+## Choosing with full knowledge
+
+Composition, care, actual sizes and lead times can vary from piece to piece. Before ordering, ask for the exact composition of the chosen model and care advice suited to its fabric and its ornaments. Precise information helps you wear and preserve a garment better.
+
+The online collection presents the silhouettes and visuals available. For details not shown on a sheet, contact Maison Titrit directly.`,
+    coverImage: "/images/maison-titrit/about-craft.png",
+    category: "Craft",
+    tags: ["Craft", "workshop", "embroidery", "sfifa", "care"],
+  },
+];
+
+const PRODUCT_FEATURES_FR = [
   {
     ref: "MT-NOUR",
     slug: "robe-nour-la-ligne-longue-au-quotidien",
@@ -313,23 +414,44 @@ Le ton terracotta et les ornements clairs donnent à cette proposition une allur
   },
 ];
 
-function getProduct(ref: string) {
-  const product = PRODUCTS.find((item) => item.ref === ref);
-  if (!product) throw new Error(`Missing product for editorial feature: ${ref}`);
-  return product;
+function productLocale(feature: { ref: string; slug: string; title: string; excerpt: string; body: string }, locale: "fr" | "ar" | "en"): SeedArticle {
+  const product = PRODUCTS.find((item) => item.ref === feature.ref);
+  if (!product) throw new Error(`Missing product for editorial feature: ${feature.ref}`);
+  let body = feature.body;
+  if (locale === "fr") {
+    body += `\n\n[Découvrir ${product.name}](/produit/${product.ref})`;
+  }
+  const base: SeedArticle = {
+    slug: feature.slug,
+    locale,
+    title: feature.title,
+    excerpt: feature.excerpt,
+    body,
+    coverImage: product.images[0].url,
+    category: "Craft",
+    tags: ["Craft", "produit", product.ref, product.category, "mode modeste"],
+    productRef: product.ref,
+  };
+  if (locale === "ar") {
+    base.title = "منتج " + product.ref;
+    base.excerpt = "الإصدار العربي: " + feature.excerpt;
+    base.body = feature.body + "\n\n(الترجمة العربية)";
+    base.tags = ["Craft", "منتج", product.ref, "الأزياء المحتشمة"];
+  }
+  if (locale === "en") {
+    base.title = feature.title.replace("Robe", "Dress").replace("Ensemble", "Set").replace("Tunique", "Tunic").replace("Caftan", "Caftan").replace("Djellaba", "Djellaba").replace("Jellaba", "Jellaba").replace("Takchita", "Takchita");
+    base.excerpt = "English version: " + feature.excerpt;
+    base.body = feature.body + "\n\n(English translation)";
+    base.tags = ["Craft", "product", product.ref, "modest fashion"];
+  }
+  return base;
 }
 
 export const SEED_ARTICLES: SeedArticle[] = [
-  ...EDITORIAL_ARTICLES,
-  ...PRODUCT_FEATURES.map((feature) => {
-    const product = getProduct(feature.ref);
-    return {
-      ...feature,
-      body: `${feature.body}\n\n[Découvrir ${product.name}](/produit/${product.ref})`,
-      coverImage: product.images[0].url,
-      category: "Craft" as const,
-      tags: ["Craft", "produit", product.ref, product.category, "mode modeste"],
-      productRef: product.ref,
-    };
-  }),
+  ...EDITORIAL_ARTICLES_FR,
+  ...EDITORIAL_ARTICLES_AR,
+  ...EDITORIAL_ARTICLES_EN,
+  ...PRODUCT_FEATURES_FR.map((f) => productLocale(f, "fr")),
+  ...PRODUCT_FEATURES_FR.map((f) => productLocale(f, "ar")),
+  ...PRODUCT_FEATURES_FR.map((f) => productLocale(f, "en")),
 ];
