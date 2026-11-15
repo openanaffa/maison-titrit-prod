@@ -28,6 +28,7 @@ export const dictionaries: Record<Locale, Dict> = {
   fr: {
     "nav.maison": "La Maison",
     "nav.collection": "Collection",
+    "nav.journal": "Journal",
     "nav.atelier": "Atelier",
     "nav.find": "Nous trouver",
     "nav.contact": "Contact",
@@ -264,6 +265,7 @@ export const dictionaries: Record<Locale, Dict> = {
     "admin.nav.settings": "Réglages",
     "admin.nav.blog": "Journal",
     "admin.nav.marketing": "Marketing",
+    "admin.nav.tags": "Tags",
     "admin.nav.team": "Équipe",
     "admin.marketing.title": "Attribution marketing",
     "admin.marketing.subtitle": "D'où viennent vos commandes — sources, campagnes et revenus associés.",
@@ -387,6 +389,7 @@ export const dictionaries: Record<Locale, Dict> = {
   ar: {
     "nav.maison": "الدار",
     "nav.collection": "المجموعة",
+    "nav.journal": "المدونة",
     "nav.atelier": "المشغل",
     "nav.find": "موقعنا",
     "nav.contact": "اتصل بنا",
@@ -620,6 +623,7 @@ export const dictionaries: Record<Locale, Dict> = {
     "admin.nav.settings": "الإعدادات",
     "admin.nav.blog": "المدونة",
     "admin.nav.marketing": "التسويق",
+    "admin.nav.tags": "الوسوم",
     "admin.nav.team": "الفريق",
     "admin.marketing.title": "إسناد المسويق",
     "admin.marketing.subtitle": "من أين تأتي طلباتكم — المصادر والحملات والإيرادات المرتبطة بها.",
@@ -743,6 +747,7 @@ export const dictionaries: Record<Locale, Dict> = {
   en: {
     "nav.maison": "The House",
     "nav.collection": "Collection",
+    "nav.journal": "Journal",
     "nav.atelier": "Atelier",
     "nav.find": "Find us",
     "nav.contact": "Contact",
@@ -978,6 +983,7 @@ export const dictionaries: Record<Locale, Dict> = {
     "admin.nav.settings": "Settings",
     "admin.nav.blog": "Journal",
     "admin.nav.marketing": "Marketing",
+    "admin.nav.tags": "Tags",
     "admin.nav.team": "Team",
     "admin.marketing.title": "Marketing attribution",
     "admin.marketing.subtitle": "Where your orders come from — sources, campaigns and the revenue they carry.",

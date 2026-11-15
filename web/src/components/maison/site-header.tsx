@@ -41,10 +41,10 @@ import { signOut } from "@/lib/supabase/auth-client";
  * resolved theme rather than a hardcoded background.
  */
 const navLeft = site.nav.filter((item) =>
-  ["#maison", "#collection", "#atelier"].includes(item.href),
+  ["/#maison", "/#collection", "/blog"].includes(item.href),
 );
 const navRight = site.nav.filter((item) =>
-  ["#nous-trouver", "#contact"].includes(item.href),
+  ["/#atelier", "/#nous-trouver", "/#contact"].includes(item.href),
 );
 
 const linkClass =
@@ -161,7 +161,7 @@ export function SiteHeader() {
                 </SheetDescription>
                 <div className="flex h-full flex-col p-6">
                   <Link
-                    href="#accueil"
+                    href="/#accueil"
                     aria-label="Maison Titrit — accueil"
                     onClick={() => setOpen(false)}
                   >
@@ -222,7 +222,7 @@ export function SiteHeader() {
 
           {/* Center — mark + wordmark, stacked Tifinagh accent below */}
           <Link
-            href="#accueil"
+            href="/#accueil"
             aria-label="Maison Titrit — accueil"
             className="absolute left-1/2 z-10 flex -translate-x-1/2 items-center justify-center drop-shadow-[0_4px_12px_rgba(184,145,90,0.4)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light motion-reduce:transition-none lg:static lg:translate-x-0 lg:justify-self-center lg:drop-shadow-none"
           >

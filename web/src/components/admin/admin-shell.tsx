@@ -17,6 +17,7 @@ import {
   ExternalLink,
   PenLine,
   Megaphone,
+  Tags,
   UserCog,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -35,6 +36,7 @@ type NavItem = {
 const NAV: NavItem[] = [
   { href: "/makteb", icon: LayoutDashboard, labelKey: "admin.nav.dashboard" },
   { href: "/makteb/marketing", icon: Megaphone, labelKey: "admin.nav.marketing" },
+  { href: "/makteb/tags", icon: Tags, labelKey: "admin.nav.tags", permission: "integrations:write" },
   { href: "/makteb/products", icon: Package, labelKey: "admin.nav.products", badgeKey: "products", permission: "products:read" },
   { href: "/makteb/orders", icon: ShoppingCart, labelKey: "admin.nav.orders", badgeKey: "pendingOrders", permission: "orders:read" },
   { href: "/makteb/categories", icon: FolderTree, labelKey: "admin.nav.categories", badgeKey: "categories", permission: "categories:read" },
