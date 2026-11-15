@@ -172,7 +172,8 @@ model OrderItem {
  * ==========================================================================*/
 model Article {
   id          String   @id @default(cuid())
-  slug        String   @unique
+  slug        String
+  locale      String   @default("fr")
   title       String
   excerpt     String
   body        String   // markdown
@@ -185,6 +186,7 @@ model Article {
   updatedAt   DateTime @updatedAt
 
   @@index([published])
+  @@unique([slug, locale])
 }
 
 /* ============================================================================

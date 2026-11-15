@@ -73,6 +73,13 @@ export function LanguageSwitcher({
                 onClick={() => {
                   setLocale(l.code as Locale);
                   setOpen(false);
+                  // Persist locale as a cookie so server-rendered pages
+                  // (blog, etc.) serve the right language on next load.
+                  try {
+                    document.cookie = `titrit-locale=${l.code}; path=/; max-age=31536000; SameSite=Lax`;
+                  } catch {
+                    /* ignore */
+                  }
                 }}
                 className={`flex w-full min-h-11 items-center justify-between gap-2 px-3 text-start transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-bronze-light ${
                   active

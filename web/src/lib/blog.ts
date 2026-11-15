@@ -1,13 +1,13 @@
 import { db } from "@/lib/db";
 
-/** Published blog articles, newest first. */
-export async function getPublishedArticles() {
+/** Published blog articles for a locale, newest first. */
+export async function getPublishedArticles(locale = "fr") {
   if (!process.env.DATABASE_URL) {
     return [];
   }
   try {
     return await db.article.findMany({
-      where: { published: true },
+      where: { published: true, locale },
       orderBy: { publishedAt: "desc" },
     });
   } catch {
@@ -17,12 +17,12 @@ export async function getPublishedArticles() {
   }
 }
 
-export async function getPublishedArticle(slug: string) {
+export async function getPublishedArticle(slug: string, locale = "fr") {
   if (!process.env.DATABASE_URL) {
     return null;
   }
   try {
-    return await db.article.findFirst({ where: { slug, published: true } });
+    return await db.article.findFirst({ where: { slug, locale, published: true } });
   } catch {
     return null;
   }
