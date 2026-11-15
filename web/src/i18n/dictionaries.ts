@@ -21,6 +21,11 @@ export const LOCALES: { code: Locale; label: string; short: string; dir: "ltr" |
 
 export const DEFAULT_LOCALE: Locale = "fr";
 
+/** Resolve an arbitrary (possibly bogus) locale string to a known locale. */
+export function resolveLocale(value: string | null | undefined): Locale {
+  return value && dictionaries[value as Locale] ? (value as Locale) : DEFAULT_LOCALE;
+}
+
 type Dict = Record<string, string>;
 
 export const dictionaries: Record<Locale, Dict> = {
