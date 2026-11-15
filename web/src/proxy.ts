@@ -28,7 +28,8 @@ export default async function proxy(request: NextRequest) {
   });
 
   const { data, error } = await supabase.auth.getUser();
-  if (error && error.status !== 401) {
+  // 400 AuthSessionMissingError = anonymous visitor with no session — expected, not an error.
+  if (error && error.status !== 401 && error.status !== 400) {
     console.error("Unable to verify Supabase auth session in proxy", error);
   }
 
