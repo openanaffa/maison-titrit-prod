@@ -1,9 +1,11 @@
 import { CategoriesClient } from "@/components/admin/categories-client";
+import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function MaktebCategoriesPage() {
+  await requirePagePermission("categories:read");
   const supabase = await createSupabaseServerClient();
   const [{ data: cats }, { data: products }] = await Promise.all([
     supabase.from("Category").select("*").order("position", { ascending: true }).throwOnError(),
