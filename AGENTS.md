@@ -27,6 +27,7 @@ bun run build         # next build
 - Private pages (`/panier`, `/checkout`, `/compte`, `/auth/*`, `/makteb`) are noindexed — keep it that way.
 - `react-hooks/set-state-in-effect` is intentionally off in `web/eslint.config.mjs` (hydration-gated mount reads); the TODO to refactor those sites and re-enable is in the audit comment there.
 - Env files are gitignored everywhere (`.env.example` ships instead). Secret leak check before pushing: `git ls-files | grep -i '\.env'`.
+- **`bun.lock` must stay `lockfileVersion: 1`**: Vercel's build container installs with bundled Bun 1.3.x, which cannot read the v2 format Bun ≥1.4 writes (it warns "Ignoring lockfile" and builds non-reproducibly). Regenerate the lockfile only with Bun 1.3.x (`packageManager` is pinned accordingly) until Vercel ships Bun ≥1.4 in the build image.
 - Content split: products/orders/users/pricing live in the web app's own Prisma tables; so does the blog (`Article`, edited at `/makteb/blog`).
 
 ## Verification bar
