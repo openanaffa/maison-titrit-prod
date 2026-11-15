@@ -1,9 +1,11 @@
 import { ProductForm, type ProductFormValues } from "@/components/admin/product-form";
+import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function NewProductPage() {
+  await requirePagePermission("products:read");
   const supabase = await createSupabaseServerClient();
   const { data: categories } = await supabase
     .from("Category")

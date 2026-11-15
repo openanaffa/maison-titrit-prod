@@ -1,6 +1,7 @@
 /**
  * Server-side auth helpers — verify Supabase sessions and resolve app roles.
  */
+import { redirect } from "next/navigation";
 import type { Permission } from "@/lib/roles";
 import { can, isStaffRole } from "@/lib/roles";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -8,7 +9,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export async function getSession() {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getUser();
-  if (error && error.status !== 401) {
+  // 400 AuthSessionMissingError = anonymous visitor with no session — expected, not an error.
+  if (error && error.status !== 401 && error.status !== 400) {
     console.error("Unable to verify Supabase auth session", error);
   }
   return data.user;
@@ -43,4 +45,14 @@ export async function requirePermission(action: Permission) {
   if (!user) return { user: null, ok: false as const, allowed: false };
   const allowed = can(user.role, action);
   return { user, ok: true as const, allowed };
+}
+
+/**
+ * Server-component guard: redirect back to /makteb when the current user
+ * lacks the permission (nav hiding is not enough — protect by URL too).
+ */
+export async function requirePagePermission(action: Permission) {
+  const { user, allowed } = await requirePermission(action);
+  if (!user || !allowed) redirect("/makteb");
+  return user;
 }

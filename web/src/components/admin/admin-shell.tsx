@@ -16,9 +16,11 @@ import {
   Sparkles,
   ExternalLink,
   PenLine,
+  Megaphone,
+  UserCog,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { isFounderRole } from "@/lib/roles";
+import { can, type Permission } from "@/lib/roles";
 import { useT } from "@/i18n/locale-provider";
 import { signOut } from "@/lib/supabase/auth-client";
 
@@ -27,17 +29,19 @@ type NavItem = {
   icon: React.ElementType;
   labelKey: string;
   badgeKey?: "pendingOrders" | "products" | "customers" | "categories";
-  founderOnly?: boolean;
+  permission?: Permission;
 };
 
 const NAV: NavItem[] = [
   { href: "/makteb", icon: LayoutDashboard, labelKey: "admin.nav.dashboard" },
-  { href: "/makteb/products", icon: Package, labelKey: "admin.nav.products", badgeKey: "products" },
-  { href: "/makteb/orders", icon: ShoppingCart, labelKey: "admin.nav.orders", badgeKey: "pendingOrders" },
-  { href: "/makteb/categories", icon: FolderTree, labelKey: "admin.nav.categories", badgeKey: "categories" },
+  { href: "/makteb/marketing", icon: Megaphone, labelKey: "admin.nav.marketing" },
+  { href: "/makteb/products", icon: Package, labelKey: "admin.nav.products", badgeKey: "products", permission: "products:read" },
+  { href: "/makteb/orders", icon: ShoppingCart, labelKey: "admin.nav.orders", badgeKey: "pendingOrders", permission: "orders:read" },
+  { href: "/makteb/categories", icon: FolderTree, labelKey: "admin.nav.categories", badgeKey: "categories", permission: "categories:read" },
   { href: "/makteb/blog", icon: PenLine, labelKey: "admin.nav.blog" },
-  { href: "/makteb/customers", icon: Users, labelKey: "admin.nav.customers", badgeKey: "customers", founderOnly: true },
-  { href: "/makteb/settings", icon: Settings, labelKey: "admin.nav.settings", founderOnly: true },
+  { href: "/makteb/customers", icon: Users, labelKey: "admin.nav.customers", badgeKey: "customers", permission: "customers:read" },
+  { href: "/makteb/team", icon: UserCog, labelKey: "admin.nav.team", permission: "users:manage" },
+  { href: "/makteb/settings", icon: Settings, labelKey: "admin.nav.settings", permission: "settings:write" },
 ];
 
 type AdminUser = { id: string; name: string | null; email: string; role: string; image?: string | null; phone?: string | null };
@@ -55,8 +59,7 @@ export function AdminShell({
   const { t } = useT();
   const [open, setOpen] = React.useState(false);
 
-  const isFounder = isFounderRole(user.role);
-  const items = NAV.filter((n) => !n.founderOnly || isFounder);
+  const items = NAV.filter((n) => !n.permission || can(user.role, n.permission));
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
