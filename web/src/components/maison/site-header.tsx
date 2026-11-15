@@ -174,7 +174,7 @@ export function SiteHeader() {
                     <ThemeToggle />
                   </div>
                   {/* Hairline link list — one row per section, 44px+ targets */}
-                  <nav className="mt-6 flex flex-col">
+                  <nav className="mt-6 flex flex-col" aria-label={t("footer.menu")}>
                     {site.nav.map((item) => (
                       <SheetClose asChild key={item.href}>
                         <a
@@ -226,11 +226,9 @@ export function SiteHeader() {
             className="absolute left-1/2 z-10 flex -translate-x-1/2 items-center justify-center drop-shadow-[0_4px_12px_rgba(184,145,90,0.4)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light motion-reduce:transition-none lg:static lg:translate-x-0 lg:justify-self-center lg:drop-shadow-none"
           >
             <TitritLogo
-              showWordmark
-              className="gap-0 lg:gap-3"
-              logoClassName="h-16 w-16 sm:h-[4.5rem] sm:w-[4.5rem] lg:h-11 lg:w-11"
-              wordmarkClassName="hidden lg:block"
-              wordmarkContainerClassName="hidden lg:flex"
+              showWordmark={false}
+              className="gap-0"
+              logoClassName="h-12 w-12 sm:h-14 sm:w-14 lg:h-10 lg:w-10"
             />
           </Link>
 

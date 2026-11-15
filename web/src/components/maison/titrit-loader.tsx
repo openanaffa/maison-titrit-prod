@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useReducedMotion } from "framer-motion";
 import { useT } from "@/i18n/locale-provider";
 
 /**
@@ -16,7 +15,15 @@ const DURATION_MS = 3200;
 export function TitritLoader() {
   const { t } = useT();
   const [visible, setVisible] = React.useState(false);
-  const reduce = useReducedMotion();
+  const [reduce, setReduce] = React.useState(false);
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduce(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   React.useEffect(() => {
     if (reduce) return;
