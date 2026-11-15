@@ -9,7 +9,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export async function getSession() {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getUser();
-  if (error && error.status !== 401) {
+  // 400 AuthSessionMissingError = anonymous visitor with no session — expected, not an error.
+  if (error && error.status !== 401 && error.status !== 400) {
     console.error("Unable to verify Supabase auth session", error);
   }
   return data.user;
