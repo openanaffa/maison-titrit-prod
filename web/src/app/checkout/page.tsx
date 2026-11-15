@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/lib/cart";
 import { useT } from "@/i18n/locale-provider";
 import { site } from "@/config/site";
-import { useSession } from "next-auth/react";
+import { useSupabaseAuth } from "@/components/maison/supabase-auth-provider";
 import { AmazighStar, OrnamentDivider, WhatsAppIcon } from "@/components/maison/motifs";
 import { trackBeginCheckout, trackPurchase } from "@/lib/analytics";
 import { getAttribution } from "@/lib/analytics";
@@ -19,15 +19,21 @@ import { getAttribution } from "@/lib/analytics";
 export default function CheckoutPage() {
   const { t } = useT();
   const router = useRouter();
-  const { data: session } = useSession();
+  const { user } = useSupabaseAuth();
+  const email = user?.email ?? "";
+  const name = typeof user?.user_metadata?.name === "string"
+    ? user.user_metadata.name
+    : typeof user?.user_metadata?.full_name === "string"
+      ? user.user_metadata.full_name
+      : "";
   const items = useCart((s) => s.items);
   const clear = useCart((s) => s.clear);
   const total = items.reduce((s, i) => s + i.price * i.qty, 0);
 
   const [form, setForm] = React.useState({
-    name: session?.user?.name ?? "",
+    name,
     phone: "",
-    email: session?.user?.email ?? "",
+    email,
     city: "",
     address: "",
     notes: "",
@@ -36,6 +42,15 @@ export default function CheckoutPage() {
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState<{ number: string; whatsapp: string } | null>(null);
   const [utm, setUtm] = React.useState<Record<string, string> | null>(null);
+
+  React.useEffect(() => {
+    if (!user) return;
+    setForm((current) => ({
+      ...current,
+      name: current.name || name,
+      email: current.email || email,
+    }));
+  }, [email, name, user]);
 
   // Capture UTM attribution on first visit (consent-gated via sessionStorage)
   React.useEffect(() => {
@@ -181,7 +196,7 @@ export default function CheckoutPage() {
         <form onSubmit={onSubmit} className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">
           {/* Form fields */}
           <div className="space-y-5">
-            {!session?.user && (
+            {!user && (
               <div className="rounded-sm bg-bronze/10 p-4 font-serif text-sm text-ink-soft dark:text-cream/75">
                 <Link href={`/auth/signin?callbackUrl=/checkout`} className="font-display font-semibold text-terracotta hover:underline">
                   {t("auth.signin")}

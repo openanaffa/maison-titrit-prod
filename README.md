@@ -49,8 +49,8 @@ bun run build                    # next build
 
 ## Environment variables (web)
 
-Required: `DATABASE_URL`, `NEXTAUTH_URL`, `NEXTAUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `R2_*` (uploads). `ADMIN_EMAIL` and `ADMIN_PASSWORD` are optional and used only to create a founder account when none exists.
-**Full table with optional vars** (Brevo SMTP email, Google OAuth, GTM/GA4/Meta Pixel) → [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+Required: `DATABASE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SITE_URL`, and `R2_*` (uploads). `ADMIN_EMAIL` optionally seeds the founder's application role; create the sign-in identity through Supabase Auth.
+**Auth, RLS, and optional environment setup** (Brevo SMTP, analytics) → [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## Verification bar
 
@@ -80,7 +80,7 @@ Do, in order, verifying each step before the next:
      catalog/article content without deleting orders, users, or unrelated records.
 4. Vercel: link the repo, set Root Directory = web/, build is wired in web/vercel.json
    (`cd .. && bun install` + `bun run vercel:build`).
-   Set env vars per docs/DEPLOYMENT.md (DATABASE_URL, NEXTAUTH_URL/SECRET,
+   Set env vars per docs/DEPLOYMENT.md (DATABASE_URL, Supabase public URL/key,
    NEXT_PUBLIC_SITE_URL, R2_* for media).
    Deploy to production for maisontitrit.com and
    verify: fonts render, /produit/MT-LORA, /blog, /makteb redirects to sign-in,

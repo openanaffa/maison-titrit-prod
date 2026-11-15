@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { db } from "@/lib/db";
 import { ArticleForm, type ArticleFormValues } from "@/components/admin/article-form";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +10,13 @@ export default async function EditArticlePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const article = await db.article.findUnique({ where: { id } });
+  const supabase = await createSupabaseServerClient();
+  const { data: article } = await supabase
+    .from("Article")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle()
+    .throwOnError();
   if (!article) notFound();
   const initial: ArticleFormValues = {
     slug: article.slug,

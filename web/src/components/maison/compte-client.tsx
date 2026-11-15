@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { User, Package, LogOut, Loader2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { site } from "@/config/site";
 import { AmazighStar, OrnamentDivider } from "@/components/maison/motifs";
+import { signOut } from "@/lib/supabase/auth-client";
 
 type CompteUser = { id: string; name: string | null; email: string; phone: string | null; role: string };
 type Order = {
@@ -98,7 +98,7 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
             </form>
             <button
               type="button"
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => void signOut("/")}
               className="mt-4 flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-bronze/50 px-4 py-2.5 font-label text-[0.66rem] uppercase tracking-[0.16em] text-ink-soft transition-colors hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:text-cream/70"
             >
               <LogOut className="size-3.5" />

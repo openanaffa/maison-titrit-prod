@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   getIntegrations,
   sanitizeAnalytics,
@@ -16,10 +16,14 @@ export async function GET() {
     return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
   }
   try {
-    const [analytics, verification] = await Promise.all([
-      db.setting.findUnique({ where: { key: "integration.analytics" } }),
-      db.setting.findUnique({ where: { key: "integration.verification" } }),
-    ]);
+    const supabase = await createSupabaseServerClient();
+    const { data: settings } = await supabase
+      .from("Setting")
+      .select("key,value")
+      .in("key", ["integration.analytics", "integration.verification"])
+      .throwOnError();
+    const analytics = settings.find((setting) => setting.key === "integration.analytics");
+    const verification = settings.find((setting) => setting.key === "integration.verification");
     const analyticsValue = analytics ? sanitizeAnalytics(JSON.parse(analytics.value)) : {};
     const verificationValue = verification
       ? sanitizeVerification(JSON.parse(verification.value))
@@ -42,28 +46,35 @@ export async function PATCH(req: Request) {
     const body = await req.json();
     const analytics = sanitizeAnalytics(body.analytics);
     const verification = sanitizeVerification(body.verification);
+    const supabase = await createSupabaseServerClient();
 
     if (Object.keys(analytics).length) {
-      await db.setting.upsert({
-        where: { key: "integration.analytics" },
-        update: { value: JSON.stringify(analytics) },
-        create: { key: "integration.analytics", value: JSON.stringify(analytics) },
-      });
+      await supabase.from("Setting").upsert(
+        {
+          key: "integration.analytics",
+          value: JSON.stringify(analytics),
+          updatedAt: new Date().toISOString(),
+        },
+        { onConflict: "key" },
+      ).throwOnError();
     } else {
-      await db.setting.deleteMany({ where: { key: "integration.analytics" } });
+      await supabase.from("Setting").delete().eq("key", "integration.analytics").throwOnError();
     }
 
     if (
       Object.keys(verification).some((k) => k !== "custom") ||
       verification.custom.length
     ) {
-      await db.setting.upsert({
-        where: { key: "integration.verification" },
-        update: { value: JSON.stringify(verification) },
-        create: { key: "integration.verification", value: JSON.stringify(verification) },
-      });
+      await supabase.from("Setting").upsert(
+        {
+          key: "integration.verification",
+          value: JSON.stringify(verification),
+          updatedAt: new Date().toISOString(),
+        },
+        { onConflict: "key" },
+      ).throwOnError();
     } else {
-      await db.setting.deleteMany({ where: { key: "integration.verification" } });
+      await supabase.from("Setting").delete().eq("key", "integration.verification").throwOnError();
     }
 
     return NextResponse.json({ analytics, verification });

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +21,15 @@ export async function PATCH(
     if (!VALID.includes(status)) {
       return NextResponse.json({ error: "Statut invalide." }, { status: 400 });
     }
-    const order = await db.order.update({ where: { id }, data: { status } });
+    const supabase = await createSupabaseServerClient();
+    const { data: order } = await supabase
+      .from("Order")
+      .update({ status, updatedAt: new Date().toISOString() })
+      .eq("id", id)
+      .select("*")
+      .maybeSingle()
+      .throwOnError();
+    if (!order) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
     return NextResponse.json({ order });
   } catch (e) {
     console.error("PATCH /api/admin/orders/[id] failed", e);

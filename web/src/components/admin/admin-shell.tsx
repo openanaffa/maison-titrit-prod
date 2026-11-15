@@ -3,7 +3,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   Package,
@@ -21,6 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { isFounderRole } from "@/lib/roles";
 import { useT } from "@/i18n/locale-provider";
+import { signOut } from "@/lib/supabase/auth-client";
 
 type NavItem = {
   href: string;
@@ -135,7 +135,7 @@ export function AdminShell({
             Voir le site
           </Link>
           <button
-            onClick={() => signOut({ callbackUrl: "/" })}
+            onClick={() => void signOut("/")}
             className="flex w-full items-center gap-3 rounded-sm px-3 py-2.5 font-label text-[0.68rem] uppercase tracking-[0.14em] text-sidebar-foreground/70 transition-colors hover:bg-terracotta hover:text-cream"
           >
             <LogOut className="size-4" />

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { db } from "@/lib/db";
 import { OrderDetailClient } from "@/components/admin/order-detail-client";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type OrderView = {
   id: string;
@@ -42,22 +42,32 @@ export default async function OrderDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const order = await db.order.findUnique({
-    where: { id },
-    include: {
-      items: {
-        include: {
-          product: {
-            include: {
-              images: { orderBy: { position: "asc" } },
-            },
-          },
-        },
-      },
-      user: true,
-    },
-  });
+  const supabase = await createSupabaseServerClient();
+  const { data: order } = await supabase.from("Order").select("*").eq("id", id).maybeSingle().throwOnError();
   if (!order) notFound();
+  const { data: items } = await supabase
+    .from("OrderItem")
+    .select("*")
+    .eq("orderId", order.id)
+    .throwOnError();
+  const productIds = [...new Set(items.map((item) => item.productId))];
+  const { data: images } = productIds.length
+    ? await supabase
+        .from("Image")
+        .select("productId,url,position")
+        .in("productId", productIds)
+        .order("position")
+        .throwOnError()
+    : { data: [] as { productId: string; url: string; position: number }[] };
+  const userResult = order.userId
+    ? await supabase.from("User").select("id,name").eq("id", order.userId).maybeSingle().throwOnError()
+    : { data: null };
+  const imagesByProduct = new Map<string, Array<{ url: string }>>();
+  for (const image of images) {
+    const rows = imagesByProduct.get(image.productId) ?? [];
+    rows.push({ url: image.url });
+    imagesByProduct.set(image.productId, rows);
+  }
 
   const view: OrderView = {
     id: order.id,
@@ -77,10 +87,10 @@ export default async function OrderDetailPage({
     utmCampaign: order.utmCampaign ?? null,
     utmContent: order.utmContent ?? null,
     utmTerm: order.utmTerm ?? null,
-    createdAt: order.createdAt,
-    updatedAt: order.updatedAt,
-    user: order.user ? { id: order.user.id, name: order.user.name } : null,
-    items: order.items.map((i) => ({
+    createdAt: new Date(order.createdAt),
+    updatedAt: new Date(order.updatedAt),
+    user: userResult.data ? { id: userResult.data.id, name: userResult.data.name } : null,
+    items: items.map((i) => ({
       id: i.id,
       ref: i.ref,
       name: i.name,
@@ -88,8 +98,8 @@ export default async function OrderDetailPage({
       price: i.price,
       quantity: i.quantity,
       product: {
-        id: i.product.id,
-        images: i.product.images.map((img) => ({ url: img.url })),
+        id: i.productId,
+        images: imagesByProduct.get(i.productId) ?? [],
       },
     })),
   };

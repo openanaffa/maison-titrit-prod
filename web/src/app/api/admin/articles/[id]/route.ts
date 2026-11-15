@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { ArticleRow } from "@/lib/supabase/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -13,17 +14,25 @@ export async function PATCH(
   const { id } = await params;
   try {
     const body = await req.json();
-    const data: Record<string, unknown> = {};
+    const data: Partial<ArticleRow> = {};
     for (const k of ["title", "excerpt", "body", "coverImage", "authorName", "tags", "published"]) {
-      if (k in body) data[k] = body[k];
+      if (k in body) data[k as keyof ArticleRow] = body[k];
     }
     // If publishing for the first time, set publishedAt
     if (body.published === true) {
-      data.publishedAt = new Date();
+      data.publishedAt = new Date().toISOString();
     } else if (body.published === false) {
       data.publishedAt = null;
     }
-    const article = await db.article.update({ where: { id }, data });
+    const supabase = await createSupabaseServerClient();
+    const { data: article } = await supabase
+      .from("Article")
+      .update({ ...data, updatedAt: new Date().toISOString() })
+      .eq("id", id)
+      .select("*")
+      .maybeSingle()
+      .throwOnError();
+    if (!article) return NextResponse.json({ error: "Introuvable." }, { status: 404 });
     return NextResponse.json({ article });
   } catch (e) {
     console.error("PATCH /api/admin/articles/[id] failed", e);
@@ -39,7 +48,8 @@ export async function DELETE(
   if (!user || !allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
   const { id } = await params;
   try {
-    await db.article.delete({ where: { id } });
+    const supabase = await createSupabaseServerClient();
+    await supabase.from("Article").delete().eq("id", id).throwOnError();
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("DELETE /api/admin/articles/[id] failed", e);

@@ -42,6 +42,7 @@ export async function POST(req: Request) {
     }
     const { items, total } = priced;
 
+    const userId = user ? await getOrderUserId(user) : null;
     const order = await createOrderWithNumber({
         status: "PENDING",
         customerName: customer.name.trim(),
@@ -58,7 +59,7 @@ export async function POST(req: Request) {
         total,
         currency: site.currency,
         payment: "COD",
-        userId: user?.id ?? null,
+        userId,
         items: { create: items },
     });
 
@@ -101,6 +102,22 @@ export async function POST(req: Request) {
     console.error("POST /api/checkout failed", e);
     return NextResponse.json({ error: "Commande impossible." }, { status: 500 });
   }
+}
+
+async function getOrderUserId(user: NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>) {
+  if (!process.env.DATABASE_URL?.startsWith("file:")) return user.id;
+  const localUser = await db.user.upsert({
+    where: { email: user.email },
+    update: { supabaseId: user.supabaseId, name: user.name, role: user.role },
+    create: {
+      supabaseId: user.supabaseId,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+    },
+    select: { id: true },
+  });
+  return localUser.id;
 }
 
 /**

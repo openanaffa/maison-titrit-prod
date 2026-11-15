@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/session";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +9,15 @@ const DEFAULT = { active: false, message: "", link: "" };
 
 /** Public: get the current announcement bar (no auth). */
 export async function GET() {
-  const row = await db.setting.findUnique({ where: { key: "announcement" } });
+  const { data: row, error } = await createSupabasePublicClient()
+    .from("Setting")
+    .select("value")
+    .eq("key", "announcement")
+    .maybeSingle();
+  if (error) {
+    console.error("GET /api/settings/announcement failed", error);
+    return NextResponse.json({ error: "Lecture impossible." }, { status: 500 });
+  }
   const bar = row ? { ...DEFAULT, ...JSON.parse(row.value) } : DEFAULT;
   return NextResponse.json({ bar });
 }
@@ -26,11 +35,14 @@ export async function PATCH(req: Request) {
       message: String(body.message ?? "").slice(0, 200),
       link: String(body.link ?? "").slice(0, 200),
     };
-    await db.setting.upsert({
-      where: { key: "announcement" },
-      update: { value: JSON.stringify(bar) },
-      create: { key: "announcement", value: JSON.stringify(bar) },
-    });
+    const supabase = await createSupabaseServerClient();
+    await supabase
+      .from("Setting")
+      .upsert(
+        { key: "announcement", value: JSON.stringify(bar), updatedAt: new Date().toISOString() },
+        { onConflict: "key" },
+      )
+      .throwOnError();
     return NextResponse.json({ bar });
   } catch (e) {
     console.error("PATCH /api/settings/announcement failed", e);

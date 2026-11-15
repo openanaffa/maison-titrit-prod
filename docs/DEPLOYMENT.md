@@ -28,17 +28,27 @@ This is the single source of truth for taking the site live. Follow top to botto
    ```sh
    cd web
    DATABASE_URL="postgresql://postgres.[PROJECT]:[PASSWORD]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres" \
-     bunx prisma db push --schema=prisma/schema.postgres.prisma
+     bunx prisma db push --accept-data-loss --schema=prisma/schema.postgres.prisma
    DATABASE_URL="postgresql://postgres.[PROJECT]:[PASSWORD]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres" \
      bun run seed:prod
    ```
    `seed:prod` generates the Postgres Prisma client and upserts only the seeded categories, product references, and article slugs. It does not delete products, order items, orders, users, or unrelated categories. The script refuses SQLite URLs.
 
-   To create the initial founder account as part of this run, additionally set `ADMIN_EMAIL` and `ADMIN_PASSWORD`. This is optional; the seed creates the account only if that email does not already exist and never changes an existing password.
+   The auth migration intentionally removes the old NextAuth token/account tables and the app-owned password hash column; application profiles, roles, and orders are retained. Run [`supabase/migrations/20261114000100_supabase_auth_rbac.sql`](../supabase/migrations/20261114000100_supabase_auth_rbac.sql) in Supabase SQL Editor after `db push`. It links Supabase Auth users to existing app profiles, installs the role hook, and enables RLS on the application tables.
 
 5. Verify in Supabase → Table Editor: 14 seeded `Product` rows, 7 each in `Modern` and `Moroccan`, and 16 seeded `Article` rows. Unseeded products, orders, users, and articles remain untouched.
 
-> **Local dev** stays on SQLite (`DATABASE_URL=file:...`). The production catalog seed intentionally targets Supabase Postgres only; local content tests validate the seed data and local media without writing to a database.
+> **Local dev** keeps Prisma on SQLite (`DATABASE_URL=file:...`), but auth, RLS-protected backoffice pages, and protected API mutations use Supabase. Use a separate development Supabase project for local auth and staff data; do not point local development at production customer data. Apply the schema and auth migration there as well. The production catalog seed intentionally targets Postgres only.
+
+## 1b. Supabase Auth, roles, and RLS
+
+1. In Supabase → **Authentication → Providers**, enable Email and Google, and require email confirmation. Configure the Google OAuth client in Google Cloud with Supabase's callback URL (`https://[PROJECT-REF].supabase.co/auth/v1/callback`) as its authorized redirect URI; enter the client ID/secret in Supabase, not Vercel.
+2. Set **Authentication → URL Configuration → Site URL** to `https://maisontitrit.com`. Add `https://maisontitrit.com/auth/callback`, `http://localhost:3000/auth/callback`, and the exact Vercel preview callback URLs to the redirect allow list.
+3. Configure **Authentication → Hooks → Custom Access Token** to call `public.custom_access_token_hook`. This adds the `user_role` claim for UI state. RLS policies resolve the current role from the linked profile row, so role changes take effect immediately instead of waiting for an old JWT to expire.
+4. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from Project Settings → API in the app environment. Do not expose a service-role key. The server-side Prisma connection remains private and is used only for public catalog content and validated checkout/order creation; staff and account data pages and mutations use the cookie-authenticated Supabase client and RLS.
+5. Seed the initial founder profile with `ADMIN_EMAIL` before creating that Supabase Auth identity, then create/confirm an identity for the same address. The database trigger links it to the existing profile and role. If the identity already exists, explicitly assign its intended role to the linked app profile. New self-service registrations receive only the `CUSTOMER` role; do not grant staff roles through user metadata.
+
+RLS is enforced at the database API for authenticated staff/customer reads and writes. The role hook is not a substitute for the policies; do not remove or bypass the migration. Keep the two Prisma schemas in sync when changing the profile model.
 
 ---
 
@@ -85,21 +95,19 @@ Vercel's filesystem is **ephemeral** — uploaded images won't persist. R2 is S3
    | Key | Value | Env |
    |-----|-------|-----|
    | `DATABASE_URL` | `postgresql://...supabase.co...` | Production + Preview |
-   | `NEXTAUTH_URL` | `https://maisontitrit.com` | Production |
-   | `NEXTAUTH_SECRET` | `openssl rand -base64 32` | Production + Preview |
+   | `NEXT_PUBLIC_SUPABASE_URL` | `https://[PROJECT-REF].supabase.co` | Production + Preview |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `<Supabase publishable/anon key>` | Production + Preview |
    | `NEXT_PUBLIC_SITE_URL` | `https://maisontitrit.com` | Production |
    | `R2_ACCOUNT_ID` | `<from R2>` | Production |
    | `R2_BUCKET` | `maison-titrit` | Production |
    | `R2_ACCESS_KEY_ID` | `<from R2>` | Production |
    | `R2_SECRET_ACCESS_KEY` | `<from R2>` | Production |
    | `R2_PUBLIC_URL` | `https://cdn.maisontitrit.com` | Production |
-   | `EMAIL_SERVER_HOST` | `smtp-relay.brevo.com` | Production (staff order alerts only — not used for auth) |
+   | `EMAIL_SERVER_HOST` | `smtp-relay.brevo.com` | Production (staff order alerts only) |
    | `EMAIL_SERVER_PORT` | `587` | Production |
    | `EMAIL_SERVER_USER` | `<Brevo SMTP login, xxx@smtp-brevo.com>` | Production |
    | `EMAIL_SERVER_PASSWORD` | `<Brevo SMTP key>` | Production |
    | `EMAIL_FROM` | `Maison Titrit <hello@maisontitrit.com>` | Production |
-   | `GOOGLE_CLIENT_ID` | `<from Google Cloud — Web OAuth client>` | **Production + Preview (required)** |
-   | `GOOGLE_CLIENT_SECRET` | `<from Google Cloud>` | **Production + Preview (required)** |
    | `NEXT_PUBLIC_GTM_ID` | `GTM-XXXXXXX` | Production (optional) |
    | `NEXT_PUBLIC_GA4_ID` | `G-XXXXXXXXXX` | Production (optional) |
    | `NEXT_PUBLIC_FB_PIXEL_ID` | `<15-digit ID>` | Production (optional) |
@@ -111,7 +119,7 @@ Vercel's filesystem is **ephemeral** — uploaded images won't persist. R2 is S3
    | `META_PIXEL_ID` | `<Meta Pixel ID>` | Production (optional, server) |
    | `META_CAPI_ACCESS_TOKEN` | `<Meta CAPI token>` | Production (optional, server) |
 
-   `ADMIN_EMAIL` and `ADMIN_PASSWORD` are not required Vercel runtime variables. Use them only when intentionally creating a first founder account through `seed:prod`.
+   `ADMIN_EMAIL` is only needed when `seed:prod` should create a founder profile. Google credentials belong in Supabase Auth provider settings, not Vercel.
 
 4. **Build & Development Settings → Install command**: `bun install` (Vercel auto-detects Bun from `bun.lock`)
 5. Deploy. First deploy runs `next build`; Prisma client is generated by the `postinstall` (add `prisma generate` to a build step if not — see `vercel:build` script)
@@ -127,7 +135,7 @@ Visit `https://maisontitrit.com`:
 - [ ] `/produit/MT-LORA` product detail loads
 - [ ] `/blog` lists the seeded article
 - [ ] `/makteb` redirects to `/auth/signin`
-- [ ] Log in with **Continue with Google** using the founder's Google account (email must match the seeded `ADMIN_EMAIL`) → dashboard shows the seeded catalog
+- [ ] Sign in with Google or a confirmed email/password account using the founder email (must match the seeded `ADMIN_EMAIL`) → dashboard shows the seeded catalog
 - [ ] Admin → Products → New → upload an image → it appears (R2 path active)
 - [ ] Language switch FR → AR (RTL) → EN works
 - [ ] `https://maisontitrit.com/robots.txt` shows disallows + sitemap
@@ -205,11 +213,11 @@ Vercel keeps every deploy. Project → Deployments → any previous deploy → *
 
 | Symptom | Fix |
 |---|---|
-| Login → `error=Configuration` | `NEXTAUTH_SECRET` not set in Vercel env |
-| Login → Google button fails at startup | `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` unset — Google is the only sign-in method, the app fails fast by design |
+| Login fails or auth callback returns an error | Check Supabase Auth provider settings, URL allow list, and `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
+| Staff account is redirected away from `/makteb` or gets no RLS rows | Confirm the Supabase identity's email matches its application profile, SQL migration is applied, role hook is enabled, and profile has the intended role |
 | Image upload 500 in prod | R2 env vars not set; Vercel FS is ephemeral |
 | Sitemap URLs are localhost | `NEXT_PUBLIC_SITE_URL` not set to your domain |
-| Staff order alert email missing | `EMAIL_SERVER_*` not set (auth does not use SMTP) |
+| Staff order alert email missing | `EMAIL_SERVER_*` not set (Supabase Auth email delivery is configured separately in Supabase) |
 | Prisma "database not found" | Supabase project paused (free tier); resume in Supabase |
 | `provider = sqlite` error after swap | Run `bunx prisma generate` after editing schema.prisma |
 
@@ -218,11 +226,12 @@ Vercel keeps every deploy. Project → Deployments → any previous deploy → *
 ## TL;DR one-liner order
 
 1. Create Supabase project + get `DATABASE_URL`
-2. Swap `provider = "postgresql"` in `prisma/schema.prisma`, `prisma db push`, seed
-3. Create R2 bucket + API token + custom domain
-4. Import repo to Vercel, set all env vars, deploy
-5. Point Cloudflare DNS to Vercel, verify
-6. Submit sitemap + feed to Google
+2. Push the Postgres Prisma schema, seed, and apply the Supabase Auth/RLS SQL migration
+3. Configure Supabase Email/Google providers, redirect URLs, and the custom access-token hook
+4. Create R2 bucket + API token + custom domain
+5. Import repo to Vercel, set all env vars, deploy
+6. Point Cloudflare DNS to Vercel, verify
+7. Submit sitemap + feed to Google
 
 You're live. 🚀
 

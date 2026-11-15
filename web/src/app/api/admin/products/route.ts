@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { randomUUID } from "node:crypto";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { ImageRow, ProductRow } from "@/lib/supabase/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -20,19 +22,43 @@ export async function POST(req: Request) {
 
     // resolve category
     let categoryId: string | null = null;
+    const supabase = await createSupabaseServerClient();
     if (body.categoryId) {
       categoryId = body.categoryId;
     } else if (body.categoryName) {
-      const cat = await db.category.upsert({
-        where: { slug: slugify(body.categoryName) },
-        update: { name: body.categoryName },
-        create: { name: body.categoryName, slug: slugify(body.categoryName) },
-      });
+      const slug = slugify(body.categoryName);
+      const { data: existingCategory } = await supabase
+        .from("Category")
+        .select("id")
+        .eq("slug", slug)
+        .maybeSingle()
+        .throwOnError();
+      const { data: cat } = existingCategory
+        ? await supabase
+            .from("Category")
+            .update({ name: body.categoryName, updatedAt: new Date().toISOString() })
+            .eq("id", existingCategory.id)
+            .select("id")
+            .single()
+            .throwOnError()
+        : await supabase
+            .from("Category")
+            .insert({
+              id: randomUUID(),
+              name: body.categoryName,
+              slug,
+              position: 0,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            })
+            .select("id")
+            .single()
+            .throwOnError();
       categoryId = cat.id;
     }
 
-    const product = await db.product.create({
-      data: {
+    const productInput: ProductRow = {
+        id: randomUUID(),
         ref,
         name: body.name.trim(),
         nameAmazigh: body.nameAmazigh?.trim() || null,
@@ -47,17 +73,30 @@ export async function POST(req: Request) {
         inStock: body.inStock ?? true,
         featured: body.featured ?? false,
         categoryId,
-      },
-    });
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+    };
+    const { data: product } = await supabase
+      .from("Product")
+      .insert(productInput)
+      .select("*")
+      .single()
+      .throwOnError();
 
-    // images
     const images = Array.isArray(body.images) ? body.images : [];
-    for (let i = 0; i < images.length; i++) {
-      const img = images[i];
-      if (!img.url?.trim()) continue;
-      await db.image.create({
-        data: { productId: product.id, url: img.url.trim(), alt: img.alt ?? product.name, position: i },
-      });
+    const imageRows: ImageRow[] = images.flatMap((img: { url?: string; alt?: string | null }, index: number) => {
+      if (!img.url?.trim()) return [];
+      return [{
+        id: randomUUID(),
+        productId: product.id,
+        url: img.url.trim(),
+        alt: img.alt ?? product.name,
+        position: index,
+        createdAt: new Date().toISOString(),
+      }];
+    });
+    if (imageRows.length) {
+      await supabase.from("Image").insert(imageRows).throwOnError();
     }
 
     return NextResponse.json({ product });

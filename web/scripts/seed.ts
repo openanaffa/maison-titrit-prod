@@ -1,6 +1,5 @@
 /** Synchronize catalog and editorial seed data to Supabase Postgres. */
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
 import { PRODUCTS, CATEGORIES } from "@/config/products";
 import { SEED_ARTICLES } from "@/config/articles";
 import { existsSync } from "node:fs";
@@ -78,10 +77,6 @@ async function main() {
   requirePostgresDatabaseUrl();
 
   const founderEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-  const founderPass = process.env.ADMIN_PASSWORD;
-  if (Boolean(founderEmail) !== Boolean(founderPass)) {
-    throw new Error("Set both ADMIN_EMAIL and ADMIN_PASSWORD to optionally create the initial founder user.");
-  }
 
   await db.$transaction(async (tx) => {
     const seedRefs = PRODUCTS.map((product) => product.ref);
@@ -171,7 +166,7 @@ async function main() {
       });
     }
 
-    if (founderEmail && founderPass) {
+    if (founderEmail) {
       const existing = await tx.user.findUnique({ where: { email: founderEmail } });
       if (!existing) {
         await tx.user.create({
@@ -179,8 +174,6 @@ async function main() {
             email: founderEmail,
             name: "Maison Titrit",
             role: "FOUNDER",
-            password: await bcrypt.hash(founderPass, 10),
-            emailVerified: new Date(),
           },
         });
       }
@@ -190,8 +183,8 @@ async function main() {
   console.log(
     `Supabase content sync complete: ${PRODUCTS.length} products, ${CATEGORIES.length} categories, ${SEED_ARTICLES.length} articles.`,
   );
-  if (founderEmail && founderPass) {
-    console.log("Founder bootstrap was requested; existing users and passwords were left unchanged.");
+  if (founderEmail) {
+    console.log("Founder profile bootstrap was requested; existing users and roles were left unchanged.");
   }
 }
 
