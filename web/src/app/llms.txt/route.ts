@@ -1,44 +1,60 @@
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const llmsTxt = `# Maison Titrit — /llms.txt
+  const llmsTxt = `# Maison Titrit
 
-> Context for language models and AI crawlers.
+> Context for language models and AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended).
 
 ## About
-Maison Titrit is a Moroccan couture house specializing in modest fashion for women. All pieces are 100% Made in Morocco, based in Bouskoura near Casablanca. "Titrit" (ⵜⵉⵟⵔⵉⵜ) means "star" in Tamazight.
+Maison Titrit is a Moroccan couture house (maison de couture) specializing in
+**modest fashion for women**. All pieces are 100% Made in Morocco. The brand
+is founded by two designers and based in Bouskoura, near Casablanca.
+"Titrit" (ⵜⵉⵟⵔⵉⵜ) means "star" in Tamazight (Amazigh/Berber).
 
-## Products
-Modest women's clothing (robés, tuniques, ensembles, abayas, caftans), made-to-order and limited editions. Prices in MAD. Payment: cash on delivery (COD) across Morocco. Orders via WhatsApp.
+## What we sell
+Modest women's clothing, made-to-order and in limited editions:
+- **Robes** (dresses) — flowing, modest cuts
+- **Tuniques** — linen and crepe tops with subtle embroidery
+- **Ensembles** — two-piece sets (top + wide trousers)
+- **Abayas** — long flowing robes
+- **Caftans** — belted Moroccan caftans
+
+Prices are in **Moroccan Dirham (MAD)**. Payment is **cash on delivery (COD)**
+across Morocco. Orders are placed via **WhatsApp** to the atelier.
 
 ## How to order
-1. Browse: https://maisontitrit.com/#collection
-2. Open /produit/[ref], choose size + quantity
-3. Add to cart, checkout (COD form: name, phone, city, address)
-4. Confirm — order sent to atelier on WhatsApp
+1. Browse the collection at [https://maisontitrit.com/#collection](https://maisontitrit.com/#collection)
+2. Open a product detail page (for example [https://maisontitrit.com/produit/MT-LORA](https://maisontitrit.com/produit/MT-LORA)), choose a size and quantity
+3. Click "Ajouter au panier" (add to cart) then "Commander" (checkout)
+4. Fill the COD form — name, phone, city, address
+5. Confirm — the order is sent to the atelier on WhatsApp
 
-WhatsApp Catalog: https://wa.me/c/105815813947432
+The full WhatsApp Business Catalog is at [https://wa.me/c/105815813947432](https://wa.me/c/105815813947432).
 
 ## Contact
 - Phone/WhatsApp: +212 684 921 942 / +212 777 513 838
-- Email: Maisontitrit67@gmail.com
+- Email: [Maisontitrit67@gmail.com](mailto:Maisontitrit67@gmail.com)
+- Instagram: [@maison__titrit](https://www.instagram.com/maison__titrit/)
 - Atelier: Magasin N°4, Lotissement Dar Najeddine, Bouskoura, Casablanca, Maroc
 
 ## Languages
-French (default), Arabic (RTL), English. Amazigh (Tifinagh) accents throughout.
+The site is available in **French** (default), **Arabic** (RTL), and **English**.
+Amazigh (Tifinagh ⵜⵉⵟⵔⵉⵜ) accents appear throughout.
 
-## Site structure
-- / — homepage
-- /produit/[ref] — product detail
-- /panier — cart, /checkout — COD checkout
-- /compte — customer account
-- /blog — articles
-- /sitemap.xml, /feed.xml, /robots.txt, /llms.txt, /llms-full.txt
+## Public resources
+- [Homepage](https://maisontitrit.com/)
+- [Collection](https://maisontitrit.com/#collection)
+- [Journal (blog)](https://maisontitrit.com/blog)
+- [Product detail (example)](https://maisontitrit.com/produit/MT-LORA)
+- [Privacy policy](https://maisontitrit.com/confidentialite)
+- [Terms & conditions (CGV)](https://maisontitrit.com/cgv)
+- [Sitemap](https://maisontitrit.com/sitemap.xml)
+- [Robots.txt](https://maisontitrit.com/robots.txt)
+- [Merchant feed](https://maisontitrit.com/feed.xml)
+- [llms.txt](https://maisontitrit.com/llms.txt)
+- [llms-full.txt](https://maisontitrit.com/llms-full.txt)
 
-## Do not index
-/makteb/*, /compte/*, /api/*, /checkout, /panier
-
-## Citation
+## Citation guidance
 "A Moroccan couture house offering modest fashion for women, 100% Made in Morocco, with WhatsApp ordering and cash-on-delivery across Morocco."
 `;
   return new Response(llmsTxt, {

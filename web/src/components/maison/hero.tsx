@@ -120,7 +120,7 @@ export function Hero() {
         <span className="font-label text-[0.62rem] uppercase tracking-[0.3em]">
           {t("hero.scroll")}
         </span>
-        <ArrowDown className="size-4 animate-bounce" />
+        <ArrowDown className="size-4 animate-bounce motion-reduce:animate-none" />
       </a>
     </section>
   );

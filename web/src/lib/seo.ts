@@ -80,6 +80,8 @@ export function buildPageMetadata(input: PageMetaInput): Metadata {
     },
     twitter: {
       card: "summary_large_image",
+      site: "@maison__titrit",
+      creator: "@maison__titrit",
       title: input.title,
       description: input.description,
       images: [imgUrl],
@@ -120,6 +122,7 @@ export function organizationJsonLd() {
       "@type": "PostalAddress",
       streetAddress: `${site.address.line1}, ${site.address.line2}`,
       addressLocality: site.address.city,
+      postalCode: "27182",
       addressCountry: "MA",
     },
   };
@@ -147,6 +150,7 @@ export function productJsonLd(p: {
     image: p.image.startsWith("http") ? p.image : `${base}${p.image}`,
     sku: p.ref,
     brand: { "@type": "Brand", name: site.name },
+    ...(p.category ? { category: p.category } : {}),
     offers: {
       "@type": "Offer",
       url: `${base}/produit/${p.ref}`,
