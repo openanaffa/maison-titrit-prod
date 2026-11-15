@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { OrderDetailClient } from "@/components/admin/order-detail-client";
+import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type OrderView = {
@@ -41,6 +42,7 @@ export default async function OrderDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requirePagePermission("orders:read");
   const { id } = await params;
   const supabase = await createSupabaseServerClient();
   const { data: order } = await supabase.from("Order").select("*").eq("id", id).maybeSingle().throwOnError();

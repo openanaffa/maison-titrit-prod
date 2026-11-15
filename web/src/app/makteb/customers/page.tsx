@@ -1,8 +1,10 @@
+import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function MaktebCustomersPage() {
+  await requirePagePermission("customers:read");
   const supabase = await createSupabaseServerClient();
   const { data: customers } = await supabase
     .from("User")

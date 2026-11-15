@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ProductForm, type ProductFormValues } from "@/components/admin/product-form";
+import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +10,7 @@ export default async function EditProductPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requirePagePermission("products:read");
   const { id } = await params;
   const supabase = await createSupabaseServerClient();
   const [{ data: product }, { data: categories }] = await Promise.all([

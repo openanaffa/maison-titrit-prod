@@ -1,9 +1,11 @@
 import { ProductsTableClient } from "@/components/admin/products-table-client";
+import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function MaktebProductsPage() {
+  await requirePagePermission("products:read");
   const supabase = await createSupabaseServerClient();
   const [{ data: products }, { data: categories }] = await Promise.all([
     supabase.from("Product").select("*").order("createdAt", { ascending: false }).throwOnError(),
