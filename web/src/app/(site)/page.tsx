@@ -1,9 +1,7 @@
-import { SiteHeader } from "@/components/maison/site-header";
 import { Hero } from "@/components/maison/hero";
 import { About } from "@/components/maison/about";
 import { CraftBand } from "@/components/maison/craft-band";
 import { ProductCatalogue } from "@/components/maison/product-catalogue";
-import { SiteFooter } from "@/components/maison/site-footer";
 import { TitritLoader } from "@/components/maison/titrit-loader";
 import { listProducts } from "@/lib/products";
 import { itemListJsonLd, buildPageMetadata, serializeJsonLd } from "@/lib/seo";
@@ -58,7 +56,6 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListLd) }}
       />
       <TitritLoader />
-      <SiteHeader />
       <main id="accueil" className="flex-1">
         <Hero />
         <About />
@@ -67,7 +64,6 @@ export default async function Home() {
         <MapSection />
         <ContactSocial />
       </main>
-      <SiteFooter />
       <WhatsAppFloat />
     </>
   );
