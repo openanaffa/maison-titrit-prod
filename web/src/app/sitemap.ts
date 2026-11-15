@@ -16,13 +16,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages + in-page sections — public commerce + content only.
   // Private/noindex surfaces (/auth, /panier, /checkout) are deliberately
   // absent from the sitemap (they carry X-Robots-Tag noindex in next.config).
+  // Fragment anchors are not separate pages (Google ignores URL fragments in
+  // sitemaps), so only the canonical homepage URL is listed to avoid duplicate
+  // homepage entries.
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
-    { url: `${base}/#maison`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}/#collection`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/#atelier`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/#nous-trouver`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/#contact`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/confidentialite`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
     { url: `${base}/cgv`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
   ];
