@@ -160,6 +160,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
           ],
         },
         {
+          // TODO(owner): confirm the 7-day return/exchange window is the intended policy.
           h: "7. Échanges et retours",
           p: [
             "Vous disposez de 7 jours à compter de la réception pour demander un échange ou un retour, à condition que la pièce soit non portée, non lavée, avec ses étiquettes et munie d'une preuve d'achat. Les frais de retour sont à votre charge, sauf défaut ou erreur de notre part — dans ce cas, Maison Titrit prend en charge l'échange ou le remboursement.",
