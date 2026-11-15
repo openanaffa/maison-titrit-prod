@@ -11,6 +11,8 @@ import { GoogleIcon } from "@/components/maison/google-icon";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { getRoleFromAccessToken } from "@/lib/supabase/role-claims";
+import { isStaffRole } from "@/lib/roles";
 import { getSafeRedirectPath } from "@/lib/safe-redirect";
 
 export default function AuthPage() {
@@ -23,10 +25,13 @@ export default function AuthPage() {
 
 function AuthPageInner() {
   const params = useSearchParams();
+  // Only an explicit callbackUrl pins the destination; without one the
+  // callback route / post-auth logic picks by role (staff → /makteb,
+  // customers → /compte).
   const callbackUrl = getSafeRedirectPath(
     params.get("callbackUrl"),
     typeof window === "undefined" ? "https://local.invalid" : window.location.origin,
-    "/compte",
+    "",
   );
   const { t } = useT();
   const [mode, setMode] = React.useState<"signin" | "signup">("signin");
@@ -40,8 +45,19 @@ function AuthPageInner() {
 
   function authRedirectUrl() {
     const url = new URL("/auth/callback", window.location.origin);
-    url.searchParams.set("next", callbackUrl);
+    if (callbackUrl) {
+      url.searchParams.set("next", callbackUrl);
+    }
     return url.toString();
+  }
+
+  /** Destination after a completed sign-in: explicit callbackUrl wins,
+   *  otherwise staff → /makteb, customers → /compte. */
+  async function postAuthDestination(supabase: ReturnType<typeof createSupabaseBrowserClient>) {
+    if (callbackUrl) return callbackUrl;
+    const { data } = await supabase.auth.getSession();
+    const role = getRoleFromAccessToken(data.session?.access_token ?? "");
+    return isStaffRole(role) ? "/makteb" : "/compte";
   }
 
   async function onGoogle() {
@@ -80,7 +96,7 @@ function AuthPageInner() {
         });
         if (authError) throw authError;
         if (data.session) {
-          window.location.assign(callbackUrl);
+          window.location.assign(await postAuthDestination(supabase));
         } else {
           setNotice(t("auth.signupConfirm"));
         }
@@ -90,7 +106,7 @@ function AuthPageInner() {
           password,
         });
         if (authError) throw authError;
-        window.location.assign(callbackUrl);
+        window.location.assign(await postAuthDestination(supabase));
       }
     } catch (authError) {
       console.error(`Supabase ${mode} request failed`, authError);
