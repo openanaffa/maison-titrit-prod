@@ -37,7 +37,16 @@ export function SupabaseAuthProvider({
   });
 
   React.useEffect(() => {
-    const supabase = createSupabaseBrowserClient();
+    let supabase: ReturnType<typeof createSupabaseBrowserClient>;
+    try {
+      supabase = createSupabaseBrowserClient();
+    } catch (error) {
+      // Public env not configured: degrade to signed-out instead of
+      // crashing the whole storefront for every visitor.
+      console.error("Supabase auth is not configured", error);
+      setState({ user: null, loading: false });
+      return;
+    }
     let active = true;
     const {
       data: { subscription },

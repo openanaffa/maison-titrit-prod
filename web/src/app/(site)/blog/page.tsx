@@ -3,6 +3,7 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { getPublishedArticles } from "@/lib/blog";
+import { resolveLocale } from "@/i18n/dictionaries";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function BlogPage() {
-  const locale = (await cookies()).get("titrit-locale")?.value ?? "fr";
+  const locale = resolveLocale((await cookies()).get("titrit-locale")?.value);
   const posts = await getPublishedArticles(locale);
 
   return (

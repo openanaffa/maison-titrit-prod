@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import {
   DEFAULT_LOCALE,
   dictionaries,
@@ -8,6 +9,7 @@ import {
   LOCALES,
   type Locale,
 } from "@/i18n/dictionaries";
+import { readLocaleCookie, writeLocaleCookie } from "@/i18n/locale-cookie";
 
 const STORAGE_KEY = "titrit-locale";
 
@@ -20,26 +22,42 @@ type Ctx = {
 
 const LocaleContext = React.createContext<Ctx | null>(null);
 
-function resolveInitial(): Locale {
-  if (typeof window === "undefined") return DEFAULT_LOCALE;
+/** The visitor's explicit choice, kept in localStorage. */
+function readStoredLocale(): Locale | null {
+  if (typeof window === "undefined") return null;
   try {
     const saved = window.localStorage.getItem(STORAGE_KEY) as Locale | null;
-    if (saved && dictionaries[saved]) return saved;
+    return saved && dictionaries[saved] ? saved : null;
   } catch {
-    /* ignore */
+    return null;
   }
-  return DEFAULT_LOCALE;
+}
+
+/** The locale the server rendered with (cookie first, default locale otherwise). */
+function readServerLocale(): Locale | null {
+  const cookie = readLocaleCookie() as Locale | null;
+  return cookie && dictionaries[cookie] ? cookie : null;
 }
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = React.useState<Locale>(DEFAULT_LOCALE);
   const [hydrated, setHydrated] = React.useState(false);
+  const router = useRouter();
 
-  // hydrate from localStorage on mount (avoids SSR mismatch)
+  // hydrate from localStorage (avoids SSR mismatch)
   React.useEffect(() => {
-    setLocaleState(resolveInitial());
+    const stored = readStoredLocale();
+    const serverLocale = readServerLocale();
+    setLocaleState(stored ?? serverLocale ?? DEFAULT_LOCALE);
     setHydrated(true);
-  }, []);
+
+    // A choice saved before the cookie existed has to reach the server,
+    // otherwise server-rendered pages keep serving the previous language.
+    if (stored && stored !== (serverLocale ?? DEFAULT_LOCALE)) {
+      writeLocaleCookie(stored);
+      router.refresh();
+    }
+  }, [router]);
 
   // reflect locale on <html lang/dir>
   React.useEffect(() => {
