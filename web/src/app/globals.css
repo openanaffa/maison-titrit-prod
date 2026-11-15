@@ -378,6 +378,7 @@
   position: fixed;
   inset: 0;
   z-index: 100;
+  pointer-events: none; /* purely visual — must never trap input, even if stuck */
   display: grid;
   place-items: center;
   overflow: hidden;
