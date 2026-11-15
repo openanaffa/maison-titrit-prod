@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
+import { SiteHeader } from "@/components/maison/site-header";
+import { SiteFooter } from "@/components/maison/site-footer";
 
 export const metadata: Metadata = {
   title: "Page introuvable",
@@ -9,11 +11,13 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <section className="vintage-paper flex min-h-[70vh] items-center py-16 sm:py-20">
-      <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
-        <Reveal>
-          <AmazighStar className="mx-auto size-9 text-terracotta" />
-          <p className="eyebrow mt-4">Erreur 404</p>
+    <>
+      <SiteHeader />
+      <section className="vintage-paper flex min-h-[70vh] items-center py-16 sm:py-20">
+        <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
+          <Reveal>
+            <AmazighStar className="mx-auto size-9 text-terracotta" />
+            <p className="eyebrow mt-4">Erreur 404</p>
           <h1 className="wordmark mt-3 text-4xl uppercase text-ink sm:text-5xl dark:text-cream">
             Ce fil s'est emmêlé
           </h1>
@@ -39,5 +43,7 @@ export default function NotFound() {
         </Reveal>
       </div>
     </section>
+      <SiteFooter />
+    </>
   );
 }

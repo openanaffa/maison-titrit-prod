@@ -28,6 +28,7 @@ export const dictionaries: Record<Locale, Dict> = {
   fr: {
     "nav.maison": "La Maison",
     "nav.collection": "Collection",
+    "nav.journal": "Journal",
     "nav.atelier": "Atelier",
     "nav.find": "Nous trouver",
     "nav.contact": "Contact",
@@ -388,6 +389,7 @@ export const dictionaries: Record<Locale, Dict> = {
   ar: {
     "nav.maison": "الدار",
     "nav.collection": "المجموعة",
+    "nav.journal": "المدونة",
     "nav.atelier": "المشغل",
     "nav.find": "موقعنا",
     "nav.contact": "اتصل بنا",
@@ -745,6 +747,7 @@ export const dictionaries: Record<Locale, Dict> = {
   en: {
     "nav.maison": "The House",
     "nav.collection": "Collection",
+    "nav.journal": "Journal",
     "nav.atelier": "Atelier",
     "nav.find": "Find us",
     "nav.contact": "Contact",

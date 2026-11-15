@@ -82,11 +82,14 @@ export const site = {
 
   /* --- Navigation --------------------------------------------------------- */
   nav: [
-    { href: "#maison", labelKey: "nav.maison" },
-    { href: "#collection", labelKey: "nav.collection" },
-    { href: "#atelier", labelKey: "nav.atelier" },
-    { href: "#nous-trouver", labelKey: "nav.find" },
-    { href: "#contact", labelKey: "nav.contact" },
+    // Anchors are home-scoped (/#…) so the header works from every page;
+    // /blog is a real route (Journal).
+    { href: "/#maison", labelKey: "nav.maison" },
+    { href: "/#collection", labelKey: "nav.collection" },
+    { href: "/blog", labelKey: "nav.journal" },
+    { href: "/#atelier", labelKey: "nav.atelier" },
+    { href: "/#nous-trouver", labelKey: "nav.find" },
+    { href: "/#contact", labelKey: "nav.contact" },
   ],
 } as const;
 
