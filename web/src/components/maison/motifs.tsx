@@ -186,9 +186,17 @@ export function Reveal({
     return () => observer.disconnect();
   }, [once]);
 
-  const reduce =
-    typeof matchMedia !== "undefined" &&
-    matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Read reduced-motion only after mount — evaluating matchMedia during
+  // render makes the client HTML differ from the server's, which breaks
+  // hydration (and crashes into the error boundary in dev).
+  const [reduce, setReduce] = React.useState(false);
+  React.useEffect(() => {
+    const mq = matchMedia("(prefers-reduced-motion: reduce)");
+    setReduce(mq.matches);
+    const onChange = () => setReduce(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   // Cap staggered delays so entrances don't drag out (reduces motion jank).
   const cappedDelay = Math.min(delay, 0.12);

@@ -2,7 +2,9 @@
 
 import * as React from "react";
 import { Check, Globe } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useT, LOCALES, type Locale } from "@/i18n/locale-provider";
+import { writeLocaleCookie } from "@/i18n/locale-cookie";
 
 /**
  * Language switcher — FR / AR / EN (with Tifinagh flourish on AR).
@@ -18,6 +20,7 @@ export function LanguageSwitcher({
   const { locale, setLocale, t } = useT();
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   React.useEffect(() => {
     const onDoc = (e: MouseEvent) => {
@@ -73,13 +76,11 @@ export function LanguageSwitcher({
                 onClick={() => {
                   setLocale(l.code as Locale);
                   setOpen(false);
-                  // Persist locale as a cookie so server-rendered pages
-                  // (blog, etc.) serve the right language on next load.
-                  try {
-                    document.cookie = `titrit-locale=${l.code}; path=/; max-age=31536000; SameSite=Lax`;
-                  } catch {
-                    /* ignore */
-                  }
+                  // Mirror the choice in a cookie so server-rendered pages
+                  // (blog, articles) serve the right language, then refresh
+                  // the server components so they pick the new locale up.
+                  writeLocaleCookie(l.code as Locale);
+                  router.refresh();
                 }}
                 className={`flex w-full min-h-11 items-center justify-between gap-2 px-3 text-start transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-bronze-light ${
                   active

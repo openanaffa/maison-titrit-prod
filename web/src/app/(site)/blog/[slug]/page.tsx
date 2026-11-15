@@ -7,6 +7,7 @@ import { getPublishedArticle } from "@/lib/blog";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { ArticleBody } from "@/components/maison/article-body";
 import { buildPageMetadata, articleJsonLd, serializeJsonLd } from "@/lib/seo";
+import { resolveLocale } from "@/i18n/dictionaries";
 
 type Params = { slug: string };
 
@@ -16,7 +17,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const locale = (await cookies()).get("titrit-locale")?.value ?? "fr";
+  const locale = resolveLocale((await cookies()).get("titrit-locale")?.value);
   const post = await getPublishedArticle(slug, locale);
   if (!post) return { title: "Article introuvable", robots: { index: false, follow: false } };
   return buildPageMetadata({
@@ -38,7 +39,7 @@ export default async function BlogPostPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const locale = (await cookies()).get("titrit-locale")?.value ?? "fr";
+  const locale = resolveLocale((await cookies()).get("titrit-locale")?.value);
   const post = await getPublishedArticle(slug, locale);
   if (!post) notFound();
 
