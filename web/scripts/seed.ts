@@ -51,11 +51,11 @@ function validateSeedContent() {
     }
   }
 
-  const slugs = new Set(SEED_ARTICLES.map((article) => article.slug));
-  if (slugs.size !== SEED_ARTICLES.length) {
-    throw new Error("Seed articles contain duplicate slugs.");
+  const slugLocalePairs = new Set(SEED_ARTICLES.map((article) => `${article.slug}|${article.locale}`));
+  if (slugLocalePairs.size !== SEED_ARTICLES.length) {
+    throw new Error("Seed articles contain duplicate slug+locale pairs.");
   }
-  const productArticles = SEED_ARTICLES.filter((article) => article.productRef);
+  const productArticles = SEED_ARTICLES.filter((article) => article.productRef && article.locale === "fr");
   if (
     productArticles.length !== PRODUCTS.length ||
     productArticles.some((article) => !article.productRef || !refs.has(article.productRef))
@@ -157,11 +157,12 @@ async function main() {
         coverImage: article.coverImage,
         authorName: "Maison Titrit",
         tags: article.tags.join(", "),
+        locale: article.locale,
         published: true,
         publishedAt,
       };
       await db.article.upsert({
-        where: { slug: article.slug },
+        where: { slug_locale: { slug: article.slug, locale: article.locale } },
         update: fields,
         create: { slug: article.slug, ...fields },
       });

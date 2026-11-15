@@ -49,7 +49,7 @@ const tagsFor = (category: string, productName?: string) => {
 };
 
 function getFeatureArticle(ref: string) {
-  const article = SEED_ARTICLES.find((item) => item.productRef === ref);
+  const article = SEED_ARTICLES.find((item) => item.productRef === ref && item.locale === "fr");
   if (!article) throw new Error(`Missing product article for campaign: ${ref}`);
   return article;
 }
@@ -132,7 +132,7 @@ function productCampaigns(): CampaignDraft[] {
 }
 
 function productArticleCampaigns(): CampaignDraft[] {
-  return SEED_ARTICLES.filter((article) => article.productRef).map((article) => {
+  return SEED_ARTICLES.filter((article) => article.productRef && article.locale === "fr").map((article) => {
     const ref = article.productRef;
     if (!ref) throw new Error(`Product reference missing for article: ${article.slug}`);
     const product = getProduct(ref);
@@ -192,7 +192,7 @@ function editorialCampaign(
   slug: string,
   posts: Record<CampaignPlatform, Omit<PlatformDraft, "url" | "hashtags"> & { hashtags?: string[] }>,
 ): CampaignDraft {
-  const article = SEED_ARTICLES.find((item) => item.slug === slug);
+  const article = SEED_ARTICLES.find((item) => item.slug === slug && item.locale === "fr");
   if (!article) throw new Error(`Missing editorial article for campaign: ${slug}`);
   const articlePath = `/blog/${article.slug}`;
   const categoryHashtags = article.category === "Maison"
