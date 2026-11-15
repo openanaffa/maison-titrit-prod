@@ -190,9 +190,12 @@ export function Reveal({
     typeof matchMedia !== "undefined" &&
     matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Cap staggered delays so entrances don't drag out (reduces motion jank).
+  const cappedDelay = Math.min(delay, 0.12);
+
   const revealStyle: any = {
     "--reveal-y": `${y}px`,
-    "--reveal-delay": `${delay}s`,
+    "--reveal-delay": `${cappedDelay}s`,
     ...(reduce ? { opacity: 1, transform: "none" } : {}),
   };
 

@@ -12,6 +12,7 @@ import {
   CookiePreferencesButton,
 } from "@/components/analytics/cookie-consent";
 import { SiteJsonLd } from "@/components/seo/json-ld";
+import { SwRegister } from "@/components/pwa/sw-register";
 import { site } from "@/config/site";
 import { baseUrl } from "@/lib/seo";
 import { VERIFICATION_META, getIntegrations } from "@/lib/integrations";
@@ -207,6 +208,7 @@ gtag('consent', 'default', {
         <Toaster />
         <Analytics />
         <SpeedInsights />
+        <SwRegister />
       </body>
     </html>
   );

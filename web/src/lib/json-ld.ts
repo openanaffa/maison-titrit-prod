@@ -44,6 +44,7 @@ export function localBusinessSchema() {
       "@type": "PostalAddress",
       streetAddress: `${site.address.line1}, ${site.address.line2}`,
       addressLocality: site.address.city,
+      postalCode: "27182",
       addressCountry: "MA",
     },
     geo: {
