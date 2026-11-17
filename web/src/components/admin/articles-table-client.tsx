@@ -7,22 +7,15 @@ import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/i18n/locale-provider";
 import { useToast } from "@/hooks/use-toast";
+import { ArticleTableRow } from "@/lib/types";
 
-type Row = {
-  id: string;
-  slug: string;
-  title: string;
-  published: boolean;
-  publishedAt: string | null;
-  updatedAt: string;
-};
 
-export function ArticlesTableClient({ rows }: { rows: Row[] }) {
+export function ArticlesTableClient({ rows }: { rows: ArticleTableRow[] }) {
   const { t } = useT();
   const router = useRouter();
   const { toast } = useToast();
 
-  async function onDelete(row: Row) {
+  async function onDelete(row: ArticleTableRow) {
     if (!confirm(`Supprimer « ${row.title} » ?`)) return;
     const res = await fetch(`/api/admin/articles/${row.id}`, { method: "DELETE" });
     if (res.ok) {
@@ -31,7 +24,7 @@ export function ArticlesTableClient({ rows }: { rows: Row[] }) {
     }
   }
 
-  async function togglePublish(row: Row) {
+  async function togglePublish(row: ArticleTableRow) {
     const res = await fetch(`/api/admin/articles/${row.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },

@@ -7,31 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { EMPTY_ANALYTICS, EMPTY_VERIFICATION, VERIFICATION_HINTS } from "@/lib/types/constants";
 
-type AnalyticsForm = { gtmId: string; ga4Id: string; fbPixelId: string; pinterestTagId: string; tiktokPixelId: string; youtubeChannelId: string };
-type VerificationForm = {
-  google: string;
-  facebook: string;
-  instagram: string;
-  tiktok: string;
-  customText: string; // paste <meta …> tags — parsed server-side
-};
 
-const EMPTY_ANALYTICS: AnalyticsForm = { gtmId: "", ga4Id: "", fbPixelId: "", pinterestTagId: "", tiktokPixelId: "", youtubeChannelId: "" };
-const EMPTY_VERIFICATION: VerificationForm = {
-  google: "",
-  facebook: "",
-  instagram: "",
-  tiktok: "",
-  customText: "",
-};
 
-const VERIFICATION_HINTS: { key: keyof Omit<VerificationForm, "customText">; label: string; meta: string }[] = [
-  { key: "google", label: "Google Search Console", meta: "google-site-verification" },
-  { key: "facebook", label: "Facebook (Meta)", meta: "facebook-domain-verification" },
-  { key: "instagram", label: "Instagram", meta: "instagram-site-verification" },
-  { key: "tiktok", label: "TikTok", meta: "tiktok-domain-verification" },
-];
 
 /**
  * Trackers + domain-verification integrations editor.

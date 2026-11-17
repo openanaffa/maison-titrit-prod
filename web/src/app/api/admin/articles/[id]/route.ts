@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { ArticleRow } from "@/lib/supabase/database.types";
+import type { Tables } from "@/lib/supabase/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -14,9 +14,9 @@ export async function PATCH(
   const { id } = await params;
   try {
     const body = await req.json();
-    const data: Partial<ArticleRow> = {};
+    const data: Partial<Tables<"Article">> = {};
     for (const k of ["title", "excerpt", "body", "coverImage", "authorName", "tags", "published"]) {
-      if (k in body) data[k as keyof ArticleRow] = body[k];
+      if (k in body) data[k as keyof Tables<"Article">] = body[k];
     }
     // If publishing for the first time, set publishedAt
     if (body.published === true) {

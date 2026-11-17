@@ -2,38 +2,9 @@ import { notFound } from "next/navigation";
 import { OrderDetailClient } from "@/components/admin/order-detail-client";
 import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { OrderView } from "@/lib/types";
 
-type OrderView = {
-  id: string;
-  number: string;
-  status: string;
-  customerName: string;
-  customerPhone: string;
-  customerEmail: string | null;
-  city: string | null;
-  address: string | null;
-  notes: string | null;
-  utmSource: string | null;
-  utmMedium: string | null;
-  utmCampaign: string | null;
-  utmContent: string | null;
-  utmTerm: string | null;
-  total: number;
-  currency: string;
-  payment: string;
-  createdAt: Date;
-  updatedAt: Date;
-  user: { id: string; name: string | null } | null;
-  items: Array<{
-    id: string;
-    ref: string;
-    name: string;
-    size: string | null;
-    price: number;
-    quantity: number;
-    product: { id: string; images: Array<{ url: string }> };
-  }>;
-};
+
 
 export const dynamic = "force-dynamic";
 

@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { CategoryIcon } from "@/components/maison/category-icons";
 import { useT } from "@/i18n/locale-provider";
 import { useToast } from "@/hooks/use-toast";
+import { Category } from "@/lib/types";
 
-type Category = { id: string; name: string; slug: string; position: number; count: number };
 
 export function CategoriesClient({ initial }: { initial: Category[] }) {
   const { t } = useT();

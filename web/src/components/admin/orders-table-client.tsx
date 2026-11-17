@@ -4,40 +4,24 @@ import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useT } from "@/i18n/locale-provider";
 import { useToast } from "@/hooks/use-toast";
-import { StatusBadge, STATUS_LABELS } from "@/components/admin/status-badge";
+import { StatusBadge } from "@/components/admin/status-badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { OrderRow } from "@/lib/types";
+import { FLOW, STATUS_LABELS } from "@/lib/types/constants";
 
-type Row = {
-  id: string;
-  number: string;
-  customerName: string;
-  customerPhone: string;
-  customerEmail: string;
-  city: string;
-  address: string;
-  notes: string;
-  total: number;
-  currency: string;
-  status: string;
-  payment: string;
-  createdAt: string;
-  itemCount: number;
-  userId: string | null;
-  userName: string | null;
-};
 
-const FLOW: string[] = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"];
 
-export function OrdersTableClient({ rows }: { rows: Row[] }) {
+
+export function OrdersTableClient({ rows }: { rows: OrderRow[] }) {
   const { t } = useT();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const [filter, setFilter] = React.useState<string>("all");
-  const [selected, setSelected] = React.useState<Row | null>(null);
+  const [selected, setSelected] = React.useState<OrderRow | null>(null);
 
   const currentQ = searchParams.get("q") ?? "";
 
@@ -48,7 +32,7 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
 
   const filtered = rows.filter((r) => filter === "all" || r.status === filter);
 
-  async function updateStatus(order: Row, status: string) {
+  async function updateStatus(order: OrderRow, status: string) {
     const res = await fetch(`/api/admin/orders/${order.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },

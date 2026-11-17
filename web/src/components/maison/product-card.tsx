@@ -14,7 +14,7 @@ import { useT } from "@/i18n/locale-provider";
 import { track, trackAddToCart, trackFacebook } from "@/lib/analytics";
 import { useCart } from "@/lib/cart";
 import { useToast } from "@/hooks/use-toast";
-import type { ProductDTO } from "@/lib/products";
+import type { ProductDTO } from "@/lib/types";
 
 export function parseSizes(s: string): string[] {
   return s
@@ -83,7 +83,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 
   return (
     <article className="card-vintage group flex h-full flex-col overflow-hidden rounded-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-30px_rgba(28,26,23,0.55)]">
-      <Link href={detailHref} className="relative block aspect-[4/5] overflow-hidden bg-sand/40" aria-label={product.name}>
+      <Link href={detailHref} className="relative block aspect-4/5 overflow-hidden bg-sand/40" aria-label={product.name}>
         <Image
           src={product.image}
           alt={product.name}
@@ -91,9 +91,9 @@ export function ProductCard({ product }: { product: ProductDTO }) {
           sizes="(min-width: 1024px) 21rem, (min-width: 640px) 50vw, 100vw"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent opacity-60" />
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink/25 via-transparent to-transparent opacity-60" />
         {/* hover hint */}
-        <span className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-ink/70 to-transparent p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.22em] text-cream opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-linear-to-t from-ink/70 to-transparent p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.22em] text-cream opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
           {t("cta.viewDetails")} →
         </span>
 

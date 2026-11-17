@@ -5,30 +5,13 @@ import Link from "next/link";
 import { Megaphone, TrendingUp, ShoppingBag, Compass } from "lucide-react";
 import { useT } from "@/i18n/locale-provider";
 import { OrnamentDivider } from "@/components/maison/motifs";
+import { MarketingData } from "@/lib/types";
+import { mad } from "@/lib/types/constants";
 
-export type OrderUtmRow = {
-  id: string;
-  number: string;
-  status: string;
-  total: number;
-  currency: string;
-  utmSource: string | null;
-  utmMedium: string | null;
-  utmCampaign: string | null;
-  createdAt: string;
-};
 
-export type MarketingData = {
-  period: 30 | 0;
-  totals: { orders: number; revenue: number; attributed: number; attributedRevenue: number };
-  bySource: Array<{ source: string; orders: number; revenue: number }>;
-  byCampaign: Array<{ source: string; campaign: string; orders: number; revenue: number }>;
-  recent: OrderUtmRow[];
-};
 
-const mad = (n: number) => `${n.toLocaleString("fr-FR")} MAD`;
 
-function Kpi({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+export function Kpi({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
   return (
     <div className="card-vintage rounded-sm p-5">
       <div className="flex items-start justify-between">
@@ -44,7 +27,7 @@ function Kpi({ icon: Icon, label, value }: { icon: React.ElementType; label: str
   );
 }
 
-function share(orders: number, total: number) {
+export function share(orders: number, total: number) {
   if (!total) return "0%";
   return `${Math.round((orders / total) * 100)}%`;
 }

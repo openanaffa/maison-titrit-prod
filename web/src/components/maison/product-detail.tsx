@@ -21,7 +21,7 @@ import {
 import { useT } from "@/i18n/locale-provider";
 import { track, trackViewItem, trackAddToCart, trackFacebook } from "@/lib/analytics";
 import { ProductCard, parseSizes } from "@/components/maison/product-card";
-import type { ProductDTO } from "@/lib/products";
+import type { ProductDTO } from "@/lib/types";
 
 /** Parse "S · M · L · XL" → ["S","M","L","XL"]. */
 
@@ -165,7 +165,7 @@ export function ProductDetailClient({
         <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
           {/* Image gallery */}
           <Reveal y={20}>
-            <figure className="vintage-frame relative aspect-[4/5] overflow-hidden rounded-sm bg-sand/30">
+            <figure className="vintage-frame relative aspect-4/5 overflow-hidden rounded-sm bg-sand/30">
               <Image
                 src={images[activeImg]?.url ?? product.image}
                 alt={images[activeImg]?.alt ?? product.name}

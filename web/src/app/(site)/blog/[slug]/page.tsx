@@ -6,15 +6,15 @@ import Link from "next/link";
 import { getPublishedArticle } from "@/lib/blog";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { ArticleBody } from "@/components/maison/article-body";
-import { buildPageMetadata, articleJsonLd, serializeJsonLd } from "@/lib/seo";
+import { buildPageMetadata, articleJsonLd } from "@/lib/seo/seo";
+import { serializeJsonLd } from "@/lib/serialize-json-ld";
 import { resolveLocale } from "@/i18n/dictionaries";
-
-type Params = { slug: string };
+import type { SlugParams } from "@/lib/types";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<Params>;
+  params: Promise<SlugParams>;
 }): Promise<Metadata> {
   const { slug } = await params;
   const locale = resolveLocale((await cookies()).get("titrit-locale")?.value);
@@ -36,7 +36,7 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<Params>;
+  params: Promise<SlugParams>;
 }) {
   const { slug } = await params;
   const locale = resolveLocale((await cookies()).get("titrit-locale")?.value);

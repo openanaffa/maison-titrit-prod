@@ -19,34 +19,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { rejectBots } from "@/lib/bot";
 import { createHash } from "crypto";
-
-type ConsentFlag = { analytics: boolean; marketing: boolean };
-
-type TrackItem = {
-  ref: string;
-  name?: string;
-  price?: number;
-  qty?: number;
-};
-
-type TrackPayload = {
-  event?: string;
-  consent?: ConsentFlag;
-  transactionId?: string;
-  value?: number;
-  currency?: string;
-  items?: TrackItem[];
-  eventId?: string;
-  sourceUrl?: string;
-  clientId?: string;
-  fbp?: string;
-  fbc?: string;
-  // used ONLY for sha256 hashing below — never stored, never logged
-  email?: string;
-  phone?: string;
-};
-
-type LegResult = "sent" | "skipped" | "refused" | "error";
+import { ConsentFlag, LegResult, TrackItem, TrackPayload } from "@/lib/types";
 
 /* --- env (all optional) ---------------------------------------------------- */
 const META_TOKEN = process.env.META_CAPI_ACCESS_TOKEN || "";

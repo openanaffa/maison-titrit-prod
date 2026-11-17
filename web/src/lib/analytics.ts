@@ -5,17 +5,15 @@
  * Consent is persisted in localStorage and shared via a small pub/sub so the
  * analytics scripts mount only after the visitor accepts.
  */
-import { analytics, CONSENT_VERSION, type ConsentCategory } from "@/config/site";
+import { analytics, CONSENT_VERSION } from "@/config/site";
+import type {
+  ConsentCategory,
+  ConsentState,
+  Listener,
+  ServerLegs,
+} from "@/lib/types/analytics";
 
 const STORAGE_KEY = "titrit-consent";
-
-export type ConsentState = {
-  version: number;
-  necessary: true; // always
-  analytics: boolean;
-  marketing: boolean;
-  decided: boolean; // whether the user has made a choice
-};
 
 export const DEFAULT_CONSENT: ConsentState = {
   version: CONSENT_VERSION,
@@ -25,7 +23,6 @@ export const DEFAULT_CONSENT: ConsentState = {
   decided: false,
 };
 
-type Listener = (s: ConsentState) => void;
 const listeners = new Set<Listener>();
 let current: ConsentState = DEFAULT_CONSENT;
 
@@ -185,7 +182,6 @@ export { analytics };
  * the consent-gated browser dispatches from the helpers above.
  * ------------------------------------------------------------------------ */
 
-type ServerLegs = { ga: boolean; meta: boolean };
 const NO_LEGS: ServerLegs = { ga: false, meta: false };
 
 function getCookie(name: string): string | undefined {

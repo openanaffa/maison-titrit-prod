@@ -3,7 +3,7 @@ import {
   localBusinessSchema,
   websiteSchema,
 } from "@/lib/json-ld";
-import { serializeJsonLd } from "@/lib/seo";
+import { serializeJsonLd } from "@/lib/serialize-json-ld";
 
 /**
  * Global JSON-LD — rendered once in <head> via layout.tsx.

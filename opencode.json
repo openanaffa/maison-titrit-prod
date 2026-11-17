@@ -1,0 +1,215 @@
+{
+  "mcp": {
+    "trail": {
+      "type": "local",
+      "command": [
+        "trail",
+        "mcp"
+      ],
+      "enabled": true
+    },
+    "open-knowledge": {
+      "type": "local",
+      "command": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "if ($env:APPDATA) { $shim = Join-Path $env:APPDATA 'npm\\ok.cmd'; if (Test-Path -LiteralPath $shim -PathType Leaf) { & $shim mcp; exit $LASTEXITCODE } }; $ok = Get-Command ok.cmd -CommandType Application -ErrorAction SilentlyContinue; if ($ok) { & $ok.Source mcp; exit $LASTEXITCODE }; npx -y @inkeep/open-knowledge@latest mcp"
+      ],
+      "enabled": true
+    },
+    "filesystem-brain": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "F:\\0brain"
+      ],
+      "enabled": true
+    },
+    "next-devtools": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "next-devtools-mcp@latest"
+      ],
+      "enabled": true
+    },
+    "serena": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--python",
+        "3.12",
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--mode",
+        "editing",
+        "--mode",
+        "interactive"
+      ],
+      "enabled": true
+    },
+    "repomix": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "repomix",
+        "--mcp"
+      ],
+      "enabled": true
+    },
+    "context7": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "enabled": true
+    },
+    "figma": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "figma-developer-mcp"
+      ],
+      "environment": {
+        "FIGMA_API_KEY": "${FIGMA_API_KEY}"
+      },
+      "enabled": true
+    },
+    "supabase": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--access-token",
+        "${SUPABASE_ACCESS_TOKEN}",
+        "--project-ref",
+        "${SUPABASE_PROJECT_REF}"
+      ],
+      "environment": {
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}",
+        "SUPABASE_PROJECT_REF": "${SUPABASE_PROJECT_REF}"
+      },
+      "enabled": true
+    },
+    "prisma": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "prisma@latest",
+        "mcp"
+      ],
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "enabled": true
+    },
+    "cloudflare": {
+      "type": "local",
+      "command": [
+        "powershell",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "npx -y @cloudflare/mcp-server-cloudflare@latest run $env:CLOUDFLARE_ACCOUNT_ID"
+      ],
+      "environment": {
+        "CLOUDFLARE_API_TOKEN": "${CLOUDFLARE_API_TOKEN}",
+        "CLOUDFLARE_ACCOUNT_ID": "${CLOUDFLARE_ACCOUNT_ID}"
+      },
+      "enabled": true
+    },
+    "filesystem": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "."
+      ],
+      "enabled": true
+    },
+    "github": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      },
+      "enabled": true
+    },
+    "postgres": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${DATABASE_URL}"
+      ],
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "enabled": true
+    },
+    "sqlite": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "web/prisma/dev.db"
+      ],
+      "enabled": true
+    },
+    "vercel": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "vercel-mcp"
+      ],
+      "environment": {
+        "VERCEL_TOKEN": "${VERCEL_TOKEN}"
+      },
+      "enabled": true
+    },
+    "terraform": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "terraform-mcp-server"
+      ],
+      "environment": {
+        "TF_VAR_token": "${CLOUDFLARE_API_TOKEN}"
+      },
+      "enabled": true
+    },
+    "docker": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "mcp-docker-server"
+      ],
+      "enabled": true
+    }
+  }
+}

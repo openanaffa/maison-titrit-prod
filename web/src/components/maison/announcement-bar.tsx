@@ -39,7 +39,7 @@ export function AnnouncementBar() {
   if (!bar || !bar.active || dismissed || !bar.message) return null;
 
   return (
-    <div className="relative z-[55] bg-ink text-cream">
+    <div className="relative z-55 bg-ink text-cream">
       <div className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center sm:px-6">
         <Megaphone className="size-3.5 shrink-0 text-bronze-light" />
         {bar.link ? (
@@ -58,7 +58,7 @@ export function AnnouncementBar() {
           type="button"
           onClick={dismiss}
           aria-label={t("common.close")}
-          className="absolute end-2 top-1/2 -translate-y-1/2 inline-flex size-11 items-center justify-center rounded-full text-cream/70 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
+          className="absolute inset-e-2 top-1/2 -translate-y-1/2 inline-flex size-11 items-center justify-center rounded-full text-cream/70 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
         >
           <X className="size-3.5" />
         </button>

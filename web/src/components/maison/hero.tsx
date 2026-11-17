@@ -77,7 +77,7 @@ export function Hero() {
         {/* Right — framed hero image. Rendered without Reveal so the LCP
             hero image paints immediately instead of fading in after a delay. */}
         <div className="order-1 lg:order-2">
-          <figure className="vintage-frame relative aspect-[4/5] overflow-hidden rounded-sm sm:aspect-[5/5] lg:aspect-[4/5]">
+          <figure className="vintage-frame relative aspect-4/5 overflow-hidden rounded-sm sm:aspect-5/5 lg:aspect-4/5">
             <Image
               fill
               src="/images/maison-titrit/hero-atelier.png"
@@ -86,7 +86,7 @@ export function Hero() {
               sizes="(min-width: 1024px) 31.5rem, (min-width: 640px) 92vw, 100vw"
               priority
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink/30 via-transparent to-transparent" />
             <figcaption className="absolute inset-x-4 bottom-4 flex items-center gap-3">
               <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-cream/85 backdrop-blur dark:bg-ink/70">
                 <img

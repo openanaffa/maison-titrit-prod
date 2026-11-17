@@ -1,6 +1,7 @@
-import { ProductForm, type ProductFormValues } from "@/components/admin/product-form";
+import { ProductForm } from "@/components/admin/product-form";
 import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { ProductFormValues } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 

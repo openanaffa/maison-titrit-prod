@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { CategoryRow } from "@/lib/supabase/database.types";
+import type { Tables } from "@/lib/supabase/database.types";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
 
@@ -16,7 +16,7 @@ export async function PATCH(
   const { id } = await params;
   try {
     const body = await req.json();
-    const data: Partial<CategoryRow> = {};
+    const data: Partial<Tables<"Category">> = {};
     if (typeof body.name === "string") {
       const name = body.name.trim();
       if (!name) return NextResponse.json({ error: "Nom requis." }, { status: 400 });

@@ -1,6 +1,6 @@
 import { requirePagePermission } from "@/lib/session";
 import { db } from "@/lib/db";
-import { TeamClient, type TeamUser } from "@/components/admin/team-client";
+import { TeamClient } from "@/components/admin/team-client";
 
 export const dynamic = "force-dynamic";
 

@@ -62,7 +62,7 @@ export function LanguageSwitcher({
       {open && (
         <div
           role="menu"
-          className={`absolute end-0 mt-2 w-44 overflow-hidden rounded-sm border border-bronze/40 shadow-[0_14px_30px_-12px_rgba(28,26,23,0.45)] ${
+          className={`absolute inset-e-0 mt-2 w-44 overflow-hidden rounded-sm border border-bronze/40 shadow-[0_14px_30px_-12px_rgba(28,26,23,0.45)] ${
             darkSurface ? "bg-ink text-cream" : "bg-card"
           }`}
         >
