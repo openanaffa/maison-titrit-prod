@@ -16,55 +16,12 @@ import {
   ArrowRight,
   MessageCircle,
 } from "lucide-react";
+import { FLOW, STATUS_LABELS } from "@/lib/types/constants";
+import { OrderView } from "@/lib/types";
 
-type OrderItemView = {
-  id: string;
-  ref: string;
-  name: string;
-  size: string | null;
-  price: number;
-  quantity: number;
-  product: {
-    id: string;
-    images: Array<{ url: string }>;
-  };
-};
 
-type OrderView = {
-  id: string;
-  number: string;
-  status: string;
-  customerName: string;
-  customerPhone: string;
-  customerEmail: string | null;
-  city: string | null;
-  address: string | null;
-  notes: string | null;
-  utmSource: string | null;
-  utmMedium: string | null;
-  utmCampaign: string | null;
-  utmContent: string | null;
-  utmTerm: string | null;
-  total: number;
-  currency: string;
-  payment: string;
-  createdAt: Date;
-  updatedAt: Date;
-  user: { id: string; name: string | null } | null;
-  items: OrderItemView[];
-};
 
-const FLOW: string[] = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"];
-
-const STATUS_LABELS: Record<string, string> = {
-  PENDING: "En attente",
-  CONFIRMED: "Confirmée",
-  SHIPPED: "Expédiée",
-  DELIVERED: "Livrée",
-  CANCELLED: "Annulée",
-};
-
-function StatusSelector({
+export function StatusSelector({
   order,
   onChange,
 }: {
@@ -95,7 +52,7 @@ function StatusSelector({
   );
 }
 
-function Money({ amount, currency }: { amount: number; currency: string }) {
+export function Money({ amount, currency }: { amount: number; currency: string }) {
   return amount.toLocaleString("fr-FR", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " " + currency;
 }
 

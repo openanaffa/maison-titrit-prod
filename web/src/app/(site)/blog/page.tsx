@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { getPublishedArticles } from "@/lib/blog";
 import { resolveLocale } from "@/i18n/dictionaries";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo/build-page.metadata";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Journal — Histoires & héritage amazigh",

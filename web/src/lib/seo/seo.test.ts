@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { serializeJsonLd } from "./seo";
+import {serializeJsonLd} from '../serialize-json-ld'
 
 describe("serializeJsonLd", () => {
   test("escapes less-than characters without changing the parsed data", () => {

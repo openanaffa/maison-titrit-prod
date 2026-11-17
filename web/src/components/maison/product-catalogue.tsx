@@ -9,7 +9,7 @@ import { CATEGORIES } from "@/config/products";
 import { useT } from "@/i18n/locale-provider";
 import { whatsappCatalog } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
-import type { ProductDTO } from "@/lib/products";
+import type { ProductDTO } from "@/lib/types";
 
 export function ProductCatalogue() {
   const { t } = useT();
@@ -109,7 +109,7 @@ export function ProductCatalogue() {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="card-vintage overflow-hidden rounded-sm">
-                  <Skeleton className="aspect-[4/5] w-full rounded-none bg-sand/60" />
+                  <Skeleton className="aspect-4/5 w-full rounded-none bg-sand/60" />
                   <div className="space-y-3 p-5">
                     <Skeleton className="h-3 w-20 bg-sand/60" />
                     <Skeleton className="h-6 w-40 bg-sand/60" />

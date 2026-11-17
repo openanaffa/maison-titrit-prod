@@ -1,30 +1,10 @@
 import { SEED_ARTICLES } from "@/config/articles";
 import { PRODUCTS } from "@/config/products";
-
-export type CampaignPlatform =
-  | "facebook"
-  | "instagram"
-  | "pinterest"
-  | "linkedin"
-  | "googleBusiness";
-
-export type PlatformDraft = {
-  title: string;
-  caption: string;
-  callToAction: string;
-  hashtags: string[];
-  url: string;
-};
-
-export type CampaignDraft = {
-  status: "draft";
-  kind: "product" | "product-article" | "editorial";
-  subject: string;
-  image: string;
-  productPath?: string;
-  articlePath: string;
-  posts: Record<CampaignPlatform, PlatformDraft>;
-};
+import type {
+  CampaignDraft,
+  CampaignPlatform,
+  PlatformDraft,
+} from "@/lib/types/content";
 
 const platformNames: CampaignPlatform[] = [
   "facebook",

@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
-import { staffNewOrderEmail, type StaffOrderPayload } from "./email-templates";
+import { type StaffOrderPayload } from "@/lib/types/notifications";
+import { staffNewOrderEmail } from "./email-templates";
 
 const WAFINE_TIMEOUT_MS = 5_000;
 

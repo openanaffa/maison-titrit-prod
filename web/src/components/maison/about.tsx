@@ -49,7 +49,7 @@ export function About() {
 
           <Reveal delay={0.12} y={24}>
             <figure className="relative">
-              <div className="vintage-frame relative aspect-[4/3] w-full overflow-hidden rounded-sm">
+              <div className="vintage-frame relative aspect-4/3 w-full overflow-hidden rounded-sm">
                 <Image
                   src="/images/maison-titrit/about-craft.png"
                   alt={t("hero.imageSub")}

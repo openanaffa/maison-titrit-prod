@@ -11,20 +11,9 @@ import { CategoryIcon } from "@/components/maison/category-icons";
 import { useT } from "@/i18n/locale-provider";
 import { useToast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
+import { Row } from "@/lib/types";
 
-type Row = {
-  id: string;
-  ref: string;
-  name: string;
-  price: number;
-  salePrice: number | null;
-  currency: string;
-  category: string;
-  categorySlug?: string;
-  inStock: boolean;
-  featured: boolean;
-  image: string | null;
-};
+
 
 export function ProductsTableClient({
   rows,
@@ -80,7 +69,7 @@ export function ProductsTableClient({
       {/* Search + filter */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative max-w-xs flex-1">
-          <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-bronze/60" />
+          <Search className="pointer-events-none absolute inset-s-3 top-1/2 size-4 -translate-y-1/2 text-bronze/60" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}

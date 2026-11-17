@@ -12,25 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useT } from "@/i18n/locale-provider";
 import { useToast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
+import { ProductFormImage, ProductFormValues } from "@/lib/types";
 
-export type ProductFormImage = { url: string; alt?: string };
-export type ProductFormValues = {
-  ref: string;
-  name: string;
-  nameAmazigh?: string;
-  description: string;
-  shortStory: string;
-  materials: string;
-  colors: string;
-  sizes: string;
-  price: number;
-  salePrice?: number | null;
-  currency: string;
-  inStock: boolean;
-  featured: boolean;
-  categoryId: string | null;
-  images: ProductFormImage[];
-};
 
 export function ProductForm({
   mode,
@@ -295,7 +278,7 @@ export function ProductForm({
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+export function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
       <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{label}</Label>

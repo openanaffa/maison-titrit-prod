@@ -4,25 +4,8 @@ import Link from "next/link";
 import { Package, ShoppingCart, Users, TrendingUp, AlertCircle, Star, ArrowRight } from "lucide-react";
 import { useT } from "@/i18n/locale-provider";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { Stat, RecentOrder } from "@/lib/types";
 
-type Stat = {
-  products: number;
-  orders: number;
-  pendingOrders: number;
-  customers: number;
-  featured: number;
-  outOfStock: number;
-  revenue: number;
-};
-type RecentOrder = {
-  id: string;
-  number: string;
-  customerName: string;
-  total: number;
-  status: string;
-  createdAt: string;
-  itemCount: number;
-};
 
 export function DashboardClient({
   user,

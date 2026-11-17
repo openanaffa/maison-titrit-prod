@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/maison/legal-page";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo/build-page.metadata";
 
 /** Public, indexable — legal pages are part of the compliance surface. */
 export const metadata: Metadata = buildPageMetadata({

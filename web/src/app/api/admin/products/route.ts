@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { ImageRow, ProductRow } from "@/lib/supabase/database.types";
+import type { Tables } from "@/lib/supabase/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       categoryId = cat.id;
     }
 
-    const productInput: ProductRow = {
+    const productInput: Tables<"Product"> = {
         id: randomUUID(),
         ref,
         name: body.name.trim(),
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
       .throwOnError();
 
     const images = Array.isArray(body.images) ? body.images : [];
-    const imageRows: ImageRow[] = images.flatMap((img: { url?: string; alt?: string | null }, index: number) => {
+    const imageRows: Tables<"Image">[] = images.flatMap((img: { url?: string; alt?: string | null }, index: number) => {
       if (!img.url?.trim()) return [];
       return [{
         id: randomUUID(),

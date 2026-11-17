@@ -13,15 +13,14 @@ import {
 } from "@/components/analytics/cookie-consent";
 import { SiteJsonLd } from "@/components/seo/json-ld";
 import { SwRegister } from "@/components/pwa/sw-register";
-import { site } from "@/config/site";
-import { baseUrl } from "@/lib/seo";
+import { OG_IMAGE, site, SITE_URL } from "@/config/site";
+
 import { VERIFICATION_META, getIntegrations } from "@/lib/integrations";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-const SITE_URL = baseUrl();
-const OG_IMAGE = `${SITE_URL}/og-default.png`;
+
 
 /* Integration settings are runtime-editable (see /makteb/settings) — the root
  * layout revalidates them every 60s and re-emits the verification metas and
@@ -39,90 +38,90 @@ export async function generateMetadata(): Promise<Metadata> {
   for (const { name, content } of verification.custom) other[name] = content;
 
   return {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: `${site.name} — ${site.nameAmazigh} | Modest Fashion · Made in Morocco`,
-    template: `%s · ${site.name}`,
-  },
-  description:
-    "Maison Titrit — mode modeste pour femmes. Style, confort, qualité. 100% Made in Morocco 🇲🇦. Caftans, robes, tuniques, ensembles & abayas. Commande sur WhatsApp — paiement à la livraison (COD).",
-  keywords: [
-    "Maison Titrit",
-    "mode modeste",
-    "modest fashion",
-    "caftan",
-    "robe",
-    "tunique",
-    "abaya",
-    "Made in Morocco",
-    "Bouskoura",
-    "Casablanca",
-    "modest dresses",
-    "Moroccan fashion",
-    "Amazigh",
-    "WhatsApp order",
-  ],
-  authors: [{ name: site.name }],
-  creator: site.name,
-  publisher: site.name,
-  applicationName: site.name,
-  alternates: {
-    canonical: SITE_URL,
-    languages: {
-      fr: SITE_URL,
-      ar: SITE_URL,
-      en: SITE_URL,
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: `${site.name} — ${site.nameAmazigh} | Modest Fashion · Made in Morocco`,
+      template: `%s · ${site.name}`,
     },
-  },
-  openGraph: {
-    title: `${site.name} — Modest Fashion · Made in Morocco`,
     description:
-      "Mode modeste pour femmes. Style, confort, qualité. 100% Made in Morocco 🇲🇦. Commande sur WhatsApp — paiement à la livraison (COD).",
-    type: "website",
-    locale: "fr_MA",
-    siteName: site.name,
-    url: SITE_URL,
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: `${site.name} — Modest Fashion · Made in Morocco`,
-      },
+      "Maison Titrit — mode modeste pour femmes. Style, confort, qualité. 100% Made in Morocco 🇲🇦. Caftans, robes, tuniques, ensembles & abayas. Commande sur WhatsApp — paiement à la livraison (COD).",
+    keywords: [
+      "Maison Titrit",
+      "mode modeste",
+      "modest fashion",
+      "caftan",
+      "robe",
+      "tunique",
+      "abaya",
+      "Made in Morocco",
+      "Bouskoura",
+      "Casablanca",
+      "modest dresses",
+      "Moroccan fashion",
+      "Amazigh",
+      "WhatsApp order",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@maison__titrit",
-    creator: "@maison__titrit",
-    title: `${site.name} — Modest Fashion · Made in Morocco`,
-    description: "Mode modeste pour femmes. 100% Made in Morocco 🇲🇦. Commande sur WhatsApp.",
-    images: [OG_IMAGE],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    "max-snippet": -1,
-    "max-image-preview": "large",
-    "max-video-preview": -1,
-    googleBot: { index: true, follow: true, "max-image-preview": "large" },
-  },
-  // Domain verification tags — editor-managed (see /makteb/settings), env as fallback
-  verification:
-    Object.keys(other).length > 0
-      ? {
+    authors: [{ name: site.name }],
+    creator: site.name,
+    publisher: site.name,
+    applicationName: site.name,
+    alternates: {
+      canonical: SITE_URL,
+      languages: {
+        fr: SITE_URL,
+        ar: SITE_URL,
+        en: SITE_URL,
+      },
+    },
+    openGraph: {
+      title: `${site.name} — Modest Fashion · Made in Morocco`,
+      description:
+        "Mode modeste pour femmes. Style, confort, qualité. 100% Made in Morocco 🇲🇦. Commande sur WhatsApp — paiement à la livraison (COD).",
+      type: "website",
+      locale: "fr_MA",
+      siteName: site.name,
+      url: SITE_URL,
+      images: [
+        {
+          url: OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: `${site.name} — Modest Fashion · Made in Morocco`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@maison__titrit",
+      creator: "@maison__titrit",
+      title: `${site.name} — Modest Fashion · Made in Morocco`,
+      description: "Mode modeste pour femmes. 100% Made in Morocco 🇲🇦. Commande sur WhatsApp.",
+      images: [OG_IMAGE],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+      googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    },
+    // Domain verification tags — editor-managed (see /makteb/settings), env as fallback
+    verification:
+      Object.keys(other).length > 0
+        ? {
           other,
         }
-      : undefined,
-  // Geographic targeting hints for local SEO (LocalBusiness NAP coords live in
-  // src/lib/json-ld.ts — schema.org GeoCoordinates use the same values).
-  other: {
-    "geo.region": "MA",
-    "geo.placename": "Bouskoura",
-    "geo.country": "MA",
-    "geo.position": "33.4496; -7.652",
-  },
-  category: "shopping",
+        : undefined,
+    // Geographic targeting hints for local SEO (LocalBusiness NAP coords live in
+    // src/lib/json-ld.ts — schema.org GeoCoordinates use the same values).
+    other: {
+      "geo.region": "MA",
+      "geo.placename": "Bouskoura",
+      "geo.country": "MA",
+      "geo.position": "33.4496; -7.652",
+    },
+    category: "shopping",
   };
 }
 
@@ -165,9 +164,7 @@ export default async function RootLayout({
         <SiteJsonLd />
       </head>
       <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
-        {/* Google Consent Mode v2 — consent DEFAULT (all denied). Runs before
-            analytics tags load; consent 'update' commands are pushed from
-            lib/analytics.ts when the visitor chooses. */}
+
         <Script id="consent-default" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -179,10 +176,9 @@ gtag('consent', 'default', {
   'wait_for_update': 500
 });`}
         </Script>
-        {/* Skip link — first focusable target for keyboard / reader-tree users */}
         <a
           href="#accueil"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-[100] focus:inline-flex focus:items-center focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream focus:font-label focus:text-[0.7rem] focus:uppercase focus:tracking-[0.2em] focus:outline-none"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:inset-s-4 focus:z-100 focus:inline-flex focus:items-center focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream focus:font-label focus:text-[0.7rem] focus:uppercase focus:tracking-[0.2em] focus:outline-none"
         >
           Aller au contenu
         </a>

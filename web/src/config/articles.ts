@@ -1,18 +1,5 @@
 import { PRODUCTS } from "@/config/products";
-
-export type EditorialCategory = "Maison" | "Craft";
-
-export type SeedArticle = {
-  slug: string;
-  locale: "fr" | "ar" | "en";
-  title: string;
-  excerpt: string;
-  body: string;
-  coverImage: string;
-  category: EditorialCategory;
-  tags: string[];
-  productRef?: string;
-};
+import type { EditorialCategory, SeedArticle } from "@/lib/types/content";
 
 const EDITORIAL_ARTICLES_FR: SeedArticle[] = [
   {

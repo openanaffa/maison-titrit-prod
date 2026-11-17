@@ -7,6 +7,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
+import type { PaginationLinkProps } from "@/components/ui/types"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -36,11 +37,6 @@ function PaginationContent({
 function PaginationItem({ ...props }: React.ComponentProps<"li">) {
   return <li data-slot="pagination-item" {...props} />
 }
-
-type PaginationLinkProps = {
-  isActive?: boolean
-} & Pick<React.ComponentProps<typeof Button>, "size"> &
-  React.ComponentProps<"a">
 
 function PaginationLink({
   className,

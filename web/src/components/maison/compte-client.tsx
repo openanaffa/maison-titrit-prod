@@ -12,17 +12,9 @@ import { StatusBadge } from "@/components/admin/status-badge";
 import { site } from "@/config/site";
 import { AmazighStar, OrnamentDivider } from "@/components/maison/motifs";
 import { signOut } from "@/lib/supabase/auth-client";
+import { CompteUser, Order } from "@/lib/types";
 
-type CompteUser = { id: string; name: string | null; email: string; phone: string | null; role: string };
-type Order = {
-  id: string;
-  number: string;
-  status: string;
-  total: number;
-  currency: string;
-  createdAt: string;
-  items: { id: string; name: string; quantity: number; size: string | null }[];
-};
+
 
 export function CompteClient({ user, orders }: { user: CompteUser; orders: Order[] }) {
   const { t, locale } = useT();
@@ -32,7 +24,7 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
   const [phone, setPhone] = React.useState(user.phone ?? "");
   const [saving, setSaving] = React.useState(false);
 
-  const dateLocale = locale === "ar" ? "ar-MA" : locale === "en" ? "en-US" : "fr-FR";
+const dateLocale = locale === "ar" ? "ar-MA" : locale === "en" ? "en-US" : "fr-FR";
 
   async function onSave(e: React.FormEvent) {
     e.preventDefault();
@@ -129,7 +121,7 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
                           {t("compte.orderNumber")} {o.number}
                         </p>
                         <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
-                          {new Date(o.createdAt).toLocaleDateString(dateLocale)} · {t("compte.items", { count: o.items.reduce((n, i) => n + i.quantity, 0) })}
+                          {new Date(o.createdAt ?? "").toLocaleDateString(dateLocale)} · {t("compte.items", { count: o.items.reduce((n, i) => n + i.quantity, 0) })}
                         </p>
                       </div>
                       <div className="flex items-center gap-3">

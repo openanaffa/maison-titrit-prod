@@ -1,24 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProduct, listProducts, type ProductDTO } from "@/lib/products";
-import { ProductDetailClient } from "@/components/maison/product-detail";
-import {
-  buildPageMetadata,
-  productJsonLd,
-  breadcrumbJsonLd,
-  serializeJsonLd,
-} from "@/lib/seo";
 
-/** Force dynamic so freshly seeded products appear immediately. */
+import { ProductDetailClient } from "@/components/maison/product-detail";
+
+import { getProduct, listProducts } from "@/lib/products";
+import { serializeJsonLd } from "@/lib/serialize-json-ld";
+import { buildPageMetadata } from "@/lib/seo/build-page.metadata";
+import { breadcrumbJsonLd } from "@/lib/seo/json-ld/breadcrumb.json-ld";
+import { productJsonLd } from "@/lib/seo/json-ld/product.json-ld";
+import type { ProductDTO, RefParams } from "@/lib/types";
+
 export const dynamic = "force-dynamic";
 
-type Params = { ref: string };
-
-/** Generate rich per-product metadata for SEO + ads + social sharing. */
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<Params>;
+  params: Promise<RefParams>;
 }): Promise<Metadata> {
   const { ref } = await params;
   const product = await getProduct(ref);
@@ -47,7 +44,7 @@ export async function generateMetadata({
 export default async function ProductPage({
   params,
 }: {
-  params: Promise<Params>;
+  params: Promise<RefParams>;
 }) {
   const { ref } = await params;
   const product = await getProduct(ref);

@@ -10,17 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { slugify } from "@/lib/slug";
+import { ArticleFormValues } from "@/lib/types";
 
-export type ArticleFormValues = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  body: string;
-  coverImage: string;
-  authorName: string;
-  tags: string;
-  published: boolean;
-};
+export type { ArticleFormValues } from "@/lib/types";
+
+
 
 export function ArticleForm({
   mode,

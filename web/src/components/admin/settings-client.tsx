@@ -9,12 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { AmazighStar } from "@/components/maison/motifs";
 import { IntegrationsForm } from "@/components/admin/integrations-form";
+import { DAYS, DaysT } from "@/lib/types/constants";
 
-const DAYS = [
-  { key: "mon-fri", label: "Lundi — Vendredi" },
-  { key: "sat", label: "Samedi" },
-  { key: "sun", label: "Dimanche" },
-];
 
 export function SettingsClient() {
   const { toast } = useToast();

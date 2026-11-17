@@ -50,7 +50,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
           {count > 0 && (
             <span
               aria-hidden="true"
-              className="absolute -end-0.5 -top-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-terracotta px-1 font-label text-[0.5rem] text-cream"
+              className="absolute -inset-e-0.5 -top-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-terracotta px-1 font-label text-[0.5rem] text-cream"
             >
               {count}
             </span>

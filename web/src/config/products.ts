@@ -9,31 +9,12 @@
  * ============================================================================
  */
 
-export type CatalogCategory = { name: string; slug: string; position?: number };
+import type { CatalogCategory, CatalogImage, CatalogProduct } from "@/lib/types/content";
 
 export const CATEGORIES: CatalogCategory[] = [
   { name: "Modern", slug: "modern", position: 1 },
   { name: "Moroccan", slug: "moroccan", position: 2 },
 ];
-
-export type CatalogImage = { url: string; alt?: string; position?: number };
-
-export type CatalogProduct = {
-  ref: string;
-  name: string;
-  nameAmazigh?: string;
-  category: string;
-  price: number;
-  salePrice?: number;
-  images: CatalogImage[];
-  shortStory: string;
-  description: string;
-  materials: string;
-  colors: string;
-  sizes: string;
-  inStock?: boolean;
-  featured?: boolean;
-};
 
 const productImage = (file: string, alt: string): CatalogImage => ({
   url: `/images/maison-titrit/${file}`,

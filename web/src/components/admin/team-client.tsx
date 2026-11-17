@@ -5,24 +5,12 @@ import { UserCog, Loader2, Check, CircleAlert } from "lucide-react";
 import { useT } from "@/i18n/locale-provider";
 import { ROLES, can } from "@/lib/roles";
 import { OrnamentDivider } from "@/components/maison/motifs";
+import { TeamUser } from "@/lib/types";
+import { ROLE_BADGE } from "@/lib/types/constants";
 
-export type TeamUser = {
-  id: string;
-  email: string;
-  name: string | null;
-  role: string;
-  supabaseId: string | null;
-  createdAt: string;
-};
 
-const ROLE_BADGE: Record<string, string> = {
-  FOUNDER: "bg-bronze/15 text-bronze",
-  DEVELOPER: "bg-terracotta/15 text-terracotta",
-  ADMIN: "bg-henna/15 text-henna",
-  MANAGER: "bg-ink/10 text-ink dark:bg-cream/10 dark:text-cream",
-  MARKETER: "bg-olive/15 text-olive",
-  CUSTOMER: "bg-ink/5 text-ink-soft dark:bg-cream/5 dark:text-cream/60",
-};
+
+
 
 export function TeamClient({ meId, users: initial }: { meId: string; users: TeamUser[] }) {
   const { t } = useT();
