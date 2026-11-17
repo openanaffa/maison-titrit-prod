@@ -50,3 +50,4 @@ web/prisma/db/*.db
 
 # Deepwork orchestrator state (resume index, not committed)
 .slim/deepwork/
+repomix-output*

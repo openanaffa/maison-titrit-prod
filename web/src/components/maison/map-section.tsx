@@ -20,7 +20,7 @@ export function MapSection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center">
           <p className="eyebrow">{t("map.eyebrow")}</p>
-          <h2 className="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl dark:text-cream">
+          <h2 className="mt-4 heading-vintage-xl">
             {t("map.title")}
           </h2>
           <OrnamentDivider className="mt-6" width={220} />
@@ -35,7 +35,7 @@ export function MapSection() {
                   <MapPin className="size-4" />
                 </span>
                 <div>
-                  <h3 className="font-display text-2xl font-semibold text-ink dark:text-cream">
+                  <h3 className="heading-vintage-md">
                     {site.name}
                   </h3>
                   <p className="font-label text-[0.66rem] uppercase tracking-[0.24em] text-bronze">
@@ -105,11 +105,11 @@ export function MapSection() {
 
           {/* Google Maps iframe */}
           <Reveal delay={0.12} y={24}>
-            <div className="vintage-frame relative h-full min-h-[360px] overflow-hidden rounded-sm">
+            <div className="vintage-frame relative h-full min-h-90 overflow-hidden rounded-sm">
               <iframe
                 title="Google Maps — Maison Titrit, Bouskoura"
                 src={googleMapsEmbedUrl()}
-                className="h-full min-h-[360px] w-full border-0 grayscale-[0.15] sepia-[0.12]"
+                className="h-full min-h-90 w-full border-0 grayscale-[0.15] sepia-[0.12]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen
@@ -119,7 +119,7 @@ export function MapSection() {
                 href={osmLink()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute bottom-2 end-2 inline-flex items-center gap-1.5 rounded-full bg-card/85 px-3 py-1.5 font-label text-[0.56rem] uppercase tracking-[0.16em] text-bronze backdrop-blur transition-colors hover:text-terracotta"
+                className="absolute bottom-2 inset-e-2 inline-flex items-center gap-1.5 rounded-full bg-card/85 px-3 py-1.5 font-label text-[0.56rem] uppercase tracking-[0.16em] text-bronze backdrop-blur transition-colors hover:text-terracotta"
               >
                 <AmazighStar className="size-3" strokeWidth={1.6} />
                 {t("map.openSource")}

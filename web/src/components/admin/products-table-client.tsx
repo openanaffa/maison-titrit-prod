@@ -11,20 +11,9 @@ import { CategoryIcon } from "@/components/maison/category-icons";
 import { useT } from "@/i18n/locale-provider";
 import { useToast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
+import { Row } from "@/lib/types";
 
-type Row = {
-  id: string;
-  ref: string;
-  name: string;
-  price: number;
-  salePrice: number | null;
-  currency: string;
-  category: string;
-  categorySlug?: string;
-  inStock: boolean;
-  featured: boolean;
-  image: string | null;
-};
+
 
 export function ProductsTableClient({
   rows,
@@ -62,10 +51,10 @@ export function ProductsTableClient({
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">
+          <h1 className="heading-vintage-lg">
             {t("admin.products.title")}
           </h1>
-          <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+          <p className="mt-1 body-vintage">
             {t("admin.products.subtitle")}
           </p>
         </div>
@@ -80,12 +69,12 @@ export function ProductsTableClient({
       {/* Search + filter */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative max-w-xs flex-1">
-          <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-bronze/60" />
+          <Search className="pointer-events-none absolute inset-s-3 top-1/2 size-4 -translate-y-1/2 text-bronze/60" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("admin.common.search")}
-            className="rounded-sm border-bronze/45 ps-9"
+            className="field-vintage ps-9"
           />
         </div>
         <select
@@ -110,22 +99,22 @@ export function ProductsTableClient({
           <table className="w-full text-sm">
             <thead className="border-b border-bronze/20 bg-muted/40">
               <tr className="text-start">
-                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-start label-vintage-wide">
                   {t("admin.products.col.name")}
                 </th>
-                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-start label-vintage-wide">
                   {t("admin.products.col.category")}
                 </th>
-                <th className="p-3 text-end font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-end label-vintage-wide">
                   {t("admin.products.col.price")}
                 </th>
-                <th className="p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-center label-vintage-wide">
                   {t("admin.products.col.stock")}
                 </th>
-                <th className="p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-center label-vintage-wide">
                   {t("admin.products.col.status")}
                 </th>
-                <th className="p-3 text-end font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-end label-vintage-wide">
                   {t("admin.products.col.actions")}
                 </th>
               </tr>
@@ -133,7 +122,7 @@ export function ProductsTableClient({
             <tbody className="divide-y divide-bronze/15">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-10 text-center font-serif text-sm text-ink-soft dark:text-cream/70">
+                  <td colSpan={6} className="p-10 text-center body-vintage-muted">
                     {t("admin.products.empty")}
                   </td>
                 </tr>
@@ -152,23 +141,23 @@ export function ProductsTableClient({
                           />
                         )}
                         <div className="min-w-0">
-                          <p className="truncate font-display text-sm font-semibold text-ink dark:text-cream">
+                          <p className="truncate heading-vintage-sm">
                             {r.featured && <Star className="me-1 inline size-3 text-terracotta" />}
                             {r.name}
                           </p>
-                          <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+                          <p className="label-vintage-sm">
                             {r.ref}
                           </p>
                         </div>
                       </div>
                     </td>
                     <td className="p-3">
-                      <span className="inline-flex items-center gap-2 font-serif text-sm text-ink-soft dark:text-cream/80">
+                      <span className="inline-flex items-center gap-2 body-vintage-muted">
                         <CategoryIcon slug={r.categorySlug} className="size-4 shrink-0 text-bronze" />
                         {r.category}
                       </span>
                     </td>
-                    <td className="p-3 text-end font-display text-sm font-semibold text-ink dark:text-cream">
+                    <td className="p-3 text-end heading-vintage-sm">
                       {r.salePrice ? (
                         <>
                           <span className="text-terracotta">{r.salePrice.toLocaleString("fr-FR")} {r.currency}</span>

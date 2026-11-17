@@ -5,24 +5,12 @@ import { UserCog, Loader2, Check, CircleAlert } from "lucide-react";
 import { useT } from "@/i18n/locale-provider";
 import { ROLES, can } from "@/lib/roles";
 import { OrnamentDivider } from "@/components/maison/motifs";
+import { TeamUser } from "@/lib/types";
+import { ROLE_BADGE } from "@/lib/types/constants";
 
-export type TeamUser = {
-  id: string;
-  email: string;
-  name: string | null;
-  role: string;
-  supabaseId: string | null;
-  createdAt: string;
-};
 
-const ROLE_BADGE: Record<string, string> = {
-  FOUNDER: "bg-bronze/15 text-bronze",
-  DEVELOPER: "bg-terracotta/15 text-terracotta",
-  ADMIN: "bg-henna/15 text-henna",
-  MANAGER: "bg-ink/10 text-ink dark:bg-cream/10 dark:text-cream",
-  MARKETER: "bg-olive/15 text-olive",
-  CUSTOMER: "bg-ink/5 text-ink-soft dark:bg-cream/5 dark:text-cream/60",
-};
+
+
 
 export function TeamClient({ meId, users: initial }: { meId: string; users: TeamUser[] }) {
   const { t } = useT();
@@ -59,10 +47,10 @@ export function TeamClient({ meId, users: initial }: { meId: string; users: Team
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">
+        <h1 className="heading-vintage-lg">
           {t("admin.team.title")}
         </h1>
-        <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+        <p className="mt-1 body-vintage">
           {t("admin.team.subtitle")}
         </p>
       </div>
@@ -80,7 +68,7 @@ export function TeamClient({ meId, users: initial }: { meId: string; users: Team
           <thead>
             <tr className="border-b border-border">
               {[t("admin.team.colUser"), t("admin.team.colRole"), t("admin.team.colAuth"), ""].map((h, i) => (
-                <th key={i} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-ink-soft dark:text-cream/60">
+                <th key={i} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] body-vintage-soft">
                   {h}
                 </th>
               ))}
@@ -93,9 +81,9 @@ export function TeamClient({ meId, users: initial }: { meId: string; users: Team
               return (
                 <tr key={u.id} className="border-b border-border/60 last:border-0">
                   <td className="px-4 py-3">
-                    <p className="font-serif text-sm text-ink dark:text-cream">
+                    <p className="body-vintage-sm">
                       {u.name || u.email}
-                      {isMe && <span className="ms-2 font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">({t("admin.team.you")})</span>}
+                      {isMe && <span className="ms-2 label-vintage-sm">({t("admin.team.you")})</span>}
                     </p>
                     <p className="font-serif text-xs text-ink-soft/80 dark:text-cream/50">{u.email}</p>
                   </td>

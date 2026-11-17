@@ -1,52 +1,22 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  FolderTree,
-  Users,
-  Settings,
+  ExternalLink,
   LogOut,
   Menu,
   X,
-  Sparkles,
-  ExternalLink,
-  PenLine,
-  Megaphone,
-  Tags,
-  UserCog,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { can, type Permission } from "@/lib/roles";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import * as React from "react";
 import { useT } from "@/i18n/locale-provider";
+import { can} from "@/lib/roles";
 import { signOut } from "@/lib/supabase/auth-client";
+import type { AdminUser } from "@/lib/types";
+import { ADMIN_NAV  } from "@/lib/types/constants";
+import { cn } from "@/lib/utils";
 
-type NavItem = {
-  href: string;
-  icon: React.ElementType;
-  labelKey: string;
-  badgeKey?: "pendingOrders" | "products" | "customers" | "categories";
-  permission?: Permission;
-};
 
-const NAV: NavItem[] = [
-  { href: "/makteb", icon: LayoutDashboard, labelKey: "admin.nav.dashboard" },
-  { href: "/makteb/marketing", icon: Megaphone, labelKey: "admin.nav.marketing" },
-  { href: "/makteb/tags", icon: Tags, labelKey: "admin.nav.tags", permission: "integrations:write" },
-  { href: "/makteb/products", icon: Package, labelKey: "admin.nav.products", badgeKey: "products", permission: "products:read" },
-  { href: "/makteb/orders", icon: ShoppingCart, labelKey: "admin.nav.orders", badgeKey: "pendingOrders", permission: "orders:read" },
-  { href: "/makteb/categories", icon: FolderTree, labelKey: "admin.nav.categories", badgeKey: "categories", permission: "categories:read" },
-  { href: "/makteb/blog", icon: PenLine, labelKey: "admin.nav.blog" },
-  { href: "/makteb/customers", icon: Users, labelKey: "admin.nav.customers", badgeKey: "customers", permission: "customers:read" },
-  { href: "/makteb/team", icon: UserCog, labelKey: "admin.nav.team", permission: "users:manage" },
-  { href: "/makteb/settings", icon: Settings, labelKey: "admin.nav.settings", permission: "settings:write" },
-];
-
-type AdminUser = { id: string; name: string | null; email: string; role: string; image?: string | null; phone?: string | null };
 
 export function AdminShell({
   user,
@@ -61,14 +31,14 @@ export function AdminShell({
   const { t } = useT();
   const [open, setOpen] = React.useState(false);
 
-  const items = NAV.filter((n) => !n.permission || can(user.role, n.permission));
+  const items = ADMIN_NAV.filter((n) => !n.permission || can(user.role, n.permission));
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 start-0 z-50 flex w-64 flex-col border-e border-border bg-sidebar text-sidebar-foreground transition-transform duration-300 lg:static lg:translate-x-0 print:hidden",
+          "fixed inset-y-0 inset-s-0 z-50 flex w-64 flex-col border-e border-border bg-sidebar text-sidebar-foreground transition-transform duration-300 lg:static lg:translate-x-0 print:hidden",
           open ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
       >
@@ -177,7 +147,7 @@ export function AdminShell({
                 {(user.name?.[0] || user.email[0]).toUpperCase()}
               </div>
               <div className="hidden flex-col leading-none sm:flex">
-                <span className="font-serif text-sm text-ink dark:text-cream">
+                <span className="body-vintage-sm">
                   {user.name || user.email}
                 </span>
                 <span className="font-label text-[0.54rem] uppercase tracking-[0.18em] text-bronze">

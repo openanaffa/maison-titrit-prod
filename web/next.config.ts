@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 import { withBotId } from "botid/next/config";
 
 const nextConfig: NextConfig = {
-  /* Vercel handles build output natively — no `output: "standalone"` needed. */
   reactStrictMode: false,
   agentRules: false,
   // Private paths stay crawlable so Google sees noindex (robots.txt Disallow caused "indexed though blocked").

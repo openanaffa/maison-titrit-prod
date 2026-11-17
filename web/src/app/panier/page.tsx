@@ -36,7 +36,7 @@ export default function CartPage() {
             <p className="font-serif text-lg text-ink-soft dark:text-cream/70">
               {t("cart.empty")}
             </p>
-            <p className="font-serif text-sm text-ink-soft/70 dark:text-cream/60">
+            <p className="body-vintage-muted">
               {t("cart.emptyDesc")}
             </p>
             <Button asChild className="mt-2 rounded-full bg-ink px-6 font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream hover:bg-terracotta dark:bg-cream dark:text-ink">
@@ -66,7 +66,7 @@ export default function CartPage() {
                     >
                       {item.name}
                     </Link>
-                    <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+                    <p className="label-vintage-sm">
                       {t("cart.size")}: {item.size} · {item.ref}
                     </p>
                     <div className="mt-3 flex items-center justify-between">
@@ -80,7 +80,7 @@ export default function CartPage() {
                         >
                           <Minus className="size-3.5" />
                         </button>
-                        <span aria-live="polite" className="w-8 text-center font-serif text-sm text-ink dark:text-cream">{item.qty}</span>
+                        <span aria-live="polite" className="w-8 text-center body-vintage-sm">{item.qty}</span>
                         <button
                           type="button"
                           onClick={() => setQty(item.productId, item.size, item.qty + 1)}
@@ -91,7 +91,7 @@ export default function CartPage() {
                           <Plus className="size-3.5" />
                         </button>
                       </div>
-                      <span className="font-display text-lg font-semibold text-ink dark:text-cream">
+                      <span className="heading-vintage">
                         {(item.price * item.qty).toLocaleString("fr-FR")} {item.currency}
                       </span>
                     </div>
@@ -125,7 +125,7 @@ export default function CartPage() {
                 <span className="font-label text-[0.66rem] uppercase tracking-[0.18em] text-bronze">
                   {t("cart.total")}
                 </span>
-                <span className="font-display text-2xl font-semibold text-ink dark:text-cream">
+                <span className="heading-vintage-md">
                   {total.toLocaleString("fr-FR")} {site.currency}
                 </span>
               </div>

@@ -12,17 +12,9 @@ import { StatusBadge } from "@/components/admin/status-badge";
 import { site } from "@/config/site";
 import { AmazighStar, OrnamentDivider } from "@/components/maison/motifs";
 import { signOut } from "@/lib/supabase/auth-client";
+import { CompteUser, Order } from "@/lib/types";
 
-type CompteUser = { id: string; name: string | null; email: string; phone: string | null; role: string };
-type Order = {
-  id: string;
-  number: string;
-  status: string;
-  total: number;
-  currency: string;
-  createdAt: string;
-  items: { id: string; name: string; quantity: number; size: string | null }[];
-};
+
 
 export function CompteClient({ user, orders }: { user: CompteUser; orders: Order[] }) {
   const { t, locale } = useT();
@@ -32,7 +24,7 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
   const [phone, setPhone] = React.useState(user.phone ?? "");
   const [saving, setSaving] = React.useState(false);
 
-  const dateLocale = locale === "ar" ? "ar-MA" : locale === "en" ? "en-US" : "fr-FR";
+const dateLocale = locale === "ar" ? "ar-MA" : locale === "en" ? "en-US" : "fr-FR";
 
   async function onSave(e: React.FormEvent) {
     e.preventDefault();
@@ -70,7 +62,7 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
                 <User className="size-5" />
               </span>
               <div>
-                <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">
+                <h2 className="heading-vintage">
                   {t("compte.profile")}
                 </h2>
                 <p className="font-label text-[0.55rem] uppercase tracking-[0.18em] text-bronze">
@@ -80,16 +72,16 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
             </div>
             <form onSubmit={onSave} className="mt-5 space-y-4">
               <div>
-                <Label htmlFor="compte-name" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.name")}</Label>
-                <Input id="compte-name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5 rounded-sm border-bronze/45" />
+                <Label htmlFor="compte-name" className="label-vintage">{t("compte.name")}</Label>
+                <Input id="compte-name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5 field-vintage" />
               </div>
               <div>
-                <Label htmlFor="compte-email" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.email")}</Label>
-                <Input id="compte-email" value={user.email} disabled className="mt-1.5 rounded-sm border-bronze/45 bg-muted/40" />
+                <Label htmlFor="compte-email" className="label-vintage">{t("compte.email")}</Label>
+                <Input id="compte-email" value={user.email} disabled className="mt-1.5 field-vintage bg-muted/40" />
               </div>
               <div>
-                <Label htmlFor="compte-phone" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("compte.phone")}</Label>
-                <Input id="compte-phone" value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" className="mt-1.5 rounded-sm border-bronze/45" />
+                <Label htmlFor="compte-phone" className="label-vintage">{t("compte.phone")}</Label>
+                <Input id="compte-phone" value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" className="mt-1.5 field-vintage" />
               </div>
               <Button type="submit" disabled={saving} className="h-11 w-full rounded-full bg-ink font-label text-[0.68rem] uppercase tracking-[0.16em] text-cream transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:bg-cream dark:text-ink">
                 {saving ? <Loader2 className="size-4 animate-spin motion-reduce:animate-none" /> : <Check className="size-4" />}
@@ -110,14 +102,14 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
           <div id="orders" className="scroll-mt-24 card-vintage rounded-sm p-6">
             <div className="flex items-center gap-3 border-b border-bronze/20 pb-4">
               <Package className="size-5 text-terracotta" />
-              <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">
+              <h2 className="heading-vintage">
                 {t("compte.orders")}
               </h2>
             </div>
             {orders.length === 0 ? (
               <div className="mt-6 flex flex-col items-center gap-3 text-center">
                 <AmazighStar className="size-10 text-bronze/40" strokeWidth={1.4} />
-                <p className="font-serif text-sm text-ink-soft dark:text-cream/70">{t("compte.noOrders")}</p>
+                <p className="body-vintage-muted">{t("compte.noOrders")}</p>
               </div>
             ) : (
               <ul className="mt-4 divide-y divide-bronze/15">
@@ -125,15 +117,15 @@ export function CompteClient({ user, orders }: { user: CompteUser; orders: Order
                   <li key={o.id} className="py-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-display text-sm font-semibold text-ink dark:text-cream">
+                        <p className="heading-vintage-sm">
                           {t("compte.orderNumber")} {o.number}
                         </p>
-                        <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
-                          {new Date(o.createdAt).toLocaleDateString(dateLocale)} · {t("compte.items", { count: o.items.reduce((n, i) => n + i.quantity, 0) })}
+                        <p className="label-vintage-sm">
+                          {new Date(o.createdAt ?? "").toLocaleDateString(dateLocale)} · {t("compte.items", { count: o.items.reduce((n, i) => n + i.quantity, 0) })}
                         </p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="font-display text-sm font-semibold text-ink dark:text-cream">
+                        <span className="heading-vintage-sm">
                           {o.total.toLocaleString(dateLocale)} {o.currency}
                         </span>
                         <StatusBadge status={o.status} />

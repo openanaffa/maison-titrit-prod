@@ -1,7 +1,13 @@
-import { cache } from "react";
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import { analytics as siteAnalytics } from "@/config/site";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
+import type {
+  AnalyticsConfig,
+  CustomMeta,
+  Integrations,
+  VerificationConfig,
+} from "@/lib/types/integrations";
 
 /* ============================================================================
  *  Integration settings — runtime-configurable trackers & domain verifications
@@ -10,30 +16,6 @@ import { createSupabasePublicClient } from "@/lib/supabase/public";
  *  src/config/site.ts, so the founder can change them via /makteb/settings
  *  without a redeploy.
  * ==========================================================================*/
-
-export type AnalyticsConfig = {
-  gtmId: string;
-  ga4Id: string;
-  fbPixelId: string;
-  pinterestTagId: string;
-  tiktokPixelId: string;
-  youtubeChannelId: string;
-};
-
-export type CustomMeta = { name: string; content: string };
-
-export type VerificationConfig = {
-  google: string; // "google-site-verification"
-  facebook: string; // "facebook-domain-verification"
-  instagram: string; // "instagram-site-verification"
-  tiktok: string; // "tiktok-domain-verification"
-  custom: CustomMeta[]; // anything else (Pinterest, Bing, Clarity…)
-};
-
-export type Integrations = {
-  analytics: AnalyticsConfig;
-  verification: VerificationConfig;
-};
 
 const DEFAULT_ANALYTICS: AnalyticsConfig = {
   gtmId: siteAnalytics.gtmId,

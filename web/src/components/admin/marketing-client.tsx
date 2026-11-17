@@ -5,36 +5,19 @@ import Link from "next/link";
 import { Megaphone, TrendingUp, ShoppingBag, Compass } from "lucide-react";
 import { useT } from "@/i18n/locale-provider";
 import { OrnamentDivider } from "@/components/maison/motifs";
+import { MarketingData } from "@/lib/types";
+import { mad } from "@/lib/types/constants";
 
-export type OrderUtmRow = {
-  id: string;
-  number: string;
-  status: string;
-  total: number;
-  currency: string;
-  utmSource: string | null;
-  utmMedium: string | null;
-  utmCampaign: string | null;
-  createdAt: string;
-};
 
-export type MarketingData = {
-  period: 30 | 0;
-  totals: { orders: number; revenue: number; attributed: number; attributedRevenue: number };
-  bySource: Array<{ source: string; orders: number; revenue: number }>;
-  byCampaign: Array<{ source: string; campaign: string; orders: number; revenue: number }>;
-  recent: OrderUtmRow[];
-};
 
-const mad = (n: number) => `${n.toLocaleString("fr-FR")} MAD`;
 
-function Kpi({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+export function Kpi({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
   return (
     <div className="card-vintage rounded-sm p-5">
       <div className="flex items-start justify-between">
         <div>
           <p className="font-label text-[0.62rem] uppercase tracking-[0.2em] text-bronze">{label}</p>
-          <p className="mt-2 font-display text-2xl font-semibold text-ink dark:text-cream">{value}</p>
+          <p className="mt-2 heading-vintage-md">{value}</p>
         </div>
         <span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-bronze">
           <Icon className="size-4" />
@@ -44,7 +27,7 @@ function Kpi({ icon: Icon, label, value }: { icon: React.ElementType; label: str
   );
 }
 
-function share(orders: number, total: number) {
+export function share(orders: number, total: number) {
   if (!total) return "0%";
   return `${Math.round((orders / total) * 100)}%`;
 }
@@ -57,10 +40,10 @@ export function MarketingClient({ data }: { data: MarketingData }) {
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">
+          <h1 className="heading-vintage-lg">
             {t("admin.marketing.title")}
           </h1>
-          <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+          <p className="mt-1 body-vintage">
             {t("admin.marketing.subtitle")}
           </p>
         </div>
@@ -99,11 +82,11 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 
       {/* By source */}
       <section className="space-y-3">
-        <h2 className="font-label text-[0.72rem] uppercase tracking-[0.16em] text-bronze">
+        <h2 className="label-vintage-lg">
           {t("admin.marketing.sources")}
         </h2>
         {data.bySource.length === 0 ? (
-          <p className="card-vintage rounded-sm p-6 text-center font-serif text-sm text-ink-soft dark:text-cream/60">
+          <p className="card-vintage rounded-sm p-6 text-center font-serif text-sm body-vintage-soft">
             {t("admin.marketing.empty")}
           </p>
         ) : (
@@ -117,7 +100,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
                     t("admin.marketing.colRevenue"),
                     t("admin.marketing.colShare"),
                   ].map((h) => (
-                    <th key={h} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-ink-soft dark:text-cream/60">
+                    <th key={h} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] body-vintage-soft">
                       {h}
                     </th>
                   ))}
@@ -126,10 +109,10 @@ export function MarketingClient({ data }: { data: MarketingData }) {
               <tbody>
                 {data.bySource.map((s) => (
                   <tr key={s.source} className="border-b border-border/60 last:border-0">
-                    <td className="px-4 py-3 font-serif text-sm text-ink dark:text-cream">{s.source}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{s.orders}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{mad(s.revenue)}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">
+                    <td className="px-4 py-3 body-vintage-sm">{s.source}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{s.orders}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{mad(s.revenue)}</td>
+                    <td className="px-4 py-3 body-vintage-muted">
                       {share(s.orders, data.totals.orders)}
                     </td>
                   </tr>
@@ -143,7 +126,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
       {/* By campaign */}
       {data.byCampaign.length > 0 && (
         <section className="space-y-3">
-          <h2 className="font-label text-[0.72rem] uppercase tracking-[0.16em] text-bronze">
+          <h2 className="label-vintage-lg">
             {t("admin.marketing.campaigns")}
           </h2>
           <div className="card-vintage overflow-x-auto rounded-sm">
@@ -151,7 +134,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
               <thead>
                 <tr className="border-b border-border">
                   {[t("admin.marketing.colSource"), t("admin.marketing.colCampaign"), t("admin.marketing.colOrders"), t("admin.marketing.colRevenue")].map((h) => (
-                    <th key={h} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-ink-soft dark:text-cream/60">
+                    <th key={h} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] body-vintage-soft">
                       {h}
                     </th>
                   ))}
@@ -160,10 +143,10 @@ export function MarketingClient({ data }: { data: MarketingData }) {
               <tbody>
                 {data.byCampaign.map((c) => (
                   <tr key={`${c.source}||${c.campaign}`} className="border-b border-border/60 last:border-0">
-                    <td className="px-4 py-3 font-serif text-sm text-ink dark:text-cream">{c.source}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{c.campaign}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{c.orders}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{mad(c.revenue)}</td>
+                    <td className="px-4 py-3 body-vintage-sm">{c.source}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{c.campaign}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{c.orders}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{mad(c.revenue)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -175,7 +158,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
       {/* Recent attributed orders */}
       {data.recent.length > 0 && (
         <section className="space-y-3">
-          <h2 className="font-label text-[0.72rem] uppercase tracking-[0.16em] text-bronze">
+          <h2 className="label-vintage-lg">
             {t("admin.marketing.recent")}
           </h2>
           <div className="card-vintage overflow-x-auto rounded-sm">
@@ -183,7 +166,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
               <thead>
                 <tr className="border-b border-border">
                   {[t("admin.marketing.colOrder"), t("admin.marketing.colSource"), t("admin.marketing.colCampaign"), t("admin.marketing.colMedium"), t("admin.marketing.colTotal")].map((h) => (
-                    <th key={h} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-ink-soft dark:text-cream/60">
+                    <th key={h} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] body-vintage-soft">
                       {h}
                     </th>
                   ))}
@@ -197,10 +180,10 @@ export function MarketingClient({ data }: { data: MarketingData }) {
                         {o.number}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{o.utmSource}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{o.utmCampaign || "—"}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{o.utmMedium || "—"}</td>
-                    <td className="px-4 py-3 font-serif text-sm text-ink-soft dark:text-cream/70">{mad(o.total)}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{o.utmSource}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{o.utmCampaign || "—"}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{o.utmMedium || "—"}</td>
+                    <td className="px-4 py-3 body-vintage-muted">{mad(o.total)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { getSafeRedirectPath } from "@/lib/safe-redirect";
+import {getSafeRedirectPath} from "./safe-redirect"
 
 describe("getSafeRedirectPath", () => {
   const origin = "https://maisontitrit.com";

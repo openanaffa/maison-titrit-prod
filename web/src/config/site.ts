@@ -12,11 +12,17 @@
  *  Product catalogue data          lives in  src/config/products.ts
  * ============================================================================
  */
+export const SITE_URL = baseUrl();
+export const OG_IMAGE = `${SITE_URL}/og-default.png`;
+export const DEFAULT_OG = "/og-default.png"
 
+export function baseUrl(): string {
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.com";
+}
 export const site = {
   /* --- Identity ----------------------------------------------------------- */
   name: "Maison Titrit",
-  nameAmazigh: "ⵜⵉⵟⵔⵉⵜ", // "Titrit" = star, in Tifinagh
+  nameAmazigh: "ⵜⵉⵟⵔⵉⵜ",
   taglineKey: "brand.tagline", // resolved via i18n: "Maison de Couture"
   signature: "100% MADE IN MOROCCO 🇲🇦",
   arabicWelcome: "مرحبا ب طلباتكم 🥰", // shown as a flourish / in AR locale
@@ -26,7 +32,7 @@ export const site = {
     { label: "+212 684 921 942", e164: "+212684921942", display: "06 84 92 19 42" },
     { label: "+212 777 513 838", e164: "+212777513838", display: "07 77 51 38 38" },
   ],
-  email: "Maisontitrit67@gmail.com",
+  email: "hello@maisontitrit.com",
 
   address: {
     line1: "Magasin N°4, Lots 5-6",
@@ -78,7 +84,7 @@ export const site = {
 
   /* --- Commerce ----------------------------------------------------------- */
   currency: "MAD",
-  paymentKey: "brand.payment", // resolved via i18n: "Paiement à la livraison (COD)"
+  paymentKey: "brand.payment",
 
   /* --- Navigation --------------------------------------------------------- */
   nav: [
@@ -120,7 +126,7 @@ export const analytics = {
   // YouTube channel handle or channel ID (e.g. "@maison__titrit" or "UC…")
   youtubeChannelId: process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_ID || "",
 } as const;
-
+export type SiteAnalytics = typeof analytics
 /* ============================================================================
  *  LEGAL NOTICE — Auto-Entrepreneur (Morocco, Law 114-13) · Law 09-08 · GDPR
  * ----------------------------------------------------------------------------
@@ -140,18 +146,14 @@ export const analytics = {
  */
 export const legalNotice = {
   /** Official legal name shown on the notice */
-  companyName: "Mohamed Moughamir — Auto-Entrepreneur",
-  /** RNAE number from the AE attestation (AE-150916-367170; key kept as
-   *  `rcNumber` to match the schema — AE regimes register in the RNAE). */
-  rcNumber: "001609783000007",
-  /** 15-digit ICE — for auto-entrepreneurs this equals the AE identifiant. */
-  iceNumber: "001609783000007",
+  companyName: "███████ █████████ — ████-████████████",
+  rcNumber: "███████████████",
+  iceNumber: "███████████████",
   /** TODO: file the Law 09-08 declaration on cndp.ma and set the reference. */
-  cndpDeclarationNumber: "",
+  cndpDeclarationNumber: "█████-█████-███",
   /** DPO / privacy contact — the site owner's existing email */
   dpoEmail: site.email,
 } as const;
 
 /* --- Default consent categories ----------------------------------------- */
-export type ConsentCategory = "analytics" | "marketing";
 export const CONSENT_VERSION = 1; // bump to re-show banner after policy change

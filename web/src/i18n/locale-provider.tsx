@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 import {
   DEFAULT_LOCALE,
   dictionaries,
@@ -11,19 +11,19 @@ import {
 } from "@/i18n/dictionaries";
 import { readLocaleCookie, writeLocaleCookie } from "@/i18n/locale-cookie";
 
-const STORAGE_KEY = "titrit-locale";
+export const STORAGE_KEY = `titrit-locale`;
 
-type Ctx = {
+export type Ctx = {
   locale: Locale;
   setLocale: (l: Locale) => void;
   t: (key: string, vars?: Record<string, string | number>) => string;
   dir: "ltr" | "rtl";
 };
 
-const LocaleContext = React.createContext<Ctx | null>(null);
+export const LocaleContext = React.createContext<Ctx | null>(null);
 
 /** The visitor's explicit choice, kept in localStorage. */
-function readStoredLocale(): Locale | null {
+export function readStoredLocale(): Locale | null {
   if (typeof window === "undefined") return null;
   try {
     const saved = window.localStorage.getItem(STORAGE_KEY) as Locale | null;
@@ -102,5 +102,5 @@ export function useT(): Ctx {
   return ctx;
 }
 
-export { LOCALES };
 export type { Locale };
+export { LOCALES };

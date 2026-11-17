@@ -1,22 +1,13 @@
 import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { MarketingClient, type MarketingData, type OrderUtmRow } from "@/components/admin/marketing-client";
+import { MarketingClient } from "@/components/admin/marketing-client";
+import { MarketingData, OrderUtmRow } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-type OrderRow = {
-  id: string;
-  number: string;
-  status: string;
-  total: number;
-  currency: string;
-  utmSource: string | null;
-  utmMedium: string | null;
-  utmCampaign: string | null;
-  createdAt: string;
-};
 
-function aggregate(orders: OrderRow[], periodDays: 30 | 0): MarketingData {
+
+function aggregate(orders: OrderUtmRow[], periodDays: 30 | 0): MarketingData {
   const cutoff = periodDays ? Date.now() - periodDays * 24 * 60 * 60 * 1000 : 0;
   const scoped = orders.filter((o) => !cutoff || new Date(o.createdAt).getTime() >= cutoff);
 
@@ -88,6 +79,6 @@ export default async function MaktebMarketingPage({
     .order("createdAt", { ascending: false })
     .throwOnError();
 
-  const data = aggregate((orders ?? []) as OrderRow[], periodDays === 0 ? 0 : 30);
+  const data = aggregate((orders ?? []) as OrderUtmRow[], periodDays === 0 ? 0 : 30);
   return <MarketingClient data={data} />;
 }

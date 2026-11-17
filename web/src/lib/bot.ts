@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { checkBotId } from "botid/server";
+import { NextResponse } from "next/server";
 
 /** 403 response when Vercel BotID flags the caller as a bot, else null. */
 export async function rejectBots(): Promise<NextResponse | null> {

@@ -4,40 +4,24 @@ import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useT } from "@/i18n/locale-provider";
 import { useToast } from "@/hooks/use-toast";
-import { StatusBadge, STATUS_LABELS } from "@/components/admin/status-badge";
+import { StatusBadge } from "@/components/admin/status-badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { OrderRow } from "@/lib/types";
+import { FLOW, STATUS_LABELS } from "@/lib/types/constants";
 
-type Row = {
-  id: string;
-  number: string;
-  customerName: string;
-  customerPhone: string;
-  customerEmail: string;
-  city: string;
-  address: string;
-  notes: string;
-  total: number;
-  currency: string;
-  status: string;
-  payment: string;
-  createdAt: string;
-  itemCount: number;
-  userId: string | null;
-  userName: string | null;
-};
 
-const FLOW: string[] = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"];
 
-export function OrdersTableClient({ rows }: { rows: Row[] }) {
+
+export function OrdersTableClient({ rows }: { rows: OrderRow[] }) {
   const { t } = useT();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const [filter, setFilter] = React.useState<string>("all");
-  const [selected, setSelected] = React.useState<Row | null>(null);
+  const [selected, setSelected] = React.useState<OrderRow | null>(null);
 
   const currentQ = searchParams.get("q") ?? "";
 
@@ -48,7 +32,7 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
 
   const filtered = rows.filter((r) => filter === "all" || r.status === filter);
 
-  async function updateStatus(order: Row, status: string) {
+  async function updateStatus(order: OrderRow, status: string) {
     const res = await fetch(`/api/admin/orders/${order.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -66,10 +50,10 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">
+        <h1 className="heading-vintage-lg">
           {t("admin.orders.title")}
         </h1>
-        <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+        <p className="mt-1 body-vintage">
           {t("admin.orders.subtitle")}
         </p>
       </div>
@@ -77,7 +61,7 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
       {/* Search + status filter */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative w-full md:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-soft dark:text-cream/60" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 body-vintage-soft" />
           <input
             type="search"
             placeholder={t("admin.common.search")}
@@ -112,22 +96,22 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
           <table className="w-full text-sm">
             <thead className="border-b border-bronze/20 bg-muted/40">
               <tr>
-                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-start label-vintage-wide">
                   {t("admin.orders.col.number")}
                 </th>
-                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-start label-vintage-wide">
                   {t("admin.orders.col.customer")}
                 </th>
-                <th className="p-3 text-end font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-end label-vintage-wide">
                   {t("admin.orders.col.total")}
                 </th>
-                <th className="p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-center label-vintage-wide">
                   {t("admin.orders.col.status")}
                 </th>
-                <th className="p-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-start label-vintage-wide">
                   {t("admin.orders.col.date")}
                 </th>
-                <th className="p-3 text-end font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze">
+                <th className="p-3 text-end label-vintage-wide">
                   {t("admin.orders.col.actions")}
                 </th>
               </tr>
@@ -135,7 +119,7 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
             <tbody className="divide-y divide-bronze/15">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-10 text-center font-serif text-sm text-ink-soft dark:text-cream/70">
+                  <td colSpan={6} className="p-10 text-center body-vintage-muted">
                     {t("admin.orders.empty")}
                   </td>
                 </tr>
@@ -144,18 +128,18 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
                   <tr key={o.id} className="hover:bg-muted/30">
                     <td className="p-3">
                       <Link href={`/makteb/orders/${o.id}`}>
-                        <a className="font-display text-sm font-semibold text-ink dark:text-cream hover:underline">
+                        <a className="heading-vintage-sm hover:underline">
                           {o.number}
                         </a>
                       </Link>
                     </td>
                     <td className="p-3">
-                      <p className="font-serif text-sm text-ink dark:text-cream">{o.customerName}</p>
-                      <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+                      <p className="body-vintage-sm">{o.customerName}</p>
+                      <p className="label-vintage-sm">
                         {o.customerPhone}
                       </p>
                     </td>
-                    <td className="p-3 text-end font-display text-sm font-semibold text-ink dark:text-cream">
+                    <td className="p-3 text-end heading-vintage-sm">
                       {o.total.toLocaleString("fr-FR")} {o.currency}
                     </td>
                     <td className="p-3 text-center"><StatusBadge status={o.status} /></td>
@@ -191,23 +175,23 @@ export function OrdersTableClient({ rows }: { rows: Row[] }) {
           {selected && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3 font-serif text-sm">
-                <div><span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Client</span><br />{selected.customerName}</div>
-                <div><span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Téléphone</span><br />{selected.customerPhone}</div>
-                {selected.customerEmail && <div><span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Email</span><br />{selected.customerEmail}</div>}
-                <div><span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Articles</span><br />{selected.itemCount}</div>
-                {selected.city && <div><span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Ville</span><br />{selected.city}</div>}
-                <div><span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Paiement</span><br />{selected.payment}</div>
+                <div><span className="label-vintage-tight">Client</span><br />{selected.customerName}</div>
+                <div><span className="label-vintage-tight">Téléphone</span><br />{selected.customerPhone}</div>
+                {selected.customerEmail && <div><span className="label-vintage-tight">Email</span><br />{selected.customerEmail}</div>}
+                <div><span className="label-vintage-tight">Articles</span><br />{selected.itemCount}</div>
+                {selected.city && <div><span className="label-vintage-tight">Ville</span><br />{selected.city}</div>}
+                <div><span className="label-vintage-tight">Paiement</span><br />{selected.payment}</div>
               </div>
-              {selected.address && <p className="font-serif text-sm text-ink-soft dark:text-cream/70"><span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Adresse</span><br />{selected.address}</p>}
-              {selected.notes && <p className="font-serif text-sm text-ink-soft dark:text-cream/70"><span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Notes</span><br />{selected.notes}</p>}
+              {selected.address && <p className="body-vintage-muted"><span className="label-vintage-tight">Adresse</span><br />{selected.address}</p>}
+              {selected.notes && <p className="body-vintage-muted"><span className="label-vintage-tight">Notes</span><br />{selected.notes}</p>}
               <div className="flex items-center justify-between border-t border-bronze/20 pt-3">
-                <span className="font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Total</span>
-                <span className="font-display text-lg font-semibold text-ink dark:text-cream">{selected.total.toLocaleString("fr-FR")} {selected.currency}</span>
+                <span className="label-vintage-tight">Total</span>
+                <span className="heading-vintage">{selected.total.toLocaleString("fr-FR")} {selected.currency}</span>
               </div>
 
               {/* Status workflow */}
               <div>
-                <p className="mb-2 font-label text-[0.6rem] uppercase tracking-[0.14em] text-bronze">Statut</p>
+                <p className="mb-2 label-vintage-tight">Statut</p>
                 <div className="flex flex-wrap gap-2">
                   {FLOW.map((s) => (
                     <button

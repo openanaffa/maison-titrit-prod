@@ -9,12 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { AmazighStar } from "@/components/maison/motifs";
 import { IntegrationsForm } from "@/components/admin/integrations-form";
+import { DAYS, DaysT } from "@/lib/types/constants";
 
-const DAYS = [
-  { key: "mon-fri", label: "Lundi — Vendredi" },
-  { key: "sat", label: "Samedi" },
-  { key: "sun", label: "Dimanche" },
-];
 
 export function SettingsClient() {
   const { toast } = useToast();
@@ -44,8 +40,8 @@ export function SettingsClient() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">Réglages</h1>
-        <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+        <h1 className="heading-vintage-lg">Réglages</h1>
+        <p className="mt-1 body-vintage">
           Barre d&apos;annonce, horaires, et intégrations.
         </p>
       </div>
@@ -57,14 +53,14 @@ export function SettingsClient() {
             <Megaphone className="size-5" />
           </span>
           <div>
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Barre d&apos;annonce</h2>
-            <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+            <h2 className="heading-vintage">Barre d&apos;annonce</h2>
+            <p className="label-vintage-sm">
               Affiche un message en haut du site (dissmissible).
             </p>
           </div>
         </div>
         <div className="mt-5 space-y-4">
-          <label className="inline-flex items-center gap-2 font-serif text-sm text-ink-soft dark:text-cream/80">
+          <label className="inline-flex items-center gap-2 body-vintage-muted">
             <input
               type="checkbox"
               checked={ann.active}
@@ -74,7 +70,7 @@ export function SettingsClient() {
             Active
           </label>
           <div>
-            <Label htmlFor="ann-message" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Message</Label>
+            <Label htmlFor="ann-message" className="label-vintage">Message</Label>
             <Textarea
               id="ann-message"
               value={ann.message}
@@ -82,17 +78,17 @@ export function SettingsClient() {
               rows={2}
               maxLength={200}
               placeholder="Livraison gratuite à Casablanca ce week-end !"
-              className="mt-1.5 rounded-sm border-bronze/45"
+              className="mt-1.5 field-vintage"
             />
           </div>
           <div>
-            <Label htmlFor="ann-link" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Lien (optionnel)</Label>
+            <Label htmlFor="ann-link" className="label-vintage">Lien (optionnel)</Label>
             <Input
               id="ann-link"
               value={ann.link}
               onChange={(e) => setAnn({ ...ann, link: e.target.value })}
               placeholder="/#collection ou https://…"
-              className="mt-1.5 rounded-sm border-bronze/45"
+              className="mt-1.5 field-vintage"
             />
           </div>
           <Button type="submit" disabled={saving === "ann"} className="h-10 rounded-full bg-ink font-label text-[0.68rem] uppercase tracking-[0.16em] text-cream hover:bg-terracotta dark:bg-cream dark:text-ink">
@@ -109,8 +105,8 @@ export function SettingsClient() {
             <Clock className="size-5" />
           </span>
           <div>
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Horaires</h2>
-            <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+            <h2 className="heading-vintage">Horaires</h2>
+            <p className="label-vintage-sm">
               Atelier de Bouskoura
             </p>
           </div>
@@ -140,8 +136,8 @@ export function SettingsClient() {
             <AmazighStar className="size-5" strokeWidth={1.5} />
           </span>
           <div>
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Fichiers SEO</h2>
-            <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+            <h2 className="heading-vintage">Fichiers SEO</h2>
+            <p className="label-vintage-sm">
               Auto-générés
             </p>
           </div>

@@ -50,7 +50,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
           {count > 0 && (
             <span
               aria-hidden="true"
-              className="absolute -end-0.5 -top-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-terracotta px-1 font-label text-[0.5rem] text-cream"
+              className="absolute -inset-e-0.5 -top-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-terracotta px-1 font-label text-[0.5rem] text-cream"
             >
               {count}
             </span>
@@ -78,7 +78,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
                 <p className="font-serif text-base text-ink-soft dark:text-cream/70">
                   {t("cart.empty")}
                 </p>
-                <p className="font-serif text-sm text-ink-soft/70 dark:text-cream/60">
+                <p className="body-vintage-muted">
                   {t("cart.emptyDesc")}
                 </p>
                 <SheetClose asChild>
@@ -105,10 +105,10 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
                       className="size-16 shrink-0 rounded-sm object-cover"
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-display text-sm font-semibold text-ink dark:text-cream">
+                      <p className="truncate heading-vintage-sm">
                         {item.name}
                       </p>
-                      <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+                      <p className="label-vintage-sm">
                         {t("cart.size")}: {item.size} · {item.ref}
                       </p>
                       <div className="mt-2 flex items-center justify-between">
@@ -122,7 +122,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
                           >
                             <Minus className="size-3" />
                           </button>
-                          <span aria-live="polite" className="w-7 text-center font-serif text-sm text-ink dark:text-cream">{item.qty}</span>
+                          <span aria-live="polite" className="w-7 text-center body-vintage-sm">{item.qty}</span>
                           <button
                             type="button"
                             onClick={() => setQty(item.productId, item.size, item.qty + 1)}
@@ -133,7 +133,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
                             <Plus className="size-3" />
                           </button>
                         </div>
-                        <span className="font-display text-sm font-semibold text-ink dark:text-cream">
+                        <span className="heading-vintage-sm">
                           {(item.price * item.qty).toLocaleString("fr-FR")} {item.currency}
                         </span>
                       </div>
@@ -159,7 +159,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
                 <span className="font-label text-[0.66rem] uppercase tracking-[0.18em] text-bronze">
                   {t("cart.total")}
                 </span>
-                <span className="font-display text-2xl font-semibold text-ink dark:text-cream">
+                <span className="heading-vintage-md">
                   {total.toLocaleString("fr-FR")} {site.currency}
                 </span>
               </div>

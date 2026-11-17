@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { ImageRow, ProductRow } from "@/lib/supabase/database.types";
+import type { Tables } from "@/lib/supabase/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -45,12 +45,12 @@ export async function PATCH(
   const { id } = await params;
   try {
     const body = await req.json();
-    const data: Partial<ProductRow> = {};
+    const data: Partial<Tables<"Product">> = {};
     for (const k of [
       "name", "nameAmazigh", "description", "shortStory", "materials", "colors",
       "sizes", "price", "salePrice", "currency", "inStock", "featured",
     ]) {
-      if (k in body) data[k as keyof ProductRow] = body[k];
+      if (k in body) data[k as keyof Tables<"Product">] = body[k];
     }
     if (body.categoryId !== undefined) data.categoryId = body.categoryId ?? null;
 
@@ -58,7 +58,7 @@ export async function PATCH(
       // replace images
       const supabase = await createSupabaseServerClient();
       await supabase.from("Image").delete().eq("productId", id).throwOnError();
-      const imageRows: ImageRow[] = body.images.flatMap(
+      const imageRows: Tables<"Image">[] = body.images.flatMap(
         (img: { url?: string; alt?: string | null }, index: number) => {
           if (!img.url?.trim()) return [];
           return [{

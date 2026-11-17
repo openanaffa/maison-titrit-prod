@@ -1,51 +1,12 @@
+import type { Prisma } from "@prisma/client";
+
 import { db } from "@/lib/db";
+import type { ProductDTO } from "@/lib/types/product";
 
-/**
- * Public product DTO (flattened for the storefront): primary image + category name.
- */
-export interface ProductDTO {
-  id: string;
-  ref: string;
-  name: string;
-  nameAmazigh: string | null;
-  description: string;
-  shortStory: string;
-  category: string; // category name (or "—")
-  categoryId: string | null;
-  price: number;
-  salePrice: number | null;
-  currency: string;
-  image: string; // primary (first) image url
-  images: { url: string; alt: string | null; position: number }[];
-  materials: string;
-  colors: string;
-  sizes: string;
-  inStock: boolean;
-  featured: boolean;
-}
-
-/** Input shape: a Product row WITH images + category included. */
-type ProductWithRelations = {
-  id: string;
-  ref: string;
-  name: string;
-  nameAmazigh: string | null;
-  description: string;
-  shortStory: string;
-  materials: string;
-  colors: string;
-  sizes: string;
-  price: number;
-  salePrice: number | null;
-  currency: string;
-  inStock: boolean;
-  featured: boolean;
-  categoryId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  images: { url: string; alt: string | null; position: number }[];
-  category: { name: string; slug: string } | null;
-};
+/** Prisma-derived input shape: a Product row WITH images + category included. */
+type ProductWithRelations = Prisma.ProductGetPayload<{
+  include: { images: true; category: true };
+}>;
 
 function toDTO(p: ProductWithRelations): ProductDTO {
   const images = [...(p.images ?? [])].sort((a, b) => a.position - b.position);

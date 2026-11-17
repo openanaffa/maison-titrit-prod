@@ -28,7 +28,7 @@ export function ContactSocial() {
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center">
           <p className="eyebrow">{t("contact.eyebrow")}</p>
-          <h2 className="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl dark:text-cream">
+          <h2 className="mt-4 heading-vintage-xl">
             {t("contact.title")}
           </h2>
           <p className="mx-auto mt-5 max-w-xl font-serif text-lg leading-relaxed text-ink-soft dark:text-cream/75">

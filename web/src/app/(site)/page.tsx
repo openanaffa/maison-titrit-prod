@@ -1,12 +1,16 @@
+import dynamicImport from "next/dynamic";
+import type { Metadata } from "next";
+
 import { Hero } from "@/components/maison/hero";
 import { About } from "@/components/maison/about";
 import { CraftBand } from "@/components/maison/craft-band";
 import { ProductCatalogue } from "@/components/maison/product-catalogue";
 import { TitritLoader } from "@/components/maison/titrit-loader";
+
 import { listProducts } from "@/lib/products";
-import { itemListJsonLd, buildPageMetadata, serializeJsonLd } from "@/lib/seo";
-import type { Metadata } from "next";
-import dynamicImport from "next/dynamic";
+import { buildPageMetadata } from "@/lib/seo/build-page.metadata";
+import { itemListJsonLd } from "@/lib/seo/json-ld/item-list.json-ld";
+import { serializeJsonLd } from "@/lib/serialize-json-ld";
 
 export const dynamic = "force-dynamic";
 

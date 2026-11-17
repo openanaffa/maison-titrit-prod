@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { getPublishedArticles } from "@/lib/blog";
 import { resolveLocale } from "@/i18n/dictionaries";
 import { AmazighStar, OrnamentDivider, Reveal } from "@/components/maison/motifs";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo/build-page.metadata";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Journal — Histoires & héritage amazigh",
@@ -69,7 +69,7 @@ export default async function BlogPage() {
                       : ""}
                     {post.tags ? ` · ${post.tags.split(",").slice(0, 2).join(", ")}` : ""}
                   </p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold text-ink dark:text-cream">
+                  <h2 className="mt-2 heading-vintage-md">
                     <Link href={`/blog/${post.slug}`} className="hover:text-terracotta">
                       {post.title}
                     </Link>

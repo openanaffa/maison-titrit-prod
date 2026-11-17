@@ -9,10 +9,11 @@
  *  Both paths return a public URL the storefront can <img src=…>.
  * ============================================================================
  */
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import { randomUUID } from "crypto";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+
+import { randomUUID } from "node:crypto";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 export type UploadResult = { url: string; key: string };
 
@@ -61,7 +62,7 @@ async function saveToR2(
   key: string,
   buf: Buffer,
   contentType: string,
-  ext: string,
+  _ext: string,
 ): Promise<UploadResult> {
   const endpoint = `https://${r2.accountId}.r2.cloudflarestorage.com`;
   const client = new S3Client({

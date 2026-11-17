@@ -12,7 +12,7 @@ export function About() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center">
           <p className="eyebrow">{t("about.eyebrow")}</p>
-          <h2 className="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl dark:text-cream">
+          <h2 className="mt-4 heading-vintage-xl">
             {t("about.title")}
           </h2>
           <p className="tifinagh mt-3 text-lg text-bronze">{site.nameAmazigh}</p>
@@ -49,7 +49,7 @@ export function About() {
 
           <Reveal delay={0.12} y={24}>
             <figure className="relative">
-              <div className="vintage-frame relative aspect-[4/3] w-full overflow-hidden rounded-sm">
+              <div className="vintage-frame relative aspect-4/3 w-full overflow-hidden rounded-sm">
                 <Image
                   src="/images/maison-titrit/about-craft.png"
                   alt={t("hero.imageSub")}

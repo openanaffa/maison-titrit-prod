@@ -3,12 +3,9 @@
 import Link from "next/link";
 import * as React from "react";
 import { AmazighStar, OrnamentDivider } from "@/components/maison/motifs";
+import { ErrorParams } from "@/lib/types";
 
-type ErrorParams = {
-  error: string | null;
-  code: string | null;
-  description: string | null;
-};
+
 
 function readErrorParams(): ErrorParams {
   // Supabase Auth redirects errors as URL fragments (#error=...&error_code=...),
@@ -54,7 +51,7 @@ export function AuthErrorClient() {
   const copy = key ? MESSAGES[key] ?? GENERIC : GENERIC;
 
   return (
-    <section className="vintage-paper flex min-h-[100svh] items-center justify-center px-4 pt-12 pb-44 sm:pb-40">
+    <section className="vintage-paper flex min-h-svh items-center justify-center px-4 pt-12 pb-44 sm:pb-40">
       <div className="vintage-frame max-w-md rounded-sm bg-card/95 p-9 text-center">
         <AmazighStar className="mx-auto size-9 text-terracotta" />
         <h1 className="wordmark mt-4 text-xl uppercase text-ink dark:text-cream">

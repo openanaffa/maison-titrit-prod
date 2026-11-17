@@ -121,7 +121,7 @@ export function Monogram({ className }: { className?: string }) {
       aria-label="Maison Titrit"
     >
       <span className="absolute inset-0 rounded-full border border-bronze/60" />
-      <span className="absolute inset-[3px] rounded-full border border-bronze/30" />
+      <span className="absolute inset-0.75 rounded-full border border-bronze/30" />
       <span
         className="font-display relative z-10 leading-none"
         style={{ fontStyle: "italic", fontWeight: 600 }}

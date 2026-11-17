@@ -1,9 +1,9 @@
+import { describe, expect, test } from "bun:test";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
-import { describe, expect, test } from "bun:test";
 import { SEED_ARTICLES } from "./articles";
-import { SEED_CAMPAIGN_DRAFTS } from "./seed-campaign";
 import { CATEGORIES, PRODUCTS } from "./products";
+import { SEED_CAMPAIGN_DRAFTS } from "./seed-campaign";
 
 const publicDir = resolve(import.meta.dir, "../../public");
 const platforms = ["facebook", "instagram", "pinterest", "linkedin", "googleBusiness"] as const;

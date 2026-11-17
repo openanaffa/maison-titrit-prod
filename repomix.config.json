@@ -1,0 +1,44 @@
+{
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "compress": true,
+    "removeComments": true,
+    "removeEmptyLines": true,
+    "truncateBase64": true,
+    "showLineNumbers": false,
+    "fileSummary": false,
+    "directoryStructure": true,
+    "parsableStyle": true
+  },
+  "include": [
+    "web/src/**/*.ts",
+    "web/src/**/*.tsx",
+    "web/prisma/schema.prisma",
+    "web/prisma/schema.postgres.prisma",
+    "web/next.config.*",
+    "docs/**/*.md",
+    "README.md",
+    "AGENTS.md"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "node_modules",
+      ".next",
+      "web/node_modules",
+      "web/.next",
+      "dist",
+      "build",
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "graft",
+      ".trail/cache",
+      ".serena/cache"
+    ]
+  },
+  "tokenCount": {
+    "encoding": "o200k_base"
+  }
+}
