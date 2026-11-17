@@ -40,8 +40,8 @@ export function ArticlesTableClient({ rows }: { rows: ArticleTableRow[] }) {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">Journal</h1>
-          <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+          <h1 className="heading-vintage-lg">Journal</h1>
+          <p className="mt-1 body-vintage">
             Articles pour la portée et le SEO.
           </p>
         </div>
@@ -56,18 +56,18 @@ export function ArticlesTableClient({ rows }: { rows: ArticleTableRow[] }) {
       <div className="card-vintage overflow-hidden rounded-sm">
         <ul className="divide-y divide-bronze/15">
           {rows.length === 0 && (
-            <li className="p-8 text-center font-serif text-sm text-ink-soft dark:text-cream/70">
+            <li className="p-8 text-center body-vintage-muted">
               Aucun article. Créez le premier.
             </li>
           )}
           {rows.map((a) => (
             <li key={a.id} className="flex items-center justify-between p-4">
               <div className="min-w-0">
-                <p className="truncate font-display text-sm font-semibold text-ink dark:text-cream">
+                <p className="truncate heading-vintage-sm">
                   {a.published ? null : <EyeOff className="me-1 inline size-3.5 text-ink-soft/50" />}
                   {a.title}
                 </p>
-                <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+                <p className="label-vintage-sm">
                   /blog/{a.slug} · {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString("fr-FR") : "brouillon"}
                 </p>
               </div>

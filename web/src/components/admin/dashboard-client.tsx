@@ -29,10 +29,10 @@ export function DashboardClient({
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">
+        <h1 className="heading-vintage-lg">
           {t("admin.dashboard.welcome", { name: user?.name || user?.email || "" })}
         </h1>
-        <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+        <p className="mt-1 body-vintage">
           {t("admin.dashboard.subtitle")}
         </p>
       </div>
@@ -52,7 +52,7 @@ export function DashboardClient({
                   <p className="font-label text-[0.62rem] uppercase tracking-[0.2em] text-bronze">
                     {c.label}
                   </p>
-                  <p className="mt-2 font-display text-3xl font-semibold text-ink dark:text-cream">
+                  <p className="mt-2 heading-vintage-lg">
                     {c.value}
                   </p>
                   {"sub" in c && c.sub && (
@@ -73,7 +73,7 @@ export function DashboardClient({
       {/* Recent orders */}
       <div className="card-vintage rounded-sm">
         <div className="flex items-center justify-between border-b border-bronze/20 p-5">
-          <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">
+          <h2 className="heading-vintage">
             {t("admin.dashboard.recentOrders")}
           </h2>
           <Link
@@ -84,7 +84,7 @@ export function DashboardClient({
           </Link>
         </div>
         {recent.length === 0 ? (
-          <p className="p-6 font-serif text-sm text-ink-soft dark:text-cream/70">
+          <p className="p-6 body-vintage-muted">
             {t("admin.dashboard.noOrders")}
           </p>
         ) : (
@@ -92,15 +92,15 @@ export function DashboardClient({
             {recent.map((o) => (
               <li key={o.id} className="flex items-center justify-between p-4">
                 <div className="min-w-0">
-                  <p className="font-display text-sm font-semibold text-ink dark:text-cream">
+                  <p className="heading-vintage-sm">
                     {o.number} · {o.customerName}
                   </p>
-                  <p className="font-serif text-xs text-ink-soft dark:text-cream/60">
+                  <p className="font-serif text-xs body-vintage-soft">
                     {new Date(o.createdAt).toLocaleDateString("fr-FR")} · {o.itemCount} article(s)
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="font-display text-sm font-semibold text-ink dark:text-cream">
+                  <span className="heading-vintage-sm">
                     {o.total.toLocaleString("fr-FR")} MAD
                   </span>
                   <StatusBadge status={o.status} />

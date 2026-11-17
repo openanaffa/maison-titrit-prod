@@ -101,7 +101,7 @@ export function ProductForm({
             <ArrowLeft className="size-3.5" />
             {t("admin.common.back")}
           </Link>
-          <h1 className="mt-2 font-display text-3xl font-semibold text-ink dark:text-cream">
+          <h1 className="mt-2 heading-vintage-lg">
             {mode === "create" ? t("admin.products.new") : t("admin.products.edit")}
           </h1>
         </div>
@@ -124,22 +124,22 @@ export function ProductForm({
         {/* Left — main fields */}
         <div className="space-y-5">
           <div className="card-vintage rounded-sm p-5">
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Informations</h2>
+            <h2 className="heading-vintage">Informations</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <Field label="Référence *">
-                <Input value={values.ref} onChange={(e) => set("ref", e.target.value)} required className="rounded-sm border-bronze/45" disabled={mode === "edit"} />
+                <Input value={values.ref} onChange={(e) => set("ref", e.target.value)} required className="field-vintage" disabled={mode === "edit"} />
               </Field>
               <Field label="Nom *">
-                <Input value={values.name} onChange={(e) => set("name", e.target.value)} required className="rounded-sm border-bronze/45" />
+                <Input value={values.name} onChange={(e) => set("name", e.target.value)} required className="field-vintage" />
               </Field>
               <Field label="Nom amazigh (Tifinagh)">
-                <Input value={values.nameAmazigh ?? ""} onChange={(e) => set("nameAmazigh", e.target.value)} className="tifinagh rounded-sm border-bronze/45" />
+                <Input value={values.nameAmazigh ?? ""} onChange={(e) => set("nameAmazigh", e.target.value)} className="tifinagh field-vintage" />
               </Field>
               <Field label="Catégorie">
                 <select
                   value={values.categoryId ?? ""}
                   onChange={(e) => set("categoryId", e.target.value || null)}
-                  className="h-9 w-full rounded-sm border border-bronze/45 bg-card px-3 font-serif text-sm text-ink dark:text-cream"
+                  className="h-9 w-full rounded-sm border border-bronze/45 bg-card px-3 body-vintage-sm"
                 >
                   <option value="">—</option>
                   {categories.map((c) => (
@@ -154,7 +154,7 @@ export function ProductForm({
                   value={values.description}
                   onChange={(e) => set("description", e.target.value)}
                   rows={4}
-                  className="rounded-sm border-bronze/45"
+                  className="field-vintage"
                 />
               </Field>
             </div>
@@ -164,46 +164,46 @@ export function ProductForm({
                   value={values.shortStory}
                   onChange={(e) => set("shortStory", e.target.value)}
                   rows={2}
-                  className="rounded-sm border-bronze/45"
+                  className="field-vintage"
                 />
               </Field>
             </div>
           </div>
 
           <div className="card-vintage rounded-sm p-5">
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Détails</h2>
+            <h2 className="heading-vintage">Détails</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <Field label="Matières">
-                <Input value={values.materials} onChange={(e) => set("materials", e.target.value)} className="rounded-sm border-bronze/45" />
+                <Input value={values.materials} onChange={(e) => set("materials", e.target.value)} className="field-vintage" />
               </Field>
               <Field label="Couleurs">
-                <Input value={values.colors} onChange={(e) => set("colors", e.target.value)} placeholder="Beige · Bleu Ciel · Rose Baby" className="rounded-sm border-bronze/45" />
+                <Input value={values.colors} onChange={(e) => set("colors", e.target.value)} placeholder="Beige · Bleu Ciel · Rose Baby" className="field-vintage" />
               </Field>
               <Field label="Tailles">
-                <Input value={values.sizes} onChange={(e) => set("sizes", e.target.value)} placeholder="S · M · L · XL" className="rounded-sm border-bronze/45" />
+                <Input value={values.sizes} onChange={(e) => set("sizes", e.target.value)} placeholder="S · M · L · XL" className="field-vintage" />
               </Field>
               <Field label="Devise">
-                <Input value={values.currency} onChange={(e) => set("currency", e.target.value)} className="rounded-sm border-bronze/45" />
+                <Input value={values.currency} onChange={(e) => set("currency", e.target.value)} className="field-vintage" />
               </Field>
             </div>
           </div>
 
           <div className="card-vintage rounded-sm p-5">
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Prix & stock</h2>
+            <h2 className="heading-vintage">Prix & stock</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <Field label="Prix (MAD) *">
-                <Input type="number" value={values.price} onChange={(e) => set("price", Number(e.target.value))} required className="rounded-sm border-bronze/45" />
+                <Input type="number" value={values.price} onChange={(e) => set("price", Number(e.target.value))} required className="field-vintage" />
               </Field>
               <Field label="Prix promo (optionnel)">
-                <Input type="number" value={values.salePrice ?? ""} onChange={(e) => set("salePrice", e.target.value ? Number(e.target.value) : null)} className="rounded-sm border-bronze/45" />
+                <Input type="number" value={values.salePrice ?? ""} onChange={(e) => set("salePrice", e.target.value ? Number(e.target.value) : null)} className="field-vintage" />
               </Field>
             </div>
             <div className="mt-4 flex gap-6">
-              <label className="inline-flex items-center gap-2 font-serif text-sm text-ink-soft dark:text-cream/80">
+              <label className="inline-flex items-center gap-2 body-vintage-muted">
                 <input type="checkbox" checked={values.inStock} onChange={(e) => set("inStock", e.target.checked)} className="size-4 accent-terracotta" />
                 {t("admin.products.inStock")}
               </label>
-              <label className="inline-flex items-center gap-2 font-serif text-sm text-ink-soft dark:text-cream/80">
+              <label className="inline-flex items-center gap-2 body-vintage-muted">
                 <input type="checkbox" checked={values.featured} onChange={(e) => set("featured", e.target.checked)} className="size-4 accent-terracotta" />
                 {t("admin.dashboard.featured")}
               </label>
@@ -215,14 +215,14 @@ export function ProductForm({
         <div className="space-y-5">
           <div className="card-vintage rounded-sm p-5">
             <div className="flex items-center justify-between">
-              <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Images</h2>
+              <h2 className="heading-vintage">Images</h2>
               <Button type="button" variant="outline" size="sm" onClick={addImageUrl} className="rounded-full border-bronze/50 text-xs">
                 <Plus className="size-3.5" /> Ajouter
               </Button>
             </div>
             <div className="mt-4 space-y-3">
               {values.images.length === 0 && (
-                <p className="font-serif text-sm text-ink-soft/70 dark:text-cream/60">Aucune image. Collez une URL ou uploadez.</p>
+                <p className="body-vintage-muted">Aucune image. Collez une URL ou uploadez.</p>
               )}
               {values.images.map((img, i) => (
                 <div key={i} className="rounded-sm border border-bronze/30 p-3">
@@ -241,13 +241,13 @@ export function ProductForm({
                         placeholder="https://… /uploads/x.png"
                         value={img.url}
                         onChange={(e) => setImage(i, { url: e.target.value })}
-                        className="rounded-sm border-bronze/45 text-xs"
+                        className="field-vintage text-xs"
                       />
                       <Input
                         placeholder="Texte alternatif"
                         value={img.alt ?? ""}
                         onChange={(e) => setImage(i, { alt: e.target.value })}
-                        className="rounded-sm border-bronze/45 text-xs"
+                        className="field-vintage text-xs"
                       />
                       <div className="flex items-center gap-2">
                         <label className="inline-flex cursor-pointer items-center gap-1 font-label text-[0.58rem] uppercase tracking-[0.14em] text-bronze hover:text-terracotta">
@@ -281,7 +281,7 @@ export function ProductForm({
 export function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{label}</Label>
+      <Label className="label-vintage">{label}</Label>
       <div className="mt-1.5">{children}</div>
     </div>
   );

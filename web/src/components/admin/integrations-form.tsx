@@ -106,8 +106,8 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
           <Activity className="size-5" />
         </span>
         <div>
-          <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Trackers &amp; mesure</h2>
-          <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+          <h2 className="heading-vintage">Trackers &amp; mesure</h2>
+          <p className="label-vintage-sm">
             Actifs seulement si le visiteur accepte les cookies correspondants.
           </p>
         </div>
@@ -121,63 +121,63 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
-          <Label htmlFor="int-gtm" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Tag Manager</Label>
+          <Label htmlFor="int-gtm" className="label-vintage">Google Tag Manager</Label>
           <Input
             id="int-gtm"
             value={ints.analytics.gtmId}
             onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, gtmId: e.target.value } })}
             placeholder="GTM-XXXXXXX"
-            className="mt-1.5 rounded-sm border-bronze/45"
+            className="mt-1.5 field-vintage"
           />
         </div>
         <div>
-          <Label htmlFor="int-ga4" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Google Analytics 4</Label>
+          <Label htmlFor="int-ga4" className="label-vintage">Google Analytics 4</Label>
           <Input
             id="int-ga4"
             value={ints.analytics.ga4Id}
             onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, ga4Id: e.target.value } })}
             placeholder="G-XXXXXXXXXX"
-            className="mt-1.5 rounded-sm border-bronze/45"
+            className="mt-1.5 field-vintage"
           />
         </div>
         <div>
-          <Label htmlFor="int-fb" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel Facebook</Label>
+          <Label htmlFor="int-fb" className="label-vintage">Pixel Facebook</Label>
           <Input
             id="int-fb"
             value={ints.analytics.fbPixelId}
             onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, fbPixelId: e.target.value } })}
             placeholder="123456789012345"
-            className="mt-1.5 rounded-sm border-bronze/45"
+            className="mt-1.5 field-vintage"
           />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pinterest Tag</Label>
+          <Label className="label-vintage">Pinterest Tag</Label>
           <Input
             value={ints.analytics.pinterestTagId}
             onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, pinterestTagId: e.target.value } })}
             placeholder="1234567890123"
-            className="mt-1.5 rounded-sm border-bronze/45"
+            className="mt-1.5 field-vintage"
           />
         </div>
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Pixel TikTok</Label>
+          <Label className="label-vintage">Pixel TikTok</Label>
           <Input
             value={ints.analytics.tiktokPixelId}
             onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, tiktokPixelId: e.target.value } })}
             placeholder="1234567890"
-            className="mt-1.5 rounded-sm border-bronze/45"
+            className="mt-1.5 field-vintage"
           />
         </div>
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">YouTube channel</Label>
+          <Label className="label-vintage">YouTube channel</Label>
           <Input
             value={ints.analytics.youtubeChannelId}
             onChange={(e) => setInts({ ...ints, analytics: { ...ints.analytics, youtubeChannelId: e.target.value } })}
             placeholder="@maison__titrit"
-            className="mt-1.5 rounded-sm border-bronze/45"
+            className="mt-1.5 field-vintage"
           />
         </div>
       </div>
@@ -190,8 +190,8 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
               <ShieldCheck className="size-5" />
             </span>
             <div>
-              <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">Vérification du domaine</h2>
-              <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+              <h2 className="heading-vintage">Vérification du domaine</h2>
+              <p className="label-vintage-sm">
                 Collez le code fourni par chaque plateforme.
               </p>
             </div>
@@ -199,7 +199,7 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
           <div className="grid gap-4 sm:grid-cols-2">
             {VERIFICATION_HINTS.map((h) => (
               <div key={h.key}>
-                <Label htmlFor={`int-${h.key}`} className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{h.label}</Label>
+                <Label htmlFor={`int-${h.key}`} className="label-vintage">{h.label}</Label>
                 <Input
                   id={`int-${h.key}`}
                   value={ints.verification[h.key]}
@@ -210,7 +210,7 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
                     })
                   }
                   placeholder={h.meta}
-                  className="mt-1.5 rounded-sm border-bronze/45 font-mono text-[0.72rem]"
+                  className="mt-1.5 field-vintage font-mono text-[0.72rem]"
                 />
                 <p className="mt-1 font-serif text-[0.68rem] text-ink-soft/60 dark:text-cream/50">
                   &lt;meta name=&quot;{h.meta}&quot; /&gt; — collez le contenu (ou la balise entière, on extrait le code).
@@ -220,7 +220,7 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
           </div>
 
           <div>
-            <Label htmlFor="int-custom" className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">
+            <Label htmlFor="int-custom" className="label-vintage">
               Autres balises de vérification (Pinterest, Bing, Clarity…)
             </Label>
             <Textarea
@@ -229,7 +229,7 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
               onChange={(e) => setInts({ ...ints, verification: { ...ints.verification, customText: e.target.value } })}
               rows={3}
               placeholder={"<meta name=\"p:domain_verify\" content=\"abcdef123456789\" />"}
-              className="mt-1.5 rounded-sm border-bronze/45 font-mono text-[0.72rem]"
+              className="mt-1.5 field-vintage font-mono text-[0.72rem]"
             />
             <p className="mt-1 font-serif text-[0.68rem] text-ink-soft/60 dark:text-cream/50">
               Une balise par ligne — seul le couple nom/contenu est extrait (l&apos;HTML brut n&apos;est jamais stocké).

@@ -69,7 +69,7 @@ export default async function BlogPage() {
                       : ""}
                     {post.tags ? ` · ${post.tags.split(",").slice(0, 2).join(", ")}` : ""}
                   </p>
-                  <h2 className="mt-2 font-display text-2xl font-semibold text-ink dark:text-cream">
+                  <h2 className="mt-2 heading-vintage-md">
                     <Link href={`/blog/${post.slug}`} className="hover:text-terracotta">
                       {post.title}
                     </Link>

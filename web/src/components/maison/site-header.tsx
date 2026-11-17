@@ -3,35 +3,18 @@
 import * as React from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { LogOut, Menu, Moon, Sun, User } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { site } from "@/config/site";
-import { whatsappContactLink } from "@/lib/brand";
 import { WhatsAppIcon } from "@/components/maison/motifs";
 import { TitritLogo } from "@/components/maison/titrit-logo";
-import { useT } from "@/i18n/locale-provider";
-import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { AccountButton } from "@/components/maison/header-account-button";
+import { MobileMenu } from "@/components/maison/header-mobile-menu";
+import { ThemeToggle } from "@/components/maison/header-theme-toggle";
 import { CartDrawer } from "@/components/maison/cart-drawer";
-import { isStaffRole } from "@/lib/roles";
-import { useSupabaseAuth } from "@/components/maison/supabase-auth-provider";
-import { signOut } from "@/lib/supabase/auth-client";
+import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { site } from "@/config/site";
+import { whatsappContactLink } from "@/lib/brand";
+import { useT } from "@/i18n/locale-provider";
 
 /**
  * Centered-logo navbar (1fr auto 1fr grid): primary links hug the centered
@@ -49,37 +32,6 @@ const navRight = site.nav.filter((item) =>
 
 const linkClass =
   "whitespace-nowrap rounded font-label text-[0.7rem] uppercase tracking-[0.16em] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light";
-
-function ThemeToggle({ darkSurface = false }: { darkSurface?: boolean }) {
-  const { theme, setTheme, resolvedTheme } = useTheme();
-  const { t } = useT();
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
-  const current = theme === "system" ? resolvedTheme : theme;
-
-  return (
-    <button
-      type="button"
-      aria-label={t("theme.aria")}
-      onClick={() => setTheme(current === "dark" ? "light" : "dark")}
-      className={`inline-flex size-11 items-center justify-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light ${
-        darkSurface
-          ? "border-cream/35 text-cream hover:bg-cream/10"
-          : "border-bronze/40 text-ink hover:bg-bronze/10 dark:text-cream"
-      }`}
-    >
-      {mounted ? (
-        current === "dark" ? (
-          <Sun className="size-4" />
-        ) : (
-          <Moon className="size-4" />
-        )
-      ) : (
-        <span className="size-4" />
-      )}
-    </button>
-  );
-}
 
 export function SiteHeader() {
   const { t } = useT();
@@ -141,69 +93,7 @@ export function SiteHeader() {
         <div className="relative flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
           {/* Left track — hamburger (mobile) + primary links hugging the logo */}
           <div className="flex items-center lg:contents">
-            <Sheet open={open} onOpenChange={setOpen}>
-              <SheetTrigger asChild>
-                <button
-                  type="button"
-                  aria-label={t("cta.openMenu")}
-                  className="inline-flex size-11 items-center justify-center rounded-full border border-bronze/40 text-ink transition-colors hover:bg-bronze/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:border-cream/35 dark:text-cream dark:hover:bg-cream/10 lg:hidden"
-                >
-                  <Menu className="size-4" />
-                </button>
-              </SheetTrigger>
-              <SheetContent
-                side="right"
-                className="vintage-paper w-[88vw] max-w-sm border-bronze/40 p-0"
-              >
-                <SheetTitle className="sr-only">Navigation Maison Titrit</SheetTitle>
-                <SheetDescription className="sr-only">
-                  {t("footer.menu")}
-                </SheetDescription>
-                <div className="flex h-full flex-col p-6">
-                  <Link
-                    href="/#accueil"
-                    aria-label="Maison Titrit — accueil"
-                    onClick={() => setOpen(false)}
-                  >
-                    <TitritLogo
-                      showWordmark={false}
-                      logoClassName="h-10 w-10"
-                    />
-                  </Link>
-                  <div className="mt-6 flex items-center gap-2 border-y border-bronze/25 py-3">
-                    <LanguageSwitcher />
-                    <ThemeToggle />
-                  </div>
-                  {/* Hairline link list — one row per section, 44px+ targets */}
-                  <nav className="mt-6 flex flex-col" aria-label={t("footer.menu")}>
-                    {site.nav.map((item) => (
-                      <SheetClose asChild key={item.href}>
-                        <a
-                          href={item.href}
-                          className="flex min-h-12 items-center border-b border-bronze/20 font-label text-[0.75rem] uppercase tracking-[0.16em] text-ink transition-colors duration-200 hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream dark:hover:text-bronze-light"
-                        >
-                          {t(item.labelKey)}
-                        </a>
-                      </SheetClose>
-                    ))}
-                  </nav>
-                  <div className="mt-auto pt-6">
-                    <SheetClose asChild>
-                      <a
-                        href={whatsappContactLink(t("float.msg"))}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-ink px-5 font-label text-xs uppercase tracking-[0.16em] text-cream transition-colors hover:bg-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:bg-cream dark:text-ink"
-                      >
-                        <WhatsAppIcon className="size-4" />
-                        {t("cta.order")}
-                      </a>
-                    </SheetClose>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
-
+            <MobileMenu open={open} onOpenChange={setOpen} />
             <nav
               aria-label="Sections"
               className="hidden items-center gap-5 lg:flex lg:justify-self-end xl:gap-7"
@@ -274,94 +164,5 @@ export function SiteHeader() {
         </div>
       </div>
     </header>
-  );
-}
-
-function AccountButton({ darkSurface = false }: { darkSurface?: boolean }) {
-  const { user } = useSupabaseAuth();
-  const { t } = useT();
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
-
-  const isStaff = isStaffRole(user?.role);
-  const name = typeof user?.user_metadata?.name === "string"
-    ? user.user_metadata.name
-    : typeof user?.user_metadata?.full_name === "string"
-      ? user.user_metadata.full_name
-      : null;
-  const initial = (name?.[0] || user?.email?.[0] || "U").toUpperCase();
-  const accountHref = isStaff ? "/makteb" : "/compte#profile";
-
-  if (!mounted || !user) {
-    return (
-      <Link
-        href="/auth/signin?callbackUrl=/compte"
-        aria-label={t("auth.signin")}
-        className={`inline-flex size-11 items-center justify-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light ${
-          darkSurface
-            ? "border-cream/35 text-cream hover:bg-cream/10"
-            : "border-bronze/40 text-ink hover:bg-bronze/10 dark:text-cream"
-        }`}
-      >
-        <User className="size-4" />
-      </Link>
-    );
-  }
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button
-          type="button"
-          aria-label={t("compte.title")}
-          className={`inline-flex size-11 items-center justify-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light ${
-            darkSurface
-              ? "border-cream/35 text-cream hover:bg-cream/10"
-              : "border-bronze/40 text-ink hover:bg-bronze/10 dark:text-cream"
-          }`}
-        >
-          <span className="font-display text-sm font-semibold">{initial}</span>
-        </button>
-      </DialogTrigger>
-      <DialogContent className="vintage-paper border-bronze/40 sm:max-w-sm">
-        <DialogHeader>
-          <DialogTitle className="font-display text-2xl text-ink dark:text-cream">
-            {t("compte.title")}
-          </DialogTitle>
-          <DialogDescription>
-            {name || user.email || ""}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col gap-2">
-          <DialogClose asChild>
-            <Link
-              href={accountHref}
-              className="flex min-h-11 items-center rounded-sm border border-bronze/30 px-4 font-label text-sm text-ink transition-colors hover:bg-bronze/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
-            >
-              {t("compte.profile")}
-            </Link>
-          </DialogClose>
-          {!isStaff && (
-            <DialogClose asChild>
-              <Link
-                href="/compte#orders"
-                className="flex min-h-11 items-center rounded-sm border border-bronze/30 px-4 font-label text-sm text-ink transition-colors hover:bg-bronze/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
-              >
-                {t("compte.orders")}
-              </Link>
-            </DialogClose>
-          )}
-          <DialogClose asChild>
-            <button
-              type="button"
-              onClick={() => void signOut("/")}
-              className="flex min-h-11 items-center gap-2 rounded-sm px-4 text-start font-label text-sm text-ink transition-colors hover:bg-terracotta/10 hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:text-cream"
-            >
-              <LogOut className="size-4" />
-              {t("compte.signout")}
-            </button>
-          </DialogClose>
-        </div>
-      </DialogContent>
-    </Dialog>
   );
 }

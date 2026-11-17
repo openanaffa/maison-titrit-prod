@@ -67,7 +67,7 @@ export function ArticleForm({
             <ArrowLeft className="size-3.5" />
             Retour
           </Link>
-          <h1 className="mt-2 font-display text-3xl font-semibold text-ink dark:text-cream">
+          <h1 className="mt-2 heading-vintage-lg">
             {mode === "create" ? "Nouvel article" : "Modifier l'article"}
           </h1>
         </div>
@@ -84,36 +84,36 @@ export function ArticleForm({
 
       <div className="card-vintage rounded-sm p-5 space-y-4">
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Titre *</Label>
-          <Input value={v.title} onChange={(e) => set("title", e.target.value)} required className="mt-1.5 rounded-sm border-bronze/45" />
+          <Label className="label-vintage">Titre *</Label>
+          <Input value={v.title} onChange={(e) => set("title", e.target.value)} required className="mt-1.5 field-vintage" />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Slug</Label>
-            <Input value={v.slug} onChange={(e) => set("slug", e.target.value)} placeholder="auto" className="mt-1.5 rounded-sm border-bronze/45" />
+            <Label className="label-vintage">Slug</Label>
+            <Input value={v.slug} onChange={(e) => set("slug", e.target.value)} placeholder="auto" className="mt-1.5 field-vintage" />
           </div>
           <div>
-            <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Auteur</Label>
-            <Input value={v.authorName} onChange={(e) => set("authorName", e.target.value)} className="mt-1.5 rounded-sm border-bronze/45" />
+            <Label className="label-vintage">Auteur</Label>
+            <Input value={v.authorName} onChange={(e) => set("authorName", e.target.value)} className="mt-1.5 field-vintage" />
           </div>
         </div>
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Extrait</Label>
-          <Textarea value={v.excerpt} onChange={(e) => set("excerpt", e.target.value)} rows={2} className="mt-1.5 rounded-sm border-bronze/45" />
+          <Label className="label-vintage">Extrait</Label>
+          <Textarea value={v.excerpt} onChange={(e) => set("excerpt", e.target.value)} rows={2} className="mt-1.5 field-vintage" />
         </div>
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Image de couverture</Label>
-          <Input value={v.coverImage} onChange={(e) => set("coverImage", e.target.value)} placeholder="/images/... ou https://…" className="mt-1.5 rounded-sm border-bronze/45" />
+          <Label className="label-vintage">Image de couverture</Label>
+          <Input value={v.coverImage} onChange={(e) => set("coverImage", e.target.value)} placeholder="/images/... ou https://…" className="mt-1.5 field-vintage" />
         </div>
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Tags (séparés par des virgules)</Label>
-          <Input value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="amazigh, mode modeste" className="mt-1.5 rounded-sm border-bronze/45" />
+          <Label className="label-vintage">Tags (séparés par des virgules)</Label>
+          <Input value={v.tags} onChange={(e) => set("tags", e.target.value)} placeholder="amazigh, mode modeste" className="mt-1.5 field-vintage" />
         </div>
         <div>
-          <Label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">Corps (Markdown)</Label>
-          <Textarea value={v.body} onChange={(e) => set("body", e.target.value)} rows={12} className="mt-1.5 rounded-sm border-bronze/45 font-mono text-sm" />
+          <Label className="label-vintage">Corps (Markdown)</Label>
+          <Textarea value={v.body} onChange={(e) => set("body", e.target.value)} rows={12} className="mt-1.5 field-vintage font-mono text-sm" />
         </div>
-        <label className="inline-flex items-center gap-2 font-serif text-sm text-ink-soft dark:text-cream/80">
+        <label className="inline-flex items-center gap-2 body-vintage-muted">
           <input type="checkbox" checked={v.published} onChange={(e) => set("published", e.target.checked)} className="size-4 accent-terracotta" />
           Publier
         </label>

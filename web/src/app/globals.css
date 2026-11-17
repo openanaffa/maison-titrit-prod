@@ -63,6 +63,20 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Semantic type roles. Unlike the @theme inline block above, a plain @theme
+   emits these as real :root variables so component classes can reference them. */
+@theme {
+  --text-label: 0.6rem;
+  --text-label--line-height: 1.4;
+  --text-label-sm: 0.55rem;
+  --text-label-sm--line-height: 1.4;
+  --text-label-lg: 0.72rem;
+  --text-label-lg--line-height: 1.4;
+  --tracking-label: 0.16em;
+  --tracking-label-wide: 0.18em;
+  --tracking-wordmark-tight: 0.14em;
+}
+
 :root {
   /* Vintage Maison Titrit — warm parchment light theme */
   --radius: 0.18rem;
@@ -75,49 +89,51 @@
   --font-wordmark: "Cinzel", Georgia, "Times New Roman", serif;
   --font-script: "Allura", "Brush Script MT", cursive;
 
+  /* Brand primitives — the single source of truth for every alias below. */
   --cream: #f4ead5;
   --cream-light: #fbf6ea;
   --ink: #1c1a17;
   --ink-soft: #3a352c;
-  --bronze: #85592b;
+  --bronze: #9a6a3a;
   --bronze-light: #b8915a;
   --bronze-deep: #7a552c;
-  --terracotta: #9c4525;
+  --terracotta: #b0532f;
   --henna: #6b2d1f;
   --olive: #6b6b3a;
   --sand: #e8dbc0;
 
-  --background: #f4ead5;
-  --foreground: #1c1a17;
-  --card: #fbf6ea;
-  --card-foreground: #1c1a17;
-  --popover: #fbf6ea;
-  --popover-foreground: #1c1a17;
-  --primary: #1c1a17;
-  --primary-foreground: #f4ead5;
-  --secondary: #e8dbc0;
-  --secondary-foreground: #1c1a17;
+  /* Semantic aliases — no repeated hex values. */
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--cream-light);
+  --card-foreground: var(--ink);
+  --popover: var(--cream-light);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--cream);
+  --secondary: var(--sand);
+  --secondary-foreground: var(--ink);
   --muted: #efe4ca;
   --muted-foreground: #6b5e47;
-  --accent: #e8dbc0;
-  --accent-foreground: #1c1a17;
+  --accent: var(--sand);
+  --accent-foreground: var(--ink);
   --destructive: #8b3a2b;
   --border: #d9c7a1;
-  --input: #d9c7a1;
-  --ring: #9a6a3a;
-  --chart-1: #9a6a3a;
-  --chart-2: #b0532f;
-  --chart-3: #6b2d1f;
-  --chart-4: #6b6b3a;
-  --chart-5: #b8915a;
-  --sidebar: #fbf6ea;
-  --sidebar-foreground: #1c1a17;
-  --sidebar-primary: #1c1a17;
-  --sidebar-primary-foreground: #f4ead5;
-  --sidebar-accent: #e8dbc0;
-  --sidebar-accent-foreground: #1c1a17;
-  --sidebar-border: #d9c7a1;
-  --sidebar-ring: #9a6a3a;
+  --input: var(--border);
+  --ring: var(--bronze);
+  --chart-1: var(--bronze);
+  --chart-2: var(--terracotta);
+  --chart-3: var(--henna);
+  --chart-4: var(--olive);
+  --chart-5: var(--bronze-light);
+  --sidebar: var(--cream-light);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--ink);
+  --sidebar-primary-foreground: var(--cream);
+  --sidebar-accent: var(--sand);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--bronze);
 }
 
 .dark {
@@ -136,37 +152,37 @@
   --olive: #8a8a4f;
   --sand: #3a352c;
 
-  --background: #1c1a17;
-  --foreground: #f4ead5;
+  --background: var(--ink);
+  --foreground: var(--cream);
   --card: #26221c;
-  --card-foreground: #f4ead5;
+  --card-foreground: var(--cream);
   --popover: #26221c;
-  --popover-foreground: #f4ead5;
-  --primary: #f4ead5;
-  --primary-foreground: #1c1a17;
+  --popover-foreground: var(--cream);
+  --primary: var(--cream);
+  --primary-foreground: var(--ink);
   --secondary: #2e2922;
-  --secondary-foreground: #f4ead5;
+  --secondary-foreground: var(--cream);
   --muted: #2a2620;
-  --muted-foreground: #b8915a;
+  --muted-foreground: var(--bronze-light);
   --accent: #2e2922;
-  --accent-foreground: #f4ead5;
+  --accent-foreground: var(--cream);
   --destructive: #b5533f;
   --border: #3a352c;
-  --input: #3a352c;
-  --ring: #b8915a;
-  --chart-1: #b8915a;
+  --input: var(--border);
+  --ring: var(--bronze-light);
+  --chart-1: var(--bronze-light);
   --chart-2: #c4633c;
-  --chart-3: #a0492f;
-  --chart-4: #8a8a4f;
-  --chart-5: #cfa978;
+  --chart-3: var(--henna);
+  --chart-4: var(--olive);
+  --chart-5: var(--bronze-light);
   --sidebar: #26221c;
-  --sidebar-foreground: #f4ead5;
-  --sidebar-primary: #f4ead5;
-  --sidebar-primary-foreground: #1c1a17;
+  --sidebar-foreground: var(--cream);
+  --sidebar-primary: var(--cream);
+  --sidebar-primary-foreground: var(--ink);
   --sidebar-accent: #2e2922;
-  --sidebar-accent-foreground: #f4ead5;
-  --sidebar-border: #3a352c;
-  --sidebar-ring: #b8915a;
+  --sidebar-accent-foreground: var(--cream);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--bronze-light);
 }
 
 @layer base {
@@ -208,6 +224,130 @@
 }
 
 @layer components {
+  /* ------------------------------------------------------------------ *
+   *  Type + surface roles. These replace long, repeated utility strings
+   *  across storefront and admin components. Raw CSS with var(--token)
+   *  keeps a single source of truth (no @apply — see tailwind digest).
+   * ------------------------------------------------------------------ */
+  .label-vintage {
+    font-family: var(--font-label), serif;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--bronze-deep);
+  }
+  .label-vintage-sm {
+    font-family: var(--font-label), serif;
+    font-size: var(--text-label-sm);
+    line-height: var(--text-label-sm--line-height);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--bronze-deep);
+  }
+  .label-vintage-tight {
+    font-family: var(--font-label), serif;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--tracking-wordmark-tight);
+    text-transform: uppercase;
+    color: var(--bronze-deep);
+  }
+  .label-vintage-wide {
+    font-family: var(--font-label), serif;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: var(--tracking-label-wide);
+    text-transform: uppercase;
+    color: var(--bronze-deep);
+  }
+  .label-vintage-lg {
+    font-family: var(--font-label), serif;
+    font-size: var(--text-label-lg);
+    line-height: var(--text-label-lg--line-height);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--bronze-deep);
+  }
+
+  .heading-vintage,
+  .heading-vintage-sm,
+  .heading-vintage-md,
+  .heading-vintage-lg,
+  .heading-vintage-xl {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .dark :is(.heading-vintage, .heading-vintage-sm, .heading-vintage-md, .heading-vintage-lg, .heading-vintage-xl) {
+    color: var(--cream);
+  }
+  .heading-vintage-sm {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+  .heading-vintage {
+    font-size: var(--text-lg);
+    line-height: var(--text-lg--line-height);
+  }
+  .heading-vintage-md {
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+  }
+  .heading-vintage-lg {
+    font-size: var(--text-3xl);
+    line-height: var(--text-3xl--line-height);
+  }
+  .heading-vintage-xl {
+    font-size: var(--text-4xl);
+    line-height: var(--text-4xl--line-height);
+  }
+  @media (min-width: 40rem) {
+    .heading-vintage-xl {
+      font-size: var(--text-5xl);
+      line-height: var(--text-5xl--line-height);
+    }
+  }
+
+  .body-vintage,
+  .body-vintage-sm,
+  .body-vintage-muted {
+    font-family: var(--font-serif), Georgia, serif;
+  }
+  .body-vintage {
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    color: var(--ink-soft);
+  }
+  .body-vintage-sm {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    color: var(--ink);
+  }
+  .body-vintage-muted {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    color: var(--ink-soft);
+  }
+  .dark .body-vintage,
+  .dark .body-vintage-muted {
+    color: color-mix(in srgb, var(--cream) 70%, transparent);
+  }
+  .dark .body-vintage-sm {
+    color: var(--cream);
+  }
+  .body-vintage-soft {
+    color: var(--ink-soft);
+  }
+  .dark .body-vintage-soft {
+    color: color-mix(in srgb, var(--cream) 60%, transparent);
+  }
+
+  .field-vintage {
+    border: 1px solid color-mix(in srgb, var(--bronze) 45%, transparent);
+    border-radius: var(--radius-sm);
+  }
+
   /* Vintage parchment paper texture overlay */
   .vintage-paper {
     background-color: var(--background);
