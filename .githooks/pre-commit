@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Pre-commit: format + lint staged files with Biome, then re-stage any fixes.
+# Activate once per clone:  git config core.hooksPath .githooks
+# Skip once:                git commit --no-verify
+set -e
+
+# Only files Biome actually owns (see biome.json files.includes), excluding the
+# generated Supabase DB types.
+files=$(git diff --cached --name-only --diff-filter=ACMR \
+  | grep -E '^web/src/|^web/scripts/|^web/(next|tailwind|postcss)\.config\.|^web/eslint\.config\.mjs$|^package\.json$|^biome\.json$' \
+  | grep -iE '\.(ts|tsx|mjs|cjs|json|jsonc)$' \
+  | grep -v 'supabase/database\.types\.ts' \
+  | tr '\n' ' ')
+
+if [ -n "$files" ]; then
+  echo "[pre-commit] biome check --write"
+  bunx biome check --write --no-errors-on-unmatched $files
+  git add $files
+fi

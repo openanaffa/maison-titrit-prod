@@ -1,20 +1,29 @@
 {
-  "name": "maison-titrit-prod",
-  "version": "1.1.0",
-  "private": true,
-  "workspaces": [
-    "web"
-  ],
-  "packageManager": "bun@1.3.14",
-  "scripts": {
-    "dev": "bun run --cwd web dev",
-    "dev:web": "bun run --cwd web dev",
-    "build": "bun run --cwd web build",
-    "lint": "bun run --cwd web lint",
-    "db:types": "bun run --cwd web db:types"
-  },
-  "overrides": {
-    "@types/react": "^19",
-    "@types/react-dom": "^19"
-  }
+	"name": "maison-titrit-prod",
+	"version": "1.1.0",
+	"private": true,
+	"workspaces": [
+		"web"
+	],
+	"packageManager": "bun@1.3.14",
+	"scripts": {
+		"dev": "bun run --cwd web dev",
+		"dev:web": "bun run --cwd web dev",
+		"build": "bun run --cwd web build",
+		"lint": "bun run --cwd web lint",
+		"biome:check": "biome check .",
+		"biome:ci": "biome ci .",
+		"biome:fix": "biome check --write .",
+		"format": "biome format --write .",
+		"format:check": "biome format .",
+		"hooks:install": "git config core.hooksPath .githooks",
+		"db:types": "bun run --cwd web db:types"
+	},
+	"overrides": {
+		"@types/react": "^19",
+		"@types/react-dom": "^19"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.6.8"
+	}
 }
