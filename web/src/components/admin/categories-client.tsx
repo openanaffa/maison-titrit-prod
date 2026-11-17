@@ -88,18 +88,18 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">
+        <h1 className="heading-vintage-lg">
           {t("admin.categories.title")}
         </h1>
-        <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+        <p className="mt-1 body-vintage">
           {t("admin.categories.subtitle")}
         </p>
       </div>
 
       <form onSubmit={onAdd} className="flex items-end gap-3">
         <div className="flex-1 max-w-xs">
-          <label className="font-label text-[0.6rem] uppercase tracking-[0.16em] text-bronze">{t("admin.categories.name")}</label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5 rounded-sm border-bronze/45" placeholder="Robes" />
+          <label className="label-vintage">{t("admin.categories.name")}</label>
+          <Input value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5 field-vintage" placeholder="Robes" />
         </div>
         <Button type="submit" disabled={saving} className="rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.16em] text-cream hover:bg-terracotta">
           {saving ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />}
@@ -110,7 +110,7 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
       <div className="card-vintage overflow-hidden rounded-sm">
         <ul className="divide-y divide-bronze/15">
           {cats.length === 0 && (
-            <li className="p-6 font-serif text-sm text-ink-soft dark:text-cream/70">Aucune catégorie.</li>
+            <li className="p-6 body-vintage-muted">Aucune catégorie.</li>
           )}
           {cats.map((c) => {
             const isEditing = editingId === c.id;
@@ -127,7 +127,7 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
                           value={editName}
                           onChange={(e) => setEditName(e.target.value)}
                           autoFocus
-                          className="rounded-sm border-bronze/45 text-sm font-display"
+                          className="field-vintage text-sm font-display"
                           onKeyDown={(e) => {
                             if (e.key === "Enter") saveEdit(c.id);
                             if (e.key === "Escape") cancelEdit();
@@ -147,8 +147,8 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
                       </div>
                     ) : (
                       <>
-                        <p className="font-display text-sm font-semibold text-ink dark:text-cream">{c.name}</p>
-                        <p className="font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">
+                        <p className="heading-vintage-sm">{c.name}</p>
+                        <p className="label-vintage-sm">
                           /{c.slug} · {c.count} produit(s)
                         </p>
                       </>

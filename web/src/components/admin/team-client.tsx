@@ -47,10 +47,10 @@ export function TeamClient({ meId, users: initial }: { meId: string; users: Team
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl font-semibold text-ink dark:text-cream">
+        <h1 className="heading-vintage-lg">
           {t("admin.team.title")}
         </h1>
-        <p className="mt-1 font-serif text-base text-ink-soft dark:text-cream/70">
+        <p className="mt-1 body-vintage">
           {t("admin.team.subtitle")}
         </p>
       </div>
@@ -68,7 +68,7 @@ export function TeamClient({ meId, users: initial }: { meId: string; users: Team
           <thead>
             <tr className="border-b border-border">
               {[t("admin.team.colUser"), t("admin.team.colRole"), t("admin.team.colAuth"), ""].map((h, i) => (
-                <th key={i} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] text-ink-soft dark:text-cream/60">
+                <th key={i} className="px-4 py-3 text-start font-label text-[0.6rem] uppercase tracking-[0.18em] body-vintage-soft">
                   {h}
                 </th>
               ))}
@@ -81,9 +81,9 @@ export function TeamClient({ meId, users: initial }: { meId: string; users: Team
               return (
                 <tr key={u.id} className="border-b border-border/60 last:border-0">
                   <td className="px-4 py-3">
-                    <p className="font-serif text-sm text-ink dark:text-cream">
+                    <p className="body-vintage-sm">
                       {u.name || u.email}
-                      {isMe && <span className="ms-2 font-label text-[0.55rem] uppercase tracking-[0.16em] text-bronze">({t("admin.team.you")})</span>}
+                      {isMe && <span className="ms-2 label-vintage-sm">({t("admin.team.you")})</span>}
                     </p>
                     <p className="font-serif text-xs text-ink-soft/80 dark:text-cream/50">{u.email}</p>
                   </td>

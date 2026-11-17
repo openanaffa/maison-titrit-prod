@@ -162,7 +162,7 @@ function AuthPageInner() {
                   required
                   value={name}
                   onChange={(event) => setName(event.target.value)}
-                  className="mt-1.5 rounded-sm border-bronze/45"
+                  className="mt-1.5 field-vintage"
                 />
               </div>
             )}
@@ -175,7 +175,7 @@ function AuthPageInner() {
                 required
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="mt-1.5 rounded-sm border-bronze/45"
+                className="mt-1.5 field-vintage"
               />
             </div>
             <div>
@@ -188,7 +188,7 @@ function AuthPageInner() {
                 required
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="mt-1.5 rounded-sm border-bronze/45"
+                className="mt-1.5 field-vintage"
               />
             </div>
             <Button

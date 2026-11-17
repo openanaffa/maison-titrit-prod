@@ -43,7 +43,7 @@ export function LegalPage({ doc }: { doc: LegalDocKey }) {
         <div className="mt-10 space-y-8">
           {d.sections.map((s) => (
             <Reveal key={s.h}>
-              <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">
+              <h2 className="heading-vintage">
                 {s.h}
               </h2>
               {s.p.map((para, i) => (

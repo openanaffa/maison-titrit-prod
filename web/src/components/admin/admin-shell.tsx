@@ -147,7 +147,7 @@ export function AdminShell({
                 {(user.name?.[0] || user.email[0]).toUpperCase()}
               </div>
               <div className="hidden flex-col leading-none sm:flex">
-                <span className="font-serif text-sm text-ink dark:text-cream">
+                <span className="body-vintage-sm">
                   {user.name || user.email}
                 </span>
                 <span className="font-label text-[0.54rem] uppercase tracking-[0.18em] text-bronze">

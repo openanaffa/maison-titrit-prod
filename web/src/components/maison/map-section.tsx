@@ -20,7 +20,7 @@ export function MapSection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <Reveal className="text-center">
           <p className="eyebrow">{t("map.eyebrow")}</p>
-          <h2 className="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl dark:text-cream">
+          <h2 className="mt-4 heading-vintage-xl">
             {t("map.title")}
           </h2>
           <OrnamentDivider className="mt-6" width={220} />
@@ -35,7 +35,7 @@ export function MapSection() {
                   <MapPin className="size-4" />
                 </span>
                 <div>
-                  <h3 className="font-display text-2xl font-semibold text-ink dark:text-cream">
+                  <h3 className="heading-vintage-md">
                     {site.name}
                   </h3>
                   <p className="font-label text-[0.66rem] uppercase tracking-[0.24em] text-bronze">

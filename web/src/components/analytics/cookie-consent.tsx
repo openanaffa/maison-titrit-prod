@@ -80,7 +80,7 @@ export function CookieConsent() {
             <ShieldCheck className="size-4" />
           </span>
           <div className="min-w-0 flex-1">
-            <h2 className="font-display text-lg font-semibold text-ink dark:text-cream">
+            <h2 className="heading-vintage">
               {t("cookie.title")}
             </h2>
             <p className="mt-1 font-serif text-sm leading-relaxed text-ink-soft dark:text-cream/75">
