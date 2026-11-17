@@ -1,26 +1,23 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme-provider";
-import { LocaleProvider } from "@/i18n/locale-provider";
-import { SupabaseAuthProvider } from "@/components/maison/supabase-auth-provider";
-import { AnnouncementBar } from "@/components/maison/announcement-bar";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
-import {
-  CookieConsent,
-  CookiePreferencesButton,
-} from "@/components/analytics/cookie-consent";
-import { SiteJsonLd } from "@/components/seo/json-ld";
-import { SwRegister } from "@/components/pwa/sw-register";
-import { OG_IMAGE, site, SITE_URL } from "@/config/site";
-
-import { VERIFICATION_META, getIntegrations } from "@/lib/integrations";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-
-
+import {
+	CookieConsent,
+	CookiePreferencesButton,
+} from "@/components/analytics/cookie-consent";
+import { AnnouncementBar } from "@/components/maison/announcement-bar";
+import { SupabaseAuthProvider } from "@/components/maison/supabase-auth-provider";
+import { SwRegister } from "@/components/pwa/sw-register";
+import { SiteJsonLd } from "@/components/seo/json-ld";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import { OG_IMAGE, SITE_URL, site } from "@/config/site";
+import { LocaleProvider } from "@/i18n/locale-provider";
+import { getIntegrations, VERIFICATION_META } from "@/lib/integrations";
 
 /* Integration settings are runtime-editable (see /makteb/settings) — the root
  * layout revalidates them every 60s and re-emits the verification metas and
@@ -28,101 +25,106 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { verification } = await getIntegrations();
+	const { verification } = await getIntegrations();
 
-  const other: Record<string, string> = {};
-  if (verification.google) other[VERIFICATION_META.google] = verification.google;
-  if (verification.facebook) other[VERIFICATION_META.facebook] = verification.facebook;
-  if (verification.instagram) other[VERIFICATION_META.instagram] = verification.instagram;
-  if (verification.tiktok) other[VERIFICATION_META.tiktok] = verification.tiktok;
-  for (const { name, content } of verification.custom) other[name] = content;
+	const other: Record<string, string> = {};
+	if (verification.google)
+		other[VERIFICATION_META.google] = verification.google;
+	if (verification.facebook)
+		other[VERIFICATION_META.facebook] = verification.facebook;
+	if (verification.instagram)
+		other[VERIFICATION_META.instagram] = verification.instagram;
+	if (verification.tiktok)
+		other[VERIFICATION_META.tiktok] = verification.tiktok;
+	for (const { name, content } of verification.custom) other[name] = content;
 
-  return {
-    metadataBase: new URL(SITE_URL),
-    title: {
-      default: `${site.name} — ${site.nameAmazigh} | Modest Fashion · Made in Morocco`,
-      template: `%s · ${site.name}`,
-    },
-    description:
-      "Maison Titrit — mode modeste pour femmes. Style, confort, qualité. 100% Made in Morocco 🇲🇦. Caftans, robes, tuniques, ensembles & abayas. Commande sur WhatsApp — paiement à la livraison (COD).",
-    keywords: [
-      "Maison Titrit",
-      "mode modeste",
-      "modest fashion",
-      "caftan",
-      "robe",
-      "tunique",
-      "abaya",
-      "Made in Morocco",
-      "Bouskoura",
-      "Casablanca",
-      "modest dresses",
-      "Moroccan fashion",
-      "Amazigh",
-      "WhatsApp order",
-    ],
-    authors: [{ name: site.name }],
-    creator: site.name,
-    publisher: site.name,
-    applicationName: site.name,
-    alternates: {
-      canonical: SITE_URL,
-      languages: {
-        fr: SITE_URL,
-        ar: SITE_URL,
-        en: SITE_URL,
-      },
-    },
-    openGraph: {
-      title: `${site.name} — Modest Fashion · Made in Morocco`,
-      description:
-        "Mode modeste pour femmes. Style, confort, qualité. 100% Made in Morocco 🇲🇦. Commande sur WhatsApp — paiement à la livraison (COD).",
-      type: "website",
-      locale: "fr_MA",
-      siteName: site.name,
-      url: SITE_URL,
-      images: [
-        {
-          url: OG_IMAGE,
-          width: 1200,
-          height: 630,
-          alt: `${site.name} — Modest Fashion · Made in Morocco`,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      site: "@maison__titrit",
-      creator: "@maison__titrit",
-      title: `${site.name} — Modest Fashion · Made in Morocco`,
-      description: "Mode modeste pour femmes. 100% Made in Morocco 🇲🇦. Commande sur WhatsApp.",
-      images: [OG_IMAGE],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      "max-snippet": -1,
-      "max-image-preview": "large",
-      "max-video-preview": -1,
-      googleBot: { index: true, follow: true, "max-image-preview": "large" },
-    },
-    // Domain verification tags — editor-managed (see /makteb/settings), env as fallback
-    verification:
-      Object.keys(other).length > 0
-        ? {
-          other,
-        }
-        : undefined,
-    // Geographic targeting hints for local SEO (LocalBusiness NAP coords live in
-    // src/lib/json-ld.ts — schema.org GeoCoordinates use the same values).
-    other: {
-      "geo.region": "MA",
-      "geo.placename": "Bouskoura",
-      "geo.country": "MA",
-      "geo.position": "33.4496; -7.652",
-    },
-    category: "shopping",
-  };
+	return {
+		metadataBase: new URL(SITE_URL),
+		title: {
+			default: `${site.name} — ${site.nameAmazigh} | Modest Fashion · Made in Morocco`,
+			template: `%s · ${site.name}`,
+		},
+		description:
+			"Maison Titrit — mode modeste pour femmes. Style, confort, qualité. 100% Made in Morocco 🇲🇦. Caftans, robes, tuniques, ensembles & abayas. Commande sur WhatsApp — paiement à la livraison (COD).",
+		keywords: [
+			"Maison Titrit",
+			"mode modeste",
+			"modest fashion",
+			"caftan",
+			"robe",
+			"tunique",
+			"abaya",
+			"Made in Morocco",
+			"Bouskoura",
+			"Casablanca",
+			"modest dresses",
+			"Moroccan fashion",
+			"Amazigh",
+			"WhatsApp order",
+		],
+		authors: [{ name: site.name }],
+		creator: site.name,
+		publisher: site.name,
+		applicationName: site.name,
+		alternates: {
+			canonical: SITE_URL,
+			languages: {
+				fr: SITE_URL,
+				ar: SITE_URL,
+				en: SITE_URL,
+			},
+		},
+		openGraph: {
+			title: `${site.name} — Modest Fashion · Made in Morocco`,
+			description:
+				"Mode modeste pour femmes. Style, confort, qualité. 100% Made in Morocco 🇲🇦. Commande sur WhatsApp — paiement à la livraison (COD).",
+			type: "website",
+			locale: "fr_MA",
+			siteName: site.name,
+			url: SITE_URL,
+			images: [
+				{
+					url: OG_IMAGE,
+					width: 1200,
+					height: 630,
+					alt: `${site.name} — Modest Fashion · Made in Morocco`,
+				},
+			],
+		},
+		twitter: {
+			card: "summary_large_image",
+			site: "@maison__titrit",
+			creator: "@maison__titrit",
+			title: `${site.name} — Modest Fashion · Made in Morocco`,
+			description:
+				"Mode modeste pour femmes. 100% Made in Morocco 🇲🇦. Commande sur WhatsApp.",
+			images: [OG_IMAGE],
+		},
+		robots: {
+			index: true,
+			follow: true,
+			"max-snippet": -1,
+			"max-image-preview": "large",
+			"max-video-preview": -1,
+			googleBot: { index: true, follow: true, "max-image-preview": "large" },
+		},
+		// Domain verification tags — editor-managed (see /makteb/settings), env as fallback
+		verification:
+			Object.keys(other).length > 0
+				? {
+						other,
+					}
+				: undefined,
+		// Geographic targeting hints for local SEO (LocalBusiness NAP coords live in
+		// src/lib/json-ld.ts — schema.org GeoCoordinates use the same values).
+		other: {
+			"geo.region": "MA",
+			"geo.placename": "Bouskoura",
+			"geo.country": "MA",
+			"geo.position": "33.4496; -7.652",
+		},
+		category: "shopping",
+	};
 }
 
 /**
@@ -133,40 +135,52 @@ export async function generateMetadata(): Promise<Metadata> {
  * (--font-display, --font-serif, …) are defined in globals.css :root.
  */
 const FONT_HREF =
-  "https://fonts.googleapis.com/css2?" +
-  [
-    "family=Cinzel:wght@400;500;600;700",
-    "family=Allura",
-    "family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500",
-    "family=Jost:wght@300;400;500;600",
-    "family=Marcellus",
-    "family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600",
-    "family=Noto+Sans+Tifinagh:wght@400;700",
-  ].join("&") +
-  "&display=swap";
+	"https://fonts.googleapis.com/css2?" +
+	[
+		"family=Cinzel:wght@400;500;600;700",
+		"family=Allura",
+		"family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500",
+		"family=Jost:wght@300;400;500;600",
+		"family=Marcellus",
+		"family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600",
+		"family=Noto+Sans+Tifinagh:wght@400;700",
+	].join("&") +
+	"&display=swap";
 
 export default async function RootLayout({
-  children,
+	children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { analytics } = await getIntegrations();
-  return (
-    <html lang="fr" dir="ltr" suppressHydrationWarning>
-      <head>
-        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <meta name="apple-mobile-web-app-title" content="Maison Titrit" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href={FONT_HREF} rel="stylesheet" />
-        <SiteJsonLd />
-      </head>
-      <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
-
-        <Script id="consent-default" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
+	const { analytics } = await getIntegrations();
+	return (
+		<html lang="fr" dir="ltr" suppressHydrationWarning>
+			<head>
+				<link
+					rel="icon"
+					type="image/png"
+					href="/favicon-96x96.png"
+					sizes="96x96"
+				/>
+				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+				<link rel="shortcut icon" href="/favicon.ico" />
+				<link
+					rel="apple-touch-icon"
+					sizes="180x180"
+					href="/apple-touch-icon.png"
+				/>
+				<meta name="apple-mobile-web-app-title" content="Maison Titrit" />
+				<link rel="manifest" href="/site.webmanifest" />
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link
+					rel="preconnect"
+					href="https://fonts.gstatic.com"
+					crossOrigin="anonymous"
+				/>
+				<link href={FONT_HREF} rel="stylesheet" />
+				<SiteJsonLd />
+			</head>
+			<body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
+				<Script id="consent-default" strategy="afterInteractive">
+					{`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('consent', 'default', {
   'analytics_storage': 'denied',
@@ -175,37 +189,42 @@ gtag('consent', 'default', {
   'ad_personalization': 'denied',
   'wait_for_update': 500
 });`}
-        </Script>
-        <a
-          href="#accueil"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:inset-s-4 focus:z-100 focus:inline-flex focus:items-center focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream focus:font-label focus:text-[0.7rem] focus:uppercase focus:tracking-[0.2em] focus:outline-none"
-        >
-          Aller au contenu
-        </a>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <LocaleProvider>
-            <SupabaseAuthProvider>
-              <AttributionCapture />
-              <AnnouncementBar />
-              <AnalyticsScripts
-                gtmId={analytics.gtmId}
-                ga4Id={analytics.ga4Id}
-                fbPixelId={analytics.fbPixelId}
-                pinterestTagId={analytics.pinterestTagId}
-                tiktokPixelId={analytics.tiktokPixelId}
-                youtubeChannelId={analytics.youtubeChannelId}
-              />
-              {children}
-              <CookieConsent />
-              <CookiePreferencesButton />
-            </SupabaseAuthProvider>
-          </LocaleProvider>
-        </ThemeProvider>
-        <Toaster />
-        <Analytics />
-        <SpeedInsights />
-        <SwRegister />
-      </body>
-    </html>
-  );
+				</Script>
+				<a
+					href="#accueil"
+					className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:inset-s-4 focus:z-100 focus:inline-flex focus:items-center focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream focus:font-label focus:text-[0.7rem] focus:uppercase focus:tracking-[0.2em] focus:outline-none"
+				>
+					Aller au contenu
+				</a>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="light"
+					enableSystem
+					disableTransitionOnChange
+				>
+					<LocaleProvider>
+						<SupabaseAuthProvider>
+							<AttributionCapture />
+							<AnnouncementBar />
+							<AnalyticsScripts
+								gtmId={analytics.gtmId}
+								ga4Id={analytics.ga4Id}
+								fbPixelId={analytics.fbPixelId}
+								pinterestTagId={analytics.pinterestTagId}
+								tiktokPixelId={analytics.tiktokPixelId}
+								youtubeChannelId={analytics.youtubeChannelId}
+							/>
+							{children}
+							<CookieConsent />
+							<CookiePreferencesButton />
+						</SupabaseAuthProvider>
+					</LocaleProvider>
+				</ThemeProvider>
+				<Toaster />
+				<Analytics />
+				<SpeedInsights />
+				<SwRegister />
+			</body>
+		</html>
+	);
 }

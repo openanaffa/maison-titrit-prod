@@ -1,8 +1,4 @@
-import {
-  faqSchema,
-  localBusinessSchema,
-  websiteSchema,
-} from "@/lib/json-ld";
+import { faqSchema, localBusinessSchema, websiteSchema } from "@/lib/json-ld";
 import { serializeJsonLd } from "@/lib/serialize-json-ld";
 
 /**
@@ -11,20 +7,21 @@ import { serializeJsonLd } from "@/lib/serialize-json-ld";
  * search engines can show rich results (store info, hours, FAQs, sitelinks).
  */
 export function SiteJsonLd() {
-  const blocks = [
-    localBusinessSchema(),
-    websiteSchema(),
-    faqSchema(),
-  ];
-  return (
-    <>
-      {blocks.map((b, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: serializeJsonLd(b) }}
-        />
-      ))}
-    </>
-  );
+	const blocks = [
+		["local-business", localBusinessSchema()],
+		["website", websiteSchema()],
+		["faq", faqSchema()],
+	] as const;
+	return (
+		<>
+			{blocks.map(([name, schema]) => (
+				<script
+					key={name}
+					type="application/ld+json"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD requires an inline script
+					dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
+				/>
+			))}
+		</>
+	);
 }
