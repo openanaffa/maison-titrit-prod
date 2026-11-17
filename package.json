@@ -17,7 +17,9 @@
 		"format": "biome format --write .",
 		"format:check": "biome format .",
 		"hooks:install": "git config core.hooksPath .githooks",
-		"db:types": "bun run --cwd web db:types"
+		"db:types": "bun run --cwd web db:types",
+		"check": "biome check .",
+		"fix": "biome check --write ."
 	},
 	"overrides": {
 		"@types/react": "^19",
