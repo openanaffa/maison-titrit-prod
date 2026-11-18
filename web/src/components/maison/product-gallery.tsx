@@ -69,6 +69,7 @@ export function ProductGallery({
 								alt={img.alt}
 								fill
 								sizes="64px"
+								loading="lazy"
 								className="object-cover"
 							/>
 						</button>

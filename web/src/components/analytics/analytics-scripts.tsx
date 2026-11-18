@@ -108,7 +108,7 @@ gtag('config', '${ga4Id}', { anonymize_ip: true });`}
 			)}
 
 			{consent.marketing && fbReady && shouldInit("fb-pixel") && (
-				<Script id="fb-pixel" strategy="afterInteractive">
+				<Script id="fb-pixel" strategy="lazyOnload">
 					{`!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -125,7 +125,7 @@ fbq('track', 'PageView');`}
 			{consent.marketing && pinterestReady && shouldInit("pinterest-tag") && (
 				<Script
 					id="pinterest-tag"
-					strategy="afterInteractive"
+					strategy="lazyOnload"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: analytics inline script
 					dangerouslySetInnerHTML={{
 						__html: [
@@ -141,12 +141,12 @@ fbq('track', 'PageView');`}
 				<>
 					<Script
 						id="tiktok-pixel-src"
-						strategy="afterInteractive"
+						strategy="lazyOnload"
 						src="https://analytics.tiktok.com/i18n/pixel/events.js"
 					/>
 					<Script
 						id="tiktok-pixel-init"
-						strategy="afterInteractive"
+						strategy="lazyOnload"
 						// biome-ignore lint/security/noDangerouslySetInnerHtml: analytics inline script
 						dangerouslySetInnerHTML={{
 							__html: `window.dataLayer = window.dataLayer || [];
@@ -161,7 +161,7 @@ ttq('track', 'PageView');`,
 			{youtubeReady && shouldInit("youtube-tracker") && (
 				<Script
 					id="youtube-tracker"
-					strategy="afterInteractive"
+					strategy="lazyOnload"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: analytics inline script
 					dangerouslySetInnerHTML={{
 						__html: `window.dataLayer = window.dataLayer || [];
