@@ -104,6 +104,7 @@ Project `maison-titrit-prod` registered in `.serena/project.yml` (TypeScript LSP
 
 ## 11. Where to look next
 
+- Status and next milestones: `ROADMAP.md`
 - Deploy: `docs/DEPLOYMENT.md`
 - Build history / design decisions: `docs/history/worklog-ws2.md`
 - Agent notes: `AGENTS.md`
