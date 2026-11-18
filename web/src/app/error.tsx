@@ -1,5 +1,6 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
 import Link from "next/link";
 import { useEffect } from "react";
 import { AmazighStar, OrnamentDivider } from "@/components/maison/motifs";
@@ -12,6 +13,7 @@ export default function ErrorPage({
 	reset: () => void;
 }) {
 	useEffect(() => {
+		Sentry.captureException(error);
 		console.error(error);
 	}, [error]);
 

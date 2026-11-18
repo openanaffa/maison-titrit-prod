@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import * as Sentry from "@sentry/nextjs";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
@@ -11,6 +12,7 @@ import {
 } from "@/components/analytics/cookie-consent";
 import { AnnouncementBar } from "@/components/maison/announcement-bar";
 import { SupabaseAuthProvider } from "@/components/maison/supabase-auth-provider";
+import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 import { SwRegister } from "@/components/pwa/sw-register";
 import { SiteJsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -151,6 +153,12 @@ export default async function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	const { analytics } = await getIntegrations();
+
+	// Set Sentry release/tag from environment
+	if (process.env.SENTRY_RELEASE) {
+		Sentry.setTag("release", process.env.SENTRY_RELEASE);
+	}
+
 	return (
 		<html lang="fr" dir="ltr" suppressHydrationWarning>
 			<head>
@@ -204,19 +212,21 @@ gtag('consent', 'default', {
 				>
 					<LocaleProvider>
 						<SupabaseAuthProvider>
-							<AttributionCapture />
-							<AnnouncementBar />
-							<AnalyticsScripts
-								gtmId={analytics.gtmId}
-								ga4Id={analytics.ga4Id}
-								fbPixelId={analytics.fbPixelId}
-								pinterestTagId={analytics.pinterestTagId}
-								tiktokPixelId={analytics.tiktokPixelId}
-								youtubeChannelId={analytics.youtubeChannelId}
-							/>
-							{children}
-							<CookieConsent />
-							<CookiePreferencesButton />
+							<ReactQueryProvider>
+								<AttributionCapture />
+								<AnnouncementBar />
+								<AnalyticsScripts
+									gtmId={analytics.gtmId}
+									ga4Id={analytics.ga4Id}
+									fbPixelId={analytics.fbPixelId}
+									pinterestTagId={analytics.pinterestTagId}
+									tiktokPixelId={analytics.tiktokPixelId}
+									youtubeChannelId={analytics.youtubeChannelId}
+								/>
+								{children}
+								<CookieConsent />
+								<CookiePreferencesButton />
+							</ReactQueryProvider>
 						</SupabaseAuthProvider>
 					</LocaleProvider>
 				</ThemeProvider>

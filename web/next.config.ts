@@ -1,3 +1,4 @@
+import { withSentryConfig } from "@sentry/nextjs/config";
 import { withBotId } from "botid/next/config";
 import type { NextConfig } from "next";
 
@@ -26,4 +27,8 @@ const nextConfig: NextConfig = {
 	},
 };
 
-export default withBotId(nextConfig);
+export default withSentryConfig(withBotId(nextConfig), {
+	org: process.env.SENTRY_ORG,
+	project: process.env.SENTRY_PROJECT,
+	silent: !process.env.CI,
+});
