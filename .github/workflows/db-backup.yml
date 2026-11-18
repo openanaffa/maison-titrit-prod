@@ -28,6 +28,46 @@ jobs:
       - name: Install age
         run: sudo apt-get install -y --no-install-recommends age >/dev/null
 
+      # Fail fast with a readable error instead of six silent nights of SQLSTATE 28P01.
+      # Never prints the password — only checks the URL's shape.
+      - name: Validate backup URL
+        env:
+          DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+          from urllib.parse import parse_qs, urlparse
+
+          raw = os.environ.get("DATABASE_URL", "")
+          if not raw:
+              sys.exit("::error::BACKUP_DATABASE_URL is unset or empty")
+          try:
+              u = urlparse(raw)
+              port = u.port
+          except ValueError:
+              sys.exit("::error::BACKUP_DATABASE_URL has an invalid port")
+          problems = []
+          if u.scheme != "postgresql":
+              problems.append("scheme must be postgresql")
+          if not re.fullmatch(r"postgres\.[a-z0-9]{10,}", u.username or ""):
+              problems.append("user must be postgres.<PROJECT-REF> (shared pooler), not plain 'postgres'")
+          if not (u.hostname or "").endswith(".pooler.supabase.com"):
+              problems.append("host must be the shared pooler (*.pooler.supabase.com)")
+          if port != 5432:
+              problems.append("port must be 5432 (session pooler); 6543 is transaction mode and breaks pg_dump")
+          query = parse_qs(u.query)
+          if "pgbouncer" in query:
+              problems.append("pgbouncer=true selects transaction mode; remove it")
+          if query.get("sslmode", [""])[0] not in ("require", "verify-ca", "verify-full"):
+              problems.append("sslmode must be require or stricter")
+          if problems:
+              sys.exit("::error::BACKUP_DATABASE_URL is misconfigured: " + "; ".join(problems))
+          print("backup URL shape OK: session pooler, postgres.<ref> user, SSL required")
+          PY
+
       - name: Dump (pg_dump 17 matches the Supabase server major)
         env:
           DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}

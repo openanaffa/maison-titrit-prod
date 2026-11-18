@@ -241,6 +241,8 @@ Nightly at 02:17 UTC, `.github/workflows/db-backup.yml` dumps the Supabase `publ
 
 GitHub Actions secrets: `BACKUP_DATABASE_URL` (session pooler `aws-0-eu-west-1.pooler.supabase.com:5432`, user `postgres.<project-ref>`, `sslmode=require`; the direct `db.*.supabase.co` host is IPv6-only and unreachable from Actions), `R2_BACKUP_ACCESS_KEY_ID`, `R2_BACKUP_SECRET_ACCESS_KEY` (an R2 token scoped to this bucket only), `R2_ACCOUNT_ID`. The age private key is only in `pass maison-titrit/backup/age-identity`.
 
+Do **not** reuse the app's `DATABASE_URL` here: it uses the transaction pooler (`:6543`, `?pgbouncer=true`), which Supabase does not support for `pg_dump`. Backups need the **session pooler** on `:5432` with user `postgres.<project-ref>`. Copy the string from Supabase Dashboard → Connect → Session pooler and percent-encode reserved characters in the password (`&`, `#`, `?`, `@`, space). The workflow validates the URL shape first and fails with a diagnostic — without printing the password — if it is wrong.
+
 Run one now: GitHub → Actions → db-backup → Run workflow.
 
 Restore (into a scratch database first, never straight over prod):
