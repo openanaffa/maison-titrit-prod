@@ -54,7 +54,7 @@ export function ProductGallery({
 				<div className="mt-3 flex gap-2">
 					{images.map((img, i) => (
 						<button
-							key={img.url}
+							key={String(i)}
 							type="button"
 							onClick={() => onSelect(i)}
 							aria-label={`Image ${i + 1}`}
