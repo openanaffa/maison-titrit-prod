@@ -6,6 +6,11 @@ import * as React from "react";
 import { CategoryIcon } from "@/components/maison/category-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+	useCreateCategory,
+	useDeleteCategory,
+	useUpdateCategory,
+} from "@/hooks/api/categories";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import type { Category } from "@/lib/types";
@@ -14,6 +19,9 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
 	const { t } = useT();
 	const router = useRouter();
 	const { toast } = useToast();
+	const createCategory = useCreateCategory();
+	const updateCategory = useUpdateCategory();
+	const deleteCategory = useDeleteCategory();
 	const [cats, setCats] = React.useState(initial);
 	const [name, setName] = React.useState("");
 	const [saving, setSaving] = React.useState(false);
@@ -25,18 +33,15 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
 		e.preventDefault();
 		if (!name.trim()) return;
 		setSaving(true);
-		const res = await fetch("/api/admin/categories", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ name }),
-		});
-		setSaving(false);
-		if (res.ok) {
+		try {
+			await createCategory.mutateAsync({ name });
 			setName("");
 			toast({ title: "Catégorie ajoutée" });
 			router.refresh();
-		} else {
+		} catch {
 			toast({ title: "Erreur", variant: "destructive" });
+		} finally {
+			setSaving(false);
 		}
 	}
 
@@ -54,36 +59,28 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
 		const n = editName.trim();
 		if (!n) return;
 		setEditSaving(id);
-		const res = await fetch(`/api/admin/categories/${id}`, {
-			method: "PATCH",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ name: n }),
-		});
-		setEditSaving(null);
-		if (res.ok) {
-			const json = await res.json();
-			setCats((prev) =>
-				prev.map((c) => (c.id === id ? { ...c, name: json.category.name } : c)),
-			);
+		try {
+			await updateCategory.mutateAsync({ id, body: { name: n } });
+			setCats((prev) => prev.map((c) => (c.id === id ? { ...c, name: n } : c)));
 			setEditingId(null);
 			setEditName("");
 			toast({ title: "Catégorie modifiée" });
-		} else {
+		} catch {
 			toast({ title: "Erreur", variant: "destructive" });
 			setEditingId(null);
 			setEditName("");
+		} finally {
+			setEditSaving(null);
 		}
 	}
 
 	async function onDelete(id: string, n: string) {
 		if (!confirm(`Supprimer « ${n} » ?`)) return;
-		const res = await fetch(`/api/admin/categories/${id}`, {
-			method: "DELETE",
-		});
-		if (res.ok) {
+		try {
+			await deleteCategory.mutateAsync(id);
 			setCats((prev) => prev.filter((c) => c.id !== id));
 			toast({ title: "Supprimée" });
-		} else {
+		} catch {
 			toast({ title: "Erreur", variant: "destructive" });
 		}
 	}

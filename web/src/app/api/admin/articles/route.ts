@@ -1,5 +1,12 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
+import {
+	createArticle,
+	deleteArticle,
+	getArticle,
+	listArticles,
+	updateArticle,
+} from "@/lib/repositories/articles";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -20,25 +27,20 @@ export async function POST(req: Request) {
 			slugify(title);
 		const published = !!body.published;
 		const supabase = await createSupabaseServerClient();
-		const { data: article } = await supabase
-			.from("Article")
-			.insert({
-				id: randomUUID(),
-				slug,
-				title,
-				excerpt: body.excerpt ?? "",
-				body: body.body ?? "",
-				coverImage: body.coverImage || null,
-				authorName: body.authorName || "Maison Titrit",
-				tags: body.tags ?? "",
-				published,
-				publishedAt: published ? new Date().toISOString() : null,
-				createdAt: new Date().toISOString(),
-				updatedAt: new Date().toISOString(),
-			})
-			.select("*")
-			.single()
-			.throwOnError();
+		const article = await createArticle(supabase, {
+			id: randomUUID(),
+			slug,
+			title,
+			excerpt: body.excerpt ?? "",
+			body: body.body ?? "",
+			coverImage: body.coverImage || null,
+			authorName: body.authorName || "Maison Titrit",
+			tags: body.tags ?? "",
+			published,
+			publishedAt: published ? new Date().toISOString() : null,
+			createdAt: new Date().toISOString(),
+			updatedAt: new Date().toISOString(),
+		});
 		return NextResponse.json({ article });
 	} catch (e) {
 		console.error("POST /api/admin/articles failed", e);

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateArticle, useUpdateArticle } from "@/hooks/api/articles";
 import { useToast } from "@/hooks/use-toast";
 import { slugify } from "@/lib/slug";
 import type { ArticleFormValues } from "@/lib/types";
@@ -25,6 +26,8 @@ export function ArticleForm({
 }) {
 	const router = useRouter();
 	const { toast } = useToast();
+	const createArticle = useCreateArticle();
+	const updateArticle = useUpdateArticle();
 	const [v, setV] = React.useState<ArticleFormValues>(initial);
 	const [saving, setSaving] = React.useState(false);
 
@@ -38,30 +41,28 @@ export function ArticleForm({
 	async function onSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		setSaving(true);
-		const url =
-			mode === "create"
-				? "/api/admin/articles"
-				: `/api/admin/articles/${articleId}`;
-		const method = mode === "create" ? "POST" : "PATCH";
 		const payload = {
 			...v,
 			slug: v.slug || slugify(v.title),
 			publishedAt: v.published ? new Date().toISOString() : null,
 		};
-		const res = await fetch(url, {
-			method,
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(payload),
-		});
-		setSaving(false);
-		if (res.ok) {
-			toast({
-				title: mode === "create" ? "Article créé" : "Article mis à jour",
-			});
+		try {
+			if (mode === "create") {
+				await createArticle.mutateAsync(payload);
+				toast({ title: "Article créé" });
+			} else {
+				await updateArticle.mutateAsync({
+					id: articleId!,
+					body: payload,
+				});
+				toast({ title: "Article mis à jour" });
+			}
 			router.push("/makteb/blog");
 			router.refresh();
-		} else {
+		} catch {
 			toast({ title: "Erreur", variant: "destructive" });
+		} finally {
+			setSaving(false);
 		}
 	}
 

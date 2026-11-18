@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
+import { createProduct, insertImages } from "@/lib/repositories/products";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
 import type { Tables } from "@/lib/supabase/database.types";
@@ -23,9 +24,10 @@ export async function POST(req: Request) {
 		if (body.price == null)
 			return NextResponse.json({ error: "Prix requis." }, { status: 400 });
 
+		const supabase = await createSupabaseServerClient();
+
 		// resolve category
 		let categoryId: string | null = null;
-		const supabase = await createSupabaseServerClient();
 		if (body.categoryId) {
 			categoryId = body.categoryId;
 		} else if (body.categoryName) {
@@ -82,32 +84,14 @@ export async function POST(req: Request) {
 			createdAt: new Date().toISOString(),
 			updatedAt: new Date().toISOString(),
 		};
-		const { data: product } = await supabase
-			.from("Product")
-			.insert(productInput)
-			.select("*")
-			.single()
-			.throwOnError();
+		const product = await createProduct(supabase, productInput);
 
 		const images = Array.isArray(body.images) ? body.images : [];
-		const imageRows: Tables<"Image">[] = images.flatMap(
-			(img: { url?: string; alt?: string | null }, index: number) => {
-				if (!img.url?.trim()) return [];
-				return [
-					{
-						id: randomUUID(),
-						productId: product.id,
-						url: img.url.trim(),
-						alt: img.alt ?? product.name,
-						position: index,
-						createdAt: new Date().toISOString(),
-					},
-				];
-			},
-		);
-		if (imageRows.length) {
-			await supabase.from("Image").insert(imageRows).throwOnError();
-		}
+		const imagesWithAlt = images.map((img) => ({
+			url: img.url,
+			alt: img.alt ?? product.name,
+		}));
+		await insertImages(supabase, product.id, imagesWithAlt);
 
 		return NextResponse.json({ product });
 	} catch (e) {

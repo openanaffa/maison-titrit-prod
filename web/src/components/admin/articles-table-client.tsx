@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { useDeleteArticle, useUpdateArticle } from "@/hooks/api/articles";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import type { ArticleTableRow } from "@/lib/types";
@@ -13,27 +14,30 @@ export function ArticlesTableClient({ rows }: { rows: ArticleTableRow[] }) {
 	const { t } = useT();
 	const router = useRouter();
 	const { toast } = useToast();
+	const deleteArticle = useDeleteArticle();
+	const updateArticle = useUpdateArticle();
 
 	async function onDelete(row: ArticleTableRow) {
 		if (!confirm(`Supprimer « ${row.title} » ?`)) return;
-		const res = await fetch(`/api/admin/articles/${row.id}`, {
-			method: "DELETE",
-		});
-		if (res.ok) {
+		try {
+			await deleteArticle.mutateAsync(row.id);
 			toast({ title: "Supprimé" });
 			router.refresh();
+		} catch {
+			toast({ title: "Erreur", variant: "destructive" });
 		}
 	}
 
 	async function togglePublish(row: ArticleTableRow) {
-		const res = await fetch(`/api/admin/articles/${row.id}`, {
-			method: "PATCH",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ published: !row.published }),
-		});
-		if (res.ok) {
+		try {
+			await updateArticle.mutateAsync({
+				id: row.id,
+				body: { published: !row.published },
+			});
 			toast({ title: row.published ? "Dépublié" : "Publié" });
 			router.refresh();
+		} catch {
+			toast({ title: "Erreur", variant: "destructive" });
 		}
 	}
 

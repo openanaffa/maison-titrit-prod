@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
+import { createCategory, listCategories } from "@/lib/repositories/products";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -11,11 +12,7 @@ export async function GET() {
 	if (!user || !allowed)
 		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const supabase = await createSupabaseServerClient();
-	const { data: categories } = await supabase
-		.from("Category")
-		.select("*")
-		.order("position", { ascending: true })
-		.throwOnError();
+	const categories = await listCategories(supabase);
 	return NextResponse.json({ categories });
 }
 
@@ -37,19 +34,14 @@ export async function POST(req: Request) {
 			.limit(1)
 			.maybeSingle()
 			.throwOnError();
-		const { data: category } = await supabase
-			.from("Category")
-			.insert({
-				id: randomUUID(),
-				name,
-				slug,
-				position: (lastCategory?.position ?? 0) + 1,
-				createdAt: new Date().toISOString(),
-				updatedAt: new Date().toISOString(),
-			})
-			.select("*")
-			.single()
-			.throwOnError();
+		const category = await createCategory(supabase, {
+			id: randomUUID(),
+			name,
+			slug,
+			position: (lastCategory?.position ?? 0) + 1,
+			createdAt: new Date().toISOString(),
+			updatedAt: new Date().toISOString(),
+		});
 		return NextResponse.json({ category });
 	} catch (e) {
 		console.error("POST /api/admin/categories failed", e);

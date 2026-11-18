@@ -8,6 +8,7 @@ import * as React from "react";
 import { CategoryIcon } from "@/components/maison/category-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useDeleteProduct } from "@/hooks/api/products";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import { track } from "@/lib/analytics";
@@ -23,6 +24,7 @@ export function ProductsTableClient({
 	const { t } = useT();
 	const router = useRouter();
 	const { toast } = useToast();
+	const deleteProduct = useDeleteProduct();
 	const [query, setQuery] = React.useState("");
 	const [filter, setFilter] = React.useState<string>("all");
 
@@ -40,14 +42,12 @@ export function ProductsTableClient({
 
 	async function onDelete(row: Row) {
 		if (!confirm(t("admin.products.deleteConfirm", { name: row.name }))) return;
-		const res = await fetch(`/api/admin/products/${row.id}`, {
-			method: "DELETE",
-		});
-		if (res.ok) {
+		try {
+			await deleteProduct.mutateAsync(row.id);
 			toast({ title: "Supprimé", description: row.name });
 			track("admin_product_delete", { ref: row.ref });
 			router.refresh();
-		} else {
+		} catch {
 			toast({
 				title: "Erreur",
 				description: "Suppression impossible.",

@@ -11,42 +11,19 @@ import { ProductCard } from "@/components/maison/product-card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CATEGORIES } from "@/config/products";
+import { useProducts } from "@/hooks/api/catalogue";
 import { useT } from "@/i18n/locale-provider";
 import { whatsappCatalog } from "@/lib/brand";
 import type { ProductDTO } from "@/lib/types";
 
 export function ProductCatalogue() {
 	const { t } = useT();
-	const [products, setProducts] = React.useState<ProductDTO[]>([]);
-	const [loading, setLoading] = React.useState(true);
-	const [error, setError] = React.useState<string | null>(null);
 	const [active, setActive] = React.useState<string>("all");
+	const productsQuery = useProducts(active === "all" ? undefined : active);
 
-	React.useEffect(() => {
-		let cancelled = false;
-		setLoading(true);
-		const url =
-			active === "all"
-				? "/api/products"
-				: `/api/products?category=${encodeURIComponent(active)}`;
-		fetch(url)
-			.then(async (r) => {
-				if (!r.ok) throw new Error("network");
-				const json = await r.json();
-				if (cancelled) return;
-				setProducts(json.products ?? []);
-				setError(null);
-			})
-			.catch(() => {
-				if (!cancelled) setError(t("catalog.error"));
-			})
-			.finally(() => {
-				if (!cancelled) setLoading(false);
-			});
-		return () => {
-			cancelled = true;
-		};
-	}, [active, t]);
+	const products = (productsQuery.data?.products ?? []) as ProductDTO[];
+	const loading = productsQuery.isPending;
+	const error = productsQuery.error ? t("catalog.error") : null;
 
 	const filters = ["all", ...CATEGORIES.map((c) => c.name)] as const;
 	const slugByName = React.useMemo(() => {

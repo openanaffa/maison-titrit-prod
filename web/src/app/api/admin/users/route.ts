@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { listUsers } from "@/lib/repositories/users";
 import { requirePermission } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -11,17 +11,7 @@ export async function GET() {
 		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	}
 	try {
-		const users = await db.user.findMany({
-			select: {
-				id: true,
-				email: true,
-				name: true,
-				role: true,
-				supabaseId: true,
-				createdAt: true,
-			},
-			orderBy: { createdAt: "desc" },
-		});
+		const users = await listUsers();
 		return NextResponse.json({ users });
 	} catch (error) {
 		console.error("Failed to list users", error);

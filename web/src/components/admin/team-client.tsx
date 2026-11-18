@@ -3,6 +3,7 @@
 import { Check, CircleAlert, Loader2, UserCog } from "lucide-react";
 import * as React from "react";
 import { OrnamentDivider } from "@/components/maison/motifs";
+import { useUpdateUserRole } from "@/hooks/api/users";
 import { useT } from "@/i18n/locale-provider";
 import { can, ROLES } from "@/lib/roles";
 import type { TeamUser } from "@/lib/types";
@@ -16,26 +17,18 @@ export function TeamClient({
 	users: TeamUser[];
 }) {
 	const { t } = useT();
+	const changeRole = useUpdateUserRole();
 	const [users, setUsers] = React.useState(initial);
 	const [pendingId, setPendingId] = React.useState<string | null>(null);
 	const [error, setError] = React.useState<string | null>(null);
 	const [savedId, setSavedId] = React.useState<string | null>(null);
 
-	async function changeRole(user: TeamUser, role: string) {
+	async function changeRoleUser(user: TeamUser, role: string) {
 		if (role === user.role) return;
 		setError(null);
 		setPendingId(user.id);
 		try {
-			const res = await fetch(`/api/admin/users/${user.id}`, {
-				method: "PATCH",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ role }),
-			});
-			const body = await res.json().catch(() => ({}));
-			if (!res.ok) {
-				setError(body.error || t("admin.team.error"));
-				return;
-			}
+			await changeRole.mutateAsync({ id: user.id, role });
 			setUsers((prev) =>
 				prev.map((u) => (u.id === user.id ? { ...u, role } : u)),
 			);
@@ -112,7 +105,7 @@ export function TeamClient({
 											<span className="flex items-center gap-2">
 												<select
 													value={u.role}
-													onChange={(e) => changeRole(u, e.target.value)}
+													onChange={(e) => changeRoleUser(u, e.target.value)}
 													disabled={pendingId === u.id}
 													aria-label={t("admin.team.changeRole")}
 													className="rounded-sm border border-border bg-background px-2 py-1.5 font-serif text-xs text-ink disabled:opacity-50 dark:text-cream"

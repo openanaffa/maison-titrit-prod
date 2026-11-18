@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { deleteCategory, updateCategory } from "@/lib/repositories/products";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
 import type { Tables } from "@/lib/supabase/database.types";
@@ -38,13 +39,7 @@ export async function PATCH(
 			);
 		}
 		const supabase = await createSupabaseServerClient();
-		const { data: category } = await supabase
-			.from("Category")
-			.update({ ...data, updatedAt: new Date().toISOString() })
-			.eq("id", id)
-			.select("*")
-			.maybeSingle()
-			.throwOnError();
+		const category = await updateCategory(supabase, id, data);
 		if (!category)
 			return NextResponse.json({ error: "Introuvable." }, { status: 404 });
 		return NextResponse.json({ category });
@@ -67,12 +62,7 @@ export async function DELETE(
 	const { id } = await params;
 	try {
 		const supabase = await createSupabaseServerClient();
-		const { error: unlinkError } = await supabase
-			.from("Product")
-			.update({ categoryId: null, updatedAt: new Date().toISOString() })
-			.eq("categoryId", id);
-		if (unlinkError) throw unlinkError;
-		await supabase.from("Category").delete().eq("id", id).throwOnError();
+		await deleteCategory(supabase, id);
 		return NextResponse.json({ ok: true });
 	} catch (e) {
 		console.error("DELETE /api/admin/categories/[id] failed", e);

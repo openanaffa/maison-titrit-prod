@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+import {
+	deleteArticle,
+	getArticle,
+	updateArticle,
+} from "@/lib/repositories/articles";
 import { requirePermission } from "@/lib/session";
 import type { Tables } from "@/lib/supabase/database.types";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -34,13 +39,7 @@ export async function PATCH(
 			data.publishedAt = null;
 		}
 		const supabase = await createSupabaseServerClient();
-		const { data: article } = await supabase
-			.from("Article")
-			.update({ ...data, updatedAt: new Date().toISOString() })
-			.eq("id", id)
-			.select("*")
-			.maybeSingle()
-			.throwOnError();
+		const article = await updateArticle(supabase, id, data);
 		if (!article)
 			return NextResponse.json({ error: "Introuvable." }, { status: 404 });
 		return NextResponse.json({ article });
@@ -63,7 +62,7 @@ export async function DELETE(
 	const { id } = await params;
 	try {
 		const supabase = await createSupabaseServerClient();
-		await supabase.from("Article").delete().eq("id", id).throwOnError();
+		await deleteArticle(supabase, id);
 		return NextResponse.json({ ok: true });
 	} catch (e) {
 		console.error("DELETE /api/admin/articles/[id] failed", e);

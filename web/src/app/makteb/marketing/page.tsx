@@ -1,4 +1,5 @@
 import { MarketingClient } from "@/components/admin/marketing-client";
+import { listMarketingOrders } from "@/lib/repositories/orders";
 import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { MarketingData, OrderUtmRow } from "@/lib/types";
@@ -81,17 +82,8 @@ export default async function MaktebMarketingPage({
 	const periodDays = period === "all" ? 0 : 30;
 
 	const supabase = await createSupabaseServerClient();
-	const { data: orders } = await supabase
-		.from("Order")
-		.select(
-			"id,number,status,total,currency,utmSource,utmMedium,utmCampaign,createdAt",
-		)
-		.order("createdAt", { ascending: false })
-		.throwOnError();
+	const orders = await listMarketingOrders(supabase);
 
-	const data = aggregate(
-		(orders ?? []) as OrderUtmRow[],
-		periodDays === 0 ? 0 : 30,
-	);
+	const data = aggregate(orders as OrderUtmRow[], periodDays === 0 ? 0 : 30);
 	return <MarketingClient data={data} />;
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { updateStatus } from "@/lib/repositories/orders";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -22,13 +23,7 @@ export async function PATCH(
 			return NextResponse.json({ error: "Statut invalide." }, { status: 400 });
 		}
 		const supabase = await createSupabaseServerClient();
-		const { data: order } = await supabase
-			.from("Order")
-			.update({ status, updatedAt: new Date().toISOString() })
-			.eq("id", id)
-			.select("*")
-			.maybeSingle()
-			.throwOnError();
+		const order = await updateStatus(supabase, id, status);
 		if (!order)
 			return NextResponse.json({ error: "Introuvable." }, { status: 404 });
 		return NextResponse.json({ order });

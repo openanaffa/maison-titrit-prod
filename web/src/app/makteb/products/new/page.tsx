@@ -1,4 +1,5 @@
 import { ProductForm } from "@/components/admin/product-form";
+import { listCategories } from "@/lib/repositories/products";
 import { requirePagePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { ProductFormValues } from "@/lib/types";
@@ -8,11 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function NewProductPage() {
 	await requirePagePermission("products:read");
 	const supabase = await createSupabaseServerClient();
-	const { data: categories } = await supabase
-		.from("Category")
-		.select("*")
-		.order("position", { ascending: true })
-		.throwOnError();
+	const categories = await listCategories(supabase);
 	const initial: ProductFormValues = {
 		ref: `MT-${Math.floor(Math.random() * 9000 + 1000)}`,
 		name: "",

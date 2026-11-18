@@ -1,5 +1,11 @@
-import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
+import {
+	deleteImagesForProduct,
+	deleteProduct,
+	getProduct,
+	setImages,
+	updateProduct,
+} from "@/lib/repositories/products";
 import { requirePermission } from "@/lib/session";
 import type { Tables } from "@/lib/supabase/database.types";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -17,32 +23,11 @@ export async function GET(
 	}
 	const { id } = await params;
 	const supabase = await createSupabaseServerClient();
-	const { data: product } = await supabase
-		.from("Product")
-		.select("*")
-		.eq("id", id)
-		.maybeSingle()
-		.throwOnError();
+	const product = await getProduct(supabase, id);
 	if (!product)
 		return NextResponse.json({ error: "Introuvable." }, { status: 404 });
-	const [{ data: images }, categoryResult] = await Promise.all([
-		supabase
-			.from("Image")
-			.select("*")
-			.eq("productId", id)
-			.order("position")
-			.throwOnError(),
-		product.categoryId
-			? supabase
-					.from("Category")
-					.select("*")
-					.eq("id", product.categoryId)
-					.maybeSingle()
-					.throwOnError()
-			: Promise.resolve({ data: null }),
-	]);
 	return NextResponse.json({
-		product: { ...product, images, category: categoryResult.data },
+		product: { ...product, images: product.Image, category: product.Category },
 	});
 }
 
@@ -78,38 +63,17 @@ export async function PATCH(
 		if (body.categoryId !== undefined)
 			data.categoryId = body.categoryId ?? null;
 
+		const supabase = await createSupabaseServerClient();
 		if (Array.isArray(body.images)) {
 			// replace images
-			const supabase = await createSupabaseServerClient();
-			await supabase.from("Image").delete().eq("productId", id).throwOnError();
-			const imageRows: Tables<"Image">[] = body.images.flatMap(
-				(img: { url?: string; alt?: string | null }, index: number) => {
-					if (!img.url?.trim()) return [];
-					return [
-						{
-							id: randomUUID(),
-							productId: id,
-							url: img.url.trim(),
-							alt: img.alt ?? "",
-							position: index,
-							createdAt: new Date().toISOString(),
-						},
-					];
-				},
-			);
-			if (imageRows.length) {
-				await supabase.from("Image").insert(imageRows).throwOnError();
-			}
+			const imagesWithAlt = body.images.map((img) => ({
+				url: img.url,
+				alt: img.alt ?? "",
+			}));
+			await setImages(supabase, id, imagesWithAlt);
 		}
 
-		const supabase = await createSupabaseServerClient();
-		const { data: product } = await supabase
-			.from("Product")
-			.update({ ...data, updatedAt: new Date().toISOString() })
-			.eq("id", id)
-			.select("*")
-			.maybeSingle()
-			.throwOnError();
+		const product = await updateProduct(supabase, id, data);
 		if (!product)
 			return NextResponse.json({ error: "Introuvable." }, { status: 404 });
 		return NextResponse.json({ product });
@@ -148,8 +112,8 @@ export async function DELETE(
 		);
 	}
 	try {
-		await supabase.from("Image").delete().eq("productId", id).throwOnError();
-		await supabase.from("Product").delete().eq("id", id).throwOnError();
+		await deleteImagesForProduct(supabase, id);
+		await deleteProduct(supabase, id);
 		return NextResponse.json({ ok: true });
 	} catch (e) {
 		console.error("DELETE /api/admin/products/[id] failed", e);

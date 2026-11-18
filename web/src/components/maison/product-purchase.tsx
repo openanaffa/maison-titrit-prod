@@ -1,9 +1,9 @@
 "use client";
 
-import { Minus, Plus, Share2, ShoppingBag, Truck } from "lucide-react";
 import * as React from "react";
 import { CategoryIcon } from "@/components/maison/category-icons";
-import { NeedleThread, Reveal, WhatsAppIcon } from "@/components/maison/motifs";
+import { NeedleThread, Reveal } from "@/components/maison/motifs";
+import { ProductPurchaseActions } from "@/components/maison/product-purchase-actions";
 import { Button } from "@/components/ui/button";
 import { CATEGORIES } from "@/config/products";
 import { site } from "@/config/site";
@@ -173,125 +173,24 @@ export function ProductPurchase({
 					</div>
 				</dl>
 
-				<div className="mt-6">
-					<p className="font-label text-[0.66rem] uppercase tracking-[0.18em] text-bronze/80">
-						{t("detail.sizes")}
-					</p>
-					<div className="mt-3 flex flex-wrap gap-2">
-						{sizes.map((s) => {
-							const active = s === size;
-							return (
-								<button
-									key={s}
-									type="button"
-									onClick={() => {
-										setSize(s);
-										setSizePrompt(false);
-									}}
-									aria-pressed={active}
-									className={`h-11 min-w-11 rounded-full border px-4 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light ${
-										active
-											? "border-ink bg-ink text-cream dark:border-cream dark:bg-cream dark:text-ink"
-											: "border-bronze/45 text-ink/80 hover:border-terracotta hover:text-terracotta dark:text-cream/80"
-									}`}
-								>
-									{s}
-								</button>
-							);
-						})}
-					</div>
-					{sizePrompt && (
-						<p className="mt-2 font-label text-[0.6rem] uppercase tracking-[0.18em] text-terracotta">
-							{t("detail.sizePrompt")}
-						</p>
-					)}
-				</div>
-
-				<div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-bronze/25 pt-5">
-					<div>
-						<p className="font-label text-[0.66rem] uppercase tracking-[0.18em] text-bronze/80">
-							{t("detail.quantity")}
-						</p>
-						<div className="mt-2 inline-flex items-center rounded-full border border-bronze/45">
-							<button
-								type="button"
-								onClick={() => setQty((q) => Math.max(1, q - 1))}
-								disabled={qty <= 1}
-								aria-label={t("cart.decreaseQty")}
-								className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
-							>
-								<Minus className="size-4" />
-							</button>
-							<span
-								aria-live="polite"
-								className="w-10 text-center font-display text-lg text-ink dark:text-cream"
-							>
-								{qty}
-							</span>
-							<button
-								type="button"
-								onClick={() => setQty((q) => Math.min(10, q + 1))}
-								disabled={qty >= 10}
-								aria-label={t("cart.increaseQty")}
-								className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
-							>
-								<Plus className="size-4" />
-							</button>
-						</div>
-					</div>
-					<div className="text-end">
-						<p className="body-vintage-soft font-label text-[0.6rem] uppercase tracking-[0.2em]">
-							{t("detail.total")}
-						</p>
-						<p className="heading-vintage-lg">
-							{total.toLocaleString("fr-FR")}{" "}
-							<span className="text-lg font-normal text-bronze">
-								{product.currency}
-							</span>
-						</p>
-					</div>
-				</div>
-
-				<div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-					<Button
-						onClick={handleAddToCart}
-						className="h-12 flex-1 rounded-full bg-ink font-label text-[0.74rem] uppercase tracking-[0.18em] text-cream transition-all hover:bg-terracotta dark:bg-cream dark:text-ink dark:hover:bg-terracotta dark:hover:text-cream"
-					>
-						<ShoppingBag className="size-4" />
-						{t("cta.addToCart")}
-					</Button>
-					<Button
-						onClick={handleOrder}
-						variant="outline"
-						className="h-12 rounded-full border-bronze/50 px-5 font-label text-[0.74rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:bg-bronze/10 hover:text-terracotta dark:text-cream"
-					>
-						<WhatsAppIcon className="size-4" />
-						{t("cta.orderWhatsapp")}
-					</Button>
-					<Button
-						onClick={handleShare}
-						variant="outline"
-						className="h-12 rounded-full border-bronze/50 px-5 font-label text-[0.72rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:text-terracotta dark:text-cream"
-					>
-						<Share2 className="size-4" />
-						{copied ? t("detail.shareCopied") : t("detail.share")}
-					</Button>
-				</div>
-
-				<a
-					href={whatsappCatalog}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="mt-3 inline-flex items-center gap-2 font-label text-[0.62rem] uppercase tracking-[0.2em] text-bronze/80 transition-colors hover:text-terracotta"
-				>
-					<WhatsAppIcon className="size-3.5" />
-					{t("cta.viewCatalog")} →
-				</a>
-
-				<p className="mt-4 flex items-center gap-2 font-serif text-sm text-ink-soft/80 dark:text-cream/60">
-					<Truck className="size-4 text-terracotta" />
-					{t("detail.cod")} · {t("catalog.footnote")}
-				</p>
+				<ProductPurchaseActions
+					product={product}
+					sizes={sizes}
+					size={size}
+					qty={qty}
+					unitPrice={unitPrice}
+					total={total}
+					catalogHref={whatsappCatalog}
+					onSizeChange={setSize}
+					onSizePromptDismiss={() => setSizePrompt(false)}
+					onQtyChange={setQty}
+					onSizePrompt={() => setSizePrompt(true)}
+					onAddToCart={handleAddToCart}
+					onOrder={handleOrder}
+					onShare={handleShare}
+					sizePrompt={sizePrompt}
+					copied={copied}
+				/>
 			</div>
 		</Reveal>
 	);

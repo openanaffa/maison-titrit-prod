@@ -8,11 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+	useAnnouncement,
+	useUpdateAnnouncement,
+} from "@/hooks/api/announcement";
 import { useToast } from "@/hooks/use-toast";
-import { DAYS, DaysT } from "@/lib/types/constants";
+import { DAYS } from "@/lib/types/constants";
 
 export function SettingsClient() {
 	const { toast } = useToast();
+	const announcement = useAnnouncement();
+	const updateAnnouncement = useUpdateAnnouncement();
 	const [ann, setAnn] = React.useState({
 		active: false,
 		message: "",
@@ -21,23 +27,22 @@ export function SettingsClient() {
 	const [saving, setSaving] = React.useState<"ann" | null>(null);
 
 	React.useEffect(() => {
-		fetch("/api/settings/announcement")
-			.then((r) => r.json())
-			.then((d) => setAnn(d.bar ?? { active: false, message: "", link: "" }))
-			.catch(() => {});
-	}, []);
+		if (announcement.data?.bar) {
+			setAnn(announcement.data.bar);
+		}
+	}, [announcement.data]);
 
 	async function saveAnnouncement(e: React.FormEvent) {
 		e.preventDefault();
 		setSaving("ann");
-		const res = await fetch("/api/settings/announcement", {
-			method: "PATCH",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(ann),
-		});
-		setSaving(null);
-		if (res.ok) toast({ title: "Annonce enregistrée" });
-		else toast({ title: "Erreur", variant: "destructive" });
+		try {
+			await updateAnnouncement.mutateAsync(ann);
+			toast({ title: "Annonce enregistrée" });
+		} catch {
+			toast({ title: "Erreur", variant: "destructive" });
+		} finally {
+			setSaving(null);
+		}
 	}
 
 	return (

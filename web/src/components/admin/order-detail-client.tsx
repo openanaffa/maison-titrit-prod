@@ -16,6 +16,7 @@ import {
 import { OrderItems } from "@/components/admin/order-items-table";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { Button } from "@/components/ui/button";
+import { useUpdateOrderStatus } from "@/hooks/api/orders";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import type { OrderView } from "@/lib/types";
@@ -25,25 +26,18 @@ export function OrderDetailClient({ order }: { order: OrderView }) {
 	const { t } = useT();
 	const router = useRouter();
 	const { toast } = useToast();
+	const updateOrderStatus = useUpdateOrderStatus();
 	const [pendingStatus, setPendingStatus] = React.useState<string | null>(null);
 
 	async function updateStatus(status: string) {
 		setPendingStatus(status);
 		try {
-			const res = await fetch(`/api/admin/orders/${order.id}`, {
-				method: "PATCH",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ status }),
+			await updateOrderStatus.mutateAsync({ id: order.id, status });
+			toast({
+				title: "Statut mis à jour",
+				description: `${order.number} → ${STATUS_LABELS[status] ?? status}`,
 			});
-			if (res.ok) {
-				toast({
-					title: "Statut mis à jour",
-					description: `${order.number} → ${STATUS_LABELS[status] ?? status}`,
-				});
-				router.refresh();
-			} else {
-				toast({ title: "Erreur", variant: "destructive" });
-			}
+			router.refresh();
 		} catch {
 			toast({ title: "Erreur", variant: "destructive" });
 		} finally {

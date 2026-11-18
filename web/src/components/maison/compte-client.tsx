@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { site } from "@/config/site";
+import { useUpdateProfile } from "@/hooks/api/compte";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import { signOut } from "@/lib/supabase/auth-client";
@@ -24,6 +25,7 @@ export function CompteClient({
 	const { t, locale } = useT();
 	const router = useRouter();
 	const { toast } = useToast();
+	const updateProfile = useUpdateProfile();
 	const [name, setName] = React.useState(user.name ?? "");
 	const [phone, setPhone] = React.useState(user.phone ?? "");
 	const [saving, setSaving] = React.useState(false);
@@ -34,15 +36,15 @@ export function CompteClient({
 	async function onSave(e: React.FormEvent) {
 		e.preventDefault();
 		setSaving(true);
-		const res = await fetch("/api/compte/profile", {
-			method: "PATCH",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ name, phone }),
-		});
-		setSaving(false);
-		if (res.ok) toast({ title: t("compte.save") });
-		else toast({ title: "Erreur", variant: "destructive" });
-		router.refresh();
+		try {
+			await updateProfile.mutateAsync({ name, phone });
+			toast({ title: t("compte.save") });
+			router.refresh();
+		} catch {
+			toast({ title: "Erreur", variant: "destructive" });
+		} finally {
+			setSaving(false);
+		}
 	}
 
 	return (

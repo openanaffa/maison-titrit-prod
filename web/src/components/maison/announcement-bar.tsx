@@ -2,6 +2,7 @@
 
 import { Megaphone, X } from "lucide-react";
 import * as React from "react";
+import { useAnnouncement } from "@/hooks/api/announcement";
 import { useT } from "@/i18n/locale-provider";
 
 /**
@@ -12,18 +13,11 @@ import { useT } from "@/i18n/locale-provider";
  */
 export function AnnouncementBar() {
 	const { t } = useT();
-	const [bar, setBar] = React.useState<{
-		message: string;
-		active: boolean;
-		link?: string;
-	} | null>(null);
+	const announcement = useAnnouncement();
 	const [dismissed, setDismissed] = React.useState(false);
+	const bar = announcement.data?.bar ?? null;
 
 	React.useEffect(() => {
-		fetch("/api/settings/announcement")
-			.then((r) => r.json())
-			.then((d) => setBar(d.bar ?? null))
-			.catch(() => setBar(null));
 		try {
 			setDismissed(sessionStorage.getItem("ann-dismissed") === "1");
 		} catch {

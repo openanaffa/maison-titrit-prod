@@ -4,6 +4,7 @@ import { ArrowLeft, Loader2, Truck } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
+import { CheckoutForm } from "@/components/maison/checkout-form";
 import {
 	CheckoutEmpty,
 	CheckoutSuccess,
@@ -11,9 +12,6 @@ import {
 import { WhatsAppIcon } from "@/components/maison/motifs";
 import { useSupabaseAuth } from "@/components/maison/supabase-auth-provider";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
 import {
@@ -23,25 +21,32 @@ import {
 } from "@/lib/analytics";
 import { useCart } from "@/lib/cart";
 
+type CheckoutValues = {
+	name: string;
+	phone: string;
+	email: string;
+	city: string;
+	address: string;
+	notes: string;
+	utmSource?: string;
+	utmMedium?: string;
+	utmCampaign?: string;
+	utmContent?: string;
+	utmTerm?: string;
+};
+
 export default function CheckoutPage() {
 	const { t } = useT();
 	const router = useRouter();
 	const { user } = useSupabaseAuth();
-	const email = user?.email ?? "";
-	const name =
-		typeof user?.user_metadata?.name === "string"
-			? user.user_metadata.name
-			: typeof user?.user_metadata?.full_name === "string"
-				? user.user_metadata.full_name
-				: "";
 	const items = useCart((s) => s.items);
 	const clear = useCart((s) => s.clear);
 	const total = items.reduce((s, i) => s + i.price * i.qty, 0);
 
-	const [form, setForm] = React.useState({
-		name,
+	const [form, setForm] = React.useState<CheckoutValues>({
+		name: "",
 		phone: "",
-		email,
+		email: user?.email ?? "",
 		city: "",
 		address: "",
 		notes: "",
@@ -54,14 +59,20 @@ export default function CheckoutPage() {
 	} | null>(null);
 	const [utm, setUtm] = React.useState<Record<string, string> | null>(null);
 
+	// Initialise name/email from the logged-in user.
 	React.useEffect(() => {
-		if (!user) return;
+		const name =
+			typeof user?.user_metadata?.name === "string"
+				? user.user_metadata.name
+				: typeof user?.user_metadata?.full_name === "string"
+					? user.user_metadata.full_name
+					: "";
 		setForm((current) => ({
 			...current,
 			name: current.name || name,
-			email: current.email || email,
+			email: current.email || (user?.email ?? ""),
 		}));
-	}, [email, name, user]);
+	}, [user]);
 
 	// Capture UTM attribution on first visit (consent-gated via sessionStorage)
 	React.useEffect(() => {
@@ -86,10 +97,6 @@ export default function CheckoutPage() {
 		}
 	}, []);
 
-	function set<K extends keyof typeof form>(k: K, v: string) {
-		setForm((s) => ({ ...s, [k]: v }));
-	}
-
 	async function onSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		setError(null);
@@ -99,6 +106,14 @@ export default function CheckoutPage() {
 		}
 		setLoading(true);
 		try {
+			const payload: CheckoutValues = {
+				...form,
+				utmSource: utm?.source ?? undefined,
+				utmMedium: utm?.medium ?? undefined,
+				utmCampaign: utm?.campaign ?? undefined,
+				utmContent: utm?.content ?? undefined,
+				utmTerm: utm?.term ?? undefined,
+			};
 			const res = await fetch("/api/checkout", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -108,14 +123,7 @@ export default function CheckoutPage() {
 						qty: i.qty,
 						size: i.size,
 					})),
-					customer: {
-						...form,
-						utmSource: utm?.source ?? undefined,
-						utmMedium: utm?.medium ?? undefined,
-						utmCampaign: utm?.campaign ?? undefined,
-						utmContent: utm?.content ?? undefined,
-						utmTerm: utm?.term ?? undefined,
-					},
+					customer: payload,
 				}),
 			});
 			const json = await res.json();
@@ -178,97 +186,7 @@ export default function CheckoutPage() {
 					onSubmit={onSubmit}
 					className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]"
 				>
-					{/* Form fields */}
-					<div className="space-y-5">
-						{!user && (
-							<div className="rounded-sm bg-bronze/10 p-4 font-serif text-sm text-ink-soft dark:text-cream/75">
-								<Link
-									href={`/auth/signin?callbackUrl=/checkout`}
-									className="font-display font-semibold text-terracotta hover:underline"
-								>
-									{t("auth.signin")}
-								</Link>{" "}
-								— {t("checkout.loginRequired")}
-							</div>
-						)}
-						<div className="card-vintage rounded-sm p-5">
-							<h2 className="heading-vintage">{t("compte.profile")}</h2>
-							<div className="mt-4 grid gap-4 sm:grid-cols-2">
-								<Field id="checkout-name" label={t("checkout.name")}>
-									<Input
-										id="checkout-name"
-										name="name"
-										autoComplete="name"
-										required
-										value={form.name}
-										onChange={(e) => set("name", e.target.value)}
-										className="field-vintage"
-									/>
-								</Field>
-								<Field id="checkout-phone" label={t("checkout.phone")}>
-									<Input
-										id="checkout-phone"
-										name="phone"
-										autoComplete="tel"
-										required
-										type="tel"
-										value={form.phone}
-										onChange={(e) => set("phone", e.target.value)}
-										className="field-vintage"
-									/>
-								</Field>
-								<Field id="checkout-email" label={t("checkout.email")}>
-									<Input
-										id="checkout-email"
-										name="email"
-										autoComplete="email"
-										type="email"
-										value={form.email}
-										onChange={(e) => set("email", e.target.value)}
-										className="field-vintage"
-									/>
-								</Field>
-								<Field id="checkout-city" label={t("checkout.city")}>
-									<Input
-										id="checkout-city"
-										name="city"
-										autoComplete="address-level2"
-										required
-										value={form.city}
-										onChange={(e) => set("city", e.target.value)}
-										className="field-vintage"
-									/>
-								</Field>
-							</div>
-							<div className="mt-4">
-								<Field id="checkout-address" label={t("checkout.address")}>
-									<Textarea
-										id="checkout-address"
-										name="address"
-										autoComplete="street-address"
-										required
-										value={form.address}
-										onChange={(e) => set("address", e.target.value)}
-										rows={2}
-										className="field-vintage"
-									/>
-								</Field>
-							</div>
-							<div className="mt-4">
-								<Field id="checkout-notes" label={t("checkout.notes")}>
-									<Textarea
-										id="checkout-notes"
-										name="notes"
-										autoComplete="off"
-										value={form.notes}
-										onChange={(e) => set("notes", e.target.value)}
-										rows={2}
-										className="field-vintage"
-									/>
-								</Field>
-							</div>
-						</div>
-					</div>
+					<CheckoutForm form={form} onChange={setForm} user={user} />
 
 					{/* Summary */}
 					<div className="card-vintage h-fit rounded-sm p-6">
@@ -334,24 +252,5 @@ export default function CheckoutPage() {
 				</form>
 			</div>
 		</section>
-	);
-}
-
-function Field({
-	id,
-	label,
-	children,
-}: {
-	id: string;
-	label: string;
-	children: React.ReactNode;
-}) {
-	return (
-		<div>
-			<Label htmlFor={id} className="label-vintage">
-				{label}
-			</Label>
-			<div className="mt-1.5">{children}</div>
-		</div>
 	);
 }

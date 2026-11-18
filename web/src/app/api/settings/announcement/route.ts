@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getAnnouncement, setAnnouncement } from "@/lib/repositories/settings";
 import { requirePermission } from "@/lib/session";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -36,17 +37,7 @@ export async function PATCH(req: Request) {
 			link: String(body.link ?? "").slice(0, 200),
 		};
 		const supabase = await createSupabaseServerClient();
-		await supabase
-			.from("Setting")
-			.upsert(
-				{
-					key: "announcement",
-					value: JSON.stringify(bar),
-					updatedAt: new Date().toISOString(),
-				},
-				{ onConflict: "key" },
-			)
-			.throwOnError();
+		await setAnnouncement(supabase, bar);
 		return NextResponse.json({ bar });
 	} catch (e) {
 		console.error("PATCH /api/settings/announcement failed", e);

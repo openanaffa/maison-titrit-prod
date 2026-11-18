@@ -1,19 +1,13 @@
 "use client";
 
 import { Search } from "lucide-react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
+import { OrderDetailDialog } from "@/components/admin/order-detail-dialog";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { Button } from "@/components/ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import type { OrderRow } from "@/lib/types";
 import { FLOW, STATUS_LABELS } from "@/lib/types/constants";
@@ -22,7 +16,6 @@ export function OrdersTableClient({ rows }: { rows: OrderRow[] }) {
 	const { t } = useT();
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const { toast } = useToast();
 	const [filter, setFilter] = React.useState<string>("all");
 	const [selected, setSelected] = React.useState<OrderRow | null>(null);
 
@@ -34,24 +27,6 @@ export function OrdersTableClient({ rows }: { rows: OrderRow[] }) {
 	}
 
 	const filtered = rows.filter((r) => filter === "all" || r.status === filter);
-
-	async function updateStatus(order: OrderRow, status: string) {
-		const res = await fetch(`/api/admin/orders/${order.id}`, {
-			method: "PATCH",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ status }),
-		});
-		if (res.ok) {
-			toast({
-				title: "Statut mis à jour",
-				description: `${order.number} → ${STATUS_LABELS[status] ?? status}`,
-			});
-			router.refresh();
-			setSelected(null);
-		} else {
-			toast({ title: "Erreur", variant: "destructive" });
-		}
-	}
 
 	return (
 		<div className="space-y-6">
@@ -154,17 +129,13 @@ export function OrdersTableClient({ rows }: { rows: OrderRow[] }) {
 											{new Date(o.createdAt).toLocaleDateString("fr-FR")}
 										</td>
 										<td className="p-3 text-end">
-											<Dialog>
-												<DialogTrigger asChild>
-													<button
-														type="button"
-														onClick={() => setSelected(o)}
-														className="font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta"
-													>
-														Détails
-													</button>
-												</DialogTrigger>
-											</Dialog>
+											<Button
+												type="button"
+												onClick={() => setSelected(o)}
+												className="font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta"
+											>
+												Détails
+											</Button>
 										</td>
 									</tr>
 								))
@@ -175,112 +146,7 @@ export function OrdersTableClient({ rows }: { rows: OrderRow[] }) {
 			</div>
 
 			{/* Order detail dialog */}
-			<Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-				<DialogContent className="max-w-lg">
-					<DialogHeader>
-						<DialogTitle className="font-display text-xl">
-							Commande {selected?.number}
-						</DialogTitle>
-					</DialogHeader>
-					{selected && (
-						<div className="space-y-4">
-							<div className="grid grid-cols-2 gap-3 font-serif text-sm">
-								<div>
-									<span className="label-vintage-tight">Client</span>
-									<br />
-									{selected.customerName}
-								</div>
-								<div>
-									<span className="label-vintage-tight">Téléphone</span>
-									<br />
-									{selected.customerPhone}
-								</div>
-								{selected.customerEmail && (
-									<div>
-										<span className="label-vintage-tight">Email</span>
-										<br />
-										{selected.customerEmail}
-									</div>
-								)}
-								<div>
-									<span className="label-vintage-tight">Articles</span>
-									<br />
-									{selected.itemCount}
-								</div>
-								{selected.city && (
-									<div>
-										<span className="label-vintage-tight">Ville</span>
-										<br />
-										{selected.city}
-									</div>
-								)}
-								<div>
-									<span className="label-vintage-tight">Paiement</span>
-									<br />
-									{selected.payment}
-								</div>
-							</div>
-							{selected.address && (
-								<p className="body-vintage-muted">
-									<span className="label-vintage-tight">Adresse</span>
-									<br />
-									{selected.address}
-								</p>
-							)}
-							{selected.notes && (
-								<p className="body-vintage-muted">
-									<span className="label-vintage-tight">Notes</span>
-									<br />
-									{selected.notes}
-								</p>
-							)}
-							<div className="flex items-center justify-between border-t border-bronze/20 pt-3">
-								<span className="label-vintage-tight">Total</span>
-								<span className="heading-vintage">
-									{selected.total.toLocaleString("fr-FR")} {selected.currency}
-								</span>
-							</div>
-
-							{/* Status workflow */}
-							<div>
-								<p className="mb-2 label-vintage-tight">Statut</p>
-								<div className="flex flex-wrap gap-2">
-									{FLOW.map((s) => (
-										<button
-											type="button"
-											key={s}
-											onClick={() => updateStatus(selected, s)}
-											className={`rounded-full border px-3 py-1.5 font-label text-[0.6rem] uppercase tracking-[0.12em] transition-colors ${
-												selected.status === s
-													? "border-ink bg-ink text-cream"
-													: "border-bronze/45 text-ink-soft hover:border-terracotta hover:text-terracotta dark:text-cream/70"
-											}`}
-										>
-											{STATUS_LABELS[s] ?? s}
-										</button>
-									))}
-								</div>
-							</div>
-						</div>
-					)}
-				</DialogContent>
-			</Dialog>
+			<OrderDetailDialog order={selected} onClose={() => setSelected(null)} />
 		</div>
-	);
-}
-
-/* Link wrapper so order numbers navigate to the detail page. */
-function Link({ children, href }: { children: React.ReactNode; href: string }) {
-	const router = useRouter();
-	return (
-		<a
-			href={href}
-			onClick={(e) => {
-				e.preventDefault();
-				router.push(href);
-			}}
-		>
-			{children}
-		</a>
 	);
 }

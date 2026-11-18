@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import {
+	countOwnersExcluding,
+	getUser,
+	updateUserRole,
+} from "@/lib/repositories/users";
 import { ROLES, type Role } from "@/lib/roles";
 import { requirePermission } from "@/lib/session";
 
@@ -28,10 +32,7 @@ export async function PATCH(
 			return NextResponse.json({ error: "Rôle invalide." }, { status: 400 });
 		}
 
-		const target = await db.user.findUnique({
-			where: { id },
-			select: { id: true, role: true },
-		});
+		const target = await getUser(id);
 		if (!target) {
 			return NextResponse.json(
 				{ error: "Utilisateur introuvable." },
@@ -45,9 +46,7 @@ export async function PATCH(
 			OWNER_ROLES.includes(target.role as Role) &&
 			!OWNER_ROLES.includes(role as Role)
 		) {
-			const ownersLeft = await db.user.count({
-				where: { role: { in: OWNER_ROLES }, NOT: { id } },
-			});
+			const ownersLeft = await countOwnersExcluding(id);
 			if (ownersLeft === 0) {
 				return NextResponse.json(
 					{
@@ -59,11 +58,7 @@ export async function PATCH(
 			}
 		}
 
-		const updated = await db.user.update({
-			where: { id },
-			data: { role },
-			select: { id: true, role: true },
-		});
+		const updated = await updateUserRole(id, role as Role);
 		return NextResponse.json({ user: updated });
 	} catch (error) {
 		console.error("Failed to update user role", error);
