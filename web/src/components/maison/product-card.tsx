@@ -1,233 +1,284 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
 import { ShoppingBag, Sparkles } from "lucide-react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { site } from "@/config/site";
-import { whatsappCatalog } from "@/lib/brand";
-import { AmazighStar, WhatsAppIcon } from "@/components/maison/motifs";
+import Link from "next/link";
+import * as React from "react";
 import { CategoryIcon } from "@/components/maison/category-icons";
+import { AmazighStar, WhatsAppIcon } from "@/components/maison/motifs";
+import { Button } from "@/components/ui/button";
 import { CATEGORIES } from "@/config/products";
+import { site } from "@/config/site";
+import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import { track, trackAddToCart, trackFacebook } from "@/lib/analytics";
+import { whatsappCatalog } from "@/lib/brand";
 import { useCart } from "@/lib/cart";
-import { useToast } from "@/hooks/use-toast";
 import type { ProductDTO } from "@/lib/types";
 
 export function parseSizes(s: string): string[] {
-  return s
-    .split(/[·,/\-]/)
-    .map((x) => x.trim())
-    .filter(Boolean);
+	return s
+		.split(/[·,/-]/)
+		.map((x) => x.trim())
+		.filter(Boolean);
 }
 
 export function ProductCard({ product }: { product: ProductDTO }) {
-  const { t } = useT();
-  const detailHref = `/produit/${product.ref}`;
-  const slugFor = (name: string) => CATEGORIES.find((c) => c.name === name)?.slug;
-  
-  const sizes = React.useMemo(() => parseSizes(product.sizes), [product.sizes]);
-  const [size, setSize] = React.useState("");
-  const [sizePrompt, setSizePrompt] = React.useState(false);
-  const addToCart = useCart((s) => s.add);
-  const { toast } = useToast();
-  const sizeId = React.useId();
-  
-  const currentPrice = product.salePrice ?? product.price;
+	const { t } = useT();
+	const detailHref = `/produit/${product.ref}`;
+	const slugFor = (name: string) =>
+		CATEGORIES.find((c) => c.name === name)?.slug;
 
-  const handleAddToCart = () => {
-    if (!size && sizes.length > 1) {
-      setSizePrompt(true);
-      return;
-    }
-    setSizePrompt(false);
-    const chosen = size || (sizes[0] ?? "—");
-    const price = product.salePrice ?? product.price;
-    addToCart({
-      productId: product.id,
-      ref: product.ref,
-      name: product.name,
-      price,
-      currency: product.currency,
-      image: product.image,
-      size: chosen,
-    }, 1);
-    trackAddToCart({ ref: product.ref, name: product.name, price, currency: product.currency, qty: 1 });
-    toast({ title: t("cart.itemAdded"), description: `${product.name} — ${chosen}` });
-  };
+	const sizes = React.useMemo(() => parseSizes(product.sizes), [product.sizes]);
+	const [size, setSize] = React.useState("");
+	const [sizePrompt, setSizePrompt] = React.useState(false);
+	const addToCart = useCart((s) => s.add);
+	const { toast } = useToast();
+	const sizeId = React.useId();
 
-  const orderMsg = t("card.orderMsg", {
-    name: product.name,
-    ref: product.ref,
-    size: "à confirmer",
-    price: currentPrice,
-  });
-  const orderHref = `https://wa.me/${site.whatsapp.chat}?text=${encodeURIComponent(orderMsg)}`;
+	const currentPrice = product.salePrice ?? product.price;
+	const inStock = product.inStock;
 
-  const handleOrder = () => {
-    track("select_item", {
-      item_id: product.ref,
-      item_name: product.name,
-      price: currentPrice,
-      currency: product.currency,
-    });
-    trackFacebook("InitiateCheckout", {
-      content_ids: [product.ref],
-      content_name: product.name,
-      value: currentPrice,
-      currency: "MAD",
-    });
-  };
+	const handleAddToCart = () => {
+		if (!inStock) return;
+		if (!size && sizes.length > 1) {
+			setSizePrompt(true);
+			return;
+		}
+		setSizePrompt(false);
+		const chosen = size || (sizes[0] ?? "—");
+		const price = product.salePrice ?? product.price;
+		addToCart(
+			{
+				productId: product.id,
+				ref: product.ref,
+				name: product.name,
+				price,
+				currency: product.currency,
+				image: product.image,
+				size: chosen,
+			},
+			1,
+		);
+		trackAddToCart({
+			ref: product.ref,
+			name: product.name,
+			price,
+			currency: product.currency,
+			qty: 1,
+		});
+		toast({
+			title: t("cart.itemAdded"),
+			description: `${product.name} — ${chosen}`,
+		});
+	};
 
-  return (
-    <article className="card-vintage group flex h-full flex-col overflow-hidden rounded-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-30px_rgba(28,26,23,0.55)]">
-      <Link href={detailHref} className="relative block aspect-4/5 overflow-hidden bg-sand/40" aria-label={product.name}>
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="(min-width: 1024px) 21rem, (min-width: 640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink/25 via-transparent to-transparent opacity-60" />
-        {/* hover hint */}
-        <span className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-linear-to-t from-ink/70 to-transparent p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.22em] text-cream opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-          {t("cta.viewDetails")} →
-        </span>
+	const orderMsg = t("card.orderMsg", {
+		name: product.name,
+		ref: product.ref,
+		size: "à confirmer",
+		price: currentPrice,
+	});
+	const orderHref = `https://wa.me/${site.whatsapp.chat}?text=${encodeURIComponent(orderMsg)}`;
 
-        {product.featured && (
-          <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-cream/90 px-2.5 py-1 font-label text-[0.6rem] uppercase tracking-[0.18em] text-terracotta backdrop-blur dark:bg-ink/80">
-            <Sparkles className="size-3" />
-            {t("card.signature")}
-          </span>
-        )}
+	const handleOrder = () => {
+		if (!inStock) return;
+		track("select_item", {
+			item_id: product.ref,
+			item_name: product.name,
+			price: currentPrice,
+			currency: product.currency,
+		});
+		trackFacebook("InitiateCheckout", {
+			content_ids: [product.ref],
+			content_name: product.name,
+			value: currentPrice,
+			currency: "MAD",
+		});
+	};
 
-        <span className="absolute right-3 top-3 rounded-full bg-ink/80 px-2.5 py-1 font-label text-[0.58rem] uppercase tracking-[0.2em] text-cream backdrop-blur dark:bg-cream/85 dark:text-ink">
-          {t("card.cod")}
-        </span>
-      </Link>
+	return (
+		<article className="card-vintage group flex h-full flex-col overflow-hidden rounded-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-30px_rgba(28,26,23,0.55)]">
+			<Link
+				href={detailHref}
+				className="relative block aspect-4/5 overflow-hidden bg-sand/40"
+				aria-label={product.name}
+			>
+				<Image
+					src={product.image}
+					alt={product.name}
+					fill
+					sizes="(min-width: 1024px) 21rem, (min-width: 640px) 50vw, 100vw"
+					className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+				/>
+				<div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink/25 via-transparent to-transparent opacity-60" />
+				{/* hover hint */}
+				<span className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-linear-to-t from-ink/70 to-transparent p-3 text-center font-label text-[0.6rem] uppercase tracking-[0.22em] text-cream opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+					{t("cta.viewDetails")} →
+				</span>
 
-      <div className="flex flex-1 flex-col p-5">
-        <p className="inline-flex items-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.28em] text-bronze">
-          <CategoryIcon slug={slugFor(product.category)} className="size-3.5" />
-          {product.category}
-        </p>
-        <Link href={detailHref} className="mt-2">
-          <h3 className="font-display text-2xl font-semibold leading-tight text-ink transition-colors duration-200 group-hover:text-terracotta dark:text-cream dark:group-hover:text-bronze-light">
-            {product.name}
-          </h3>
-        </Link>
-        {product.nameAmazigh && (
-          <p className="tifinagh mt-1 text-sm text-bronze/90">{product.nameAmazigh}</p>
-        )}
+				{product.featured && (
+					<span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-cream/90 px-2.5 py-1 font-label text-[0.6rem] uppercase tracking-[0.18em] text-terracotta backdrop-blur dark:bg-ink/80">
+						<Sparkles className="size-3" />
+						{t("card.signature")}
+					</span>
+				)}
 
-        <p className="mt-3 font-serif text-[0.95rem] leading-relaxed text-ink-soft line-clamp-3 dark:text-cream/75">
-          {product.shortStory}
-        </p>
+				{inStock ? (
+					<span className="absolute right-3 top-3 rounded-full bg-ink/80 px-2.5 py-1 font-label text-[0.58rem] uppercase tracking-[0.2em] text-cream backdrop-blur dark:bg-cream/85 dark:text-ink">
+						{t("card.cod")}
+					</span>
+				) : (
+					<span className="absolute right-3 top-3 rounded-full bg-terracotta px-2.5 py-1 font-label text-[0.58rem] uppercase tracking-[0.2em] text-cream">
+						{t("admin.products.outOfStock")}
+					</span>
+				)}
+			</Link>
 
-        <dl className="mt-4 space-y-1.5 text-[0.78rem] text-ink-soft/90 dark:text-cream/70">
-          <div className="flex gap-2">
-            <dt className="font-label shrink-0 uppercase tracking-[0.18em] text-bronze/80">
-              {t("card.materialLabel")}
-            </dt>
-            <dd className="font-serif">{product.materials}</dd>
-          </div>
-          <div className="flex gap-2">
-            <dt id={sizeId} className="font-label shrink-0 uppercase tracking-[0.18em] text-bronze/80">
-              {t("card.sizesLabel")}
-            </dt>
-            <dd className="font-serif">
-              {sizes.length > 1 ? (
-                <span role="group" aria-labelledby={sizeId} className="flex flex-wrap gap-1.5">
-                  {sizes.map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      aria-pressed={size === s}
-                      onClick={() => {
-                        setSize(s);
-                        setSizePrompt(false);
-                      }}
-                      className="min-h-11 min-w-11 rounded-full border border-bronze/40 px-2.5 font-label text-[0.68rem] uppercase tracking-[0.12em] transition-colors hover:border-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-cream dark:aria-pressed:border-cream dark:aria-pressed:bg-cream dark:aria-pressed:text-ink"
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </span>
-              ) : (
-                product.sizes
-              )}
-            </dd>
-          </div>
-        </dl>
+			<div className="flex flex-1 flex-col p-5">
+				<p className="inline-flex items-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.28em] text-bronze">
+					<CategoryIcon slug={slugFor(product.category)} className="size-3.5" />
+					{product.category}
+				</p>
+				<Link href={detailHref} className="mt-2">
+					<h3 className="font-display text-2xl font-semibold leading-tight text-ink transition-colors duration-200 group-hover:text-terracotta dark:text-cream dark:group-hover:text-bronze-light">
+						{product.name}
+					</h3>
+				</Link>
+				{product.nameAmazigh && (
+					<p className="tifinagh mt-1 text-sm text-bronze/90">
+						{product.nameAmazigh}
+					</p>
+				)}
 
-        <div className="mt-auto pt-5">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="font-label text-[0.6rem] uppercase tracking-[0.22em] text-ink-soft/70 dark:text-cream/60">
-                {t("card.priceLabel")}
-              </p>
-              <p className="font-display text-2xl font-semibold tabular-nums text-ink dark:text-cream">
-                {product.salePrice !== null && product.salePrice !== product.price && (
-                  <del className="me-2 text-base font-normal text-ink-soft/70 dark:text-cream/60">
-                    {product.price.toLocaleString("fr-FR")}
-                  </del>
-                )}
-                {currentPrice.toLocaleString("fr-FR")}{" "}
-                <span className="text-base font-normal text-bronze">
-                  {product.currency}
-                </span>
-              </p>
-            </div>
-            <AmazighStar className="mb-1 size-6 text-bronze/50" strokeWidth={1.4} />
-          </div>
+				<p className="mt-3 font-serif text-[0.95rem] leading-relaxed text-ink-soft line-clamp-3 dark:text-cream/75">
+					{product.shortStory}
+				</p>
 
-          <p aria-live="polite" className="mt-3 min-h-4 font-label text-[0.62rem] uppercase tracking-[0.16em] text-terracotta">
-            {sizePrompt ? t("detail.sizePrompt") : ""}
-          </p>
-          <div className="mt-1 flex flex-col gap-2">
-            <Button
-              type="button"
-              onClick={handleAddToCart}
-              variant="outline"
-              className="h-11 w-full rounded-full border-ink font-label text-[0.72rem] uppercase tracking-[0.14em] text-ink transition-all hover:bg-ink hover:text-cream dark:border-cream dark:text-cream dark:hover:bg-cream dark:hover:text-ink"
-            >
-              <ShoppingBag className="size-4" />
-              {t("cta.addToCart")}
-            </Button>
-            <Button
-              asChild
-              onClick={handleOrder}
-              className="h-11 w-full rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream transition-all hover:bg-terracotta dark:bg-cream dark:text-ink dark:hover:bg-terracotta dark:hover:text-cream"
-            >
-              <a href={orderHref} target="_blank" rel="noopener noreferrer">
-                <WhatsAppIcon className="size-4" />
-                {t("cta.order")}
-              </a>
-            </Button>
-          </div>
-          <Link
-            href={detailHref}
-            className="mt-2 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/80 transition-colors hover:text-terracotta"
-          >
-            {t("cta.viewDetails")} →
-          </Link>
-          <a
-            href={whatsappCatalog}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/70 transition-colors hover:text-terracotta"
-          >
-            {t("cta.viewCatalog")} →
-          </a>
-          <p className="mt-1.5 text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/80">
-            {t("brand.payment")}
-          </p>
-        </div>
-      </div>
-    </article>
-  );
+				<dl className="mt-4 space-y-1.5 text-[0.78rem] text-ink-soft/90 dark:text-cream/70">
+					<div className="flex gap-2">
+						<dt className="font-label shrink-0 uppercase tracking-[0.18em] text-bronze/80">
+							{t("card.materialLabel")}
+						</dt>
+						<dd className="font-serif">{product.materials}</dd>
+					</div>
+					<div className="flex gap-2">
+						<dt
+							id={sizeId}
+							className="font-label shrink-0 uppercase tracking-[0.18em] text-bronze/80"
+						>
+							{t("card.sizesLabel")}
+						</dt>
+						<dd className="font-serif">
+							{sizes.length > 1 ? (
+								<fieldset
+									aria-labelledby={sizeId}
+									className="min-w-0 flex flex-wrap gap-1.5"
+								>
+									{sizes.map((s) => (
+										<button
+											key={s}
+											type="button"
+											aria-pressed={size === s}
+											onClick={() => {
+												setSize(s);
+												setSizePrompt(false);
+											}}
+											className="min-h-11 min-w-11 rounded-full border border-bronze/40 px-2.5 font-label text-[0.68rem] uppercase tracking-[0.12em] transition-colors hover:border-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-cream dark:aria-pressed:border-cream dark:aria-pressed:bg-cream dark:aria-pressed:text-ink"
+										>
+											{s}
+										</button>
+									))}
+								</fieldset>
+							) : (
+								product.sizes
+							)}
+						</dd>
+					</div>
+				</dl>
+
+				<div className="mt-auto pt-5">
+					<div className="flex items-end justify-between">
+						<div>
+							<p className="font-label text-[0.6rem] uppercase tracking-[0.22em] text-ink-soft/70 dark:text-cream/60">
+								{t("card.priceLabel")}
+							</p>
+							<p className="font-display text-2xl font-semibold tabular-nums text-ink dark:text-cream">
+								{product.salePrice !== null &&
+									product.salePrice !== product.price && (
+										<del className="me-2 text-base font-normal text-ink-soft/70 dark:text-cream/60">
+											{product.price.toLocaleString("fr-FR")}
+										</del>
+									)}
+								{currentPrice.toLocaleString("fr-FR")}{" "}
+								<span className="text-base font-normal text-bronze">
+									{product.currency}
+								</span>
+							</p>
+						</div>
+						<AmazighStar
+							className="mb-1 size-6 text-bronze/50"
+							strokeWidth={1.4}
+						/>
+					</div>
+
+					<p
+						aria-live="polite"
+						className="mt-3 min-h-4 font-label text-[0.62rem] uppercase tracking-[0.16em] text-terracotta"
+					>
+						{sizePrompt ? t("detail.sizePrompt") : ""}
+					</p>
+					<div className="mt-1 flex flex-col gap-2">
+						<Button
+							type="button"
+							onClick={handleAddToCart}
+							disabled={!inStock}
+							variant="outline"
+							className="h-11 w-full rounded-full border-ink font-label text-[0.72rem] uppercase tracking-[0.14em] text-ink transition-all hover:bg-ink hover:text-cream dark:border-cream dark:text-cream dark:hover:bg-cream dark:hover:text-ink"
+						>
+							<ShoppingBag className="size-4" />
+							{t("cta.addToCart")}
+						</Button>
+						{inStock ? (
+							<Button
+								asChild
+								onClick={handleOrder}
+								className="h-11 w-full rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream transition-all hover:bg-terracotta dark:bg-cream dark:text-ink dark:hover:bg-terracotta dark:hover:text-cream"
+							>
+								<a href={orderHref} target="_blank" rel="noopener noreferrer">
+									<WhatsAppIcon className="size-4" />
+									{t("cta.order")}
+								</a>
+							</Button>
+						) : (
+							<Button
+								disabled
+								className="h-11 w-full rounded-full bg-ink/40 font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream/70 dark:bg-cream/30 dark:text-ink/50"
+							>
+								<WhatsAppIcon className="size-4" />
+								{t("admin.products.outOfStock")}
+							</Button>
+						)}
+					</div>
+					<Link
+						href={detailHref}
+						className="mt-2 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/80 transition-colors hover:text-terracotta"
+					>
+						{t("cta.viewDetails")} →
+					</Link>
+					<a
+						href={whatsappCatalog}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="mt-1 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/70 transition-colors hover:text-terracotta"
+					>
+						{t("cta.viewCatalog")} →
+					</a>
+					<p className="mt-1.5 text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/80">
+						{t("brand.payment")}
+					</p>
+				</div>
+			</div>
+		</article>
+	);
 }
-

@@ -1,8 +1,9 @@
 /** Shared prop/context shapes for the UI kit (extracted from the primitives). */
-import type * as React from "react";
+
+import type * as ToastPrimitives from "@radix-ui/react-toast";
 import type useEmblaCarousel from "embla-carousel-react";
 import type { UseEmblaCarouselType } from "embla-carousel-react";
-import type * as ToastPrimitives from "@radix-ui/react-toast";
+import type * as React from "react";
 import type { FieldPath, FieldValues } from "react-hook-form";
 
 import type { Button } from "@/components/ui/button";
@@ -14,72 +15,72 @@ export type CarouselOptions = UseCarouselParameters[0];
 export type CarouselPlugin = UseCarouselParameters[1];
 
 export type CarouselProps = {
-  opts?: CarouselOptions;
-  plugins?: CarouselPlugin;
-  orientation?: "horizontal" | "vertical";
-  setApi?: (api: CarouselApi) => void;
+	opts?: CarouselOptions;
+	plugins?: CarouselPlugin;
+	orientation?: "horizontal" | "vertical";
+	setApi?: (api: CarouselApi) => void;
 };
 
 export type CarouselContextProps = {
-  carouselRef: UseEmblaCarouselType[0];
-  api: UseEmblaCarouselType[1];
-  scrollPrev: () => void;
-  scrollNext: () => void;
-  canScrollPrev: boolean;
-  canScrollNext: boolean;
+	carouselRef: UseEmblaCarouselType[0];
+	api: UseEmblaCarouselType[1];
+	scrollPrev: () => void;
+	scrollNext: () => void;
+	canScrollPrev: boolean;
+	canScrollNext: boolean;
 } & CarouselProps;
 
 /* --- chart ---------------------------------------------------------------- */
 export type ChartConfig = {
-  [k in string]: {
-    label?: React.ReactNode;
-    icon?: React.ComponentType;
-  } & (
-    | { color?: string; theme?: never }
-    | { color?: never; theme: Record<"light" | "dark", string> }
-  );
+	[k in string]: {
+		label?: React.ReactNode;
+		icon?: React.ComponentType;
+	} & (
+		| { color?: string; theme?: never }
+		| { color?: never; theme: Record<"light" | "dark", string> }
+	);
 };
 
 export type ChartContextProps = {
-  config: ChartConfig;
+	config: ChartConfig;
 };
 
 /* --- form ----------------------------------------------------------------- */
 export type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+	TFieldValues extends FieldValues = FieldValues,
+	TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
-  name: TName;
+	name: TName;
 };
 
 export type FormItemContextValue = {
-  id: string;
+	id: string;
 };
 
 /* --- pagination ----------------------------------------------------------- */
 export type PaginationLinkProps = {
-  isActive?: boolean;
+	isActive?: boolean;
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
-  React.ComponentProps<"a">;
+	React.ComponentProps<"a">;
 
 /* --- sidebar -------------------------------------------------------------- */
 export type SidebarContextProps = {
-  state: "expanded" | "collapsed";
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  openMobile: boolean;
-  setOpenMobile: (open: boolean) => void;
-  isMobile: boolean;
-  toggleSidebar: () => void;
+	state: "expanded" | "collapsed";
+	open: boolean;
+	setOpen: (open: boolean) => void;
+	openMobile: boolean;
+	setOpenMobile: (open: boolean) => void;
+	isMobile: boolean;
+	toggleSidebar: () => void;
 };
 
 /* --- toast ---------------------------------------------------------------- */
 export type ToastProps = React.ComponentPropsWithoutRef<
-  typeof ToastPrimitives.Root
+	typeof ToastPrimitives.Root
 > & {
-  variant?: "default" | "destructive" | null | undefined;
+	variant?: "default" | "destructive" | null | undefined;
 };
 
 export type ToastActionElement = React.ReactElement<
-  typeof ToastPrimitives.Action
+	typeof ToastPrimitives.Action
 >;

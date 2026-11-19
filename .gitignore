@@ -31,6 +31,9 @@ download/
 upload/
 tool-results/
 
+# Admin upload route (not sandbox leftovers — it is a real API route)
+!web/src/app/api/admin/upload/
+
 # TS build info
 tsconfig.tsbuildinfo
 *.tsbuildinfo

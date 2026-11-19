@@ -1,0 +1,50 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true,
+		"defaultBranch": "develop"
+	},
+	"files": {
+		"includes": [
+			"web/src/**/*.ts",
+			"web/src/**/*.tsx",
+			"web/scripts/**/*.ts",
+			"web/next.config.ts",
+			"web/tailwind.config.ts",
+			"web/eslint.config.mjs",
+			"web/postcss.config.mjs",
+			"web/package.json",
+			"web/tsconfig.json",
+			"package.json",
+			"biome.json",
+			".githooks/**",
+			"!web/src/lib/supabase/database.types.ts"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"lineWidth": 80
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"preset": "recommended",
+			"a11y": {
+				"useButtonType": "error"
+			},
+			"performance": {
+				"noImgElement": "error"
+			}
+		}
+	}
+}

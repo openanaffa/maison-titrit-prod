@@ -33,6 +33,9 @@ Maison Titrit is a full stack web app for local stores, built specialy for <http
 bun install           # root, installs both workspaces
 bun run dev:web       # Next dev :3000
 bun run lint          # web eslint (must stay 0 errors / 0 warnings)
+bun run biome:check   # Biome format + lint + import order (full repo, must stay clean)
+bun run biome:fix     # apply Biome safe fixes across the repo
+bun run hooks:install # enable .githooks/pre-commit (sets core.hooksPath)
 bunx tsc --noEmit -p web
 bun run build         # next build
 cd web && bun test    # colocated unit tests (*.test.ts)
