@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { settleOrderReservations } from "@/lib/inventory-settlement";
 
 export const ORDER_STATUSES = [
 	"PENDING",
@@ -117,6 +118,7 @@ export async function transitionOrder(
 			throw new Error("CONCURRENT_MODIFICATION");
 		}
 		const o = await tx.order.findUnique({ where: { id: orderId } });
+		if (!o) throw new Error("NOT_FOUND");
 		await tx.orderStatusHistory.create({
 			data: {
 				orderId,
@@ -128,8 +130,17 @@ export async function transitionOrder(
 				reason: opts.reason ?? null,
 			},
 		});
-		return o!;
+		return o;
 	});
+	// Inventory settlement (issue #145 follow-up): a cancelled order must
+	// release its holds; a delivered order must convert holds into stock
+	// decrements. Idempotent; failures are logged by the settlement helper.
+	if (normalized === "CANCELLED" || normalized === "DELIVERED") {
+		await settleOrderReservations(orderId, normalized, {
+			actorId: opts.actorId ?? null,
+			reason: opts.reason ?? null,
+		});
+	}
 	return updated;
 }
 

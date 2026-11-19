@@ -110,12 +110,21 @@ export async function POST(req: Request) {
 				const line = cartLines[i];
 				const product = products.find((p) => p.id === line.productId);
 				if (!product) throw new Error("OUT_OF_STOCK");
-				// Resolve a variant matching (product, size, null color). Fall back
-				// to null when none exists (legacy product-level availability).
+				// Per-variant inventory enforcement (issue #145 follow-up): if the
+				// product carries variant rows but none matches the requested
+				// size, the size is not purchasable — do NOT fall back to the
+				// product-level inStock flag. The legacy product-level fallback
+				// applies only to products with zero variant rows.
 				const variant = await db.productVariant.findFirst({
 					where: { productId: line.productId, size: line.size, color: null },
 					select: { id: true, sku: true },
 				});
+				if (!variant) {
+					const variantCount = await db.productVariant.count({
+						where: { productId: line.productId },
+					});
+					if (variantCount > 0) throw new Error("OUT_OF_STOCK");
+				}
 				lineVariants.push(variant?.id ?? null);
 				lineVariantSkus.push(variant?.sku ?? null);
 				if (variant) {
