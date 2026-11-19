@@ -118,6 +118,7 @@ export async function transitionOrder(
 			throw new Error("CONCURRENT_MODIFICATION");
 		}
 		const o = await tx.order.findUnique({ where: { id: orderId } });
+		if (!o) throw new Error("NOT_FOUND");
 		await tx.orderStatusHistory.create({
 			data: {
 				orderId,
@@ -129,7 +130,7 @@ export async function transitionOrder(
 				reason: opts.reason ?? null,
 			},
 		});
-		return o!;
+		return o;
 	});
 	// Inventory settlement (issue #145 follow-up): a cancelled order must
 	// release its holds; a delivered order must convert holds into stock
