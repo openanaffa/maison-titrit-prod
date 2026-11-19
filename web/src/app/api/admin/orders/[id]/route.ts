@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import {
+	isNotifyingEvent,
+	queueCustomerNotifications,
+} from "@/lib/order-notifications";
+import {
 	isAllowedTransition,
 	ORDER_STATUSES,
 	transitionOrder,
 } from "@/lib/order-status";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { CustomerNotificationEvent } from "@/lib/types/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -68,6 +73,23 @@ export async function PATCH(
 				.eq("id", id)
 				.throwOnError();
 			if (deliveryError) throw deliveryError;
+		}
+		// Customer notification trigger (issue #121) — fire-and-forget after
+		// the transition commit; a failed send never blocks the transition.
+		if (isNotifyingEvent(status)) {
+			void queueCustomerNotifications(
+				{
+					id,
+					number: order.number,
+					customerName: order.customerName,
+					customerEmail: order.customerEmail ?? "",
+					customerPhone: order.customerPhone,
+					total: order.total,
+					deliveryProvider: order.deliveryProvider ?? "",
+					deliveryReference: order.deliveryReference ?? "",
+				},
+				status as CustomerNotificationEvent,
+			);
 		}
 		return NextResponse.json({ order });
 	} catch (e) {

@@ -1,6 +1,14 @@
 import nodemailer from "nodemailer";
-import type { StaffOrderPayload } from "@/lib/types/notifications";
-import { staffNewOrderEmail } from "./email-templates";
+import type {
+	CustomerNotificationEvent,
+	CustomerOrderUpdatePayload,
+	EmailTemplate,
+	StaffOrderPayload,
+} from "@/lib/types/notifications";
+import {
+	customerOrderUpdateEmail,
+	staffNewOrderEmail,
+} from "./email-templates";
 
 const WAFINE_TIMEOUT_MS = 5_000;
 
@@ -112,4 +120,74 @@ export async function notifyStaffNewOrder(
 	} catch (e) {
 		console.error("[notify] notifyStaffNewOrder failed", e);
 	}
+}
+
+/** Digits-only phone (Wafine chatIds are <digits>@c.us). */
+export function digitsOnly(raw: string): string {
+	return raw.replace(/\D/g, "");
+}
+
+async function sendCustomerEmail(
+	tpl: EmailTemplate,
+	to: string,
+): Promise<void> {
+	if (!process.env.EMAIL_SERVER_HOST) {
+		throw new Error("EMAIL_SERVER_HOST unset");
+	}
+	const transport = nodemailer.createTransport(smtpServer);
+	await transport.sendMail({
+		from: process.env.EMAIL_FROM ?? "Maison Titrit <hello@maisontitrit.com>",
+		to,
+		subject: tpl.subject,
+		html: tpl.html,
+		text: tpl.text,
+	});
+}
+
+async function sendCustomerWhatsApp(
+	digits: string,
+	text: string,
+): Promise<void> {
+	const { WAFINE_API_URL, WAFINE_API_KEY, WAFINE_SESSION_ID } = process.env;
+	if (!WAFINE_API_URL || !WAFINE_API_KEY || !WAFINE_SESSION_ID) {
+		throw new Error("WAFINE_* unset");
+	}
+	const chatId = `${digits}@c.us`;
+	const controller = new AbortController();
+	const timer = setTimeout(() => controller.abort(), WAFINE_TIMEOUT_MS);
+	let res: Response;
+	try {
+		res = await fetch(
+			`${WAFINE_API_URL}/api/sessions/${WAFINE_SESSION_ID}/messages/send-text`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-API-Key": WAFINE_API_KEY,
+				},
+				body: JSON.stringify({ chatId, text }),
+				signal: controller.signal,
+			},
+		);
+	} finally {
+		clearTimeout(timer);
+	}
+	if (res.status !== 201) {
+		throw new Error(`WAFINE send-text to ${chatId} → HTTP ${res.status}`);
+	}
+}
+
+/** One transport attempt for a persisted customer notification. */
+export async function attemptCustomerNotification(
+	channel: "EMAIL" | "WHATSAPP",
+	to: string,
+	event: CustomerNotificationEvent,
+	order: CustomerOrderUpdatePayload,
+): Promise<void> {
+	const tpl = customerOrderUpdateEmail(event, order);
+	if (channel === "EMAIL") {
+		await sendCustomerEmail(tpl, to);
+		return;
+	}
+	await sendCustomerWhatsApp(digitsOnly(to), tpl.text);
 }
