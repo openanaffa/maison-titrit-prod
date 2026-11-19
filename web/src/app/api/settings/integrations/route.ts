@@ -45,7 +45,13 @@ export async function GET() {
 		const supabase = await createSupabaseServerClient();
 		const { analytics, verification } = await getIntegrationsRaw(supabase);
 		const effective = await getIntegrations();
-		return NextResponse.json({ analytics, verification, effective });
+		// Key names match the client hook (useIntegrations) and the trackers
+		// branch above; the form reads analyticsValue/verificationValue.
+		return NextResponse.json({
+			analyticsValue: analytics,
+			verificationValue: verification,
+			effective,
+		});
 	} catch (e) {
 		console.error("GET /api/settings/integrations failed", e);
 		return NextResponse.json({ error: "Lecture impossible." }, { status: 500 });
