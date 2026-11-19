@@ -4,8 +4,8 @@ export function organizationJsonLd() {
 	const base = baseUrl();
 	return {
 		"@context": "https://schema.org",
-		"@type": ["ClothingStore", "Store"],
-		"@id": `${base}/#organization`,
+		"@type": ["ClothingStore", "LocalBusiness"],
+		"@id": `${base}/#store`,
 		name: site.name,
 		url: base,
 		logo: `${base}/assets/titrit-logo-gold.svg`,

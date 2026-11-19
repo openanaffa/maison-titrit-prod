@@ -67,13 +67,10 @@ export async function generateMetadata(): Promise<Metadata> {
 		creator: site.name,
 		publisher: site.name,
 		applicationName: site.name,
+		// Cookie-locale single-URL model: canonical root URL only, no misleading
+		// hreflang alternates for identical non-locale-specific URLs.
 		alternates: {
-			canonical: SITE_URL,
-			languages: {
-				fr: SITE_URL,
-				ar: SITE_URL,
-				en: SITE_URL,
-			},
+			canonical: "/",
 		},
 		openGraph: {
 			title: `${site.name} — Modest Fashion · Made in Morocco`,

@@ -39,8 +39,13 @@ export function buildPageMetadata(input: PageMetaInput): Metadata {
 					alt: input.title,
 				},
 			],
-			...(input.publishedTime ? { publishedTime: input.publishedTime } : {}),
-			...(input.modifiedTime ? { modifiedTime: input.modifiedTime } : {}),
+			...(input.ogType === "article"
+				? {
+						publishedTime: input.publishedTime,
+						modifiedTime: input.modifiedTime,
+						authors: input.author ? [input.author] : undefined,
+					}
+				: {}),
 		},
 		twitter: {
 			card: "summary_large_image",
