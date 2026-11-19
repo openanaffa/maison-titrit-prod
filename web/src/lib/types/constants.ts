@@ -7,6 +7,7 @@ import {
 	Settings,
 	ShoppingCart,
 	Tags,
+	Truck,
 	UserCog,
 	Users,
 } from "lucide-react";
@@ -73,6 +74,24 @@ export const ALLOWED_TRANSITIONS: Record<string, string[]> = {
 	RETURNED: [],
 };
 
+/** Work queues for the fulfilment workspace (issue #121). */
+export const FULFILMENT_QUEUES: { key: string; statuses: string[] }[] = [
+	{ key: "to-confirm", statuses: ["PENDING"] },
+	{ key: "to-prepare", statuses: ["CONFIRMED"] },
+	{ key: "to-dispatch", statuses: ["PROCESSING"] },
+	{ key: "in-transit", statuses: ["DISPATCHED"] },
+	{ key: "delivered", statuses: ["DELIVERED", "RETURN_REQUESTED", "RETURNED"] },
+	{ key: "exceptions", statuses: ["CANCELLED"] },
+];
+
+/** The primary forward transition per queue row. */
+export const QUEUE_NEXT_ACTION: Record<string, string> = {
+	"to-confirm": "CONFIRMED",
+	"to-prepare": "PROCESSING",
+	"to-dispatch": "DISPATCHED",
+	"in-transit": "DELIVERED",
+};
+
 export const mad = (n: number) => `${n.toLocaleString("fr-FR")} Dhs`;
 
 export const EMPTY_ANALYTICS: AnalyticsForm = {
@@ -129,6 +148,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
 		labelKey: "admin.nav.products",
 		badgeKey: "products",
 		permission: "products:read",
+	},
+	{
+		href: "/makteb/fulfilment",
+		icon: Truck,
+		labelKey: "admin.nav.fulfilment",
+		badgeKey: "fulfilmentQueue",
+		permission: "orders:read",
 	},
 	{
 		href: "/makteb/orders",

@@ -352,6 +352,8 @@ export type Database = {
           deliveryZoneId: string | null
           deliveryZoneName: string | null
           deliveryFee: number
+          deliveryProvider: string | null
+          deliveryReference: string | null
           createdAt: string
           updatedAt: string
         }
@@ -380,6 +382,8 @@ export type Database = {
           deliveryZoneId?: string | null
           deliveryZoneName?: string | null
           deliveryFee?: number
+          deliveryProvider?: string | null
+          deliveryReference?: string | null
           createdAt?: string
           updatedAt?: string
         }
@@ -408,6 +412,8 @@ export type Database = {
           deliveryZoneId?: string | null
           deliveryZoneName?: string | null
           deliveryFee?: number
+          deliveryProvider?: string | null
+          deliveryReference?: string | null
           createdAt?: string
           updatedAt?: string
         }
@@ -445,6 +451,45 @@ export type Database = {
           fulfilmentStatus?: string | null
           actorId?: string | null
           reason?: string | null
+          createdAt?: string
+        }
+        Relationships: []
+      }
+      OrderNotification: {
+        Row: {
+          id: string
+          orderId: string
+          event: string
+          channel: string
+          to: string
+          status: string
+          attempts: number
+          lastError: string | null
+          lastAttemptAt: string | null
+          createdAt: string
+        }
+        Insert: {
+          id?: string
+          orderId: string
+          event: string
+          channel: string
+          to: string
+          status?: string
+          attempts?: number
+          lastError?: string | null
+          lastAttemptAt?: string | null
+          createdAt?: string
+        }
+        Update: {
+          id?: string
+          orderId?: string
+          event?: string
+          channel?: string
+          to?: string
+          status?: string
+          attempts?: number
+          lastError?: string | null
+          lastAttemptAt?: string | null
           createdAt?: string
         }
         Relationships: []

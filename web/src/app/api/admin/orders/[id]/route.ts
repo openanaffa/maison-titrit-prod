@@ -1,13 +1,25 @@
 import { NextResponse } from "next/server";
 import {
+	isNotifyingEvent,
+	queueCustomerNotifications,
+} from "@/lib/order-notifications";
+import {
 	isAllowedTransition,
 	ORDER_STATUSES,
 	transitionOrder,
 } from "@/lib/order-status";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { CustomerNotificationEvent } from "@/lib/types/notifications";
 
 export const dynamic = "force-dynamic";
+
+/** Acceptable delivery field payload: non-empty, bounded strings. */
+function deliveryField(value: unknown): string | null {
+	if (typeof value !== "string") return null;
+	const trimmed = value.trim().slice(0, 120);
+	return trimmed.length > 0 ? trimmed : null;
+}
 
 export async function PATCH(
 	req: Request,
@@ -37,6 +49,10 @@ export async function PATCH(
 		if (current.status === status) {
 			return NextResponse.json({ status: current.status });
 		}
+		// Delivery provider/reference capture (issue #121) — operational
+		// bookkeeping, only accepted with a valid transition.
+		const deliveryProvider = deliveryField(body.deliveryProvider);
+		const deliveryReference = deliveryField(body.deliveryReference);
 		if (!isAllowedTransition(current.status, status)) {
 			return NextResponse.json(
 				{ error: "Transition non autorisée." },
@@ -47,6 +63,34 @@ export async function PATCH(
 			actorId: user.id,
 			reason: typeof body.reason === "string" ? body.reason : null,
 		});
+		if (deliveryProvider !== null || deliveryReference !== null) {
+			const { error: deliveryError } = await supabase
+				.from("Order")
+				.update({
+					...(deliveryProvider !== null ? { deliveryProvider } : {}),
+					...(deliveryReference !== null ? { deliveryReference } : {}),
+				})
+				.eq("id", id)
+				.throwOnError();
+			if (deliveryError) throw deliveryError;
+		}
+		// Customer notification trigger (issue #121) — fire-and-forget after
+		// the transition commit; a failed send never blocks the transition.
+		if (isNotifyingEvent(status)) {
+			void queueCustomerNotifications(
+				{
+					id,
+					number: order.number,
+					customerName: order.customerName,
+					customerEmail: order.customerEmail ?? "",
+					customerPhone: order.customerPhone,
+					total: order.total,
+					deliveryProvider: order.deliveryProvider ?? "",
+					deliveryReference: order.deliveryReference ?? "",
+				},
+				status as CustomerNotificationEvent,
+			);
+		}
 		return NextResponse.json({ order });
 	} catch (e) {
 		console.error("PATCH /api/admin/orders/[id] failed", e);

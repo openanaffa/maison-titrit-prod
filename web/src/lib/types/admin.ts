@@ -14,7 +14,12 @@ export type AdminNavItem = {
 	href: string;
 	icon: React.ElementType;
 	labelKey: string;
-	badgeKey?: "pendingOrders" | "products" | "customers" | "categories";
+	badgeKey?:
+		| "pendingOrders"
+		| "fulfilmentQueue"
+		| "products"
+		| "customers"
+		| "categories";
 	permission?: Permission;
 };
 
