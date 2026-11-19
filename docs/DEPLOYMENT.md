@@ -118,6 +118,11 @@ Vercel's filesystem is **ephemeral** — uploaded images won't persist. R2 is S3
    | `GA_API_SECRET` | `<from GA4>` | Production (optional, server) |
    | `META_PIXEL_ID` | `<Meta Pixel ID>` | Production (optional, server) |
    | `META_CAPI_ACCESS_TOKEN` | `<Meta CAPI token>` | Production (optional, server) |
+   | `NEXT_PUBLIC_SENTRY_DSN` | `<DSN of sentry project maison-titrit-web>` | Production + Preview |
+   | `SENTRY_DSN` | `<same DSN>` | Production + Preview (server) |
+   | `SENTRY_ORG` | `maison-titrit` | Production + Preview |
+   | `SENTRY_PROJECT` | `maison-titrit-web` | Production + Preview |
+   | `SENTRY_AUTH_TOKEN` | `<Sentry org auth token, source-map upload>` | Production + Preview (build-time, secret) |
 
    `ADMIN_EMAIL` is only needed when `seed:prod` should create a founder profile. Google credentials belong in Supabase Auth provider settings, not Vercel.
 
@@ -240,6 +245,8 @@ You're live. 🚀
 Nightly at 02:17 UTC, `.github/workflows/db-backup.yml` dumps the Supabase `public` schema (`pg_dump` 17, custom format), encrypts it with `age`, and uploads it to the private R2 bucket `maison-titrit-backups` under `db/YYYY/MM/DD/`. Objects under `db/` expire after 30 days (R2 lifecycle rule `expire-db-30d`). A run fails, and GitHub emails you, if the dump has fewer than 10 tables.
 
 GitHub Actions secrets: `BACKUP_DATABASE_URL` (session pooler `aws-0-eu-west-1.pooler.supabase.com:5432`, user `postgres.<project-ref>`, `sslmode=require`; the direct `db.*.supabase.co` host is IPv6-only and unreachable from Actions), `R2_BACKUP_ACCESS_KEY_ID`, `R2_BACKUP_SECRET_ACCESS_KEY` (an R2 token scoped to this bucket only), `R2_ACCOUNT_ID`. The age private key is only in `pass maison-titrit/backup/age-identity`.
+
+Do **not** reuse the app's `DATABASE_URL` here: it uses the transaction pooler (`:6543`, `?pgbouncer=true`), which Supabase does not support for `pg_dump`. Backups need the **session pooler** on `:5432` with user `postgres.<project-ref>`. Copy the string from Supabase Dashboard → Connect → Session pooler and percent-encode reserved characters in the password (`&`, `#`, `?`, `@`, space). The workflow validates the URL shape first and fails with a diagnostic — without printing the password — if it is wrong.
 
 Run one now: GitHub → Actions → db-backup → Run workflow.
 
