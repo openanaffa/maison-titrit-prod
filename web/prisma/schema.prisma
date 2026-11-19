@@ -267,6 +267,7 @@ model OrderNotification {
 
   @@index([orderId])
   @@index([status])
+  @@unique([orderId, event, channel])
 }
 
 model OrderItem {
