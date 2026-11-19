@@ -10,18 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/* ============================================================================
- *  RBAC roles (stored as String — SQLite has no native enum)
- *  FOUNDER  — full control (manages admins, content, settings)
- *  ADMIN    — products, orders, categories, content
- *  MANAGER  — orders + products read/update (no user management)
- *  CUSTOMER — client account (orders, profile)
- * ==========================================================================*/
+/**
+ * ============================================================================
+ * RBAC roles (stored as String — SQLite has no native enum)
+ * FOUNDER  — full control (manages admins, content, settings)
+ * ADMIN    — products, orders, categories, content
+ * MANAGER  — orders + products read/update (no user management)
+ * CUSTOMER — client account (orders, profile)
+ * ==========================================================================
+ */
 // enum Role { FOUNDER ADMIN MANAGER CUSTOMER }  // (Postgres-ready; String for SQLite)
 
-/* ============================================================================
- *  Supabase Auth identities are linked to these application profiles by ID.
- * ==========================================================================*/
+/**
+ * ============================================================================
+ * Supabase Auth identities are linked to these application profiles by ID.
+ * ==========================================================================
+ */
 model User {
   id            String    @id @default(cuid())
   supabaseId    String?   @unique
@@ -34,36 +38,40 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  orders        Order[]
-  invitesSent   Invite[]   @relation("InviteSender")
-  invitesUsed   Invite?    @relation("InviteUsedBy")
+  orders      Order[]
+  invitesSent Invite[] @relation("InviteSender")
+  invitesUsed Invite?  @relation("InviteUsedBy")
 
   @@index([role])
 }
 
-/* ============================================================================
- *  Invite-only admin onboarding
- *  FOUNDER/ADMIN generate a signed token; recipient completes signup.
- * ==========================================================================*/
+/**
+ * ============================================================================
+ * Invite-only admin onboarding
+ * FOUNDER/ADMIN generate a signed token; recipient completes signup.
+ * ==========================================================================
+ */
 model Invite {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   email     String
   role      String    @default("ADMIN") // FOUNDER | ADMIN | MANAGER | CUSTOMER
-  token     String   @unique
+  token     String    @unique
   invitedBy String
-  sender    User     @relation("InviteSender", fields: [invitedBy], references: [id], onDelete: Cascade)
-  usedById  String?  @unique
+  sender    User      @relation("InviteSender", fields: [invitedBy], references: [id], onDelete: Cascade)
+  usedById  String?   @unique
   usedBy    User?     @relation("InviteUsedBy", fields: [usedById], references: [id])
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   @@index([email])
 }
 
-/* ============================================================================
- *  Catalogue: Category + Product + Image (1:N)
- * ==========================================================================*/
+/**
+ * ============================================================================
+ * Catalogue: Category + Product + Image (1:N)
+ * ==========================================================================
+ */
 model Category {
   id        String   @id @default(cuid())
   name      String   @unique
@@ -76,27 +84,27 @@ model Category {
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  ref         String   @unique
+  id          String    @id @default(cuid())
+  ref         String    @unique
   name        String
   nameAmazigh String?
-  description String   // long story / rich text (markdown)
-  shortStory  String   // catalogue card copy
+  description String // long story / rich text (markdown)
+  shortStory  String // catalogue card copy
   materials   String
-  colors      String   // "Beige · Bleu Ciel · Rose Baby"
-  sizes       String   // "S · M · L · XL"
-  price       Int      // MAD
-  salePrice   Int?     // optional promotional price
-  currency    String   @default("MAD")
-  inStock     Boolean  @default(true)
-  featured    Boolean  @default(false)
+  colors      String // "Beige · Bleu Ciel · Rose Baby"
+  sizes       String // "S · M · L · XL"
+  price       Int // MAD
+  salePrice   Int? // optional promotional price
+  currency    String    @default("MAD")
+  inStock     Boolean   @default(true)
+  featured    Boolean   @default(false)
   categoryId  String?
   category    Category? @relation(fields: [categoryId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  images Image[]
-  items   OrderItem[]
+  images   Image[]
+  items    OrderItem[]
   variants ProductVariant[]
 
   @@index([categoryId])
@@ -105,24 +113,24 @@ model Product {
 }
 
 model ProductVariant {
-  id               String   @id @default(cuid())
-  productId        String
-  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  sku              String   @unique
-  size             String?
-  color            String?
-  priceOverride    Int?
-  isActive         Boolean  @default(true)
-  position         Int      @default(0)
-  onHand           Int      @default(0)
-  reserved         Int      @default(0)
-  lowStockThreshold Int     @default(0)
-  version          Int      @default(0)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                String   @id @default(cuid())
+  productId         String
+  product           Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sku               String   @unique
+  size              String?
+  color             String?
+  priceOverride     Int?
+  isActive          Boolean  @default(true)
+  position          Int      @default(0)
+  onHand            Int      @default(0)
+  reserved          Int      @default(0)
+  lowStockThreshold Int      @default(0)
+  version           Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  items            OrderItem[]
-  movements        StockMovement[]
+  items     OrderItem[]
+  movements StockMovement[]
 
   @@unique([productId, size, color])
   @@index([productId])
@@ -130,18 +138,18 @@ model ProductVariant {
 }
 
 model StockMovement {
-  id              String   @id @default(cuid())
-  variantId       String
-  variant         ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  type            String   // RECEIVE | ADJUST | DAMAGE | RETURN | RESERVE | RELEASE | COMMIT
-  quantity        Int      // signed delta applied (on-hand for RECEIVE/ADJUST/DAMAGE/RETURN/COMMIT; reserved for RESERVE/RELEASE)
-  onHandAfter     Int
-  reservedAfter   Int
-  reason          String?
-  actorId         String?
-  sourceRef       String?
-  idempotencyKey  String?  @unique
-  createdAt       DateTime @default(now())
+  id             String         @id @default(cuid())
+  variantId      String
+  variant        ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  type           String // RECEIVE | ADJUST | DAMAGE | RETURN | RESERVE | RELEASE | COMMIT
+  quantity       Int // signed delta applied (on-hand for RECEIVE/ADJUST/DAMAGE/RETURN/COMMIT; reserved for RESERVE/RELEASE)
+  onHandAfter    Int
+  reservedAfter  Int
+  reason         String?
+  actorId        String?
+  sourceRef      String?
+  idempotencyKey String?        @unique
+  createdAt      DateTime       @default(now())
 
   @@index([variantId])
   @@index([createdAt])
@@ -152,13 +160,13 @@ model StockMovement {
 model DeliveryZone {
   id        String   @id @default(cuid())
   name      String
-  cities    String   // comma-separated, matched case-insensitively
+  cities    String // comma-separated, matched case-insensitively
   fee       Int      @default(0)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orders    Order[]
+  orders Order[]
 
   @@index([isActive])
 }
@@ -176,42 +184,47 @@ model Image {
   @@index([productId])
 }
 
-/* ============================================================================
- *  Orders (COD) + items
- * ==========================================================================*/
+/**
+ * ============================================================================
+ * Orders (COD) + items
+ * ==========================================================================
+ */
 // enum OrderStatus { PENDING CONFIRMED SHIPPED DELIVERED CANCELLED }  // (Postgres-ready; String for SQLite)
 
 model Order {
-  id               String    @id @default(cuid())
-  number           String    @unique // human-friendly, e.g. MT-1042
-  status           String    @default("PENDING") // PENDING | CONFIRMED | PROCESSING | DISPATCHED | DELIVERED | CANCELLED | RETURN_REQUESTED | RETURNED
-  paymentStatus    String    @default("UNPAID") // UNPAID | PAID | REFUNDED
-  fulfilmentStatus String    @default("UNFULFILLED") // UNFULFILLED | PROCESSING | SHIPPED | DELIVERED | RETURNED
-  customerName  String
-  customerPhone String
-  customerEmail String?
-  city        String?
-  address     String?
-  notes       String?
-  utmSource   String?
-  utmMedium   String?
-  utmCampaign String?
-  utmContent  String?
-  utmTerm     String?
-  total       Int
-  currency    String      @default("MAD")
-  payment     String      @default("COD")
-  userId      String?
-  user        User?       @relation(fields: [userId], references: [id])
-  idempotencyKey String?  @unique
-  deliveryZoneId String?
-  deliveryZone   DeliveryZone? @relation(fields: [deliveryZoneId], references: [id])
+  id               String        @id @default(cuid())
+  number           String        @unique // human-friendly, e.g. MT-1042
+  status           String        @default("PENDING") // PENDING | CONFIRMED | PROCESSING | DISPATCHED | DELIVERED | CANCELLED | RETURN_REQUESTED | RETURNED
+  paymentStatus    String        @default("UNPAID") // UNPAID | PAID | REFUNDED
+  fulfilmentStatus String        @default("UNFULFILLED") // UNFULFILLED | PROCESSING | SHIPPED | DELIVERED | RETURNED
+  customerName     String
+  customerPhone    String
+  customerEmail    String?
+  city             String?
+  address          String?
+  notes            String?
+  utmSource        String?
+  utmMedium        String?
+  utmCampaign      String?
+  utmContent       String?
+  utmTerm          String?
+  total            Int
+  currency         String        @default("MAD")
+  payment          String        @default("COD")
+  userId           String?
+  user             User?         @relation(fields: [userId], references: [id])
+  idempotencyKey   String?       @unique
+  deliveryZoneId   String?
+  deliveryZone     DeliveryZone? @relation(fields: [deliveryZoneId], references: [id])
+  notifications OrderNotification[]
   deliveryZoneName String?
-  deliveryFee    Int      @default(0)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  deliveryFee      Int           @default(0)
+  deliveryProvider String?
+  deliveryReference String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
 
-  items OrderItem[]
+  items         OrderItem[]
   statusHistory OrderStatusHistory[]
 
   @@index([status])
@@ -239,6 +252,23 @@ model OrderStatusHistory {
   @@index([createdAt])
 }
 
+model OrderNotification {
+  id            String   @id @default(cuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  event         String   // CONFIRMED | DISPATCHED | DELIVERED
+  channel       String   // EMAIL | WHATSAPP
+  to            String   // email address or digits-only phone
+  status        String   @default("PENDING") // SENT | FAILED | PENDING
+  attempts      Int      @default(0)
+  lastError     String?
+  lastAttemptAt DateTime?
+  createdAt     DateTime @default(now())
+
+  @@index([orderId])
+  @@index([status])
+}
+
 model OrderItem {
   id        String  @id @default(cuid())
   orderId   String
@@ -247,46 +277,50 @@ model OrderItem {
   sku       String? // snapshot (variant SKU, falls back to product ref)
   ref       String // snapshot (product ref)
   name      String // snapshot
-  price     Int    // snapshot (unit)
+  price     Int // snapshot (unit)
   quantity  Int
   size      String?
   color     String?
 
-  order   Order            @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product          @relation(fields: [productId], references: [id])
-  variant ProductVariant?  @relation(fields: [variantId], references: [id])
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product         @relation(fields: [productId], references: [id])
+  variant ProductVariant? @relation(fields: [variantId], references: [id])
 
   @@index([orderId])
   @@index([variantId])
 }
 
-/* ============================================================================
- *  Content — Articles (blog) for reach + SEO
- * ==========================================================================*/
+/**
+ * ============================================================================
+ * Content — Articles (blog) for reach + SEO
+ * ==========================================================================
+ */
 model Article {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   slug        String
-  locale      String   @default("fr")
+  locale      String    @default("fr")
   title       String
   excerpt     String
-  body        String   // markdown
+  body        String // markdown
   coverImage  String?
-  authorName  String   @default("Maison Titrit")
-  tags        String   // comma-separated
-  published   Boolean  @default(false)
+  authorName  String    @default("Maison Titrit")
+  tags        String // comma-separated
+  published   Boolean   @default(false)
   publishedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  @@index([published])
   @@unique([slug, locale])
+  @@index([published])
 }
 
-/* ============================================================================
- *  Key-value settings (announcement bar, store hours override, etc.)
- * ==========================================================================*/
+/**
+ * ============================================================================
+ * Key-value settings (announcement bar, store hours override, etc.)
+ * ==========================================================================
+ */
 model Setting {
   key       String   @id
-  value     String   // JSON string
+  value     String // JSON string
   updatedAt DateTime @updatedAt
 }
