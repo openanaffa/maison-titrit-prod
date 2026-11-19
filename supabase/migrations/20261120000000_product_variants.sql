@@ -72,15 +72,23 @@ END $$;
 CREATE INDEX IF NOT EXISTS "OrderItem_variantId_idx" ON public."OrderItem" ("variantId");
 
 -- 4. Backfill OrderItem snapshots.
+--    SKU is always set to the product ref as a stable historical snapshot.
+--    variantId is linked ONLY when a matching variant (productId + size +
+--    color) already exists; historical order items whose size/colour does not
+--    map to a real variant keep variantId NULL instead of being mis-attributed
+--    to the product's default (null/null) variant.
 UPDATE public."OrderItem" oi
 SET "sku" = p."ref"
 FROM public."Product" p
 WHERE oi."productId" = p."id" AND oi."sku" IS NULL;
 
 UPDATE public."OrderItem" oi
-SET "variantId" = ('pv_' || oi."productId")
+SET "variantId" = v."id"
+FROM public."ProductVariant" v
 WHERE oi."variantId" IS NULL
-  AND EXISTS (SELECT 1 FROM public."ProductVariant" v WHERE v."id" = 'pv_' || oi."productId");
+  AND v."productId" = oi."productId"
+  AND v."size" IS NOT DISTINCT FROM oi."size"
+  AND v."color" IS NOT DISTINCT FROM oi."color";
 
 -- 5. RLS for ProductVariant (mirror Product: public read, staff write).
 ALTER TABLE public."ProductVariant" ENABLE ROW LEVEL SECURITY;
