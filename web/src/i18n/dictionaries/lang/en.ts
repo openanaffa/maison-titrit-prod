@@ -5,6 +5,10 @@ export const English = {
 	"nav.atelier": "Atelier",
 	"nav.find": "Find us",
 	"nav.contact": "Contact",
+	"nav.sections": "Primary sections",
+	"nav.sectionsSecondary": "Secondary sections",
+	"nav.homeAria": "Maison Titrit — home",
+	"nav.mobileTitle": "Maison Titrit menu",
 
 	"brand.tagline": "Couture House",
 	"brand.payment": "Cash on delivery (COD)",
@@ -219,6 +223,7 @@ export const English = {
 	"lang.switch": "Language",
 	"theme.aria": "Change theme",
 	"common.close": "Close",
+	"a11y.skipToContent": "Skip to main content",
 
 	"cookie.title": "Your privacy preferences",
 	"cookie.body":

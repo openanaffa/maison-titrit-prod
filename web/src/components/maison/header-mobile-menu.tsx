@@ -25,7 +25,7 @@ export function MobileMenu({
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 }) {
-	const { t } = useT();
+	const { t, dir } = useT();
 
 	return (
 		<Sheet open={open} onOpenChange={onOpenChange}>
@@ -39,17 +39,17 @@ export function MobileMenu({
 				</button>
 			</SheetTrigger>
 			<SheetContent
-				side="right"
+				side={dir === "rtl" ? "left" : "right"}
 				className="vintage-paper w-[88vw] max-w-sm border-bronze/40 p-0"
 			>
-				<SheetTitle className="sr-only">Navigation Maison Titrit</SheetTitle>
+				<SheetTitle className="sr-only">{t("nav.mobileTitle")}</SheetTitle>
 				<SheetDescription className="sr-only">
 					{t("footer.menu")}
 				</SheetDescription>
 				<div className="flex h-full flex-col p-6">
 					<Link
 						href="/#accueil"
-						aria-label="Maison Titrit — accueil"
+						aria-label={t("nav.homeAria")}
 						onClick={() => onOpenChange(false)}
 					>
 						<TitritLogo showWordmark={false} logoClassName="h-10 w-10" />

@@ -5,6 +5,10 @@ export const Arabic = {
 	"nav.atelier": "المشغل",
 	"nav.find": "موقعنا",
 	"nav.contact": "اتصل بنا",
+	"nav.sections": "الأقسام الرئيسية",
+	"nav.sectionsSecondary": "الأقسام الثانوية",
+	"nav.homeAria": "ميزون تيتريت — الصفحة الرئيسية",
+	"nav.mobileTitle": "قائمة ميزون تيتريت",
 
 	"brand.tagline": "دار الخياطة",
 	"brand.payment": "الدفع عند الاستلام (COD)",
@@ -215,6 +219,7 @@ export const Arabic = {
 	"lang.switch": "اللغة",
 	"theme.aria": "تغيير المظهر",
 	"common.close": "إغلاق",
+	"a11y.skipToContent": "تخطي إلى المحتوى الرئيسي",
 
 	"cookie.title": "تفضيلاتك للخصوصية",
 	"cookie.body":

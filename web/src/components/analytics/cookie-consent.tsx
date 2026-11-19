@@ -39,7 +39,7 @@ export function CookiePreferencesButton() {
 				// clear decided so the banner re-shows
 				setConsent({ ...getConsent(), decided: false });
 			}}
-			className="fixed bottom-4 left-4 z-40 inline-flex items-center gap-2 rounded-full border border-bronze/40 bg-card/90 px-3 py-2 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink backdrop-blur transition-colors hover:bg-bronze/10 dark:text-cream"
+			className="fixed bottom-4 start-4 z-40 inline-flex items-center gap-2 rounded-full border border-bronze/40 bg-card/90 px-3 py-2 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink backdrop-blur transition-colors hover:bg-bronze/10 dark:text-cream sm:start-auto sm:end-4"
 			aria-label={t("cookie.reopen")}
 		>
 			<Cookie className="size-3.5 text-bronze" />

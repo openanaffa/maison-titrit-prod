@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 import * as Sentry from "@sentry/nextjs";
@@ -10,6 +11,7 @@ import {
 } from "@/components/analytics/cookie-consent";
 import { VercelTelemetry } from "@/components/analytics/vercel-telemetry";
 import { AnnouncementBar } from "@/components/maison/announcement-bar";
+import { SkipLink } from "@/components/maison/skip-link";
 import { SupabaseAuthProvider } from "@/components/maison/supabase-auth-provider";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 import { SwRegister } from "@/components/pwa/sw-register";
@@ -17,6 +19,7 @@ import { SiteJsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { OG_IMAGE, SITE_URL, site } from "@/config/site";
+import { LOCALE_COOKIE } from "@/i18n/locale-cookie";
 import { LocaleProvider } from "@/i18n/locale-provider";
 import { getIntegrations, VERIFICATION_META } from "@/lib/integrations";
 
@@ -148,6 +151,14 @@ const FONT_HREF =
 export default async function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
+	const cookieStore = await cookies();
+	const rawLocale = cookieStore.get(LOCALE_COOKIE)?.value;
+	const locale =
+		rawLocale === "ar" || rawLocale === "en" || rawLocale === "fr"
+			? rawLocale
+			: "fr";
+	const dir = locale === "ar" ? "rtl" : "ltr";
+
 	const { analytics } = await getIntegrations();
 
 	// Set Sentry release/tag from environment
@@ -156,7 +167,7 @@ export default async function RootLayout({
 	}
 
 	return (
-		<html lang="fr" dir="ltr" suppressHydrationWarning>
+		<html lang={locale} dir={dir} suppressHydrationWarning>
 			<head>
 				<link
 					rel="icon"
@@ -194,12 +205,6 @@ gtag('consent', 'default', {
   'wait_for_update': 500
 });`}
 				</Script>
-				<a
-					href="#accueil"
-					className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:inset-s-4 focus:z-100 focus:inline-flex focus:items-center focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream focus:font-label focus:text-[0.7rem] focus:uppercase focus:tracking-[0.2em] focus:outline-none"
-				>
-					Aller au contenu
-				</a>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="light"
@@ -207,6 +212,7 @@ gtag('consent', 'default', {
 					disableTransitionOnChange
 				>
 					<LocaleProvider>
+						<SkipLink />
 						<SupabaseAuthProvider>
 							<ReactQueryProvider>
 								<AttributionCapture />
