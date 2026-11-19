@@ -9,6 +9,13 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
+/** Acceptable delivery field payload: non-empty, bounded strings. */
+function deliveryField(value: unknown): string | null {
+	if (typeof value !== "string") return null;
+	const trimmed = value.trim().slice(0, 120);
+	return trimmed.length > 0 ? trimmed : null;
+}
+
 export async function PATCH(
 	req: Request,
 	{ params }: { params: Promise<{ id: string }> },
@@ -37,6 +44,10 @@ export async function PATCH(
 		if (current.status === status) {
 			return NextResponse.json({ status: current.status });
 		}
+		// Delivery provider/reference capture (issue #121) — operational
+		// bookkeeping, only accepted with a valid transition.
+		const deliveryProvider = deliveryField(body.deliveryProvider);
+		const deliveryReference = deliveryField(body.deliveryReference);
 		if (!isAllowedTransition(current.status, status)) {
 			return NextResponse.json(
 				{ error: "Transition non autorisée." },
@@ -47,6 +58,17 @@ export async function PATCH(
 			actorId: user.id,
 			reason: typeof body.reason === "string" ? body.reason : null,
 		});
+		if (deliveryProvider !== null || deliveryReference !== null) {
+			const { error: deliveryError } = await supabase
+				.from("Order")
+				.update({
+					...(deliveryProvider !== null ? { deliveryProvider } : {}),
+					...(deliveryReference !== null ? { deliveryReference } : {}),
+				})
+				.eq("id", id)
+				.throwOnError();
+			if (deliveryError) throw deliveryError;
+		}
 		return NextResponse.json({ order });
 	} catch (e) {
 		console.error("PATCH /api/admin/orders/[id] failed", e);

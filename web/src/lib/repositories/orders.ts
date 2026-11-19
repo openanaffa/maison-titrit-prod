@@ -8,7 +8,7 @@ type OrderItemRow = Database["public"]["Tables"]["OrderItem"]["Row"];
 type ImageRow = Database["public"]["Tables"]["Image"]["Row"];
 type UserRow = Database["public"]["Tables"]["User"]["Row"];
 
-type OrderListRow = {
+export type OrderListRow = {
 	id: string;
 	number: string;
 	customerName: string;
@@ -25,6 +25,10 @@ type OrderListRow = {
 	itemCount: number;
 	userId: string | null;
 	userName: string | null;
+	deliveryZoneName: string;
+	deliveryFee: number;
+	deliveryProvider: string;
+	deliveryReference: string;
 };
 
 type MarketingOrderRow = {
@@ -112,7 +116,133 @@ export async function listOrders(
 		itemCount: itemCountByOrder.get(o.id) ?? 0,
 		userId: o.userId ?? null,
 		userName: userById.get(o.userId ?? "")?.name ?? null,
+		deliveryZoneName: o.deliveryZoneName ?? "",
+		deliveryFee: o.deliveryFee ?? 0,
+		deliveryProvider: o.deliveryProvider ?? "",
+		deliveryReference: o.deliveryReference ?? "",
 	}));
+}
+
+/** Queue filters for the fulfilment workspace (issue #121). */
+export type FulfilmentQueueFilter = {
+	statuses: string[];
+	search?: string;
+	from?: string;
+	to?: string;
+	limit?: number;
+};
+
+/** Listed orders for work queues, with failed-notification visibility. */
+export type FulfilmentOrderRow = OrderListRow & {
+	failedNotifications: number;
+	pendingNotifications: number;
+};
+
+/** Notification-attempt counts per order (retry visibility in the queue). */
+async function notificationCounts(
+	supabase: SupabaseClient<Database>,
+	orderIds: string[],
+): Promise<Map<string, { failed: number; pending: number }>> {
+	if (orderIds.length === 0) return new Map();
+	const { data, error } = await supabase
+		.from("OrderNotification")
+		.select("orderId,status")
+		.in("orderId", orderIds)
+		.throwOnError();
+	if (error) throw error;
+	const counts = new Map<string, { failed: number; pending: number }>();
+	for (const row of (data ?? []) as { orderId: string; status: string }[]) {
+		const c = counts.get(row.orderId) ?? { failed: 0, pending: 0 };
+		if (row.status === "FAILED") c.failed += 1;
+		if (row.status === "PENDING") c.pending += 1;
+		counts.set(row.orderId, c);
+	}
+	return counts;
+}
+
+/**
+ * Orders for the fulfilment queues: multi-status filter, search by order
+ * number / customer phone / name, and a created-at date window.
+ */
+export async function listFulfilmentOrders(
+	supabase: SupabaseClient<Database>,
+	opts: FulfilmentQueueFilter,
+): Promise<FulfilmentOrderRow[]> {
+	let query = supabase
+		.from("Order")
+		.select("*")
+		.order("createdAt", { ascending: false });
+	if (opts.statuses.length > 0) query = query.in("status", opts.statuses);
+	if (opts.search) {
+		const term = opts.search.replace(/[,%()]/g, "");
+		query = query.or(
+			`number.ilike.%${term}%,customerName.ilike.%${term}%,customerPhone.ilike.%${term}%`,
+		);
+	}
+	if (opts.from) query = query.gte("createdAt", opts.from);
+	if (opts.to) query = query.lt("createdAt", opts.to);
+	if (opts.limit) query = query.limit(opts.limit);
+	const { data: orders, error } = await query.throwOnError();
+	if (error) throw error;
+	const orderRows = (orders ?? []) as OrderRow[];
+
+	const orderIds = orderRows.map((order) => order.id);
+	const userIds = [
+		...new Set(orderRows.flatMap((o) => (o.userId ? [o.userId] : []))),
+	];
+
+	const { data: items } = orderIds.length
+		? await supabase
+				.from("OrderItem")
+				.select("id,orderId")
+				.in("orderId", orderIds)
+				.throwOnError()
+		: { data: [] as { id: string; orderId: string }[] };
+	const { data: users } = userIds.length
+		? await supabase
+				.from("User")
+				.select("id,name")
+				.in("id", userIds)
+				.throwOnError()
+		: { data: [] as { id: string; name: string | null }[] };
+
+	const itemCountByOrder = new Map<string, number>();
+	for (const item of items ?? []) {
+		itemCountByOrder.set(
+			item.orderId,
+			(itemCountByOrder.get(item.orderId) ?? 0) + 1,
+		);
+	}
+	const userById = new Map((users ?? []).map((row) => [row.id, row]));
+	const notifications = await notificationCounts(supabase, orderIds);
+
+	return orderRows.map((o) => {
+		const counts = notifications.get(o.id) ?? { failed: 0, pending: 0 };
+		return {
+			id: o.id,
+			number: o.number,
+			customerName: o.customerName,
+			customerPhone: o.customerPhone,
+			customerEmail: o.customerEmail ?? "",
+			city: o.city ?? "",
+			address: o.address ?? "",
+			notes: o.notes ?? "",
+			total: o.total,
+			currency: o.currency,
+			status: o.status,
+			payment: o.payment,
+			createdAt: o.createdAt,
+			itemCount: itemCountByOrder.get(o.id) ?? 0,
+			userId: o.userId ?? null,
+			userName: userById.get(o.userId ?? "")?.name ?? null,
+			deliveryZoneName: o.deliveryZoneName ?? "",
+			deliveryFee: o.deliveryFee ?? 0,
+			deliveryProvider: o.deliveryProvider ?? "",
+			deliveryReference: o.deliveryReference ?? "",
+			failedNotifications: counts.failed,
+			pendingNotifications: counts.pending,
+		};
+	});
 }
 
 /** List orders with UTM fields for attribution reporting, newest first. */
