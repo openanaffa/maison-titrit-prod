@@ -37,8 +37,10 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 	const sizeId = React.useId();
 
 	const currentPrice = product.salePrice ?? product.price;
+	const inStock = product.inStock;
 
 	const handleAddToCart = () => {
+		if (!inStock) return;
 		if (!size && sizes.length > 1) {
 			setSizePrompt(true);
 			return;
@@ -80,6 +82,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 	const orderHref = `https://wa.me/${site.whatsapp.chat}?text=${encodeURIComponent(orderMsg)}`;
 
 	const handleOrder = () => {
+		if (!inStock) return;
 		track("select_item", {
 			item_id: product.ref,
 			item_name: product.name,
@@ -121,9 +124,15 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 					</span>
 				)}
 
-				<span className="absolute right-3 top-3 rounded-full bg-ink/80 px-2.5 py-1 font-label text-[0.58rem] uppercase tracking-[0.2em] text-cream backdrop-blur dark:bg-cream/85 dark:text-ink">
-					{t("card.cod")}
-				</span>
+				{inStock ? (
+					<span className="absolute right-3 top-3 rounded-full bg-ink/80 px-2.5 py-1 font-label text-[0.58rem] uppercase tracking-[0.2em] text-cream backdrop-blur dark:bg-cream/85 dark:text-ink">
+						{t("card.cod")}
+					</span>
+				) : (
+					<span className="absolute right-3 top-3 rounded-full bg-terracotta px-2.5 py-1 font-label text-[0.58rem] uppercase tracking-[0.2em] text-cream">
+						{t("admin.products.outOfStock")}
+					</span>
+				)}
 			</Link>
 
 			<div className="flex flex-1 flex-col p-5">
@@ -223,22 +232,33 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 						<Button
 							type="button"
 							onClick={handleAddToCart}
+							disabled={!inStock}
 							variant="outline"
 							className="h-11 w-full rounded-full border-ink font-label text-[0.72rem] uppercase tracking-[0.14em] text-ink transition-all hover:bg-ink hover:text-cream dark:border-cream dark:text-cream dark:hover:bg-cream dark:hover:text-ink"
 						>
 							<ShoppingBag className="size-4" />
 							{t("cta.addToCart")}
 						</Button>
-						<Button
-							asChild
-							onClick={handleOrder}
-							className="h-11 w-full rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream transition-all hover:bg-terracotta dark:bg-cream dark:text-ink dark:hover:bg-terracotta dark:hover:text-cream"
-						>
-							<a href={orderHref} target="_blank" rel="noopener noreferrer">
+						{inStock ? (
+							<Button
+								asChild
+								onClick={handleOrder}
+								className="h-11 w-full rounded-full bg-ink font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream transition-all hover:bg-terracotta dark:bg-cream dark:text-ink dark:hover:bg-terracotta dark:hover:text-cream"
+							>
+								<a href={orderHref} target="_blank" rel="noopener noreferrer">
+									<WhatsAppIcon className="size-4" />
+									{t("cta.order")}
+								</a>
+							</Button>
+						) : (
+							<Button
+								disabled
+								className="h-11 w-full rounded-full bg-ink/40 font-label text-[0.72rem] uppercase tracking-[0.18em] text-cream/70 dark:bg-cream/30 dark:text-ink/50"
+							>
 								<WhatsAppIcon className="size-4" />
-								{t("cta.order")}
-							</a>
-						</Button>
+								{t("admin.products.outOfStock")}
+							</Button>
+						)}
 					</div>
 					<Link
 						href={detailHref}

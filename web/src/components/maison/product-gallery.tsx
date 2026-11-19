@@ -40,7 +40,7 @@ export function ProductGallery({
 					</span>
 				)}
 				{!product.inStock && (
-					<span className="absolute right-3 top-3 rounded-full bg-rose-600/90 px-2.5 py-1 font-label text-[0.58rem] uppercase tracking-[0.2em] text-cream backdrop-blur">
+					<span className="absolute right-3 top-3 rounded-full bg-terracotta/90 px-2.5 py-1 font-label text-[0.58rem] uppercase tracking-[0.2em] text-cream backdrop-blur">
 						{t("admin.products.outOfStock")}
 					</span>
 				)}

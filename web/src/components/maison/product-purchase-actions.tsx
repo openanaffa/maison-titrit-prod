@@ -9,6 +9,7 @@ import { useT } from "@/i18n/locale-provider";
 export type ProductPurchaseActionsProps = {
 	product: {
 		currency: string;
+		inStock?: boolean;
 	};
 	sizes: string[];
 	size: string;
@@ -51,6 +52,7 @@ export function ProductPurchaseActions({
 	copied,
 }: ProductPurchaseActionsProps) {
 	const { t } = useT();
+	const inStock = product.inStock ?? true;
 
 	return (
 		<>
@@ -136,13 +138,15 @@ export function ProductPurchaseActions({
 			<div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
 				<Button
 					onClick={onAddToCart}
+					disabled={!inStock}
 					className="h-12 flex-1 rounded-full bg-ink font-label text-[0.74rem] uppercase tracking-[0.18em] text-cream transition-all hover:bg-terracotta dark:bg-cream dark:text-ink dark:hover:bg-terracotta dark:hover:text-cream"
 				>
 					<ShoppingBag className="size-4" />
-					{t("cta.addToCart")}
+					{inStock ? t("cta.addToCart") : t("admin.products.outOfStock")}
 				</Button>
 				<Button
 					onClick={onOrder}
+					disabled={!inStock}
 					variant="outline"
 					className="h-12 rounded-full border-bronze/50 px-5 font-label text-[0.74rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:bg-bronze/10 hover:text-terracotta dark:text-cream"
 				>

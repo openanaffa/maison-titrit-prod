@@ -46,6 +46,7 @@ export function ProductPurchase({
 	const orderHref = `https://wa.me/${site.whatsapp.chat}?text=${encodeURIComponent(orderMsg)}`;
 
 	const handleOrder = () => {
+		if (!product.inStock) return;
 		if (!size && sizes.length > 1) return setSizePrompt(true);
 		setSizePrompt(false);
 		track("select_item", {
@@ -90,6 +91,7 @@ export function ProductPurchase({
 	};
 
 	const handleAddToCart = () => {
+		if (!product.inStock) return;
 		if (!size && sizes.length > 1) return setSizePrompt(true);
 		setSizePrompt(false);
 		addToCart(
