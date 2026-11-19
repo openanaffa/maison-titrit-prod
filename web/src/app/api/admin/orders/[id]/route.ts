@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { settleOrderReservations } from "@/lib/inventory-settlement";
 import {
 	isAllowedTransition,
 	ORDER_STATUSES,
@@ -35,6 +36,14 @@ export async function PATCH(
 			return NextResponse.json({ error: "Introuvable." }, { status: 404 });
 		}
 		if (current.status === status) {
+			// Same-status re-save: re-run idempotent reservation settlement so a
+			// previously failed CANCELLED/DELIVERED settlement can be retried
+			// (issue #145 follow-up).
+			if (status === "CANCELLED" || status === "DELIVERED") {
+				await settleOrderReservations(id, status as "CANCELLED" | "DELIVERED", {
+					actorId: user.id,
+				});
+			}
 			return NextResponse.json({ status: current.status });
 		}
 		if (!isAllowedTransition(current.status, status)) {

@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { settleOrderReservations } from "@/lib/inventory-settlement";
 
 export const ORDER_STATUSES = [
 	"PENDING",
@@ -130,6 +131,15 @@ export async function transitionOrder(
 		});
 		return o!;
 	});
+	// Inventory settlement (issue #145 follow-up): a cancelled order must
+	// release its holds; a delivered order must convert holds into stock
+	// decrements. Idempotent; failures are logged by the settlement helper.
+	if (normalized === "CANCELLED" || normalized === "DELIVERED") {
+		await settleOrderReservations(orderId, normalized, {
+			actorId: opts.actorId ?? null,
+			reason: opts.reason ?? null,
+		});
+	}
 	return updated;
 }
 
