@@ -53,7 +53,7 @@ export function CheckoutForm({ form, onChange, user }: CheckoutFormProps) {
 	}
 
 	return (
-		<div className="mt-10 grid gap-8 lg:grid-cols-[1fr_360px]">
+		<div className="mt-10 grid gap-8">
 			{/* Form fields */}
 			<div className="space-y-5">
 				{!user && (
