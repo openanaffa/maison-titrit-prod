@@ -4,8 +4,8 @@ import { site } from "@/config/site";
 import { rejectBots } from "@/lib/bot";
 import { parseCartLines, priceCart } from "@/lib/checkout";
 import { db } from "@/lib/db";
-import { releaseReservation, reserveStock } from "@/lib/inventory";
 import { getDeliveryQuote } from "@/lib/delivery";
+import { releaseReservation, reserveStock } from "@/lib/inventory";
 import { notifyStaffNewOrder } from "@/lib/notify";
 import { getCurrentUser } from "@/lib/session";
 

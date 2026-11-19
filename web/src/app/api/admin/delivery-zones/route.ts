@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { z } from "zod";
 
 export const dynamic = "force-dynamic";
 
@@ -14,19 +14,22 @@ const schema = z.object({
 
 export async function GET() {
 	const { allowed } = await requirePermission("orders:write");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const supabase = await createSupabaseServerClient();
 	const { data, error } = await supabase
 		.from("DeliveryZone")
 		.select("*")
 		.order("name", { ascending: true });
-	if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+	if (error)
+		return NextResponse.json({ error: error.message }, { status: 500 });
 	return NextResponse.json({ zones: data ?? [] });
 }
 
 export async function POST(req: Request) {
 	const { allowed } = await requirePermission("orders:write");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	try {
 		const body = await req.json();
 		const parsed = schema.parse(body);
@@ -44,7 +47,8 @@ export async function POST(req: Request) {
 			})
 			.select("*")
 			.single();
-		if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+		if (error)
+			return NextResponse.json({ error: error.message }, { status: 500 });
 		return NextResponse.json({ zone: data });
 	} catch (e) {
 		return NextResponse.json({ error: "Données invalides." }, { status: 400 });
