@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Clock, ExternalLink, MapPin, Navigation } from "lucide-react";
 import {
@@ -12,7 +12,6 @@ import {
 	googleMapsDirectionsUrl,
 	googleMapsEmbedUrl,
 	googleMapsLink,
-	osmEmbedUrl,
 	osmLink,
 } from "@/lib/brand";
 
@@ -68,12 +67,12 @@ export function MapSection() {
 											<span>{t(h.dayKey)}</span>
 											<span
 												className={
-													h.time === "Fermé"
+													h.time.startsWith("Ferm")
 														? "text-terracotta"
 														: "text-ink dark:text-cream"
 												}
 											>
-												{h.time === "Fermé" ? t("map.closed") : h.time}
+												{h.time.startsWith("Ferm") ? t("map.closed") : h.time}
 											</span>
 										</li>
 									))}
@@ -107,7 +106,7 @@ export function MapSection() {
 					<Reveal delay={0.12} y={24}>
 						<div className="vintage-frame relative h-full min-h-90 overflow-hidden rounded-sm">
 							<iframe
-								title="Google Maps — Maison Titrit, Bouskoura"
+								title="Google Maps â€” Maison Titrit, Bouskoura"
 								src={googleMapsEmbedUrl()}
 								className="h-full min-h-90 w-full border-0 grayscale-[0.15] sepia-[0.12]"
 								loading="lazy"

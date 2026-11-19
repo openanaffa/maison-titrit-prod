@@ -1,14 +1,14 @@
-/**
+﻿/**
  * ============================================================================
- *  MAISON TITRIT — LEGAL DOCUMENT CONTENT (Privacy policy · CGV)
+ *  MAISON TITRIT â€” LEGAL DOCUMENT CONTENT (Privacy policy Â· CGV)
  * ----------------------------------------------------------------------------
  *  Long-form legal content lives HERE (not in dictionaries.ts, which carries
  *  short UI strings only). Rendered by components/maison/legal-page.tsx and
  *  indexed publicly at /confidentialite and /cgv.
  *
  *  Content reflects the actual data practices of this codebase (Supabase Auth,
- *  COD checkout fields, consent-gated pixels — see config/site.ts `analytics`).
- *  ⚠️ The return/exchange window (7 days) should be reviewed by the owner
+ *  COD checkout fields, consent-gated pixels â€” see config/site.ts `analytics`).
+ *  âš ï¸ The return/exchange window (7 days) should be reviewed by the owner
  *  before go-live.
  * ============================================================================
  */
@@ -34,170 +34,170 @@ export type LegalDoc = {
 
 export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 	/* ====================================================================== */
-	/* FR — default locale                                                    */
+	/* FR â€” default locale                                                    */
 	/* ====================================================================== */
 	fr: {
 		privacy: {
-			eyebrow: "Informations légales",
-			title: "Politique de confidentialité",
-			updated: "Mis à jour le 14 novembre 2026",
+			eyebrow: "Informations lÃ©gales",
+			title: "Politique de confidentialitÃ©",
+			updated: "Mis Ã  jour le 14 novembre 2026",
 			intro:
-				"Cette politique explique comment Maison Titrit collecte, utilise et protège vos données personnelles lorsque vous utilisez ce site. Elle s'applique conformément à la loi marocaine n° 09-08 relative à la protection des données à caractère personnel et, lorsque le RGPD s'applique, au Règlement (UE) 2016/679.",
+				"Cette politique explique comment Maison Titrit collecte, utilise et protÃ¨ge vos donnÃ©es personnelles lorsque vous utilisez ce site. Elle s'applique conformÃ©ment Ã  la loi marocaine nÂ° 09-08 relative Ã  la protection des donnÃ©es Ã  caractÃ¨re personnel et, lorsque le RGPD s'applique, au RÃ¨glement (UE) 2016/679.",
 			sections: [
 				{
 					h: "1. Responsable du traitement",
 					p: [
-						"Le responsable du traitement est Mohamed Moughamir — Auto-Entrepreneur, exploitant la marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc).",
-						"Pour toute question relative à vos données personnelles : Maisontitrit67@gmail.com.",
+						"Le responsable du traitement est l'exploitant du site Maison Titrit. Les informations légales et coordonnées vérifiées (lorsqu'elles sont fournies par l'exploitant) sont disponibles dans les mentions légales du site.",
+						"Pour toute question relative à vos données personnelles, utilisez les coordonnées de contact/confidentialité vérifiées publiées sur le site.",
 					],
 				},
 				{
-					h: "2. Données collectées",
+					h: "2. DonnÃ©es collectÃ©es",
 					p: [
-						"Compte — l'authentification est assurée par Supabase Auth. Selon votre méthode de connexion (Google ou email/mot de passe), nous recevons votre nom, votre adresse email et, avec Google, votre photo de profil. Supabase gère vos identifiants; les mots de passe ne sont pas conservés dans les tables applicatives de Maison Titrit.",
-						"Commandes — nom, téléphone, adresse email (facultative), ville, adresse de livraison, notes ainsi que le détail de vos articles. Ces informations sont indispensables pour traiter et livrer votre commande.",
-						"Navigation — votre panier, votre langue et votre thème sont conservés localement dans votre navigateur. Des journaux techniques (adresse IP, date, pages consultées) sont conservés pour la sécurité du site.",
-						"Consentement — vos choix en matière de cookies analytiques et marketing.",
+						"Compte â€” l'authentification est assurÃ©e par Supabase Auth. Selon votre mÃ©thode de connexion (Google ou email/mot de passe), nous recevons votre nom, votre adresse email et, avec Google, votre photo de profil. Supabase gÃ¨re vos identifiants; les mots de passe ne sont pas conservÃ©s dans les tables applicatives de Maison Titrit.",
+						"Commandes â€” nom, tÃ©lÃ©phone, adresse email (facultative), ville, adresse de livraison, notes ainsi que le dÃ©tail de vos articles. Ces informations sont indispensables pour traiter et livrer votre commande.",
+						"Navigation â€” votre panier, votre langue et votre thÃ¨me sont conservÃ©s localement dans votre navigateur. Des journaux techniques (adresse IP, date, pages consultÃ©es) sont conservÃ©s pour la sÃ©curitÃ© du site.",
+						"Consentement â€” vos choix en matiÃ¨re de cookies analytiques et marketing.",
 					],
 				},
 				{
-					h: "3. Finalités du traitement",
+					h: "3. FinalitÃ©s du traitement",
 					p: [
-						"Nous utilisons vos données pour : traiter et livrer vos commandes ; gérer votre compte ; vous contacter au sujet d'une commande (téléphone, WhatsApp, email) ; alerter notre équipe des nouvelles commandes ; assurer la sécurité et le fonctionnement du site ; et, uniquement avec votre consentement, mesurer l'audience (Google Analytics) et personnaliser nos campagnes publicitaires (Meta, Pinterest, TikTok).",
+						"Nous utilisons vos donnÃ©es pour : traiter et livrer vos commandes ; gÃ©rer votre compte ; vous contacter au sujet d'une commande (tÃ©lÃ©phone, WhatsApp, email) ; alerter notre Ã©quipe des nouvelles commandes ; assurer la sÃ©curitÃ© et le fonctionnement du site ; et, uniquement avec votre consentement, mesurer l'audience (Google Analytics) et personnaliser nos campagnes publicitaires (Meta, Pinterest, TikTok).",
 					],
 				},
 				{
-					h: "4. Base légale du traitement",
+					h: "4. Base lÃ©gale du traitement",
 					p: [
-						"L'exécution du contrat (votre commande), votre consentement (cookies analytiques et marketing — révocable à tout moment), notre intérêt légitime (sécurité et fonctionnement du site) et nos obligations légales (comptabilité).",
+						"L'exÃ©cution du contrat (votre commande), votre consentement (cookies analytiques et marketing â€” rÃ©vocable Ã  tout moment), notre intÃ©rÃªt lÃ©gitime (sÃ©curitÃ© et fonctionnement du site) et nos obligations lÃ©gales (comptabilitÃ©).",
 					],
 				},
 				{
-					h: "5. Destinataires des données",
+					h: "5. Destinataires des donnÃ©es",
 					p: [
-						"Vos données sont hébergées par Vercel (site), Supabase (base de données et authentification, Union européenne), Cloudflare R2 (images) et Brevo (alertes email internes). Les services de mesure d'audience et de publicité ne sont chargés qu'après votre consentement. Le détail de votre commande est transmis à notre équipe via WhatsApp et email pour préparer l'expédition.",
-						"Nous ne vendons ni ne louons vos données personnelles à des tiers.",
+						"Vos donnÃ©es sont hÃ©bergÃ©es par Vercel (site), Supabase (base de donnÃ©es et authentification, Union europÃ©enne), Cloudflare R2 (images) et Brevo (alertes email internes). Les services de mesure d'audience et de publicitÃ© ne sont chargÃ©s qu'aprÃ¨s votre consentement. Le dÃ©tail de votre commande est transmis Ã  notre Ã©quipe via WhatsApp et email pour prÃ©parer l'expÃ©dition.",
+						"Nous ne vendons ni ne louons vos donnÃ©es personnelles Ã  des tiers.",
 					],
 				},
 				{
-					h: "6. Durées de conservation",
+					h: "6. DurÃ©es de conservation",
 					p: [
-						"Compte — jusqu'à la suppression de votre compte. Commandes — le temps exigé par la réglementation comptable et fiscale marocaine. Journaux techniques — quelques mois. Consentement — jusqu'au retrait de votre choix.",
+						"Compte â€” jusqu'Ã  la suppression de votre compte. Commandes â€” le temps exigÃ© par la rÃ©glementation comptable et fiscale marocaine. Journaux techniques â€” quelques mois. Consentement â€” jusqu'au retrait de votre choix.",
 					],
 				},
 				{
 					h: "7. Vos droits",
 					p: [
-						"Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Exercez-les en écrivant à Maisontitrit67@gmail.com — nous vous répondrons dans les meilleurs délais.",
-						"Vous pouvez également introduire une réclamation auprès de la Commission Nationale de Contrôle de la Protection des Données à caractère Personnel (CNDP — cndp.ma).",
+						"Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Exercez-les via les coordonnées de contact/confidentialité vérifiées publiées sur le site ; nous vous répondrons dans les meilleurs délais.",
+						"Vous pouvez Ã©galement introduire une rÃ©clamation auprÃ¨s de la Commission Nationale de ContrÃ´le de la Protection des DonnÃ©es Ã  caractÃ¨re Personnel (CNDP â€” cndp.ma).",
 					],
 				},
 				{
 					h: "8. Cookies",
 					p: [
-						"Cookies strictement nécessaires — session, choix de consentement, préférences : toujours actifs, ils permettent au site de fonctionner.",
-						"Cookies analytiques et marketing — chargés uniquement si vous les acceptez via le bandeau de consentement. Vous pouvez modifier votre choix à tout moment avec le bouton de préférences affiché en bas à gauche de chaque page.",
+						"Cookies strictement nÃ©cessaires â€” session, choix de consentement, prÃ©fÃ©rences : toujours actifs, ils permettent au site de fonctionner.",
+						"Cookies analytiques et marketing â€” chargÃ©s uniquement si vous les acceptez via le bandeau de consentement. Vous pouvez modifier votre choix Ã  tout moment avec le bouton de prÃ©fÃ©rences affichÃ© en bas Ã  gauche de chaque page.",
 					],
 				},
 				{
-					h: "9. Sécurité et transferts hors du Maroc",
+					h: "9. SÃ©curitÃ© et transferts hors du Maroc",
 					p: [
-						"Le site est servi en HTTPS et l'accès aux données est restreint aux personnes habilitées. Certains prestataires (Vercel, Google) sont situés hors du Maroc ; leurs transferts sont encadrés par des garanties appropriées, notamment les clauses contractuelles types de l'Union européenne lorsque le RGPD s'applique.",
+						"Le site est servi en HTTPS et l'accÃ¨s aux donnÃ©es est restreint aux personnes habilitÃ©es. Certains prestataires (Vercel, Google) sont situÃ©s hors du Maroc ; leurs transferts sont encadrÃ©s par des garanties appropriÃ©es, notamment les clauses contractuelles types de l'Union europÃ©enne lorsque le RGPD s'applique.",
 					],
 				},
 				{
 					h: "10. Modifications",
 					p: [
-						"Cette politique peut évoluer pour refléter nos pratiques ou la réglementation. La date de mise à jour figure en haut de page ; en cas de changement substantiel, nous en informerons sur le site.",
+						"Cette politique peut Ã©voluer pour reflÃ©ter nos pratiques ou la rÃ©glementation. La date de mise Ã  jour figure en haut de page ; en cas de changement substantiel, nous en informerons sur le site.",
 					],
 				},
 			],
-			related: [{ label: "Conditions générales de vente", href: "/cgv" }],
+			related: [{ label: "Conditions gÃ©nÃ©rales de vente", href: "/cgv" }],
 		},
 		terms: {
-			eyebrow: "Informations légales",
-			title: "Conditions générales de vente",
-			updated: "Mis à jour le 14 novembre 2026",
+			eyebrow: "Informations lÃ©gales",
+			title: "Conditions gÃ©nÃ©rales de vente",
+			updated: "Mis Ã  jour le 14 novembre 2026",
 			intro:
-				"Les présentes conditions régissent les ventes conclues sur maisontitrit.com entre Maison Titrit et tout client particulier. Toute commande implique leur acceptation sans réserve.",
+				"Les prÃ©sentes conditions rÃ©gissent les ventes conclues sur maisontitrit.com entre Maison Titrit et tout client particulier. Toute commande implique leur acceptation sans rÃ©serve.",
 			sections: [
 				{
-					h: "1. Éditeur du site",
+					h: "1. Ã‰diteur du site",
 					p: [
-						"Le site est édité par Mohamed Moughamir — Auto-Entrepreneur (RNAE 001609783000007), marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc). Contact : Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"Le site est édité et exploité par l'exploitant de la marque Maison Titrit. Les mentions légales vérifiées (identité, coordonnées, hébergeur, le cas échéant) sont publiées sur le site lorsqu'elles sont fournies.",
 					],
 				},
 				{
 					h: "2. Produits",
 					p: [
-						"Nos pièces sont confectionnées à la main dans notre atelier de Bouskoura, 100% Made in Morocco. Les photographies sont fidèles aux articles, mais les couleurs peuvent varier légèrement selon votre écran. Les articles sont proposés dans la limite des stocks disponibles ou sur commande.",
+						"Nos piÃ¨ces sont confectionnÃ©es Ã  la main dans notre atelier de Bouskoura, 100% Made in Morocco. Les photographies sont fidÃ¨les aux articles, mais les couleurs peuvent varier lÃ©gÃ¨rement selon votre Ã©cran. Les articles sont proposÃ©s dans la limite des stocks disponibles ou sur commande.",
 					],
 				},
 				{
 					h: "3. Prix",
 					p: [
-						"Les prix sont indiqués en dirhams (MAD). Les frais de livraison vous sont communiqués avant la confirmation de la commande. Nous nous réservons le droit de modifier nos prix à tout moment ; le prix applicable est celui confirmé lors de votre commande.",
+						"Les prix sont indiquÃ©s en dirhams (MAD). Les frais de livraison vous sont communiquÃ©s avant la confirmation de la commande. Nous nous rÃ©servons le droit de modifier nos prix Ã  tout moment ; le prix applicable est celui confirmÃ© lors de votre commande.",
 					],
 				},
 				{
 					h: "4. Commandes",
 					p: [
-						"Vous pouvez commander via le panier du site ou directement sur WhatsApp. Toute commande fait l'objet d'une confirmation par téléphone ou WhatsApp. À défaut de confirmation, ou en cas d'indisponibilité de l'article, la commande peut être annulée. Une commande confirmée est ferme.",
+						"Vous pouvez commander via le panier du site ou directement sur WhatsApp. Toute commande fait l'objet d'une confirmation par tÃ©lÃ©phone ou WhatsApp. Ã€ dÃ©faut de confirmation, ou en cas d'indisponibilitÃ© de l'article, la commande peut Ãªtre annulÃ©e. Une commande confirmÃ©e est ferme.",
 					],
 				},
 				{
 					h: "5. Paiement",
 					p: [
-						"Le paiement s'effectue à la livraison (COD), en espèces, à la réception du colis. Aucun paiement n'est encaissé par le site.",
+						"Le paiement s'effectue Ã  la livraison (COD), en espÃ¨ces, Ã  la rÃ©ception du colis. Aucun paiement n'est encaissÃ© par le site.",
 					],
 				},
 				{
 					h: "6. Livraison",
 					p: [
-						"Nous livrons partout au Maroc. Les délais sont communiqués lors de la confirmation selon la destination. Vous êtes responsable de la précision de votre adresse de livraison ; en cas d'absence au moment de la livraison, des tentatives supplémentaires peuvent engendrer des frais à votre charge.",
+						"Nous livrons partout au Maroc. Les dÃ©lais sont communiquÃ©s lors de la confirmation selon la destination. Vous Ãªtes responsable de la prÃ©cision de votre adresse de livraison ; en cas d'absence au moment de la livraison, des tentatives supplÃ©mentaires peuvent engendrer des frais Ã  votre charge.",
 					],
 				},
 				{
 					// TODO(owner): confirm the 7-day return/exchange window is the intended policy.
-					h: "7. Échanges et retours",
+					h: "7. Ã‰changes et retours",
 					p: [
-						"Vous disposez de 7 jours à compter de la réception pour demander un échange ou un retour, à condition que la pièce soit non portée, non lavée, avec ses étiquettes et munie d'une preuve d'achat. Les frais de retour sont à votre charge, sauf défaut ou erreur de notre part — dans ce cas, Maison Titrit prend en charge l'échange ou le remboursement.",
-						"Pour toute réclamation, contactez-nous sur WhatsApp ou par email en précisant votre numéro de commande.",
+						"Vous disposez de 7 jours Ã  compter de la rÃ©ception pour demander un Ã©change ou un retour, Ã  condition que la piÃ¨ce soit non portÃ©e, non lavÃ©e, avec ses Ã©tiquettes et munie d'une preuve d'achat. Les frais de retour sont Ã  votre charge, sauf dÃ©faut ou erreur de notre part â€” dans ce cas, Maison Titrit prend en charge l'Ã©change ou le remboursement.",
+						"Pour toute rÃ©clamation, contactez-nous sur WhatsApp ou par email en prÃ©cisant votre numÃ©ro de commande.",
 					],
 				},
 				{
 					h: "8. Garanties",
 					p: [
-						"En cas de défaut de fabrication ou de non-conformité, contactez-nous avec des photos de l'article. Selon le cas, nous proposerons un échange, une réparation ou un remboursement, conformément à la réglementation marocaine de protection du consommateur.",
+						"En cas de dÃ©faut de fabrication ou de non-conformitÃ©, contactez-nous avec des photos de l'article. Selon le cas, nous proposerons un Ã©change, une rÃ©paration ou un remboursement, conformÃ©ment Ã  la rÃ©glementation marocaine de protection du consommateur.",
 					],
 				},
 				{
-					h: "9. Propriété intellectuelle",
+					h: "9. PropriÃ©tÃ© intellectuelle",
 					p: [
-						"Le site, son contenu, le logo, les motifs amazighs, les modèles et les photographies sont la propriété exclusive de Maison Titrit. Toute reproduction, totale ou partielle, sans autorisation écrite est interdite.",
+						"Le site, son contenu, le logo, les motifs amazighs, les modÃ¨les et les photographies sont la propriÃ©tÃ© exclusive de Maison Titrit. Toute reproduction, totale ou partielle, sans autorisation Ã©crite est interdite.",
 					],
 				},
 				{
-					h: "10. Responsabilité",
+					h: "10. ResponsabilitÃ©",
 					p: [
-						"Le site est fourni « en l'état ». Maison Titrit ne saurait être tenue responsable des interruptions, erreurs ou omissions indépendantes de sa volonté, ni des contenus des sites tiers vers lesquels nous renvoyons (WhatsApp, cartes). Aucune responsabilité ne peut être engagée en cas de force majeure.",
+						"Le site est fourni Â« en l'Ã©tat Â». Maison Titrit ne saurait Ãªtre tenue responsable des interruptions, erreurs ou omissions indÃ©pendantes de sa volontÃ©, ni des contenus des sites tiers vers lesquels nous renvoyons (WhatsApp, cartes). Aucune responsabilitÃ© ne peut Ãªtre engagÃ©e en cas de force majeure.",
 					],
 				},
 				{
-					h: "11. Données personnelles",
+					h: "11. DonnÃ©es personnelles",
 					p: [
-						"Le traitement de vos données personnelles est décrit dans notre Politique de confidentialité, accessible en bas de page.",
+						"Le traitement de vos donnÃ©es personnelles est dÃ©crit dans notre Politique de confidentialitÃ©, accessible en bas de page.",
 					],
 				},
 				{
 					h: "12. Droit applicable et litiges",
 					p: [
-						"Les présentes conditions sont régies par le droit marocain. En cas de litige, les tribunaux de Casablanca sont seuls compétents. Nous vous invitons d'abord à nous contacter afin de rechercher une solution amiable.",
+						"Les prÃ©sentes conditions sont rÃ©gies par le droit marocain. En cas de litige, les tribunaux de Casablanca sont seuls compÃ©tents. Nous vous invitons d'abord Ã  nous contacter afin de rechercher une solution amiable.",
 					],
 				},
 			],
 			related: [
-				{ label: "Politique de confidentialité", href: "/confidentialite" },
+				{ label: "Politique de confidentialitÃ©", href: "/confidentialite" },
 			],
 		},
 	},
@@ -207,164 +207,166 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 	/* ====================================================================== */
 	ar: {
 		privacy: {
-			eyebrow: "معلومات قانونية",
-			title: "سياسة الخصوصية",
-			updated: "آخر تحديث: 14 نوفمبر 2026",
+			eyebrow: "Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ù‚Ø§Ù†ÙˆÙ†ÙŠØ©",
+			title: "Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©",
+			updated: "Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ«: 14 Ù†ÙˆÙÙ…Ø¨Ø± 2026",
 			intro:
-				"توضح هذه السياسة كيفية جمع ميزون تيتريت لبياناتك الشخصية واستخدامها وحمايتها عند استخدامك لهذا الموقع. وهي تُطبَّق وفقًا للقانون المغربي رقم 09-08 المتعلق بحماية الأشخاص الذاتيين من معالجة المعطيات ذات الطابع الشخصي، ووفقًا للائحة العامة لحماية البيانات (GDPR) عند انطباقها.",
+				"ØªÙˆØ¶Ø­ Ù‡Ø°Ù‡ Ø§Ù„Ø³ÙŠØ§Ø³Ø© ÙƒÙŠÙÙŠØ© Ø¬Ù…Ø¹ Ù…ÙŠØ²ÙˆÙ† ØªÙŠØªØ±ÙŠØª Ù„Ø¨ÙŠØ§Ù†Ø§ØªÙƒ Ø§Ù„Ø´Ø®ØµÙŠØ© ÙˆØ§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ø§ ÙˆØ­Ù…Ø§ÙŠØªÙ‡Ø§ Ø¹Ù†Ø¯ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ùƒ Ù„Ù‡Ø°Ø§ Ø§Ù„Ù…ÙˆÙ‚Ø¹. ÙˆÙ‡ÙŠ ØªÙØ·Ø¨ÙŽÙ‘Ù‚ ÙˆÙÙ‚Ù‹Ø§ Ù„Ù„Ù‚Ø§Ù†ÙˆÙ† Ø§Ù„Ù…ØºØ±Ø¨ÙŠ Ø±Ù‚Ù… 09-08 Ø§Ù„Ù…ØªØ¹Ù„Ù‚ Ø¨Ø­Ù…Ø§ÙŠØ© Ø§Ù„Ø£Ø´Ø®Ø§Øµ Ø§Ù„Ø°Ø§ØªÙŠÙŠÙ† Ù…Ù† Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„Ù…Ø¹Ø·ÙŠØ§Øª Ø°Ø§Øª Ø§Ù„Ø·Ø§Ø¨Ø¹ Ø§Ù„Ø´Ø®ØµÙŠØŒ ÙˆÙˆÙÙ‚Ù‹Ø§ Ù„Ù„Ø§Ø¦Ø­Ø© Ø§Ù„Ø¹Ø§Ù…Ø© Ù„Ø­Ù…Ø§ÙŠØ© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª (GDPR) Ø¹Ù†Ø¯ Ø§Ù†Ø·Ø¨Ø§Ù‚Ù‡Ø§.",
 			sections: [
 				{
-					h: "1. مسؤول المعالجة",
+					h: "1. Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©",
 					p: [
-						"مسؤول المعالجة هو محمد مغيمل — مقاول ذاتي، صاحب علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب).",
-						"لأي سؤال يتعلق ببياناتك الشخصية: Maisontitrit67@gmail.com.",
+						"المسؤول عن المعالجة هو مُشغِّل موقع Maison Titrit. تتوفر المعلومات القانونية وبيانات الاتصال الموثوقة (عند توفيرها من المُشغِّل) ضمن الإشعارات القانونية للموقع.",
+						"لأي سؤال يتعلق ببياناتك الشخصية، يرجى استخدام بيانات الاتصال/الخصوصية الموثوقة المنشورة على الموقع.",
 					],
 				},
 				{
-					h: "2. البيانات المجمَّعة",
+					h: "2. Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø¬Ù…ÙŽÙ‘Ø¹Ø©",
 					p: [
-						"الحساب — تتم المصادقة عبر Supabase Auth. بحسب طريقة تسجيل الدخول (Google أو البريد الإلكتروني وكلمة المرور)، نستقبل اسمك وعنوان بريدك الإلكتروني، وصورة ملفك الشخصي عند استخدام Google. تدير Supabase بيانات الاعتماد ولا نخزن كلمات المرور في جداول تطبيق Maison Titrit.",
-						"الطلبات — الاسم، الهاتف، البريد الإلكتروني (اختياري)، المدينة، عنوان التوصيل، الملاحظات وتفاصيل المنتجات. هذه المعلومات ضرورية لمعالجة طلبك وتوصيله.",
-						"التصفح — يُحفظ سلة التفضيلات ولغتك وسمتك محليًا في متصفحك. كما نحتفظ بسجلات تقنية (عنوان IP، التاريخ، الصفحات المزارة) لحماية الموقع.",
-						"الموافقة — اختياراتك بشأن ملفات تعريف الارتباط التحليلية والتسويقية.",
+						"Ø§Ù„Ø­Ø³Ø§Ø¨ â€” ØªØªÙ… Ø§Ù„Ù…ØµØ§Ø¯Ù‚Ø© Ø¹Ø¨Ø± Supabase Auth. Ø¨Ø­Ø³Ø¨ Ø·Ø±ÙŠÙ‚Ø© ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ (Google Ø£Ùˆ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ ÙˆÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±)ØŒ Ù†Ø³ØªÙ‚Ø¨Ù„ Ø§Ø³Ù…Ùƒ ÙˆØ¹Ù†ÙˆØ§Ù† Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØŒ ÙˆØµÙˆØ±Ø© Ù…Ù„ÙÙƒ Ø§Ù„Ø´Ø®ØµÙŠ Ø¹Ù†Ø¯ Ø§Ø³ØªØ®Ø¯Ø§Ù… Google. ØªØ¯ÙŠØ± Supabase Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø§Ø¹ØªÙ…Ø§Ø¯ ÙˆÙ„Ø§ Ù†Ø®Ø²Ù† ÙƒÙ„Ù…Ø§Øª Ø§Ù„Ù…Ø±ÙˆØ± ÙÙŠ Ø¬Ø¯Ø§ÙˆÙ„ ØªØ·Ø¨ÙŠÙ‚ Maison Titrit.",
+						"Ø§Ù„Ø·Ù„Ø¨Ø§Øª â€” Ø§Ù„Ø§Ø³Ù…ØŒ Ø§Ù„Ù‡Ø§ØªÙØŒ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)ØŒ Ø§Ù„Ù…Ø¯ÙŠÙ†Ø©ØŒ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„ØªÙˆØµÙŠÙ„ØŒ Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø§Øª ÙˆØªÙØ§ØµÙŠÙ„ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª. Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø¶Ø±ÙˆØ±ÙŠØ© Ù„Ù…Ø¹Ø§Ù„Ø¬Ø© Ø·Ù„Ø¨Ùƒ ÙˆØªÙˆØµÙŠÙ„Ù‡.",
+						"Ø§Ù„ØªØµÙØ­ â€” ÙŠÙØ­ÙØ¸ Ø³Ù„Ø© Ø§Ù„ØªÙØ¶ÙŠÙ„Ø§Øª ÙˆÙ„ØºØªÙƒ ÙˆØ³Ù…ØªÙƒ Ù…Ø­Ù„ÙŠÙ‹Ø§ ÙÙŠ Ù…ØªØµÙØ­Ùƒ. ÙƒÙ…Ø§ Ù†Ø­ØªÙØ¸ Ø¨Ø³Ø¬Ù„Ø§Øª ØªÙ‚Ù†ÙŠØ© (Ø¹Ù†ÙˆØ§Ù† IPØŒ Ø§Ù„ØªØ§Ø±ÙŠØ®ØŒ Ø§Ù„ØµÙØ­Ø§Øª Ø§Ù„Ù…Ø²Ø§Ø±Ø©) Ù„Ø­Ù…Ø§ÙŠØ© Ø§Ù„Ù…ÙˆÙ‚Ø¹.",
+						"Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© â€” Ø§Ø®ØªÙŠØ§Ø±Ø§ØªÙƒ Ø¨Ø´Ø£Ù† Ù…Ù„ÙØ§Øª ØªØ¹Ø±ÙŠÙ Ø§Ù„Ø§Ø±ØªØ¨Ø§Ø· Ø§Ù„ØªØ­Ù„ÙŠÙ„ÙŠØ© ÙˆØ§Ù„ØªØ³ÙˆÙŠÙ‚ÙŠØ©.",
 					],
 				},
 				{
-					h: "3. أغراض المعالجة",
+					h: "3. Ø£ØºØ±Ø§Ø¶ Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©",
 					p: [
-						"نستخدم بياناتك من أجل: معالجة طلباتك وتوصيلها؛ إدارة حسابك؛ التواصل معك بخصوص طلبك (الهاتف، واتساب، البريد)؛ إعلام فريقنا بالطلبات الجديدة؛ ضمان أمن الموقع وتشغيله؛ وفقط بموافقتك، قياس عدد الزوار (Google Analytics) وتخصيص حملاتنا الإعلانية (Meta وPinterest وTikTok).",
+						"Ù†Ø³ØªØ®Ø¯Ù… Ø¨ÙŠØ§Ù†Ø§ØªÙƒ Ù…Ù† Ø£Ø¬Ù„: Ù…Ø¹Ø§Ù„Ø¬Ø© Ø·Ù„Ø¨Ø§ØªÙƒ ÙˆØªÙˆØµÙŠÙ„Ù‡Ø§Ø› Ø¥Ø¯Ø§Ø±Ø© Ø­Ø³Ø§Ø¨ÙƒØ› Ø§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹Ùƒ Ø¨Ø®ØµÙˆØµ Ø·Ù„Ø¨Ùƒ (Ø§Ù„Ù‡Ø§ØªÙØŒ ÙˆØ§ØªØ³Ø§Ø¨ØŒ Ø§Ù„Ø¨Ø±ÙŠØ¯)Ø› Ø¥Ø¹Ù„Ø§Ù… ÙØ±ÙŠÙ‚Ù†Ø§ Ø¨Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø©Ø› Ø¶Ù…Ø§Ù† Ø£Ù…Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØªØ´ØºÙŠÙ„Ù‡Ø› ÙˆÙÙ‚Ø· Ø¨Ù…ÙˆØ§ÙÙ‚ØªÙƒØŒ Ù‚ÙŠØ§Ø³ Ø¹Ø¯Ø¯ Ø§Ù„Ø²ÙˆØ§Ø± (Google Analytics) ÙˆØªØ®ØµÙŠØµ Ø­Ù…Ù„Ø§ØªÙ†Ø§ Ø§Ù„Ø¥Ø¹Ù„Ø§Ù†ÙŠØ© (Meta ÙˆPinterest ÙˆTikTok).",
 					],
 				},
 				{
-					h: "4. الأساس القانوني للمعالجة",
+					h: "4. Ø§Ù„Ø£Ø³Ø§Ø³ Ø§Ù„Ù‚Ø§Ù†ÙˆÙ†ÙŠ Ù„Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©",
 					p: [
-						"تنفيذ العقد (طلبك)، موافقتك (ملفات الارتباط التحليلية والتسويقية — قابلة للسحب في أي وقت)، مصلحتنا المشروعة (أمن الموقع وتشغيله) والالتزامات القانونية (المحاسبة).",
+						"ØªÙ†ÙÙŠØ° Ø§Ù„Ø¹Ù‚Ø¯ (Ø·Ù„Ø¨Ùƒ)ØŒ Ù…ÙˆØ§ÙÙ‚ØªÙƒ (Ù…Ù„ÙØ§Øª Ø§Ù„Ø§Ø±ØªØ¨Ø§Ø· Ø§Ù„ØªØ­Ù„ÙŠÙ„ÙŠØ© ÙˆØ§Ù„ØªØ³ÙˆÙŠÙ‚ÙŠØ© â€” Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„Ø³Ø­Ø¨ ÙÙŠ Ø£ÙŠ ÙˆÙ‚Øª)ØŒ Ù…ØµÙ„Ø­ØªÙ†Ø§ Ø§Ù„Ù…Ø´Ø±ÙˆØ¹Ø© (Ø£Ù…Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØªØ´ØºÙŠÙ„Ù‡) ÙˆØ§Ù„Ø§Ù„ØªØ²Ø§Ù…Ø§Øª Ø§Ù„Ù‚Ø§Ù†ÙˆÙ†ÙŠØ© (Ø§Ù„Ù…Ø­Ø§Ø³Ø¨Ø©).",
 					],
 				},
 				{
-					h: "5. الجهات المتلقية للبيانات",
+					h: "5. Ø§Ù„Ø¬Ù‡Ø§Øª Ø§Ù„Ù…ØªÙ„Ù‚ÙŠØ© Ù„Ù„Ø¨ÙŠØ§Ù†Ø§Øª",
 					p: [
-						"تُستضاف بياناتك لدى Vercel (الموقع) وSupabase (قاعدة البيانات والمصادقة، الاتحاد الأوروبي) وCloudflare R2 (الصور) وBrevo (تنبيهات البريد الداخلية). ولا تُحمَّل خدمات قياس الجمهور والإعلانات إلا بعد موافقتك. ويُرسَل تفاصيل طلبك إلى فريقنا عبر واتساب والبريد لإعداد الشحنة.",
-						"لا نبيع بياناتك الشخصية ولا نؤجّرها إلى أي طرف ثالث.",
+						"ØªÙØ³ØªØ¶Ø§Ù Ø¨ÙŠØ§Ù†Ø§ØªÙƒ Ù„Ø¯Ù‰ Vercel (Ø§Ù„Ù…ÙˆÙ‚Ø¹) ÙˆSupabase (Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙˆØ§Ù„Ù…ØµØ§Ø¯Ù‚Ø©ØŒ Ø§Ù„Ø§ØªØ­Ø§Ø¯ Ø§Ù„Ø£ÙˆØ±ÙˆØ¨ÙŠ) ÙˆCloudflare R2 (Ø§Ù„ØµÙˆØ±) ÙˆBrevo (ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠØ©). ÙˆÙ„Ø§ ØªÙØ­Ù…ÙŽÙ‘Ù„ Ø®Ø¯Ù…Ø§Øª Ù‚ÙŠØ§Ø³ Ø§Ù„Ø¬Ù…Ù‡ÙˆØ± ÙˆØ§Ù„Ø¥Ø¹Ù„Ø§Ù†Ø§Øª Ø¥Ù„Ø§ Ø¨Ø¹Ø¯ Ù…ÙˆØ§ÙÙ‚ØªÙƒ. ÙˆÙŠÙØ±Ø³ÙŽÙ„ ØªÙØ§ØµÙŠÙ„ Ø·Ù„Ø¨Ùƒ Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚Ù†Ø§ Ø¹Ø¨Ø± ÙˆØ§ØªØ³Ø§Ø¨ ÙˆØ§Ù„Ø¨Ø±ÙŠØ¯ Ù„Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ø´Ø­Ù†Ø©.",
+						"Ù„Ø§ Ù†Ø¨ÙŠØ¹ Ø¨ÙŠØ§Ù†Ø§ØªÙƒ Ø§Ù„Ø´Ø®ØµÙŠØ© ÙˆÙ„Ø§ Ù†Ø¤Ø¬Ù‘Ø±Ù‡Ø§ Ø¥Ù„Ù‰ Ø£ÙŠ Ø·Ø±Ù Ø«Ø§Ù„Ø«.",
 					],
 				},
 				{
-					h: "6. مدة الاحتفاظ بالبيانات",
+					h: "6. Ù…Ø¯Ø© Ø§Ù„Ø§Ø­ØªÙØ§Ø¸ Ø¨Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª",
 					p: [
-						"الحساب — حتى حذف حسابك. الطلبات — المدة التي تفرضها اللوائح المحاسبية وال fiscale المغربية. السجلات التقنية — بضعة أشهر. الموافقة — حتى سحب اختيارك.",
+						"Ø§Ù„Ø­Ø³Ø§Ø¨ â€” Ø­ØªÙ‰ Ø­Ø°Ù Ø­Ø³Ø§Ø¨Ùƒ. Ø§Ù„Ø·Ù„Ø¨Ø§Øª â€” Ø§Ù„Ù…Ø¯Ø© Ø§Ù„ØªÙŠ ØªÙØ±Ø¶Ù‡Ø§ Ø§Ù„Ù„ÙˆØ§Ø¦Ø­ Ø§Ù„Ù…Ø­Ø§Ø³Ø¨ÙŠØ© ÙˆØ§Ù„ fiscale Ø§Ù„Ù…ØºØ±Ø¨ÙŠØ©. Ø§Ù„Ø³Ø¬Ù„Ø§Øª Ø§Ù„ØªÙ‚Ù†ÙŠØ© â€” Ø¨Ø¶Ø¹Ø© Ø£Ø´Ù‡Ø±. Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø© â€” Ø­ØªÙ‰ Ø³Ø­Ø¨ Ø§Ø®ØªÙŠØ§Ø±Ùƒ.",
 					],
 				},
 				{
-					h: "7. حقوقك",
+					h: "7. Ø­Ù‚ÙˆÙ‚Ùƒ",
 					p: [
-						"يحق لك الاطلاع على بياناتك وتصحيحها وحذفها والاعتراض عليها ونقلها. مارس حقوقك عبر مراسلة Maisontitrit67@gmail.com — وسنرد عليك في أقرب وقت ممكن.",
-						"يمكنك أيضًا تقديم شكوى لدى اللجنة الوطنية للرقابة على حماية المعطيات ذات الطابع الشخصي (CNDP — cndp.ma).",
+						"لك الحق في الولوج إلى بياناتك وتصحيحها ومحوها والاعتراض على معالجتها ونقلها. يمكنك ممارسة هذه الحقوق عبر بيانات الاتصال/الخصوصية الموثوقة المنشورة على الموقع، وسنرد في أقرب الآجال.",
+						"ÙŠÙ…ÙƒÙ†Ùƒ Ø£ÙŠØ¶Ù‹Ø§ ØªÙ‚Ø¯ÙŠÙ… Ø´ÙƒÙˆÙ‰ Ù„Ø¯Ù‰ Ø§Ù„Ù„Ø¬Ù†Ø© Ø§Ù„ÙˆØ·Ù†ÙŠØ© Ù„Ù„Ø±Ù‚Ø§Ø¨Ø© Ø¹Ù„Ù‰ Ø­Ù…Ø§ÙŠØ© Ø§Ù„Ù…Ø¹Ø·ÙŠØ§Øª Ø°Ø§Øª Ø§Ù„Ø·Ø§Ø¨Ø¹ Ø§Ù„Ø´Ø®ØµÙŠ (CNDP â€” cndp.ma).",
 					],
 				},
 				{
-					h: "8. ملفات تعريف الارتباط",
+					h: "8. Ù…Ù„ÙØ§Øª ØªØ¹Ø±ÙŠÙ Ø§Ù„Ø§Ø±ØªØ¨Ø§Ø·",
 					p: [
-						"ملفات ضرورية للغاية — الجلسة، خيار الموافقة، التفضيلات: تبقى مفعَّلة دائمًا لأنها تُمكّن الموقع من العمل.",
-						"الملفات التحليلية والتسويقية — لا تُحمَّل إلا إذا قبلتها عبر شريط الموافقة. يمكنك تغيير اختيارك في أي وقت عبر زر التفضيلات الموجود أسفل يسار كل صفحة.",
+						"Ù…Ù„ÙØ§Øª Ø¶Ø±ÙˆØ±ÙŠØ© Ù„Ù„ØºØ§ÙŠØ© â€” Ø§Ù„Ø¬Ù„Ø³Ø©ØŒ Ø®ÙŠØ§Ø± Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø©ØŒ Ø§Ù„ØªÙØ¶ÙŠÙ„Ø§Øª: ØªØ¨Ù‚Ù‰ Ù…ÙØ¹ÙŽÙ‘Ù„Ø© Ø¯Ø§Ø¦Ù…Ù‹Ø§ Ù„Ø£Ù†Ù‡Ø§ ØªÙÙ…ÙƒÙ‘Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ù…Ù† Ø§Ù„Ø¹Ù…Ù„.",
+						"Ø§Ù„Ù…Ù„ÙØ§Øª Ø§Ù„ØªØ­Ù„ÙŠÙ„ÙŠØ© ÙˆØ§Ù„ØªØ³ÙˆÙŠÙ‚ÙŠØ© â€” Ù„Ø§ ØªÙØ­Ù…ÙŽÙ‘Ù„ Ø¥Ù„Ø§ Ø¥Ø°Ø§ Ù‚Ø¨Ù„ØªÙ‡Ø§ Ø¹Ø¨Ø± Ø´Ø±ÙŠØ· Ø§Ù„Ù…ÙˆØ§ÙÙ‚Ø©. ÙŠÙ…ÙƒÙ†Ùƒ ØªØºÙŠÙŠØ± Ø§Ø®ØªÙŠØ§Ø±Ùƒ ÙÙŠ Ø£ÙŠ ÙˆÙ‚Øª Ø¹Ø¨Ø± Ø²Ø± Ø§Ù„ØªÙØ¶ÙŠÙ„Ø§Øª Ø§Ù„Ù…ÙˆØ¬ÙˆØ¯ Ø£Ø³ÙÙ„ ÙŠØ³Ø§Ø± ÙƒÙ„ ØµÙØ­Ø©.",
 					],
 				},
 				{
-					h: "9. الأمان والتحويل خارج المغرب",
+					h: "9. Ø§Ù„Ø£Ù…Ø§Ù† ÙˆØ§Ù„ØªØ­ÙˆÙŠÙ„ Ø®Ø§Ø±Ø¬ Ø§Ù„Ù…ØºØ±Ø¨",
 					p: [
-						"يُقدَّم الموقع عبر HTTPS ويقتصر الوصول إلى البيانات على المصرَّح لهم. وبعض مزودي الخدمات (Vercel وGoogle) يقعون خارج المغرب؛ ويُنظَّم نقل البيانات بضمانات مناسبة، لا سيما البنود التعاقدية القياسية للاتحاد الأوروبي عند انطباق GDPR.",
+						"ÙŠÙÙ‚Ø¯ÙŽÙ‘Ù… Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø¹Ø¨Ø± HTTPS ÙˆÙŠÙ‚ØªØµØ± Ø§Ù„ÙˆØµÙˆÙ„ Ø¥Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø¹Ù„Ù‰ Ø§Ù„Ù…ØµØ±ÙŽÙ‘Ø­ Ù„Ù‡Ù…. ÙˆØ¨Ø¹Ø¶ Ù…Ø²ÙˆØ¯ÙŠ Ø§Ù„Ø®Ø¯Ù…Ø§Øª (Vercel ÙˆGoogle) ÙŠÙ‚Ø¹ÙˆÙ† Ø®Ø§Ø±Ø¬ Ø§Ù„Ù…ØºØ±Ø¨Ø› ÙˆÙŠÙÙ†Ø¸ÙŽÙ‘Ù… Ù†Ù‚Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø¶Ù…Ø§Ù†Ø§Øª Ù…Ù†Ø§Ø³Ø¨Ø©ØŒ Ù„Ø§ Ø³ÙŠÙ…Ø§ Ø§Ù„Ø¨Ù†ÙˆØ¯ Ø§Ù„ØªØ¹Ø§Ù‚Ø¯ÙŠØ© Ø§Ù„Ù‚ÙŠØ§Ø³ÙŠØ© Ù„Ù„Ø§ØªØ­Ø§Ø¯ Ø§Ù„Ø£ÙˆØ±ÙˆØ¨ÙŠ Ø¹Ù†Ø¯ Ø§Ù†Ø·Ø¨Ø§Ù‚ GDPR.",
 					],
 				},
 				{
-					h: "10. التعديلات",
+					h: "10. Ø§Ù„ØªØ¹Ø¯ÙŠÙ„Ø§Øª",
 					p: [
-						"قد تتطور هذه السياسة لتعكس ممارساتنا أو التشريعات. ويظهر تاريخ آخر تحديث أعلى الصفحة؛ وسنُعلمكم على الموقع عند أي جوهري.",
+						"Ù‚Ø¯ ØªØªØ·ÙˆØ± Ù‡Ø°Ù‡ Ø§Ù„Ø³ÙŠØ§Ø³Ø© Ù„ØªØ¹ÙƒØ³ Ù…Ù…Ø§Ø±Ø³Ø§ØªÙ†Ø§ Ø£Ùˆ Ø§Ù„ØªØ´Ø±ÙŠØ¹Ø§Øª. ÙˆÙŠØ¸Ù‡Ø± ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ« Ø£Ø¹Ù„Ù‰ Ø§Ù„ØµÙØ­Ø©Ø› ÙˆØ³Ù†ÙØ¹Ù„Ù…ÙƒÙ… Ø¹Ù„Ù‰ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø¹Ù†Ø¯ Ø£ÙŠ Ø¬ÙˆÙ‡Ø±ÙŠ.",
 					],
 				},
 			],
-			related: [{ label: "شروط البيع العامة", href: "/cgv" }],
+			related: [{ label: "Ø´Ø±ÙˆØ· Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„Ø¹Ø§Ù…Ø©", href: "/cgv" }],
 		},
 		terms: {
-			eyebrow: "معلومات قانونية",
-			title: "شروط البيع العامة",
-			updated: "آخر تحديث: 14 نوفمبر 2026",
+			eyebrow: "Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ù‚Ø§Ù†ÙˆÙ†ÙŠØ©",
+			title: "Ø´Ø±ÙˆØ· Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„Ø¹Ø§Ù…Ø©",
+			updated: "Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ«: 14 Ù†ÙˆÙÙ…Ø¨Ø± 2026",
 			intro:
-				"تحكم هذه الشروط عمليات البيع التي تتم عبر maisontitrit.com بين ميزون تيتريت وأي زبون شخصي. ويشمل أي طلب قبولها دون تحفظ.",
+				"ØªØ­ÙƒÙ… Ù‡Ø°Ù‡ Ø§Ù„Ø´Ø±ÙˆØ· Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„Ø¨ÙŠØ¹ Ø§Ù„ØªÙŠ ØªØªÙ… Ø¹Ø¨Ø± maisontitrit.com Ø¨ÙŠÙ† Ù…ÙŠØ²ÙˆÙ† ØªÙŠØªØ±ÙŠØª ÙˆØ£ÙŠ Ø²Ø¨ÙˆÙ† Ø´Ø®ØµÙŠ. ÙˆÙŠØ´Ù…Ù„ Ø£ÙŠ Ø·Ù„Ø¨ Ù‚Ø¨ÙˆÙ„Ù‡Ø§ Ø¯ÙˆÙ† ØªØ­ÙØ¸.",
 			sections: [
 				{
-					h: "1. مُحرِّر الموقع",
+					h: "1. Ù…ÙØ­Ø±ÙÙ‘Ø± Ø§Ù„Ù…ÙˆÙ‚Ø¹",
 					p: [
-						"يُحرِّر الموقع محمد مغيمل — مقاول ذاتي (RNAE 001609783000007)، علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب). التواصل: Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"يُنشر الموقع ويُشغَّل من طرف مُشغِّل علامة Maison Titrit. تُنشر الإشعارات القانونية الموثوقة (الهوية، بيانات الاتصال، المستضيف، عند الاقتضاء) على الموقع عند توفيرها.",
 					],
 				},
 				{
-					h: "2. المنتجات",
+					h: "2. Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª",
 					p: [
-						"تُفصَّل قطعنا يدويًا في ورشتنا ببوسكورة، 100% صنع في المغرب. الصور مطابقة للمنتجات لكن الألوان قد تختلف قليلًا حسب شاشتك. وتُقدَّم المنتجات حسب توفر المخزون أو حسب الطلب.",
+						"ØªÙÙØµÙŽÙ‘Ù„ Ù‚Ø·Ø¹Ù†Ø§ ÙŠØ¯ÙˆÙŠÙ‹Ø§ ÙÙŠ ÙˆØ±Ø´ØªÙ†Ø§ Ø¨Ø¨ÙˆØ³ÙƒÙˆØ±Ø©ØŒ 100% ØµÙ†Ø¹ ÙÙŠ Ø§Ù„Ù…ØºØ±Ø¨. Ø§Ù„ØµÙˆØ± Ù…Ø·Ø§Ø¨Ù‚Ø© Ù„Ù„Ù…Ù†ØªØ¬Ø§Øª Ù„ÙƒÙ† Ø§Ù„Ø£Ù„ÙˆØ§Ù† Ù‚Ø¯ ØªØ®ØªÙ„Ù Ù‚Ù„ÙŠÙ„Ù‹Ø§ Ø­Ø³Ø¨ Ø´Ø§Ø´ØªÙƒ. ÙˆØªÙÙ‚Ø¯ÙŽÙ‘Ù… Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø­Ø³Ø¨ ØªÙˆÙØ± Ø§Ù„Ù…Ø®Ø²ÙˆÙ† Ø£Ùˆ Ø­Ø³Ø¨ Ø§Ù„Ø·Ù„Ø¨.",
 					],
 				},
 				{
-					h: "3. الأسعار",
+					h: "3. Ø§Ù„Ø£Ø³Ø¹Ø§Ø±",
 					p: [
-						"الأسعار معروضة بالدرهم المغربي (MAD). وتُبلَّغ вам رسوم التوصيل قبل تأكيد الطلب. ونحتفظ بحق تعديل أسعارنا في أي وقت؛ والسعر المعتمد هو المؤكَّد عند طلبك.",
+						"Ø§Ù„Ø£Ø³Ø¹Ø§Ø± Ù…Ø¹Ø±ÙˆØ¶Ø© Ø¨Ø§Ù„Ø¯Ø±Ù‡Ù… Ø§Ù„Ù…ØºØ±Ø¨ÙŠ (MAD). ÙˆØªÙØ¨Ù„ÙŽÙ‘Øº Ð²Ð°Ð¼ Ø±Ø³ÙˆÙ… Ø§Ù„ØªÙˆØµÙŠÙ„ Ù‚Ø¨Ù„ ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø·Ù„Ø¨. ÙˆÙ†Ø­ØªÙØ¸ Ø¨Ø­Ù‚ ØªØ¹Ø¯ÙŠÙ„ Ø£Ø³Ø¹Ø§Ø±Ù†Ø§ ÙÙŠ Ø£ÙŠ ÙˆÙ‚ØªØ› ÙˆØ§Ù„Ø³Ø¹Ø± Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ Ù‡Ùˆ Ø§Ù„Ù…Ø¤ÙƒÙŽÙ‘Ø¯ Ø¹Ù†Ø¯ Ø·Ù„Ø¨Ùƒ.",
 					],
 				},
 				{
-					h: "4. الطلبات",
+					h: "4. Ø§Ù„Ø·Ù„Ø¨Ø§Øª",
 					p: [
-						"يمكنك الطلب عبر سلة الموقع أو مباشرة عبر واتساب. ويُخضع كل طلب للتأكيد عبر الهاتف أو واتساب. وعند غياب التأكيد أو توفر المنتج، قد يُلغى الطلب. والطلب المؤكَّد نهائي.",
+						"ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ù„Ø·Ù„Ø¨ Ø¹Ø¨Ø± Ø³Ù„Ø© Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø£Ùˆ Ù…Ø¨Ø§Ø´Ø±Ø© Ø¹Ø¨Ø± ÙˆØ§ØªØ³Ø§Ø¨. ÙˆÙŠÙØ®Ø¶Ø¹ ÙƒÙ„ Ø·Ù„Ø¨ Ù„Ù„ØªØ£ÙƒÙŠØ¯ Ø¹Ø¨Ø± Ø§Ù„Ù‡Ø§ØªÙ Ø£Ùˆ ÙˆØ§ØªØ³Ø§Ø¨. ÙˆØ¹Ù†Ø¯ ØºÙŠØ§Ø¨ Ø§Ù„ØªØ£ÙƒÙŠØ¯ Ø£Ùˆ ØªÙˆÙØ± Ø§Ù„Ù…Ù†ØªØ¬ØŒ Ù‚Ø¯ ÙŠÙÙ„ØºÙ‰ Ø§Ù„Ø·Ù„Ø¨. ÙˆØ§Ù„Ø·Ù„Ø¨ Ø§Ù„Ù…Ø¤ÙƒÙŽÙ‘Ø¯ Ù†Ù‡Ø§Ø¦ÙŠ.",
 					],
 				},
 				{
-					h: "5. الأداء",
+					h: "5. Ø§Ù„Ø£Ø¯Ø§Ø¡",
 					p: [
-						"يُؤدَّى الأداء عند التوصيل (COD)، نقدًا عند استلام الطرد. ولا يحصّل الموقع أي دفعة مسبقًا.",
+						"ÙŠÙØ¤Ø¯ÙŽÙ‘Ù‰ Ø§Ù„Ø£Ø¯Ø§Ø¡ Ø¹Ù†Ø¯ Ø§Ù„ØªÙˆØµÙŠÙ„ (COD)ØŒ Ù†Ù‚Ø¯Ù‹Ø§ Ø¹Ù†Ø¯ Ø§Ø³ØªÙ„Ø§Ù… Ø§Ù„Ø·Ø±Ø¯. ÙˆÙ„Ø§ ÙŠØ­ØµÙ‘Ù„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø£ÙŠ Ø¯ÙØ¹Ø© Ù…Ø³Ø¨Ù‚Ù‹Ø§.",
 					],
 				},
 				{
-					h: "6. التوصيل",
+					h: "6. Ø§Ù„ØªÙˆØµÙŠÙ„",
 					p: [
-						"نوصّل إلى جميع أنحاء المغرب. وتُبلَّغ المدد عند التأكيد حسب الوجهة. ومسؤوليتك دقة عنوان التوصيل؛ وعند غيابك وقت التوصيل، قد تستلزم المحاولات الإضافية رسومًا على حسابك.",
+						"Ù†ÙˆØµÙ‘Ù„ Ø¥Ù„Ù‰ Ø¬Ù…ÙŠØ¹ Ø£Ù†Ø­Ø§Ø¡ Ø§Ù„Ù…ØºØ±Ø¨. ÙˆØªÙØ¨Ù„ÙŽÙ‘Øº Ø§Ù„Ù…Ø¯Ø¯ Ø¹Ù†Ø¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯ Ø­Ø³Ø¨ Ø§Ù„ÙˆØ¬Ù‡Ø©. ÙˆÙ…Ø³Ø¤ÙˆÙ„ÙŠØªÙƒ Ø¯Ù‚Ø© Ø¹Ù†ÙˆØ§Ù† Ø§Ù„ØªÙˆØµÙŠÙ„Ø› ÙˆØ¹Ù†Ø¯ ØºÙŠØ§Ø¨Ùƒ ÙˆÙ‚Øª Ø§Ù„ØªÙˆØµÙŠÙ„ØŒ Ù‚Ø¯ ØªØ³ØªÙ„Ø²Ù… Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø§Øª Ø§Ù„Ø¥Ø¶Ø§ÙÙŠØ© Ø±Ø³ÙˆÙ…Ù‹Ø§ Ø¹Ù„Ù‰ Ø­Ø³Ø§Ø¨Ùƒ.",
 					],
 				},
 				{
-					h: "7. الاستبدال والإرجاع",
+					h: "7. Ø§Ù„Ø§Ø³ØªØ¨Ø¯Ø§Ù„ ÙˆØ§Ù„Ø¥Ø±Ø¬Ø§Ø¹",
 					p: [
-						"يحق لك خلال 7 أيام من الاستلام طلب استبدال أو إرجاع، شرط أن تكون القطعة غير مستعملة وغير مغسولة وبطاقاتها مثبتة مع إثبات الشراء. ورسوم الإرجاع على حسابك، إلا في حال وجود عيب أو خطأ من جانبنا — فيتكفل حينها ميزون تيتريت بالاستبدال أو الاسترداد.",
-						"لأي شكوى، راسلنا عبر واتساب أو البريد مع رقم طلبك.",
+						"ÙŠØ­Ù‚ Ù„Ùƒ Ø®Ù„Ø§Ù„ 7 Ø£ÙŠØ§Ù… Ù…Ù† Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù… Ø·Ù„Ø¨ Ø§Ø³ØªØ¨Ø¯Ø§Ù„ Ø£Ùˆ Ø¥Ø±Ø¬Ø§Ø¹ØŒ Ø´Ø±Ø· Ø£Ù† ØªÙƒÙˆÙ† Ø§Ù„Ù‚Ø·Ø¹Ø© ØºÙŠØ± Ù…Ø³ØªØ¹Ù…Ù„Ø© ÙˆØºÙŠØ± Ù…ØºØ³ÙˆÙ„Ø© ÙˆØ¨Ø·Ø§Ù‚Ø§ØªÙ‡Ø§ Ù…Ø«Ø¨ØªØ© Ù…Ø¹ Ø¥Ø«Ø¨Ø§Øª Ø§Ù„Ø´Ø±Ø§Ø¡. ÙˆØ±Ø³ÙˆÙ… Ø§Ù„Ø¥Ø±Ø¬Ø§Ø¹ Ø¹Ù„Ù‰ Ø­Ø³Ø§Ø¨ÙƒØŒ Ø¥Ù„Ø§ ÙÙŠ Ø­Ø§Ù„ ÙˆØ¬ÙˆØ¯ Ø¹ÙŠØ¨ Ø£Ùˆ Ø®Ø·Ø£ Ù…Ù† Ø¬Ø§Ù†Ø¨Ù†Ø§ â€” ÙÙŠØªÙƒÙÙ„ Ø­ÙŠÙ†Ù‡Ø§ Ù…ÙŠØ²ÙˆÙ† ØªÙŠØªØ±ÙŠØª Ø¨Ø§Ù„Ø§Ø³ØªØ¨Ø¯Ø§Ù„ Ø£Ùˆ Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯.",
+						"Ù„Ø£ÙŠ Ø´ÙƒÙˆÙ‰ØŒ Ø±Ø§Ø³Ù„Ù†Ø§ Ø¹Ø¨Ø± ÙˆØ§ØªØ³Ø§Ø¨ Ø£Ùˆ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ù…Ø¹ Ø±Ù‚Ù… Ø·Ù„Ø¨Ùƒ.",
 					],
 				},
 				{
-					h: "8. الضمانات",
+					h: "8. Ø§Ù„Ø¶Ù…Ø§Ù†Ø§Øª",
 					p: [
-						"في حال وجود عيب تصنيع أو عدم مطابقة، راسلنا بصور المنتج. وحسب الحالة، نقترح الاستبدال أو الإصلاح أو الاسترداد، وفقًا للتشريع المغربي لحماية المستهلك.",
+						"ÙÙŠ Ø­Ø§Ù„ ÙˆØ¬ÙˆØ¯ Ø¹ÙŠØ¨ ØªØµÙ†ÙŠØ¹ Ø£Ùˆ Ø¹Ø¯Ù… Ù…Ø·Ø§Ø¨Ù‚Ø©ØŒ Ø±Ø§Ø³Ù„Ù†Ø§ Ø¨ØµÙˆØ± Ø§Ù„Ù…Ù†ØªØ¬. ÙˆØ­Ø³Ø¨ Ø§Ù„Ø­Ø§Ù„Ø©ØŒ Ù†Ù‚ØªØ±Ø­ Ø§Ù„Ø§Ø³ØªØ¨Ø¯Ø§Ù„ Ø£Ùˆ Ø§Ù„Ø¥ØµÙ„Ø§Ø­ Ø£Ùˆ Ø§Ù„Ø§Ø³ØªØ±Ø¯Ø§Ø¯ØŒ ÙˆÙÙ‚Ù‹Ø§ Ù„Ù„ØªØ´Ø±ÙŠØ¹ Ø§Ù„Ù…ØºØ±Ø¨ÙŠ Ù„Ø­Ù…Ø§ÙŠØ© Ø§Ù„Ù…Ø³ØªÙ‡Ù„Ùƒ.",
 					],
 				},
 				{
-					h: "9. الملكية الفكرية",
+					h: "9. Ø§Ù„Ù…Ù„ÙƒÙŠØ© Ø§Ù„ÙÙƒØ±ÙŠØ©",
 					p: [
-						"الموقع ومحتواه والشعار والزخارفة الأمازيغية والنماذج والصور ملك حصري لميزون تيتريت. ويُمنع النسخ كليًا أو جزئيًا دون إذن خطي.",
+						"Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆÙ…Ø­ØªÙˆØ§Ù‡ ÙˆØ§Ù„Ø´Ø¹Ø§Ø± ÙˆØ§Ù„Ø²Ø®Ø§Ø±ÙØ© Ø§Ù„Ø£Ù…Ø§Ø²ÙŠØºÙŠØ© ÙˆØ§Ù„Ù†Ù…Ø§Ø°Ø¬ ÙˆØ§Ù„ØµÙˆØ± Ù…Ù„Ùƒ Ø­ØµØ±ÙŠ Ù„Ù…ÙŠØ²ÙˆÙ† ØªÙŠØªØ±ÙŠØª. ÙˆÙŠÙÙ…Ù†Ø¹ Ø§Ù„Ù†Ø³Ø® ÙƒÙ„ÙŠÙ‹Ø§ Ø£Ùˆ Ø¬Ø²Ø¦ÙŠÙ‹Ø§ Ø¯ÙˆÙ† Ø¥Ø°Ù† Ø®Ø·ÙŠ.",
 					],
 				},
 				{
-					h: "10. المسؤولية",
+					h: "10. Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ©",
 					p: [
-						"يُقدَّم الموقع «كما هو». ولا تتحمل ميزون تيتريت مسؤولية الانقطاعات أو الأخطاء أو السهو خارج إرادتها، ولا محتوى المواقع الخارجية التي نُحيل إليها (واتساب، الخرائط). ولا تُقبل أي مسؤولية في حال القوة القاهرة.",
+						"ÙŠÙÙ‚Ø¯ÙŽÙ‘Ù… Ø§Ù„Ù…ÙˆÙ‚Ø¹ Â«ÙƒÙ…Ø§ Ù‡ÙˆÂ». ÙˆÙ„Ø§ ØªØªØ­Ù…Ù„ Ù…ÙŠØ²ÙˆÙ† ØªÙŠØªØ±ÙŠØª Ù…Ø³Ø¤ÙˆÙ„ÙŠØ© Ø§Ù„Ø§Ù†Ù‚Ø·Ø§Ø¹Ø§Øª Ø£Ùˆ Ø§Ù„Ø£Ø®Ø·Ø§Ø¡ Ø£Ùˆ Ø§Ù„Ø³Ù‡Ùˆ Ø®Ø§Ø±Ø¬ Ø¥Ø±Ø§Ø¯ØªÙ‡Ø§ØŒ ÙˆÙ„Ø§ Ù…Ø­ØªÙˆÙ‰ Ø§Ù„Ù…ÙˆØ§Ù‚Ø¹ Ø§Ù„Ø®Ø§Ø±Ø¬ÙŠØ© Ø§Ù„ØªÙŠ Ù†ÙØ­ÙŠÙ„ Ø¥Ù„ÙŠÙ‡Ø§ (ÙˆØ§ØªØ³Ø§Ø¨ØŒ Ø§Ù„Ø®Ø±Ø§Ø¦Ø·). ÙˆÙ„Ø§ ØªÙÙ‚Ø¨Ù„ Ø£ÙŠ Ù…Ø³Ø¤ÙˆÙ„ÙŠØ© ÙÙŠ Ø­Ø§Ù„ Ø§Ù„Ù‚ÙˆØ© Ø§Ù„Ù‚Ø§Ù‡Ø±Ø©.",
 					],
 				},
 				{
-					h: "11. البيانات الشخصية",
+					h: "11. Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø´Ø®ØµÙŠØ©",
 					p: [
-						"يصف معالجة بياناتك الشخصية سياسة الخصوصية الخاصة بنا، المتاحة أسفل الصفحة.",
+						"ÙŠØµÙ Ù…Ø¹Ø§Ù„Ø¬Ø© Ø¨ÙŠØ§Ù†Ø§ØªÙƒ Ø§Ù„Ø´Ø®ØµÙŠØ© Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ© Ø§Ù„Ø®Ø§ØµØ© Ø¨Ù†Ø§ØŒ Ø§Ù„Ù…ØªØ§Ø­Ø© Ø£Ø³ÙÙ„ Ø§Ù„ØµÙØ­Ø©.",
 					],
 				},
 				{
-					h: "12. القانون الواجب التطبيق والنزاعات",
+					h: "12. Ø§Ù„Ù‚Ø§Ù†ÙˆÙ† Ø§Ù„ÙˆØ§Ø¬Ø¨ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚ ÙˆØ§Ù„Ù†Ø²Ø§Ø¹Ø§Øª",
 					p: [
-						"تخضع هذه الشروط للقانون المغربي. وفي حالة النزاع، تختص محاكم الدار البيضاء حصريًا. وندعوك أولًا إلى التواصل معنا للبحث عن حل ودي.",
+						"ØªØ®Ø¶Ø¹ Ù‡Ø°Ù‡ Ø§Ù„Ø´Ø±ÙˆØ· Ù„Ù„Ù‚Ø§Ù†ÙˆÙ† Ø§Ù„Ù…ØºØ±Ø¨ÙŠ. ÙˆÙÙŠ Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø²Ø§Ø¹ØŒ ØªØ®ØªØµ Ù…Ø­Ø§ÙƒÙ… Ø§Ù„Ø¯Ø§Ø± Ø§Ù„Ø¨ÙŠØ¶Ø§Ø¡ Ø­ØµØ±ÙŠÙ‹Ø§. ÙˆÙ†Ø¯Ø¹ÙˆÙƒ Ø£ÙˆÙ„Ù‹Ø§ Ø¥Ù„Ù‰ Ø§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§ Ù„Ù„Ø¨Ø­Ø« Ø¹Ù† Ø­Ù„ ÙˆØ¯ÙŠ.",
 					],
 				},
 			],
-			related: [{ label: "سياسة الخصوصية", href: "/confidentialite" }],
+			related: [
+				{ label: "Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©", href: "/confidentialite" },
+			],
 		},
 	},
 
@@ -382,17 +384,17 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Data controller",
 					p: [
-						"The data controller is Mohamed Moughamir — Sole Proprietor, operating the Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco).",
-						"For any question about your personal data: Maisontitrit67@gmail.com.",
+						"The data controller is the operator of the Maison Titrit website. Verified legal information and contact details (when provided by the operator) are available in the site's legal notices.",
+						"For any question about your personal data, use the verified contact/privacy details published on the site.",
 					],
 				},
 				{
 					h: "2. Data we collect",
 					p: [
-						"Account — authentication is provided by Supabase Auth. Depending on your sign-in method (Google or email/password), we receive your name and email address and, with Google, your profile picture. Supabase manages credentials; passwords are not stored in Maison Titrit application tables.",
-						"Orders — name, phone, email address (optional), city, delivery address, notes and the details of your items. This information is required to process and deliver your order.",
-						"Browsing — your cart, language and theme preferences are stored locally in your browser. Technical logs (IP address, date, pages viewed) are kept for the security of the site.",
-						"Consent — your choices regarding analytics and marketing cookies.",
+						"Account â€” authentication is provided by Supabase Auth. Depending on your sign-in method (Google or email/password), we receive your name and email address and, with Google, your profile picture. Supabase manages credentials; passwords are not stored in Maison Titrit application tables.",
+						"Orders â€” name, phone, email address (optional), city, delivery address, notes and the details of your items. This information is required to process and deliver your order.",
+						"Browsing â€” your cart, language and theme preferences are stored locally in your browser. Technical logs (IP address, date, pages viewed) are kept for the security of the site.",
+						"Consent â€” your choices regarding analytics and marketing cookies.",
 					],
 				},
 				{
@@ -404,7 +406,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "4. Legal basis",
 					p: [
-						"Performance of a contract (your order), your consent (analytics and marketing cookies — revocable at any time), our legitimate interest (security and operation of the site) and our legal obligations (accounting).",
+						"Performance of a contract (your order), your consent (analytics and marketing cookies â€” revocable at any time), our legitimate interest (security and operation of the site) and our legal obligations (accounting).",
 					],
 				},
 				{
@@ -417,21 +419,21 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. Retention",
 					p: [
-						"Account — until your account is deleted. Orders — as long as Moroccan accounting and tax regulations require. Technical logs — a few months. Consent — until you withdraw your choice.",
+						"Account â€” until your account is deleted. Orders â€” as long as Moroccan accounting and tax regulations require. Technical logs â€” a few months. Consent â€” until you withdraw your choice.",
 					],
 				},
 				{
 					h: "7. Your rights",
 					p: [
-						"You have the right to access, rectify, erase, object to and port your data. Exercise them by writing to Maisontitrit67@gmail.com — we will respond as soon as possible.",
-						"You may also lodge a complaint with Morocco's National Commission for the Protection of Personal Data (CNDP — cndp.ma).",
+						"You have the right to access, rectify, erase, object to and port your data. Exercise them via the verified contact/privacy details published on the site; we will respond as soon as possible.",
+						"You may also lodge a complaint with Morocco's National Commission for the Protection of Personal Data (CNDP â€” cndp.ma).",
 					],
 				},
 				{
 					h: "8. Cookies",
 					p: [
-						"Strictly necessary cookies — session, consent choice, preferences: always active, they let the site function.",
-						"Analytics and marketing cookies — loaded only if you accept them via the consent banner. You can change your choice at any time with the preferences button shown at the bottom left of every page.",
+						"Strictly necessary cookies â€” session, consent choice, preferences: always active, they let the site function.",
+						"Analytics and marketing cookies â€” loaded only if you accept them via the consent banner. You can change your choice at any time with the preferences button shown at the bottom left of every page.",
 					],
 				},
 				{
@@ -459,7 +461,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Site publisher",
 					p: [
-						"The site is published by Mohamed Moughamir — Sole Proprietor (RNAE 001609783000007), Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco). Contact: Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"The site is published and operated by the operator of the Maison Titrit brand. Verified legal notices (identity, contact details, host, where applicable) are published on the site when provided.",
 					],
 				},
 				{
@@ -495,7 +497,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. Exchanges and returns",
 					p: [
-						"You have 7 days from receipt to request an exchange or return, provided the piece is unworn, unwashed, with its tags and proof of purchase. Return shipping is at your expense, unless there is a defect or mistake on our part — in that case Maison Titrit covers the exchange or refund.",
+						"You have 7 days from receipt to request an exchange or return, provided the piece is unworn, unwashed, with its tags and proof of purchase. Return shipping is at your expense, unless there is a defect or mistake on our part â€” in that case Maison Titrit covers the exchange or refund.",
 						"For any claim, contact us on WhatsApp or by email with your order number.",
 					],
 				},
@@ -514,7 +516,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "10. Liability",
 					p: [
-						"The site is provided “as is”. Maison Titrit cannot be held liable for interruptions, errors or omissions beyond its control, nor for the content of third-party sites we link to (WhatsApp, maps). No liability can be accepted in cases of force majeure.",
+						"The site is provided â€œas isâ€. Maison Titrit cannot be held liable for interruptions, errors or omissions beyond its control, nor for the content of third-party sites we link to (WhatsApp, maps). No liability can be accepted in cases of force majeure.",
 					],
 				},
 				{
