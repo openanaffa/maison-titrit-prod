@@ -48,7 +48,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					h: "1. Responsable du traitement",
 					p: [
 						"Le responsable du traitement est Mohamed Moughamir — Auto-Entrepreneur, exploitant la marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc).",
-						"Pour toute question relative à vos données personnelles : Maisontitrit67@gmail.com.",
+						"Pour toute question relative à vos données personnelles : hello@maisontitrit.com.",
 					],
 				},
 				{
@@ -88,7 +88,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. Vos droits",
 					p: [
-						"Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Exercez-les en écrivant à Maisontitrit67@gmail.com — nous vous répondrons dans les meilleurs délais.",
+						"Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Exercez-les en écrivant à hello@maisontitrit.com — nous vous répondrons dans les meilleurs délais.",
 						"Vous pouvez également introduire une réclamation auprès de la Commission Nationale de Contrôle de la Protection des Données à caractère Personnel (CNDP — cndp.ma).",
 					],
 				},
@@ -124,7 +124,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Éditeur du site",
 					p: [
-						"Le site est édité par Mohamed Moughamir — Auto-Entrepreneur (RNAE 001609783000007), marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc). Contact : Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"Le site est édité par Mohamed Moughamir — Auto-Entrepreneur (RNAE 001609783000007), marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc). Contact : hello@maisontitrit.com — 06 84 92 19 42.",
 					],
 				},
 				{
@@ -217,7 +217,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					h: "1. مسؤول المعالجة",
 					p: [
 						"مسؤول المعالجة هو محمد مغيمل — مقاول ذاتي، صاحب علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب).",
-						"لأي سؤال يتعلق ببياناتك الشخصية: Maisontitrit67@gmail.com.",
+						"لأي سؤال يتعلق ببياناتك الشخصية: hello@maisontitrit.com.",
 					],
 				},
 				{
@@ -257,7 +257,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. حقوقك",
 					p: [
-						"يحق لك الاطلاع على بياناتك وتصحيحها وحذفها والاعتراض عليها ونقلها. مارس حقوقك عبر مراسلة Maisontitrit67@gmail.com — وسنرد عليك في أقرب وقت ممكن.",
+						"يحق لك الاطلاع على بياناتك وتصحيحها وحذفها والاعتراض عليها ونقلها. مارس حقوقك عبر مراسلة hello@maisontitrit.com — وسنرد عليك في أقرب وقت ممكن.",
 						"يمكنك أيضًا تقديم شكوى لدى اللجنة الوطنية للرقابة على حماية المعطيات ذات الطابع الشخصي (CNDP — cndp.ma).",
 					],
 				},
@@ -293,7 +293,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. مُحرِّر الموقع",
 					p: [
-						"يُحرِّر الموقع محمد مغيمل — مقاول ذاتي (RNAE 001609783000007)، علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب). التواصل: Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"يُحرِّر الموقع محمد مغيمل — مقاول ذاتي (RNAE 001609783000007)، علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب). التواصل: hello@maisontitrit.com — 06 84 92 19 42.",
 					],
 				},
 				{
@@ -383,7 +383,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					h: "1. Data controller",
 					p: [
 						"The data controller is Mohamed Moughamir — Sole Proprietor, operating the Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco).",
-						"For any question about your personal data: Maisontitrit67@gmail.com.",
+						"For any question about your personal data: hello@maisontitrit.com.",
 					],
 				},
 				{
@@ -423,7 +423,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. Your rights",
 					p: [
-						"You have the right to access, rectify, erase, object to and port your data. Exercise them by writing to Maisontitrit67@gmail.com — we will respond as soon as possible.",
+						"You have the right to access, rectify, erase, object to and port your data. Exercise them by writing to hello@maisontitrit.com — we will respond as soon as possible.",
 						"You may also lodge a complaint with Morocco's National Commission for the Protection of Personal Data (CNDP — cndp.ma).",
 					],
 				},
@@ -459,7 +459,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Site publisher",
 					p: [
-						"The site is published by Mohamed Moughamir — Sole Proprietor (RNAE 001609783000007), Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco). Contact: Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"The site is published by Mohamed Moughamir — Sole Proprietor (RNAE 001609783000007), Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco). Contact: hello@maisontitrit.com — 06 84 92 19 42.",
 					],
 				},
 				{
