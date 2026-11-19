@@ -80,15 +80,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			changeFrequency: "monthly",
 			priority: 0.6,
 		}));
-		if (posts.length > 0) {
-			blogPages.unshift({
+		blogPages.unshift({
+			url: `${base}/blog`,
+			lastModified: now,
+			changeFrequency: "weekly",
+			priority: 0.6,
+		});
+	} catch {
+		blogPages = [
+			{
 				url: `${base}/blog`,
 				lastModified: now,
 				changeFrequency: "weekly",
 				priority: 0.6,
-			});
-		}
-	} catch {}
+			},
+		];
+	}
 
 	return [...staticPages, ...productPages, ...blogPages];
 }

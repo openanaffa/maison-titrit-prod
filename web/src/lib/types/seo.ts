@@ -20,6 +20,10 @@ export type PageMetaInput = {
 	keywords?: string[];
 	/** noindex / nofollow for private/low-value pages */
 	noIndex?: boolean;
-	/** locale override */
+	/**
+	 * Open Graph locale (e.g. fr_MA, ar_MA, en_US). Defaults to fr_MA.
+	 * Single-URL cookie-locale model: this describes content locale metadata,
+	 * not a locale-specific URL.
+	 */
 	locale?: string;
 };

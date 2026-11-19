@@ -13,10 +13,12 @@ export function productJsonLd(p: {
 }) {
 	const base = baseUrl();
 	const price = p.salePrice ?? p.price;
+	const url = `${base}/produit/${p.ref}`;
 	return {
 		"@context": "https://schema.org",
 		"@type": "Product",
-		"@id": `${base}/produit/${p.ref}`,
+		"@id": url,
+		url,
 		name: p.name,
 		description: p.description,
 		image: p.image.startsWith("http") ? p.image : `${base}${p.image}`,
@@ -25,7 +27,7 @@ export function productJsonLd(p: {
 		...(p.category ? { category: p.category } : {}),
 		offers: {
 			"@type": "Offer",
-			url: `${base}/produit/${p.ref}`,
+			url,
 			price: price.toFixed(2),
 			priceCurrency: p.currency,
 			availability:
@@ -33,7 +35,7 @@ export function productJsonLd(p: {
 					? "https://schema.org/OutOfStock"
 					: "https://schema.org/InStock",
 			itemCondition: "https://schema.org/NewCondition",
-			seller: { "@id": `${base}/#organization` },
+			seller: { "@id": `${base}/#store` },
 		},
 	};
 }
