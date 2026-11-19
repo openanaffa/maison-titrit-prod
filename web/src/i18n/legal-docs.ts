@@ -40,7 +40,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		privacy: {
 			eyebrow: "Informations légales",
 			title: "Politique de confidentialité",
-			updated: "Mis à jour le 14 novembre 2026",
+			updated: "Mis à jour le 19 novembre 2026",
 			intro:
 				"Cette politique explique comment Maison Titrit collecte, utilise et protège vos données personnelles lorsque vous utilisez ce site. Elle s'applique conformément à la loi marocaine n° 09-08 relative à la protection des données à caractère personnel et, lorsque le RGPD s'applique, au Règlement (UE) 2016/679.",
 			sections: [
@@ -117,7 +117,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		terms: {
 			eyebrow: "Informations légales",
 			title: "Conditions générales de vente",
-			updated: "Mis à jour le 14 novembre 2026",
+			updated: "Mis à jour le 19 novembre 2026",
 			intro:
 				"Les présentes conditions régissent les ventes conclues sur maisontitrit.com entre Maison Titrit et tout client particulier. Toute commande implique leur acceptation sans réserve.",
 			sections: [
@@ -209,7 +209,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		privacy: {
 			eyebrow: "معلومات قانونية",
 			title: "سياسة الخصوصية",
-			updated: "آخر تحديث: 14 نوفمبر 2026",
+			updated: "آخر تحديث: 19 نوفمبر 2026",
 			intro:
 				"توضح هذه السياسة كيفية جمع ميزون تيتريت لبياناتك الشخصية واستخدامها وحمايتها عند استخدامك لهذا الموقع. وهي تُطبَّق وفقًا للقانون المغربي رقم 09-08 المتعلق بحماية الأشخاص الذاتيين من معالجة المعطيات ذات الطابع الشخصي، ووفقًا للائحة العامة لحماية البيانات (GDPR) عند انطباقها.",
 			sections: [
@@ -225,7 +225,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					p: [
 						"الحساب — تتم المصادقة عبر Supabase Auth. بحسب طريقة تسجيل الدخول (Google أو البريد الإلكتروني وكلمة المرور)، نستقبل اسمك وعنوان بريدك الإلكتروني، وصورة ملفك الشخصي عند استخدام Google. تدير Supabase بيانات الاعتماد ولا نخزن كلمات المرور في جداول تطبيق Maison Titrit.",
 						"الطلبات — الاسم، الهاتف، البريد الإلكتروني (اختياري)، المدينة، عنوان التوصيل، الملاحظات وتفاصيل المنتجات. هذه المعلومات ضرورية لمعالجة طلبك وتوصيله.",
-						"التصفح — يُحفظ سلة التفضيلات ولغتك وسمتك محليًا في متصفحك. كما نحتفظ بسجلات تقنية (عنوان IP، التاريخ، الصفحات المزارة) لحماية الموقع.",
+						"التصفح — تُحفظ سلة التسوق ولغتك وسِمتك محليًا في متصفحك. كما نحتفظ بسجلات تقنية (عنوان IP، التاريخ، الصفحات التي تمت زيارتها) لأغراض أمن الموقع.",
 						"الموافقة — اختياراتك بشأن ملفات تعريف الارتباط التحليلية والتسويقية.",
 					],
 				},
@@ -251,7 +251,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. مدة الاحتفاظ بالبيانات",
 					p: [
-						"الحساب — حتى حذف حسابك. الطلبات — المدة التي تفرضها اللوائح المحاسبية وال fiscale المغربية. السجلات التقنية — بضعة أشهر. الموافقة — حتى سحب اختيارك.",
+						"الحساب — حتى حذف حسابك. الطلبات — للمدة التي تقتضيها اللوائح المحاسبية والضريبية المغربية. السجلات التقنية — لبضعة أشهر. الموافقة — حتى سحب اختيارك.",
 					],
 				},
 				{
@@ -277,7 +277,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "10. التعديلات",
 					p: [
-						"قد تتطور هذه السياسة لتعكس ممارساتنا أو التشريعات. ويظهر تاريخ آخر تحديث أعلى الصفحة؛ وسنُعلمكم على الموقع عند أي جوهري.",
+						"قد تتطور هذه السياسة لتعكس ممارساتنا أو المتطلبات القانونية. ويظهر تاريخ آخر تحديث أعلى الصفحة؛ وسنُعلمكم على الموقع عند أي تغيير جوهري.",
 					],
 				},
 			],
@@ -286,9 +286,9 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		terms: {
 			eyebrow: "معلومات قانونية",
 			title: "شروط البيع العامة",
-			updated: "آخر تحديث: 14 نوفمبر 2026",
+			updated: "آخر تحديث: 19 نوفمبر 2026",
 			intro:
-				"تحكم هذه الشروط عمليات البيع التي تتم عبر maisontitrit.com بين ميزون تيتريت وأي زبون شخصي. ويشمل أي طلب قبولها دون تحفظ.",
+				"تحكم هذه الشروط عمليات البيع التي تتم عبر maisontitrit.com بين ميزون تيتريت وأي زبون فردي. ويُعدّ تقديم أي طلب قبولًا لهذه الشروط دون تحفظ.",
 			sections: [
 				{
 					h: "1. مُحرِّر الموقع",
@@ -305,32 +305,32 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "3. الأسعار",
 					p: [
-						"الأسعار معروضة بالدرهم المغربي (MAD). وتُبلَّغ вам رسوم التوصيل قبل تأكيد الطلب. ونحتفظ بحق تعديل أسعارنا في أي وقت؛ والسعر المعتمد هو المؤكَّد عند طلبك.",
+						"الأسعار معروضة بالدرهم المغربي (MAD). وتُبلَّغون برسوم التوصيل قبل تأكيد الطلب. ونحتفظ بحق تعديل أسعارنا في أي وقت؛ والسعر المعتمد هو السعر المؤكَّد عند طلبك.",
 					],
 				},
 				{
 					h: "4. الطلبات",
 					p: [
-						"يمكنك الطلب عبر سلة الموقع أو مباشرة عبر واتساب. ويُخضع كل طلب للتأكيد عبر الهاتف أو واتساب. وعند غياب التأكيد أو توفر المنتج، قد يُلغى الطلب. والطلب المؤكَّد نهائي.",
+						"يمكنك الطلب عبر سلة الموقع أو مباشرة عبر واتساب. ويخضع كل طلب للتأكيد عبر الهاتف أو واتساب. وفي حال عدم التأكيد أو عدم توفر المنتج، قد يُلغى الطلب. ويُعدّ الطلب المؤكَّد نهائيًا.",
 					],
 				},
 				{
-					h: "5. الأداء",
+					h: "5. الدفع",
 					p: [
-						"يُؤدَّى الأداء عند التوصيل (COD)، نقدًا عند استلام الطرد. ولا يحصّل الموقع أي دفعة مسبقًا.",
+						"يتم الدفع عند الاستلام (COD) نقدًا عند تسلّم الطرد. ولا يتم تحصيل أي مبلغ عبر الموقع.",
 					],
 				},
 				{
 					h: "6. التوصيل",
 					p: [
-						"نوصّل إلى جميع أنحاء المغرب. وتُبلَّغ المدد عند التأكيد حسب الوجهة. ومسؤوليتك دقة عنوان التوصيل؛ وعند غيابك وقت التوصيل، قد تستلزم المحاولات الإضافية رسومًا على حسابك.",
+						"نقوم بالتوصيل إلى مختلف أنحاء المغرب. وتُبلَّغكم الآجال عند التأكيد حسب وجهة التسليم. وتقع على عاتقكم مسؤولية دقة عنوان التوصيل؛ وفي حال غيابكم وقت التسليم، قد تترتب على محاولات التسليم الإضافية رسوم على نفقتكم.",
 					],
 				},
 				{
 					h: "7. الاستبدال والإرجاع",
 					p: [
-						"يحق لك خلال 7 أيام من الاستلام طلب استبدال أو إرجاع، شرط أن تكون القطعة غير مستعملة وغير مغسولة وبطاقاتها مثبتة مع إثبات الشراء. ورسوم الإرجاع على حسابك، إلا في حال وجود عيب أو خطأ من جانبنا — فيتكفل حينها ميزون تيتريت بالاستبدال أو الاسترداد.",
-						"لأي شكوى، راسلنا عبر واتساب أو البريد مع رقم طلبك.",
+						"يمكنكم خلال 7 أيام من تاريخ الاستلام طلب استبدال أو إرجاع، بشرط أن تكون القطعة غير مستعملة وغير مغسولة ومع بطاقاتها وإثبات الشراء. وتكون رسوم الإرجاع على عاتقكم، إلا في حال وجود عيب أو خطأ من جانبنا — حيث تتكفل ميزون تيتريت حينها بالاستبدال أو الاسترداد.",
+						"لأي طلب أو ملاحظة، يرجى التواصل معنا عبر واتساب أو البريد الإلكتروني مع ذكر رقم الطلب.",
 					],
 				},
 				{
@@ -354,7 +354,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "11. البيانات الشخصية",
 					p: [
-						"يصف معالجة بياناتك الشخصية سياسة الخصوصية الخاصة بنا، المتاحة أسفل الصفحة.",
+						"تُوضَّح كيفية معالجة بياناتكم الشخصية في سياسة الخصوصية الخاصة بنا، المتاحة أسفل الصفحة.",
 					],
 				},
 				{
@@ -375,7 +375,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		privacy: {
 			eyebrow: "Legal information",
 			title: "Privacy policy",
-			updated: "Last updated: November 14, 2026",
+			updated: "Last updated: November 19, 2026",
 			intro:
 				"This policy explains how Maison Titrit collects, uses and protects your personal data when you use this site. It applies in accordance with Moroccan Law No. 09-08 on the protection of individuals with regard to the processing of personal data and, where applicable, the EU General Data Protection Regulation (GDPR).",
 			sections: [
@@ -452,7 +452,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		terms: {
 			eyebrow: "Legal information",
 			title: "Terms of sale",
-			updated: "Last updated: November 14, 2026",
+			updated: "Last updated: November 19, 2026",
 			intro:
 				"These terms govern sales concluded on maisontitrit.com between Maison Titrit and any individual customer. Placing an order implies their unreserved acceptance.",
 			sections: [
