@@ -45,5 +45,5 @@ CREATE POLICY "catalog_read_zones" ON public."DeliveryZone"
 DROP POLICY IF EXISTS "staff_write_zones" ON public."DeliveryZone";
 CREATE POLICY "staff_write_zones" ON public."DeliveryZone"
   FOR ALL TO authenticated
-  USING ((SELECT public.requesting_user_role()) IN ('FOUNDER', 'ADMIN'))
-  WITH CHECK ((SELECT public.requesting_user_role()) IN ('FOUNDER', 'ADMIN'));
+  USING ((SELECT public.requesting_user_role()) IN ('FOUNDER', 'DEVELOPER', 'ADMIN'))
+  WITH CHECK ((SELECT public.requesting_user_role()) IN ('FOUNDER', 'DEVELOPER', 'ADMIN'));
