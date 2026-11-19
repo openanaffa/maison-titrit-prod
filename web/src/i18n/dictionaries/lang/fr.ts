@@ -214,9 +214,6 @@ export const French = {
 	"detail.notFoundCta": "Voir la collection",
 	"detail.sizePrompt": "Choisissez une taille pour commander",
 
-	"loader.status": "A touch of elegance",
-	"loader.aria": "Chargement — Maison Titrit",
-
 	"float.aria": "Commander sur WhatsApp",
 	"float.label": "Commander · COD",
 	"float.msg":

@@ -212,9 +212,6 @@ export const English = {
 	"detail.notFoundCta": "View collection",
 	"detail.sizePrompt": "Choose a size to order",
 
-	"loader.status": "A touch of elegance",
-	"loader.aria": "Loading — Maison Titrit",
-
 	"float.aria": "Order on WhatsApp",
 	"float.label": "Order · COD",
 	"float.msg": "Hello Maison Titrit 👋, I would like info about your pieces.",

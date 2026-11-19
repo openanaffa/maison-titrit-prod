@@ -4,7 +4,6 @@ import { About } from "@/components/maison/about";
 import { CraftBand } from "@/components/maison/craft-band";
 import { Hero } from "@/components/maison/hero";
 import { ProductCatalogue } from "@/components/maison/product-catalogue";
-import { TitritLoader } from "@/components/maison/titrit-loader";
 
 import { listProducts } from "@/lib/products";
 import { buildPageMetadata } from "@/lib/seo/build-page.metadata";
@@ -71,7 +70,6 @@ export default async function Home() {
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD requires an inline script
 				dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListLd) }}
 			/>
-			<TitritLoader />
 			<main id="accueil" className="flex-1">
 				<Hero />
 				<About />
