@@ -168,9 +168,11 @@ model Image {
 // enum OrderStatus { PENDING CONFIRMED SHIPPED DELIVERED CANCELLED }  // (Postgres-ready; String for SQLite)
 
 model Order {
-  id          String    @id @default(cuid())
-  number      String    @unique // human-friendly, e.g. MT-1042
-  status      String    @default("PENDING") // PENDING | CONFIRMED | SHIPPED | DELIVERED | CANCELLED
+  id               String    @id @default(cuid())
+  number           String    @unique // human-friendly, e.g. MT-1042
+  status           String    @default("PENDING") // PENDING | CONFIRMED | PROCESSING | DISPATCHED | DELIVERED | CANCELLED | RETURN_REQUESTED | RETURNED
+  paymentStatus    String    @default("UNPAID") // UNPAID | PAID | REFUNDED
+  fulfilmentStatus String    @default("UNFULFILLED") // UNFULFILLED | PROCESSING | SHIPPED | DELIVERED | RETURNED
   customerName  String
   customerPhone String
   customerEmail String?
@@ -192,11 +194,30 @@ model Order {
   updatedAt   DateTime    @updatedAt
 
   items OrderItem[]
+  statusHistory OrderStatusHistory[]
 
   @@index([status])
+  @@index([paymentStatus])
+  @@index([fulfilmentStatus])
   @@index([userId])
   @@index([createdAt])
   @@index([idempotencyKey])
+}
+
+model OrderStatusHistory {
+  id               String   @id @default(cuid())
+  orderId          String
+  order            Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  fromStatus       String?
+  toStatus         String
+  paymentStatus    String?
+  fulfilmentStatus String?
+  actorId          String?
+  reason           String?
+  createdAt        DateTime @default(now())
+
+  @@index([orderId])
+  @@index([createdAt])
 }
 
 model OrderItem {

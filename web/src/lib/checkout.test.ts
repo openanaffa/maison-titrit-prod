@@ -1,5 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { type PricedProduct, parseCartLines, priceCart } from "./checkout";
+import {
+	type PricedProduct,
+	parseCartLines,
+	parseSizes,
+	priceCart,
+} from "./checkout";
 
 const caftan: PricedProduct = {
 	id: "p1",
@@ -10,6 +15,23 @@ const caftan: PricedProduct = {
 	inStock: true,
 	sizes: "S · M · L",
 };
+
+describe("parseSizes", () => {
+	test("accepts every separator used in product data", () => {
+		expect(parseSizes("S · M · L · XL")).toEqual(["S", "M", "L", "XL"]);
+		expect(parseSizes("S/M/L")).toEqual(["S", "M", "L"]);
+		expect(parseSizes("S,M,L")).toEqual(["S", "M", "L"]);
+		expect(parseSizes("S-M-L")).toEqual(["S", "M", "L"]);
+		expect(parseSizes("Unique")).toEqual(["Unique"]);
+		expect(parseSizes("")).toEqual([]);
+	});
+
+	test("priceCart accepts sizes written with non-· separators", () => {
+		const slashSized = { ...caftan, sizes: "S/M/L" };
+		const r = priceCart([{ productId: "p1", qty: 1, size: "M" }], [slashSized]);
+		expect(r.ok).toBe(true);
+	});
+});
 
 describe("parseCartLines", () => {
 	test("rejects tampered quantities", () => {

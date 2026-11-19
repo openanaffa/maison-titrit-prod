@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
-import { updateStatus } from "@/lib/repositories/orders";
+import {
+	isAllowedTransition,
+	ORDER_STATUSES,
+	transitionOrder,
+} from "@/lib/order-status";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
-
-const VALID = ["PENDING", "CONFIRMED", "SHIPPED", "DELIVERED", "CANCELLED"];
 
 export async function PATCH(
 	req: Request,
@@ -19,13 +21,32 @@ export async function PATCH(
 	try {
 		const body = await req.json();
 		const status = String(body.status ?? "").toUpperCase();
-		if (!VALID.includes(status)) {
+		if (!ORDER_STATUSES.includes(status as (typeof ORDER_STATUSES)[number])) {
 			return NextResponse.json({ error: "Statut invalide." }, { status: 400 });
 		}
 		const supabase = await createSupabaseServerClient();
-		const order = await updateStatus(supabase, id, status);
-		if (!order)
+		// Load current status to validate the transition before mutating.
+		const { data: current } = await supabase
+			.from("Order")
+			.select("status")
+			.eq("id", id)
+			.maybeSingle();
+		if (!current) {
 			return NextResponse.json({ error: "Introuvable." }, { status: 404 });
+		}
+		if (current.status === status) {
+			return NextResponse.json({ status: current.status });
+		}
+		if (!isAllowedTransition(current.status, status)) {
+			return NextResponse.json(
+				{ error: "Transition non autorisée." },
+				{ status: 409 },
+			);
+		}
+		const order = await transitionOrder(id, status, {
+			actorId: user.id,
+			reason: typeof body.reason === "string" ? body.reason : null,
+		});
 		return NextResponse.json({ order });
 	} catch (e) {
 		console.error("PATCH /api/admin/orders/[id] failed", e);

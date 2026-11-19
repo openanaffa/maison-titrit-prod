@@ -5,7 +5,7 @@ import { MessageCircle, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/i18n/locale-provider";
 import type { OrderView } from "@/lib/types";
-import { FLOW, STATUS_LABELS } from "@/lib/types/constants";
+import { ALLOWED_TRANSITIONS, STATUS_LABELS } from "@/lib/types/constants";
 
 export function Money({
 	amount,
@@ -32,12 +32,13 @@ export function StatusSelector({
 	onChange: (status: string) => void;
 }) {
 	const { t } = useT();
+	const allowed = ALLOWED_TRANSITIONS[order.status] ?? [];
 	return (
 		<div className="flex flex-wrap gap-2">
 			<p className="label-vintage-tight">
 				{t("admin.orders.detail.changeStatus")}
 			</p>
-			{FLOW.map((s) => (
+			{allowed.map((s) => (
 				<button
 					type="button"
 					key={s}
