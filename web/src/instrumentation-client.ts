@@ -17,6 +17,9 @@ Sentry.init({
 	enabled: !!process.env.SENTRY_DSN,
 });
 
+// Instrument client-side navigations (required by the App Router integration)
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+
 // Vercel BotID: invisible bot challenge on the public write endpoints.
 // Each path here must call checkBotId() server-side (lib/bot.ts).
 initBotId({
