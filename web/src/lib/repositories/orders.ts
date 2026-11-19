@@ -3,10 +3,6 @@ import type { Database } from "@/lib/supabase/database.types";
 import type { OrderView } from "@/lib/types";
 
 type OrderRow = Database["public"]["Tables"]["Order"]["Row"];
-type OrderUpdate = Database["public"]["Tables"]["Order"]["Update"];
-type OrderItemRow = Database["public"]["Tables"]["OrderItem"]["Row"];
-type ImageRow = Database["public"]["Tables"]["Image"]["Row"];
-type UserRow = Database["public"]["Tables"]["User"]["Row"];
 
 export type OrderListRow = {
 	id: string;
@@ -249,7 +245,7 @@ export async function listFulfilmentOrders(
 export async function listMarketingOrders(
 	supabase: SupabaseClient<Database>,
 ): Promise<MarketingOrderRow[]> {
-	const { data, error } = await supabase
+	const { data, error: _error } = await supabase
 		.from("Order")
 		.select(
 			"id,number,status,total,currency,utmSource,utmMedium,utmCampaign,createdAt",
@@ -261,7 +257,7 @@ export async function listMarketingOrders(
 
 /** Get a single order with its items, customer and product images. */
 export async function getOrder(supabase: SupabaseClient<Database>, id: string) {
-	const { data: order, error } = await supabase
+	const { data: order, error: _error } = await supabase
 		.from("Order")
 		.select("*")
 		.eq("id", id)
@@ -301,7 +297,7 @@ export async function getOrder(supabase: SupabaseClient<Database>, id: string) {
 			.eq("id", order.userId)
 			.maybeSingle()
 			.throwOnError();
-		if (userResult && userResult.name) {
+		if (userResult?.name) {
 			user = { id: userResult.id, name: userResult.name };
 		}
 	}
@@ -349,7 +345,7 @@ export async function updateStatus(
 	id: string,
 	status: string,
 ) {
-	const { data, error } = await supabase
+	const { data, error: _error } = await supabase
 		.from("Order")
 		.update({ status, updatedAt: new Date().toISOString() })
 		.eq("id", id)
