@@ -58,6 +58,14 @@ export default function CheckoutPage() {
 		whatsapp: string;
 	} | null>(null);
 	const [utm, setUtm] = React.useState<Record<string, string> | null>(null);
+	// One stable idempotency key per checkout session: a customer retrying a
+	// timed-out POST must hit the server's replay lookup, not create a
+	// duplicate COD order (Codex P2).
+	const [idempotencyKey] = React.useState(() =>
+		typeof crypto !== "undefined" && crypto.randomUUID
+			? crypto.randomUUID()
+			: `checkout-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+	);
 
 	// Initialise name/email from the logged-in user.
 	React.useEffect(() => {
@@ -124,6 +132,7 @@ export default function CheckoutPage() {
 						size: i.size,
 					})),
 					customer: payload,
+					idempotencyKey,
 				}),
 			});
 			const json = await res.json();
