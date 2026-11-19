@@ -187,6 +187,7 @@ model Order {
   payment       String    @default("COD")
   userId        String?
   user          User?     @relation(fields: [userId], references: [id])
+  idempotencyKey String?  @unique
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -195,6 +196,7 @@ model Order {
   @@index([status])
   @@index([userId])
   @@index([createdAt])
+  @@index([idempotencyKey])
 }
 
 model OrderItem {
