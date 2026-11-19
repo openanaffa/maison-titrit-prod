@@ -150,13 +150,38 @@ export function SiteFooter() {
 							</li>
 						)}
 						<li>
+							<Link href="/mentions-legales" className="hover:text-terracotta">
+								{t("legal.notice")}
+							</Link>
+						</li>
+						<li>
 							<Link href="/confidentialite" className="hover:text-terracotta">
 								{t("legal.privacy")}
 							</Link>
 						</li>
 						<li>
+							<Link href="/cookies" className="hover:text-terracotta">
+								{t("legal.cookies")}
+							</Link>
+						</li>
+						<li>
 							<Link href="/cgv" className="hover:text-terracotta">
 								{t("legal.terms")}
+							</Link>
+						</li>
+						<li>
+							<Link href="/livraison-retours" className="hover:text-terracotta">
+								{t("legal.deliveryReturns")}
+							</Link>
+						</li>
+						<li>
+							<Link href="/guide-des-tailles" className="hover:text-terracotta">
+								{t("legal.sizing")}
+							</Link>
+						</li>
+						<li>
+							<Link href="/contact" className="hover:text-terracotta">
+								{t("nav.contact")}
 							</Link>
 						</li>
 						{rendered(legalNotice.rcNumber) && (

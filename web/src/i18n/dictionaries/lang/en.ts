@@ -182,6 +182,11 @@ export const English = {
 
 	"legal.privacy": "Privacy policy",
 	"legal.terms": "Terms of sale",
+	"legal.notice": "Legal notice",
+	"legal.cookies": "Cookies",
+	"legal.deliveryReturns": "Delivery and returns",
+	"legal.sizing": "Size guide",
+	"footer.support": "Information",
 
 	"detail.home": "Home",
 	"detail.collection": "Collection",

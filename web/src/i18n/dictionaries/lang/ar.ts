@@ -179,6 +179,11 @@ export const Arabic = {
 
 	"legal.privacy": "سياسة الخصوصية",
 	"legal.terms": "شروط البيع العامة",
+	"legal.notice": "الإشعارات القانونية",
+	"legal.cookies": "ملفات تعريف الارتباط",
+	"legal.deliveryReturns": "التوصيل والإرجاع",
+	"legal.sizing": "دليل المقاسات",
+	"footer.support": "معلومات",
 
 	"detail.home": "الرئيسية",
 	"detail.collection": "المجموعة",
