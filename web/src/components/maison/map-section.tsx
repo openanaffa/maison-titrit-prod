@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Clock, ExternalLink, MapPin, Navigation } from "lucide-react";
 import {

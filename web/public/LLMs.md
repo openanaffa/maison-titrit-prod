@@ -32,7 +32,7 @@ The full WhatsApp Business Catalog is at: https://wa.me/c/105815813947432
 
 ## Contact
 - Phone/WhatsApp: +212 684 921 942 / +212 777 513 838
-- Email: Maisontitrit67@gmail.com
+- Email: hello@maisontitrit.com
 - Instagram: @maison__titrit
 - Atelier: Magasin N°4, Lotissement Dar Najeddine, Bouskoura, Casablanca, Maroc
 

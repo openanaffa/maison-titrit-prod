@@ -1,4 +1,4 @@
-﻿/** True when a field carries a real, displayable verified value. */
+/** True when a field carries a real, displayable verified value. */
 export function hasVerifiedLegalValue(
 	value: string | null | undefined,
 ): boolean {

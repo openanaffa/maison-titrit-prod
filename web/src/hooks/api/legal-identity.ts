@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/react-query/fetch";

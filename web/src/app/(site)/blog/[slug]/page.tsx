@@ -28,6 +28,8 @@ export async function generateMetadata({
 			title: "Article introuvable",
 			robots: { index: false, follow: false },
 		};
+	const ogLocale =
+		locale === "ar" ? "ar_MA" : locale === "en" ? "en_US" : "fr_MA";
 	return buildPageMetadata({
 		title: post.title,
 		description: post.excerpt,
@@ -38,6 +40,7 @@ export async function generateMetadata({
 		modifiedTime: post.updatedAt.toISOString(),
 		author: post.authorName,
 		keywords: post.tags ? post.tags.split(",").map((t) => t.trim()) : undefined,
+		locale: ogLocale,
 	});
 }
 

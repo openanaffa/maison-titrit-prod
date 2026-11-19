@@ -1,4 +1,4 @@
-﻿/** Owner-editable legal identity for public/legal surfaces (all optional). */
+/** Owner-editable legal identity for public/legal surfaces (all optional). */
 export type LegalIdentity = {
 	operatorName: string;
 	legalStatus: string;

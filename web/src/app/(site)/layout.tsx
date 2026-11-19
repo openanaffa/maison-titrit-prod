@@ -1,4 +1,4 @@
-﻿import { SiteFooter } from "@/components/maison/site-footer";
+import { SiteFooter } from "@/components/maison/site-footer";
 import { SiteHeader } from "@/components/maison/site-header";
 import { getLegalIdentity } from "@/lib/legal-identity";
 
@@ -17,7 +17,9 @@ export default async function SiteLayout({
 	return (
 		<>
 			<SiteHeader />
-			{children}
+			<main id="main-content" tabIndex={-1} className="flex-1 outline-none">
+				{children}
+			</main>
 			<SiteFooter legalIdentity={legalIdentity} />
 		</>
 	);

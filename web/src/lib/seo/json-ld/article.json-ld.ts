@@ -10,6 +10,7 @@ export function articleJsonLd(a: {
 	author: string;
 }) {
 	const base = baseUrl();
+	const url = `${base}/blog/${a.slug}`;
 	return {
 		"@context": "https://schema.org",
 		"@type": "Article",
@@ -25,12 +26,16 @@ export function articleJsonLd(a: {
 		author: { "@type": "Organization", name: a.author },
 		publisher: {
 			"@type": "Organization",
+			"@id": `${base}/#store`,
 			name: site.name,
 			logo: {
 				"@type": "ImageObject",
 				url: `${base}/assets/titrit-logo-gold.svg`,
 			},
 		},
-		mainEntityOfPage: `${base}/blog/${a.slug}`,
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": url,
+		},
 	};
 }

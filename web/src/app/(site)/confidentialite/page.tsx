@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { LegalPage } from "@/components/maison/legal-page";
 import { getLegalIdentity } from "@/lib/legal-identity";
 import { buildPageMetadata } from "@/lib/seo/build-page.metadata";

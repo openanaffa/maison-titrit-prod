@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -92,7 +92,7 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 					</div>
 
 					{/* Nav */}
-					<div>
+					<nav aria-label={t("footer.nav")}>
 						<p className="font-label text-[0.66rem] uppercase tracking-[0.24em] text-bronze-light">
 							{t("footer.nav")}
 						</p>
@@ -108,7 +108,7 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 								</li>
 							))}
 						</ul>
-					</div>
+					</nav>
 
 					{/* Contact + socials */}
 					<div>
@@ -180,8 +180,18 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 						) : null}
 						{showPhone ? <li>{legal?.phone}</li> : null}
 						<li>
+							<Link href="/mentions-legales" className="hover:text-terracotta">
+								{t("legal.notice")}
+							</Link>
+						</li>
+						<li>
 							<Link href="/confidentialite" className="hover:text-terracotta">
 								{t("legal.privacy")}
+							</Link>
+						</li>
+						<li>
+							<Link href="/cookies" className="hover:text-terracotta">
+								{t("legal.cookies")}
 							</Link>
 						</li>
 						<li>
@@ -199,6 +209,21 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 						{showDpo ? (
 							<li>DPO / confidentialité&nbsp;: {legal?.dpoContact}</li>
 						) : null}
+						<li>
+							<Link href="/livraison-retours" className="hover:text-terracotta">
+								{t("legal.deliveryReturns")}
+							</Link>
+						</li>
+						<li>
+							<Link href="/guide-des-tailles" className="hover:text-terracotta">
+								{t("legal.sizing")}
+							</Link>
+						</li>
+						<li>
+							<Link href="/contact" className="hover:text-terracotta">
+								{t("nav.contact")}
+							</Link>
+						</li>
 						{showHost ? (
 							<li>
 								Hébergeur&nbsp;:{" "}

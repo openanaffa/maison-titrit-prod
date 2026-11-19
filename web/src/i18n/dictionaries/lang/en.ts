@@ -5,6 +5,10 @@ export const English = {
 	"nav.atelier": "Atelier",
 	"nav.find": "Find us",
 	"nav.contact": "Contact",
+	"nav.sections": "Primary sections",
+	"nav.sectionsSecondary": "Secondary sections",
+	"nav.homeAria": "Maison Titrit — home",
+	"nav.mobileTitle": "Maison Titrit menu",
 
 	"brand.tagline": "Couture House",
 	"brand.payment": "Cash on delivery (COD)",
@@ -182,6 +186,11 @@ export const English = {
 
 	"legal.privacy": "Privacy policy",
 	"legal.terms": "Terms of sale",
+	"legal.notice": "Legal notice",
+	"legal.cookies": "Cookies",
+	"legal.deliveryReturns": "Delivery and returns",
+	"legal.sizing": "Size guide",
+	"footer.support": "Information",
 
 	"detail.home": "Home",
 	"detail.collection": "Collection",
@@ -214,21 +223,24 @@ export const English = {
 	"lang.switch": "Language",
 	"theme.aria": "Change theme",
 	"common.close": "Close",
+	"a11y.skipToContent": "Skip to main content",
 
 	"cookie.title": "Your privacy preferences",
 	"cookie.body":
-		"We use cookies to measure audience (Google Analytics, Meta Pixel) and improve your experience. You choose what you allow.",
+		"We use cookies and similar technologies to operate the site, measure audience, and, if you allow it, run marketing activities. You choose what you allow.",
 	"cookie.accept": "Accept all",
 	"cookie.reject": "Reject all",
 	"cookie.customize": "Customize",
 	"cookie.save": "Save",
-	"cookie.analytics": "Audience measurement (Google Analytics)",
-	"cookie.analyticsDesc": "Anonymised visit statistics to improve the site.",
-	"cookie.marketing": "Marketing (Meta Pixel)",
-	"cookie.marketingDesc": "Measures campaigns and personalises ads.",
+	"cookie.analytics": "Audience measurement",
+	"cookie.analyticsDesc":
+		"Measures site visits and performance to help improve the site.",
+	"cookie.marketing": "Marketing",
+	"cookie.marketingDesc":
+		"Measures campaigns and marketing actions, only with your consent.",
 	"cookie.necessary": "Necessary cookies",
 	"cookie.necessaryDesc":
-		"Language, cart and preferences. Essential to the site.",
+		"Language, cart and preferences. Essential for the site to work.",
 	"cookie.aria": "Cookie consent banner",
 	"cookie.privacy": "Privacy",
 	"admin.nav.dashboard": "Dashboard",

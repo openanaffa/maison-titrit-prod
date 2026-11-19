@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Check, Loader2, Scale } from "lucide-react";
 import * as React from "react";

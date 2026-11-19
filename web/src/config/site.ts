@@ -142,6 +142,9 @@ export type SiteAnalytics = typeof analytics;
  *  via getLegalIdentity() / /api/settings/legal. Keep defaults empty here so
  *  unconfirmed identifiers are never published; the footer and legal surfaces
  *  render only verified, non-empty values.
+ *  The legal entity IS the site owner: an Auto-Entrepreneur (Moroccan regime,
+ *  Law 114-13) registers with the RNAE — the `rcNumber` key keeps its name
+ *  (schema compatibility) but its VALUE is the RNAE number.
  * ============================================================================
  */
 export const legalNotice = {
@@ -149,8 +152,10 @@ export const legalNotice = {
 	rcNumber: "",
 	iceNumber: "",
 	cndpDeclarationNumber: "",
+	/** Privacy/DPO contact email — superseded per-surface by
+	 *  getLegalIdentity().dpoContact where the identity system is wired. */
 	dpoEmail: "",
 } as const;
 
 /* --- Default consent categories ----------------------------------------- */
-export const CONSENT_VERSION = 1; // bump to re-show banner after policy change
+export const CONSENT_VERSION = 2; // bump to re-show banner after policy change

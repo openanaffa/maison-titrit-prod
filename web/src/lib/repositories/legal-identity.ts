@@ -1,4 +1,4 @@
-﻿import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { sanitizeLegalIdentity } from "@/lib/legal-identity";
 import type { Database } from "@/lib/supabase/database.types";
 import {

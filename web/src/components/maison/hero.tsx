@@ -2,7 +2,6 @@
 
 import { ArrowDown, Sparkles } from "lucide-react";
 import Image from "next/image";
-import * as React from "react";
 import {
 	NeedleThread,
 	OrnamentDivider,
@@ -11,13 +10,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
-import { whatsappCatalog, whatsappContactLink } from "@/lib/brand";
+import { whatsappCatalog } from "@/lib/brand";
 
 export function Hero() {
-	const { t, locale } = useT();
+	const { t } = useT();
 
 	return (
-		<section className="vintage-paper relative overflow-hidden pt-10 sm:pt-16">
+		<section
+			id="accueil"
+			className="vintage-paper relative overflow-hidden pt-10 sm:pt-16"
+		>
 			<div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-16 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:px-8 lg:pb-24 lg:pt-10">
 				{/* Left — text */}
 				<div className="order-2 lg:order-1">
