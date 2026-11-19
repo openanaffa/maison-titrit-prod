@@ -14,7 +14,8 @@ Sentry.init({
 	replaysSessionSampleRate: 0.1,
 	replaysOnErrorSampleRate: 1.0,
 	debug: false,
-	enabled: !!process.env.SENTRY_DSN,
+	// Client bundle: only NEXT_PUBLIC_* vars are inlined, so gate on the public DSN
+	enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
 });
 
 // Instrument client-side navigations (required by the App Router integration)
