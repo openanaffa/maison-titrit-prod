@@ -208,9 +208,6 @@ export const Arabic = {
 	"detail.notFoundCta": "عرض المجموعة",
 	"detail.sizePrompt": "اختر مقاساً للطلب",
 
-	"loader.status": "لمسة أناقة",
-	"loader.aria": "جارٍ التحميل — ميزون تيتريت",
-
 	"float.aria": "اطلب عبر واتساب",
 	"float.label": "اطلب · COD",
 	"float.msg": "مرحبا ميزون تيتريت 👋، أرغب في معلومات عن قطعكم.",

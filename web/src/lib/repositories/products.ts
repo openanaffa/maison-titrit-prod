@@ -127,7 +127,7 @@ export async function createProduct(
 ) {
 	const { data, error } = await supabase
 		.from("Product")
-		.insert(input)
+		.insert({ ...input, id: input.id ?? crypto.randomUUID() })
 		.select("*")
 		.single()
 		.throwOnError();
@@ -200,7 +200,7 @@ export async function createCategory(
 ) {
 	const { data, error } = await supabase
 		.from("Category")
-		.insert(input)
+		.insert({ ...input, id: input.id ?? crypto.randomUUID() })
 		.select("*")
 		.single()
 		.throwOnError();
@@ -260,6 +260,9 @@ export async function insertImages(
 	const rows: ImageInsert[] = images
 		.filter((img) => img.url?.trim())
 		.map((img, index) => ({
+			// Prisma's @default(cuid()) is client-side only — the Postgres
+			// column has no default, so Supabase-client inserts must supply id.
+			id: crypto.randomUUID(),
 			productId,
 			url: img.url.trim(),
 			alt: img.alt ?? "",
