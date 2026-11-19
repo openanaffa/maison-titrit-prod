@@ -56,9 +56,12 @@ export function parseCartLines(raw: unknown): CartLineInput[] | null {
 	return lines;
 }
 
-export function sizeList(sizes: string): string[] {
+/** Canonical size parser — accepts every separator used in product data
+ *  ("S · M · L", "S/M/L", "S,M,L", "S-M-L"). Single source of truth shared
+ *  by the storefront UI and checkout pricing. */
+export function parseSizes(sizes: string): string[] {
 	return sizes
-		.split("·")
+		.split(/[·,/-]/)
 		.map((s) => s.trim())
 		.filter(Boolean);
 }
@@ -74,7 +77,7 @@ export function priceCart(
 		if (!p) return { ok: false, error: "Un article du panier n'existe plus." };
 		if (!p.inStock)
 			return { ok: false, error: `« ${p.name} » n'est plus disponible.` };
-		const allowed = sizeList(p.sizes);
+		const allowed = parseSizes(p.sizes);
 		if (allowed.length > 0 && (!line.size || !allowed.includes(line.size))) {
 			return { ok: false, error: `Taille invalide pour « ${p.name} ».` };
 		}

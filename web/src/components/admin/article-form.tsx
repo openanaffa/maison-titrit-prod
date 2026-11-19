@@ -50,9 +50,9 @@ export function ArticleForm({
 			if (mode === "create") {
 				await createArticle.mutateAsync(payload);
 				toast({ title: "Article créé" });
-			} else {
+			} else if (articleId) {
 				await updateArticle.mutateAsync({
-					id: articleId!,
+					id: articleId,
 					body: payload,
 				});
 				toast({ title: "Article mis à jour" });
