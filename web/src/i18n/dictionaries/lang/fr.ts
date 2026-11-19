@@ -184,6 +184,11 @@ export const French = {
 
 	"legal.privacy": "Politique de confidentialité",
 	"legal.terms": "Conditions générales de vente",
+	"legal.notice": "Mentions légales",
+	"legal.cookies": "Cookies",
+	"legal.deliveryReturns": "Livraison et retours",
+	"legal.sizing": "Guide des tailles",
+	"footer.support": "Informations",
 
 	"detail.home": "Accueil",
 	"detail.collection": "Collection",
