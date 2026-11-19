@@ -42,11 +42,6 @@ function availableOf(v: { onHand: number; reserved: number }) {
 	return v.onHand - v.reserved;
 }
 
-/**
- * Generic atomic update: reads the variant, applies a transform to
- * {onHand, reserved}, persists with an optimistic-version guard, and writes a
- * StockMovement row. Retries on concurrent modification.
- */
 async function applyMovement(
 	variantId: string,
 	type: StockMovementType,
@@ -57,26 +52,26 @@ async function applyMovement(
 	},
 	opts: StockOptions = {},
 ): Promise<StockResult> {
-	const existing = await findExistingMovement(opts.idempotencyKey);
-	if (existing) {
-		const v = await loadVariant(variantId);
-		return {
-			variantId,
-			onHand: v.onHand,
-			reserved: v.reserved,
-			available: availableOf(v),
-			movementId: existing.id,
-		};
-	}
-
 	for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+		// Re-check idempotency on every attempt (concurrent replay).
+		const replay = await findExistingMovement(opts.idempotencyKey);
+		if (replay) {
+			const v = await loadVariant(variantId);
+			return {
+				variantId,
+				onHand: v.onHand,
+				reserved: v.reserved,
+				available: availableOf(v),
+				movementId: replay.id,
+			};
+		}
+
 		const v = await loadVariant(variantId);
 		const next = transform({ onHand: v.onHand, reserved: v.reserved });
-		if (next.onHand < 0 || next.reserved < 0) {
+		if (next.onHand < 0 || next.reserved < 0 || next.onHand < next.reserved) {
 			throw new Error("Insufficient stock for operation");
 		}
-		// For RESERVE, check availability before committing.
-		if (type === "RESERVE" && availableOf(v) < quantity) {
+		if (type === "RESERVE" && availableOf(v) < Math.abs(quantity)) {
 			throw new Error("Insufficient available stock");
 		}
 
@@ -121,6 +116,24 @@ async function applyMovement(
 				movementId: result.movementId,
 			};
 		} catch (e) {
+			// Concurrent replay with the same idempotency key: return existing.
+			if (
+				e instanceof Prisma.PrismaClientKnownRequestError &&
+				e.code === "P2002" &&
+				opts.idempotencyKey
+			) {
+				const replayMov = await findExistingMovement(opts.idempotencyKey);
+				if (replayMov) {
+					const vv = await loadVariant(variantId);
+					return {
+						variantId,
+						onHand: vv.onHand,
+						reserved: vv.reserved,
+						available: availableOf(vv),
+						movementId: replayMov.id,
+					};
+				}
+			}
 			if (
 				e instanceof Error &&
 				e.message === "CONCURRENT_MODIFICATION" &&
@@ -178,7 +191,7 @@ export async function damageStock(
 	return applyMovement(
 		variantId,
 		"DAMAGE",
-		qty,
+		-qty,
 		(v) => ({
 			onHand: v.onHand - qty,
 			reserved: v.reserved,
@@ -232,7 +245,7 @@ export async function releaseReservation(
 	return applyMovement(
 		variantId,
 		"RELEASE",
-		qty,
+		-qty,
 		(v) => ({
 			onHand: v.onHand,
 			reserved: v.reserved - qty,
@@ -250,7 +263,7 @@ export async function commitStock(
 	return applyMovement(
 		variantId,
 		"COMMIT",
-		qty,
+		-qty,
 		(v) => ({
 			onHand: v.onHand - qty,
 			reserved: v.reserved - qty,
@@ -259,17 +272,17 @@ export async function commitStock(
 	);
 }
 
+export async function getAvailableStock(variantId: string): Promise<number> {
+	const v = await loadVariant(variantId);
+	return availableOf(v);
+}
+
 export function isLowStock(v: {
 	onHand: number;
 	reserved: number;
 	lowStockThreshold: number;
 }) {
 	return v.onHand - v.reserved <= v.lowStockThreshold;
-}
-
-export async function getAvailableStock(variantId: string): Promise<number> {
-	const v = await loadVariant(variantId);
-	return availableOf(v);
 }
 
 export async function reconcileVariant(variantId: string) {
