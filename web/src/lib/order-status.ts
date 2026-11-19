@@ -26,6 +26,7 @@ export const FULFILMENT_STATUSES = [
 export type FulfilmentStatus = (typeof FULFILMENT_STATUSES)[number];
 
 import { ALLOWED_TRANSITIONS } from "@/lib/types/constants";
+
 export { ALLOWED_TRANSITIONS };
 
 export function isAllowedTransition(from: string, to: string): boolean {

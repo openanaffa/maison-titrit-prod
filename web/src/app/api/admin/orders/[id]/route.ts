@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { transitionOrder, isAllowedTransition, ORDER_STATUSES } from "@/lib/order-status";
+import {
+	isAllowedTransition,
+	ORDER_STATUSES,
+	transitionOrder,
+} from "@/lib/order-status";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
