@@ -5,7 +5,6 @@ import Link from "next/link";
 import * as React from "react";
 
 import { AmazighStar } from "@/components/maison/motifs";
-import { parseSizes } from "@/components/maison/product-card";
 import {
 	type GalleryImage,
 	ProductGallery,
@@ -17,6 +16,7 @@ import {
 } from "@/components/maison/product-story";
 import { useT } from "@/i18n/locale-provider";
 import { trackViewItem } from "@/lib/analytics";
+import { parseSizes } from "@/lib/checkout";
 import type { ProductDTO } from "@/lib/types";
 
 /** Parse "S · M · L · XL" → ["S","M","L","XL"]. */

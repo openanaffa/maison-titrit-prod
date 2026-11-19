@@ -14,14 +14,8 @@ import { useT } from "@/i18n/locale-provider";
 import { track, trackAddToCart, trackFacebook } from "@/lib/analytics";
 import { whatsappCatalog } from "@/lib/brand";
 import { useCart } from "@/lib/cart";
+import { parseSizes } from "@/lib/checkout";
 import type { ProductDTO } from "@/lib/types";
-
-export function parseSizes(s: string): string[] {
-	return s
-		.split(/[·,/-]/)
-		.map((x) => x.trim())
-		.filter(Boolean);
-}
 
 export function ProductCard({ product }: { product: ProductDTO }) {
 	const { t } = useT();
