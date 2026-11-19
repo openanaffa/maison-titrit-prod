@@ -61,7 +61,12 @@ jobs:
           query = parse_qs(u.query)
           if "pgbouncer" in query:
               problems.append("pgbouncer=true selects transaction mode; remove it")
-          if query.get("sslmode", [""])[0] not in ("require", "verify-ca", "verify-full"):
+          sslmode = query.get("sslmode")
+          if sslmode is None:
+              problems.append("sslmode is required (require/verify-ca/verify-full)")
+          elif len(sslmode) > 1:
+              problems.append("sslmode must appear once; libpq uses the last value")
+          elif sslmode[0] not in ("require", "verify-ca", "verify-full"):
               problems.append("sslmode must be require or stricter")
           if problems:
               sys.exit("::error::BACKUP_DATABASE_URL is misconfigured: " + "; ".join(problems))
