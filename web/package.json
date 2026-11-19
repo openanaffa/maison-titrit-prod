@@ -75,7 +75,7 @@
 		"nodemailer": "^10.4.0",
 		"prisma": "^6.19.3",
 		"react": "^19.3.1",
-		"react-day-picker": "^9.14.0",
+		"react-day-picker": "^10.0.2",
 		"react-dom": "^19.3.1",
 		"react-hook-form": "^7.91.0",
 		"react-markdown": "^10.1.0",
