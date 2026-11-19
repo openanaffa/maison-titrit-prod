@@ -107,15 +107,36 @@ export async function POST(req: Request) {
 				lineVariantSkus.push(variant?.sku ?? null);
 				if (variant) {
 					const resKey = `${idempotencyKey}:reserve:${i}`;
+					// If the original reservation was compensated (released after a
+					// failed order creation), replay detection on resKey would wrongly
+					// skip a new stock hold — advance to the next reservation
+					// generation instead (Codex P2).
+					let effectiveKey = resKey;
+					const released = await db.stockMovement.findUnique({
+						where: { idempotencyKey: `${resKey}:release` },
+						select: { id: true },
+					});
+					if (released) {
+						let gen = 1;
+						while (
+							await db.stockMovement.findUnique({
+								where: { idempotencyKey: `${resKey}:g${gen}` },
+								select: { id: true },
+							})
+						) {
+							gen++;
+						}
+						effectiveKey = `${resKey}:g${gen}`;
+					}
 					const res = await reserveStock(variant.id, line.qty, {
-						idempotencyKey: resKey,
+						idempotencyKey: effectiveKey,
 						sourceRef: "checkout",
 					});
 					if (!res.replayed) {
 						reservations.push({
 							variantId: variant.id,
 							qty: line.qty,
-							key: resKey,
+							key: effectiveKey,
 							owned: true,
 						});
 					}
