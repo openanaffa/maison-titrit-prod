@@ -27,6 +27,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			changeFrequency: "yearly",
 			priority: 0.5,
 		},
+		{
+			url: `${base}/mentions-legales`,
+			lastModified: now,
+			changeFrequency: "yearly",
+			priority: 0.4,
+		},
+		{
+			url: `${base}/cookies`,
+			lastModified: now,
+			changeFrequency: "yearly",
+			priority: 0.4,
+		},
+		{
+			url: `${base}/livraison-retours`,
+			lastModified: now,
+			changeFrequency: "monthly",
+			priority: 0.6,
+		},
+		{
+			url: `${base}/contact`,
+			lastModified: now,
+			changeFrequency: "monthly",
+			priority: 0.6,
+		},
+		{
+			url: `${base}/guide-des-tailles`,
+			lastModified: now,
+			changeFrequency: "monthly",
+			priority: 0.5,
+		},
 	];
 
 	// Product detail pages
@@ -50,15 +80,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			changeFrequency: "monthly",
 			priority: 0.6,
 		}));
-		if (posts.length > 0) {
-			blogPages.unshift({
+		blogPages.unshift({
+			url: `${base}/blog`,
+			lastModified: now,
+			changeFrequency: "weekly",
+			priority: 0.6,
+		});
+	} catch {
+		blogPages = [
+			{
 				url: `${base}/blog`,
 				lastModified: now,
 				changeFrequency: "weekly",
 				priority: 0.6,
-			});
-		}
-	} catch {}
+			},
+		];
+	}
 
 	return [...staticPages, ...productPages, ...blogPages];
 }

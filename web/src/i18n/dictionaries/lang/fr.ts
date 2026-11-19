@@ -5,6 +5,10 @@ export const French = {
 	"nav.atelier": "Atelier",
 	"nav.find": "Nous trouver",
 	"nav.contact": "Contact",
+	"nav.sections": "Sections principales",
+	"nav.sectionsSecondary": "Sections secondaires",
+	"nav.homeAria": "Maison Titrit — accueil",
+	"nav.mobileTitle": "Menu Maison Titrit",
 
 	"brand.tagline": "Maison de Couture",
 	"brand.payment": "Paiement à la livraison (COD)",
@@ -184,6 +188,11 @@ export const French = {
 
 	"legal.privacy": "Politique de confidentialité",
 	"legal.terms": "Conditions générales de vente",
+	"legal.notice": "Mentions légales",
+	"legal.cookies": "Cookies",
+	"legal.deliveryReturns": "Livraison et retours",
+	"legal.sizing": "Guide des tailles",
+	"footer.support": "Informations",
 
 	"detail.home": "Accueil",
 	"detail.collection": "Collection",
@@ -217,23 +226,24 @@ export const French = {
 	"lang.switch": "Langue",
 	"theme.aria": "Changer de thème",
 	"common.close": "Fermer",
+	"a11y.skipToContent": "Aller au contenu principal",
 
 	"cookie.title": "Vos préférences de confidentialité",
 	"cookie.body":
-		"Nous utilisons des cookies pour mesurer l'audience (Google Analytics, Meta Pixel) et améliorer votre expérience. Vous choisissez ce que vous autorisez.",
+		"Nous utilisons des cookies et technologies similaires pour faire fonctionner le site, mesurer l’audience et, si vous l’autorisez, mener des actions marketing. Vous choisissez ce que vous autorisez.",
 	"cookie.accept": "Tout accepter",
 	"cookie.reject": "Tout refuser",
 	"cookie.customize": "Personnaliser",
 	"cookie.save": "Enregistrer",
-	"cookie.analytics": "Mesure d'audience (Google Analytics)",
+	"cookie.analytics": "Mesure d’audience",
 	"cookie.analyticsDesc":
-		"Statistiques de visite anonymisées pour améliorer le site.",
-	"cookie.marketing": "Marketing (Meta Pixel)",
+		"Mesure de la fréquentation et des performances du site afin de l’améliorer.",
+	"cookie.marketing": "Marketing",
 	"cookie.marketingDesc":
-		"Permet de mesurer les campagnes et de personnaliser les annonces.",
+		"Mesure des campagnes et actions marketing, uniquement avec votre accord.",
 	"cookie.necessary": "Cookies nécessaires",
 	"cookie.necessaryDesc":
-		"Langue, panier et préférences. Indispensables au site.",
+		"Langue, panier et préférences. Indispensables au fonctionnement du site.",
 	"cookie.aria": "Bandeau de consentement aux cookies",
 	"cookie.privacy": "Confidentialité",
 	"admin.nav.dashboard": "Tableau de bord",

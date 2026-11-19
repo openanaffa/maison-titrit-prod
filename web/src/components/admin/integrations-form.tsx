@@ -6,6 +6,7 @@ import { IntegrationsVerification } from "@/components/admin/integrations-verifi
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
 	useIntegrations,
 	useUpdateIntegrations,
@@ -101,20 +102,16 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
 		setSaving(true);
 		try {
 			await updateIntegrations.mutateAsync({
-				analytics: ints.analytics,
-				// Trackers mode (marketer) may not send verification: PATCH treats
-				// null as "not requested" and rejects an update with both fields null.
-				...(full
+				analytics: full ? ints.analytics : null,
+				verification: full
 					? {
-							verification: {
-								google: ints.verification.google,
-								facebook: ints.verification.facebook,
-								instagram: ints.verification.instagram,
-								tiktok: ints.verification.tiktok,
-								custom: ints.verification.customText, // raw paste, sanitized server-side
-							},
+							google: ints.verification.google,
+							facebook: ints.verification.facebook,
+							instagram: ints.verification.instagram,
+							tiktok: ints.verification.tiktok,
+							custom: ints.verification.customText, // raw paste, sanitized server-side
 						}
-					: {}),
+					: null,
 			});
 			toast({
 				title: full

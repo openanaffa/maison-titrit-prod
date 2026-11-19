@@ -17,11 +17,11 @@ import {
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
 import { whatsappCatalog } from "@/lib/brand";
-import { cartCount, cartTotal, useCart } from "@/lib/cart";
+import { useCart } from "@/lib/cart";
 
 /** Cart drawer — slide-in from the end side. */
 export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
-	const { t } = useT();
+	const { t, dir } = useT();
 	const [open, setOpen] = React.useState(false);
 	// Subscribe to item count for the badge + drawer contents
 	const items = useCart((s) => s.items);
@@ -58,7 +58,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 				</button>
 			</SheetTrigger>
 			<SheetContent
-				side="right"
+				side={dir === "rtl" ? "left" : "right"}
 				className="vintage-paper w-[92vw] max-w-md border-bronze/40 p-0"
 			>
 				<SheetTitle className="sr-only">{t("cart.title")}</SheetTitle>
@@ -180,7 +180,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 									>
 										<Link href="/panier">
 											{t("cta.viewCart")}
-											<ArrowRight className="size-4" />
+											<ArrowRight className="size-4 rtl:rotate-180" />
 										</Link>
 									</Button>
 								</SheetClose>

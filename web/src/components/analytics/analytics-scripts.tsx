@@ -63,7 +63,8 @@ export function AnalyticsScripts({
 	const consent = useConsent();
 
 	const gtmReady = Boolean(gtmId) && !gtmId.startsWith("GTM-XXXX");
-	const gaReady = Boolean(ga4Id) && !ga4Id.startsWith("G-");
+	const gaReady =
+		Boolean(ga4Id) && ga4Id.startsWith("G-") && ga4Id !== "G-XXXXXXXXXX";
 	const fbReady = Boolean(fbPixelId) && !/^0{5,}/.test(fbPixelId);
 	const pinterestReady = Boolean(pinterestTagId);
 	const tiktokReady = Boolean(tiktokPixelId);

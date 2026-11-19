@@ -94,7 +94,7 @@ export function SiteHeader() {
 					<div className="flex items-center lg:contents">
 						<MobileMenu open={open} onOpenChange={setOpen} />
 						<nav
-							aria-label="Sections"
+							aria-label={t("nav.sections")}
 							className="hidden items-center gap-5 lg:flex lg:justify-self-end xl:gap-7"
 						>
 							{navLeft.map((item) => (
@@ -112,7 +112,7 @@ export function SiteHeader() {
 					{/* Center — mark + wordmark, stacked Tifinagh accent below */}
 					<Link
 						href="/#accueil"
-						aria-label="Maison Titrit — accueil"
+						aria-label={t("nav.homeAria")}
 						className="absolute left-1/2 z-10 flex -translate-x-1/2 items-center justify-center drop-shadow-[0_4px_12px_rgba(184,145,90,0.4)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light motion-reduce:transition-none lg:static lg:translate-x-0 lg:justify-self-center lg:drop-shadow-none"
 					>
 						<TitritLogo
@@ -125,7 +125,7 @@ export function SiteHeader() {
 					{/* Right track — secondary links (xl+) hugging the logo, actions at the edge */}
 					<div className="flex items-center gap-1.5 lg:gap-2 lg:w-full">
 						<nav
-							aria-label="Sections secondaires"
+							aria-label={t("nav.sectionsSecondary")}
 							className="hidden items-center gap-5 xl:flex"
 						>
 							{navRight.map((item) => (

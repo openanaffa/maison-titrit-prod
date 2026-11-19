@@ -265,7 +265,6 @@ export async function insertImages(
 			alt: img.alt ?? "",
 			position: index,
 			createdAt: new Date().toISOString(),
-			updatedAt: new Date().toISOString(),
 		}));
 	if (rows.length) {
 		const { error } = await supabase.from("Image").insert(rows);

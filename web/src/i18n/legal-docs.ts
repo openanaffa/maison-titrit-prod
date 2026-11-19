@@ -14,7 +14,13 @@
  */
 import type { Locale } from "@/i18n/dictionaries";
 
-export type LegalDocKey = "privacy" | "terms";
+export type LegalDocKey =
+	| "privacy"
+	| "terms"
+	| "legalNotice"
+	| "cookies"
+	| "deliveryReturns"
+	| "sizing";
 
 export type LegalSection = {
 	h: string;
@@ -40,15 +46,15 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		privacy: {
 			eyebrow: "Informations légales",
 			title: "Politique de confidentialité",
-			updated: "Mis à jour le 14 novembre 2026",
+			updated: "Mis à jour le 19 novembre 2026",
 			intro:
 				"Cette politique explique comment Maison Titrit collecte, utilise et protège vos données personnelles lorsque vous utilisez ce site. Elle s'applique conformément à la loi marocaine n° 09-08 relative à la protection des données à caractère personnel et, lorsque le RGPD s'applique, au Règlement (UE) 2016/679.",
 			sections: [
 				{
 					h: "1. Responsable du traitement",
 					p: [
-						"Le responsable du traitement est Mohamed Moughamir — Auto-Entrepreneur, exploitant la marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc).",
-						"Pour toute question relative à vos données personnelles : Maisontitrit67@gmail.com.",
+						"Le responsable du traitement est l'exploitant du site Maison Titrit. Les informations légales et coordonnées vérifiées (lorsqu'elles sont fournies par l'exploitant) sont disponibles dans les mentions légales du site.",
+						"Pour toute question relative à vos données personnelles, utilisez les coordonnées de contact/confidentialité vérifiées publiées sur le site.",
 					],
 				},
 				{
@@ -88,7 +94,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. Vos droits",
 					p: [
-						"Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Exercez-les en écrivant à Maisontitrit67@gmail.com — nous vous répondrons dans les meilleurs délais.",
+						"Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Exercez-les via les coordonnées de contact/confidentialité vérifiées publiées sur le site ; nous vous répondrons dans les meilleurs délais.",
 						"Vous pouvez également introduire une réclamation auprès de la Commission Nationale de Contrôle de la Protection des Données à caractère Personnel (CNDP — cndp.ma).",
 					],
 				},
@@ -112,19 +118,23 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					],
 				},
 			],
-			related: [{ label: "Conditions générales de vente", href: "/cgv" }],
+			related: [
+				{ label: "Conditions générales de vente", href: "/cgv" },
+				{ label: "Mentions légales", href: "/mentions-legales" },
+				{ label: "Cookies", href: "/cookies" },
+			],
 		},
 		terms: {
 			eyebrow: "Informations légales",
 			title: "Conditions générales de vente",
-			updated: "Mis à jour le 14 novembre 2026",
+			updated: "Mis à jour le 19 novembre 2026",
 			intro:
 				"Les présentes conditions régissent les ventes conclues sur maisontitrit.com entre Maison Titrit et tout client particulier. Toute commande implique leur acceptation sans réserve.",
 			sections: [
 				{
 					h: "1. Éditeur du site",
 					p: [
-						"Le site est édité par Mohamed Moughamir — Auto-Entrepreneur (RNAE 001609783000007), marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc). Contact : Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"Le site est édité et exploité par l'exploitant de la marque Maison Titrit. Les mentions légales vérifiées (identité, coordonnées, hébergeur, le cas échéant) sont publiées sur le site lorsqu'elles sont fournies.",
 					],
 				},
 				{
@@ -198,6 +208,192 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 			],
 			related: [
 				{ label: "Politique de confidentialité", href: "/confidentialite" },
+				{ label: "Livraison et retours", href: "/livraison-retours" },
+				{ label: "Guide des tailles", href: "/guide-des-tailles" },
+			],
+		},
+		legalNotice: {
+			eyebrow: "Informations légales",
+			title: "Mentions légales",
+			updated: "Dernière mise à jour : 19 novembre 2026",
+			intro:
+				"Les présentes mentions légales identifient l'éditeur du site maisontitrit.com et précisent les informations essentielles relatives à son exploitation. Elles complètent notre politique de confidentialité et nos conditions générales de vente.",
+			sections: [
+				{
+					h: "1. Éditeur du site",
+					p: [
+						"Le site est édité et exploité par l'exploitant de la marque Maison Titrit. Les informations vérifiées (identité, coordonnées, hébergeur) sont publiées dans l'encadré ci-dessus lorsqu'elles sont fournies par l'exploitant.",
+					],
+				},
+				{
+					h: "2. Activité",
+					p: [
+						"Maison Titrit est une maison de couture marocaine proposant des pièces de mode modeste pour femmes, confectionnées à l'atelier de Bouskoura (100 % Made in Morocco), présentées et commandables via le site et les canaux de contact indiqués.",
+					],
+				},
+				{
+					h: "3. Hébergement et services techniques",
+					p: [
+						"Le site et certains services techniques sont fournis par des prestataires tiers (notamment pour l'hébergement, la base de données, l'authentification, les médias et l'envoi d'e-mails opérationnels), comme décrit dans notre politique de confidentialité.",
+					],
+				},
+				{
+					h: "4. Propriété intellectuelle",
+					p: [
+						"Le site, son contenu, le logo, les motifs amazighs, les modèles et les photographies sont la propriété exclusive de Maison Titrit, sauf mention contraire. Toute reproduction, totale ou partielle, sans autorisation écrite préalable est interdite.",
+					],
+				},
+				{
+					h: "5. Données personnelles et cookies",
+					p: [
+						"Le traitement des données personnelles et l'utilisation des cookies sont détaillés dans notre politique de confidentialité et notre page dédiée aux cookies. Vous pouvez gérer vos préférences de consentement à tout moment via le bouton de préférences affiché sur le site.",
+					],
+				},
+				{
+					h: "6. Contact",
+					p: [
+						"Pour toute question concernant le site, une commande ou ces mentions, contactez-nous via les coordonnées de contact vérifiées publiées sur le site.",
+					],
+				},
+			],
+			related: [
+				{ label: "Politique de confidentialité", href: "/confidentialite" },
+				{ label: "Conditions générales de vente", href: "/cgv" },
+				{ label: "Cookies", href: "/cookies" },
+			],
+		},
+		cookies: {
+			eyebrow: "Informations légales",
+			title: "Cookies et préférences",
+			updated: "Dernière mise à jour : 19 novembre 2026",
+			intro:
+				"Cette page explique comment Maison Titrit utilise les cookies et technologies similaires sur maisontitrit.com, ainsi que les choix dont vous disposez. Les outils d'analyse et de marketing ne sont activés qu'après votre consentement explicite, lorsque vous l'accordez.",
+			sections: [
+				{
+					h: "1. Qu'est-ce qu'un cookie ?",
+					p: [
+						"Un cookie est un petit fichier ou une information stockée sur votre appareil (navigateur, téléphone, ordinateur) lors de la visite d'un site. Des technologies similaires (stockage local, identifiants techniques) peuvent être utilisées pour des finalités équivalentes.",
+					],
+				},
+				{
+					h: "2. Cookies et stockages nécessaires",
+					p: [
+						"Certains éléments sont indispensables au fonctionnement du site, par exemple la mémorisation de la langue, de vos préférences d'affichage, de l'état de votre panier et de vos choix en matière de consentement. Ces éléments sont utilisés sans recourir aux finalités d'analyse ou de marketing optionnelles.",
+					],
+				},
+				{
+					h: "3. Mesure d'audience (avec consentement)",
+					p: [
+						"Si vous l'autorisez, nous pouvons utiliser des outils de mesure d'audience et de performance (par exemple les outils Vercel Analytics/Speed Insights et, lorsqu'ils sont configurés, des services tels que Google Tag Manager/Google Analytics). Certains services Google fonctionnent avec le mode de consentement : par défaut, le stockage lié à l'analyse et à la publicité est refusé, puis mis à jour selon vos choix.",
+					],
+				},
+				{
+					h: "4. Marketing (avec consentement)",
+					p: [
+						"Si vous l'autorisez, des outils de mesure des campagnes et d'actions marketing peuvent être activés (par exemple Meta, Pinterest ou TikTok, lorsqu'ils sont configurés). Ces outils ne sont chargés qu'après votre accord explicite dans la bannière de consentement.",
+					],
+				},
+				{
+					h: "5. Gérer vos choix",
+					p: [
+						"Lors de votre première visite, un bandeau vous permet d'accepter, de refuser ou de personnaliser vos préférences. Vous pouvez modifier votre choix à tout moment via le bouton de préférences cookies affiché sur le site. Le refus des catégories optionnelles n'empêche pas l'utilisation des fonctions essentielles du site.",
+					],
+				},
+				{
+					h: "6. Pour en savoir plus",
+					p: [
+						"Pour plus d'informations sur les données personnelles, les destinataires, les durées de conservation et vos droits, consultez notre politique de confidentialité ou contactez-nous via les coordonnées publiées sur le site.",
+					],
+				},
+			],
+			related: [
+				{ label: "Politique de confidentialité", href: "/confidentialite" },
+				{ label: "Mentions légales", href: "/mentions-legales" },
+			],
+		},
+		deliveryReturns: {
+			eyebrow: "Aide & commande",
+			title: "Livraison et retours",
+			updated: "Dernière mise à jour : 19 novembre 2026",
+			intro:
+				"Cette page résume les informations essentielles concernant la livraison, le paiement à la livraison et les échanges ou retours chez Maison Titrit. Les conditions complètes figurent dans nos conditions générales de vente ; en cas de différence, les CGV prévalent.",
+			sections: [
+				{
+					h: "1. Paiement",
+					p: [
+						"Le paiement s'effectue à la livraison (COD), en espèces, à la réception du colis. Aucun paiement n'est encaissé en ligne sur le site.",
+					],
+				},
+				{
+					h: "2. Livraison",
+					p: [
+						"Nous livrons au Maroc. Les délais et modalités pratiques sont communiqués lors de la confirmation de la commande, selon la destination et la disponibilité des pièces.",
+						"Merci de fournir une adresse exacte et un numéro de téléphone joignable. En cas d'absence au moment de la livraison, des tentatives supplémentaires peuvent engendrer des frais conformément aux conditions applicables.",
+					],
+				},
+				{
+					h: "3. Confirmation de commande",
+					p: [
+						"Les commandes passées via le site ou WhatsApp sont confirmées par téléphone ou WhatsApp. Une commande n'est considérée comme ferme qu'après confirmation.",
+					],
+				},
+				{
+					h: "4. Échanges et retours",
+					p: [
+						"Vous pouvez demander un échange ou un retour dans les 7 jours suivant la réception, à condition que la pièce soit non portée, non lavée, avec ses étiquettes et accompagnée d'une preuve d'achat.",
+						"Les frais de retour sont à votre charge, sauf en cas de défaut ou d'erreur de notre part — dans ce cas, Maison Titrit prend en charge l'échange ou le remboursement selon la situation.",
+					],
+				},
+				{
+					h: "5. Réclamations et assistance",
+					p: [
+						"Pour toute question relative à une livraison, un échange, un retour ou un défaut, contactez-nous via les coordonnées de contact vérifiées publiées sur le site, en indiquant votre numéro de commande et, si utile, des photos.",
+					],
+				},
+			],
+			related: [
+				{ label: "Conditions générales de vente", href: "/cgv" },
+				{ label: "Contact", href: "/contact" },
+				{ label: "Guide des tailles", href: "/guide-des-tailles" },
+			],
+		},
+		sizing: {
+			eyebrow: "Aide & commande",
+			title: "Guide des tailles",
+			updated: "Dernière mise à jour : 19 novembre 2026",
+			intro:
+				"Ce guide vous aide à choisir la taille la plus adaptée. Les coupes, matières et disponibilités peuvent varier selon les modèles ; référez-vous toujours aux informations de la fiche produit et contactez-nous en cas de doute.",
+			sections: [
+				{
+					h: "1. Comment prendre vos mesures",
+					p: [
+						"Utilisez un mètre ruban souple, porté à plat sur le corps sans serrer. Pour plus de précision, prenez vos mesures sur un vêtement léger ou directement sur vous.",
+						"Poitrine : mesurez autour de la partie la plus forte. Taille : mesurez au creux de la taille. Hanches : mesurez autour de la partie la plus large. Longueur : selon la pièce, mesurez depuis l'épaule ou la taille jusqu'à la longueur souhaitée.",
+					],
+				},
+				{
+					h: "2. Tailles et disponibilités",
+					p: [
+						"Les tailles proposées dépendent de chaque pièce (par exemple S, M, L, XL ou XXL selon les modèles). La disponibilité par taille peut évoluer ; vérifiez la fiche produit ou contactez la maison pour confirmer la taille souhaitée.",
+					],
+				},
+				{
+					h: "3. Coupes, retouches et conseils",
+					p: [
+						"Certaines pièces offrent une coupe ample ou des liens de serrage (ceinture, lien) qui permettent d'ajuster le tombé. Si vous hésitez entre deux tailles ou si vous souhaitez un conseil personnalisé, nous vous recommandons de nous contacter avant de commander.",
+					],
+				},
+				{
+					h: "4. Besoin d'aide ?",
+					p: [
+						"Écrivez-nous sur WhatsApp ou par e-mail avec la référence du modèle, vos mesures et vos préférences de coupe. Nous vous aiderons à choisir la taille la plus adaptée avant confirmation de la commande.",
+					],
+				},
+			],
+			related: [
+				{ label: "Livraison et retours", href: "/livraison-retours" },
+				{ label: "Contact", href: "/contact" },
+				{ label: "Conditions générales de vente", href: "/cgv" },
 			],
 		},
 	},
@@ -209,15 +405,15 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		privacy: {
 			eyebrow: "معلومات قانونية",
 			title: "سياسة الخصوصية",
-			updated: "آخر تحديث: 14 نوفمبر 2026",
+			updated: "آخر تحديث: 19 نوفمبر 2026",
 			intro:
 				"توضح هذه السياسة كيفية جمع ميزون تيتريت لبياناتك الشخصية واستخدامها وحمايتها عند استخدامك لهذا الموقع. وهي تُطبَّق وفقًا للقانون المغربي رقم 09-08 المتعلق بحماية الأشخاص الذاتيين من معالجة المعطيات ذات الطابع الشخصي، ووفقًا للائحة العامة لحماية البيانات (GDPR) عند انطباقها.",
 			sections: [
 				{
 					h: "1. مسؤول المعالجة",
 					p: [
-						"مسؤول المعالجة هو محمد مغيمل — مقاول ذاتي، صاحب علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب).",
-						"لأي سؤال يتعلق ببياناتك الشخصية: Maisontitrit67@gmail.com.",
+						"المسؤول عن المعالجة هو مُشغِّل موقع Maison Titrit. تتوفر المعلومات القانونية وبيانات الاتصال الموثوقة (عند توفيرها من المُشغِّل) ضمن الإشعارات القانونية للموقع.",
+						"لأي سؤال يتعلق ببياناتك الشخصية، يرجى استخدام بيانات الاتصال/الخصوصية الموثوقة المنشورة على الموقع.",
 					],
 				},
 				{
@@ -225,7 +421,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					p: [
 						"الحساب — تتم المصادقة عبر Supabase Auth. بحسب طريقة تسجيل الدخول (Google أو البريد الإلكتروني وكلمة المرور)، نستقبل اسمك وعنوان بريدك الإلكتروني، وصورة ملفك الشخصي عند استخدام Google. تدير Supabase بيانات الاعتماد ولا نخزن كلمات المرور في جداول تطبيق Maison Titrit.",
 						"الطلبات — الاسم، الهاتف، البريد الإلكتروني (اختياري)، المدينة، عنوان التوصيل، الملاحظات وتفاصيل المنتجات. هذه المعلومات ضرورية لمعالجة طلبك وتوصيله.",
-						"التصفح — يُحفظ سلة التفضيلات ولغتك وسمتك محليًا في متصفحك. كما نحتفظ بسجلات تقنية (عنوان IP، التاريخ، الصفحات المزارة) لحماية الموقع.",
+						"التصفح — تُحفظ سلة التسوق ولغتك وسِمتك محليًا في متصفحك. كما نحتفظ بسجلات تقنية (عنوان IP، التاريخ، الصفحات التي تمت زيارتها) لأغراض أمن الموقع.",
 						"الموافقة — اختياراتك بشأن ملفات تعريف الارتباط التحليلية والتسويقية.",
 					],
 				},
@@ -251,13 +447,13 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. مدة الاحتفاظ بالبيانات",
 					p: [
-						"الحساب — حتى حذف حسابك. الطلبات — المدة التي تفرضها اللوائح المحاسبية وال fiscale المغربية. السجلات التقنية — بضعة أشهر. الموافقة — حتى سحب اختيارك.",
+						"الحساب — حتى حذف حسابك. الطلبات — للمدة التي تقتضيها اللوائح المحاسبية والضريبية المغربية. السجلات التقنية — لبضعة أشهر. الموافقة — حتى سحب اختيارك.",
 					],
 				},
 				{
 					h: "7. حقوقك",
 					p: [
-						"يحق لك الاطلاع على بياناتك وتصحيحها وحذفها والاعتراض عليها ونقلها. مارس حقوقك عبر مراسلة Maisontitrit67@gmail.com — وسنرد عليك في أقرب وقت ممكن.",
+						"لك الحق في الولوج إلى بياناتك وتصحيحها ومحوها والاعتراض على معالجتها ونقلها. يمكنك ممارسة هذه الحقوق عبر بيانات الاتصال/الخصوصية الموثوقة المنشورة على الموقع، وسنرد في أقرب الآجال.",
 						"يمكنك أيضًا تقديم شكوى لدى اللجنة الوطنية للرقابة على حماية المعطيات ذات الطابع الشخصي (CNDP — cndp.ma).",
 					],
 				},
@@ -277,23 +473,27 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "10. التعديلات",
 					p: [
-						"قد تتطور هذه السياسة لتعكس ممارساتنا أو التشريعات. ويظهر تاريخ آخر تحديث أعلى الصفحة؛ وسنُعلمكم على الموقع عند أي جوهري.",
+						"قد تتطور هذه السياسة لتعكس ممارساتنا أو المتطلبات القانونية. ويظهر تاريخ آخر تحديث أعلى الصفحة؛ وسنُعلمكم على الموقع عند أي تغيير جوهري.",
 					],
 				},
 			],
-			related: [{ label: "شروط البيع العامة", href: "/cgv" }],
+			related: [
+				{ label: "شروط البيع العامة", href: "/cgv" },
+				{ label: "الإشعارات القانونية", href: "/mentions-legales" },
+				{ label: "ملفات تعريف الارتباط", href: "/cookies" },
+			],
 		},
 		terms: {
 			eyebrow: "معلومات قانونية",
 			title: "شروط البيع العامة",
-			updated: "آخر تحديث: 14 نوفمبر 2026",
+			updated: "آخر تحديث: 19 نوفمبر 2026",
 			intro:
-				"تحكم هذه الشروط عمليات البيع التي تتم عبر maisontitrit.com بين ميزون تيتريت وأي زبون شخصي. ويشمل أي طلب قبولها دون تحفظ.",
+				"تحكم هذه الشروط عمليات البيع التي تتم عبر maisontitrit.com بين ميزون تيتريت وأي زبون فردي. ويُعدّ تقديم أي طلب قبولًا لهذه الشروط دون تحفظ.",
 			sections: [
 				{
 					h: "1. مُحرِّر الموقع",
 					p: [
-						"يُحرِّر الموقع محمد مغيمل — مقاول ذاتي (RNAE 001609783000007)، علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب). التواصل: Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"يُنشر الموقع ويُشغَّل من طرف مُشغِّل علامة Maison Titrit. تُنشر الإشعارات القانونية الموثوقة (الهوية، بيانات الاتصال، المستضيف، عند الاقتضاء) على الموقع عند توفيرها.",
 					],
 				},
 				{
@@ -305,32 +505,32 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "3. الأسعار",
 					p: [
-						"الأسعار معروضة بالدرهم المغربي (MAD). وتُبلَّغ вам رسوم التوصيل قبل تأكيد الطلب. ونحتفظ بحق تعديل أسعارنا في أي وقت؛ والسعر المعتمد هو المؤكَّد عند طلبك.",
+						"الأسعار معروضة بالدرهم المغربي (MAD). وتُبلَّغون برسوم التوصيل قبل تأكيد الطلب. ونحتفظ بحق تعديل أسعارنا في أي وقت؛ والسعر المعتمد هو السعر المؤكَّد عند طلبك.",
 					],
 				},
 				{
 					h: "4. الطلبات",
 					p: [
-						"يمكنك الطلب عبر سلة الموقع أو مباشرة عبر واتساب. ويُخضع كل طلب للتأكيد عبر الهاتف أو واتساب. وعند غياب التأكيد أو توفر المنتج، قد يُلغى الطلب. والطلب المؤكَّد نهائي.",
+						"يمكنك الطلب عبر سلة الموقع أو مباشرة عبر واتساب. ويخضع كل طلب للتأكيد عبر الهاتف أو واتساب. وفي حال عدم التأكيد أو عدم توفر المنتج، قد يُلغى الطلب. ويُعدّ الطلب المؤكَّد نهائيًا.",
 					],
 				},
 				{
-					h: "5. الأداء",
+					h: "5. الدفع",
 					p: [
-						"يُؤدَّى الأداء عند التوصيل (COD)، نقدًا عند استلام الطرد. ولا يحصّل الموقع أي دفعة مسبقًا.",
+						"يتم الدفع عند الاستلام (COD) نقدًا عند تسلّم الطرد. ولا يتم تحصيل أي مبلغ عبر الموقع.",
 					],
 				},
 				{
 					h: "6. التوصيل",
 					p: [
-						"نوصّل إلى جميع أنحاء المغرب. وتُبلَّغ المدد عند التأكيد حسب الوجهة. ومسؤوليتك دقة عنوان التوصيل؛ وعند غيابك وقت التوصيل، قد تستلزم المحاولات الإضافية رسومًا على حسابك.",
+						"نقوم بالتوصيل إلى مختلف أنحاء المغرب. وتُبلَّغكم الآجال عند التأكيد حسب وجهة التسليم. وتقع على عاتقكم مسؤولية دقة عنوان التوصيل؛ وفي حال غيابكم وقت التسليم، قد تترتب على محاولات التسليم الإضافية رسوم على نفقتكم.",
 					],
 				},
 				{
 					h: "7. الاستبدال والإرجاع",
 					p: [
-						"يحق لك خلال 7 أيام من الاستلام طلب استبدال أو إرجاع، شرط أن تكون القطعة غير مستعملة وغير مغسولة وبطاقاتها مثبتة مع إثبات الشراء. ورسوم الإرجاع على حسابك، إلا في حال وجود عيب أو خطأ من جانبنا — فيتكفل حينها ميزون تيتريت بالاستبدال أو الاسترداد.",
-						"لأي شكوى، راسلنا عبر واتساب أو البريد مع رقم طلبك.",
+						"يمكنكم خلال 7 أيام من تاريخ الاستلام طلب استبدال أو إرجاع، بشرط أن تكون القطعة غير مستعملة وغير مغسولة ومع بطاقاتها وإثبات الشراء. وتكون رسوم الإرجاع على عاتقكم، إلا في حال وجود عيب أو خطأ من جانبنا — حيث تتكفل ميزون تيتريت حينها بالاستبدال أو الاسترداد.",
+						"لأي طلب أو ملاحظة، يرجى التواصل معنا عبر واتساب أو البريد الإلكتروني مع ذكر رقم الطلب.",
 					],
 				},
 				{
@@ -354,7 +554,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "11. البيانات الشخصية",
 					p: [
-						"يصف معالجة بياناتك الشخصية سياسة الخصوصية الخاصة بنا، المتاحة أسفل الصفحة.",
+						"تُوضَّح كيفية معالجة بياناتكم الشخصية في سياسة الخصوصية الخاصة بنا، المتاحة أسفل الصفحة.",
 					],
 				},
 				{
@@ -364,7 +564,195 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					],
 				},
 			],
-			related: [{ label: "سياسة الخصوصية", href: "/confidentialite" }],
+			related: [
+				{ label: "سياسة الخصوصية", href: "/confidentialite" },
+				{ label: "التوصيل والإرجاع", href: "/livraison-retours" },
+				{ label: "دليل المقاسات", href: "/guide-des-tailles" },
+			],
+		},
+		legalNotice: {
+			eyebrow: "معلومات قانونية",
+			title: "الإشعارات القانونية",
+			updated: "آخر تحديث: 19 نوفمبر 2026",
+			intro:
+				"تُحدّد هذه الإشعارات الجهة الناشرة لموقع maisontitrit.com وتعرض المعلومات الأساسية المتعلقة بتشغيله. وهي تُكمّل سياسة الخصوصية وشروط البيع العامة.",
+			sections: [
+				{
+					h: "1. ناشر الموقع",
+					p: [
+						"ينشر الموقع مُشغِّل علامة Maison Titrit. المعلومات الموثوقة (الهوية، بيانات الاتصال، الاستضافة) تُنشر في الإطار أعلاه عند توفيرها من المُشغِّل.",
+					],
+				},
+				{
+					h: "2. النشاط",
+					p: [
+						"ميزون تيتريت دار خياطة مغربية تقدم قطع أزياء محتشمة للنساء، تُخاط في ورشة بوسكورة (صنع مغربي 100%)، وتُعرض وتُطلب عبر الموقع وقنوات التواصل المذكورة.",
+					],
+				},
+				{
+					h: "3. الاستضافة والخدمات التقنية",
+					p: [
+						"يستعين الموقع ببعض مزودي الخدمات التقنيين (لا سيما للاستضافة وقاعدة البيانات والمصادقة والوسائط والرسائل التشغيلية)، على النحو الموضح في سياسة الخصوصية.",
+					],
+				},
+				{
+					h: "4. الملكية الفكرية",
+					p: [
+						"يُعد الموقع ومحتواه والشعار والزخارف الأمازيغية والتصاميم والصور ملكًا حصريًا لميزون تيتريت، ما لم يُذكر خلاف ذلك. ويُمنع أي نسخ كلي أو جزئي دون إذن كتابي مسبق.",
+					],
+				},
+				{
+					h: "5. البيانات الشخصية وملفات تعريف الارتباط",
+					p: [
+						"تُفصَّل معالجة البيانات الشخصية واستخدام ملفات تعريف الارتباط في سياسة الخصوصية وصفحتنا المخصصة لملفات تعريف الارتباط. ويمكنكم تعديل تفضيلات الموافقة في أي وقت عبر زر التفضيلات المعروض على الموقع.",
+					],
+				},
+				{
+					h: "6. التواصل",
+					p: [
+						"لأي استفسار بشأن الموقع أو طلب أو هذه الإشعارات، تواصلوا معنا عبر بيانات التواصل الموثوقة المنشورة على الموقع.",
+					],
+				},
+			],
+			related: [
+				{ label: "سياسة الخصوصية", href: "/confidentialite" },
+				{ label: "شروط البيع العامة", href: "/cgv" },
+				{ label: "ملفات تعريف الارتباط", href: "/cookies" },
+			],
+		},
+		cookies: {
+			eyebrow: "معلومات قانونية",
+			title: "ملفات تعريف الارتباط والتفضيلات",
+			updated: "آخر تحديث: 19 نوفمبر 2026",
+			intro:
+				"توضح هذه الصفحة كيفية استخدام Maison Titrit لملفات تعريف الارتباط والتقنيات المشابهة على maisontitrit.com والخيارات المتاحة لكم. لا يتم تفعيل أدوات القياس أو التسويق إلا بعد موافقتكم الصريحة، عند منحها.",
+			sections: [
+				{
+					h: "1. ما هي ملفات تعريف الارتباط؟",
+					p: [
+						"ملف تعريف الارتباط هو ملف صغير أو معلومة تُخزَّن على جهازكم (المتصفح أو الهاتف أو الحاسوب) عند زيارة موقع. وقد تُستخدم تقنيات مشابهة (مثل التخزين المحلي أو المعرّفات التقنية) لأغراض مماثلة.",
+					],
+				},
+				{
+					h: "2. الملفات والتخزينات الضرورية",
+					p: [
+						"بعض العناصر ضرورية لعمل الموقع، مثل تذكر اللغة وتفضيلات العرض وحالة السلة وخيارات الموافقة. تُستخدم هذه العناصر دون اللجوء إلى أغراض القياس أو التسويق الاختيارية.",
+					],
+				},
+				{
+					h: "3. قياس الجمهور (بموافقتكم)",
+					p: [
+						"إذا سمحتم بذلك، يمكننا استخدام أدوات لقياس الجمهور والأداء (مثل أدوات Vercel Analytics/Speed Insights، وعند تهيئتها خدمات مثل Google Tag Manager/Google Analytics). تعمل بعض خدمات Google بنمط الموافقة: يكون التخزين المتعلق بالتحليلات والإعلانات مرفوضًا افتراضيًا، ثم يُحدَّث وفقًا لخياراتكم.",
+					],
+				},
+				{
+					h: "4. التسويق (بموافقتكم)",
+					p: [
+						"إذا سمحتم بذلك، قد تُفعَّل أدوات لقياس الحملات والإجراءات التسويقية (مثل Meta أو Pinterest أو TikTok عند تهيئتها). ولا تُحمَّل هذه الأدوات إلا بعد موافقتكم الصريحة عبر شريط الموافقة.",
+					],
+				},
+				{
+					h: "5. إدارة خياراتكم",
+					p: [
+						"عند زيارتكم الأولى، يتيح لكم شريط قبول التفضيلات أو رفضها أو تخصيصها. ويمكنكم تغيير اختياركم في أي وقت عبر زر تفضيلات ملفات تعريف الارتباط المعروض على الموقع. ولا يمنع رفض الفئات الاختيارية استخدام الوظائف الأساسية للموقع.",
+					],
+				},
+				{
+					h: "6. لمزيد من المعلومات",
+					p: [
+						"لمزيد من المعلومات حول البيانات الشخصية والجهات المستلمة ومدد الاحتفاظ وحقوقكم، يرجى الرجوع إلى سياسة الخصوصية أو التواصل معنا عبر بيانات التواصل الموثوقة المنشورة على الموقع.",
+					],
+				},
+			],
+			related: [
+				{ label: "سياسة الخصوصية", href: "/confidentialite" },
+				{ label: "الإشعارات القانونية", href: "/mentions-legales" },
+			],
+		},
+		deliveryReturns: {
+			eyebrow: "المساعدة والطلب",
+			title: "التوصيل والإرجاع",
+			updated: "آخر تحديث: 19 نوفمبر 2026",
+			intro:
+				"تلخص هذه الصفحة المعلومات الأساسية المتعلقة بالتوصيل والدفع عند الاستلام والاستبدال أو الإرجاع لدى Maison Titrit. وترد الشروط الكاملة في شروط البيع العامة؛ وفي حال الاختلاف تُعتمد شروط البيع العامة.",
+			sections: [
+				{
+					h: "1. الدفع",
+					p: [
+						"يتم الدفع عند الاستلام (COD) نقدًا عند تسلّم الطرد. ولا يتم تحصيل أي مبالغ عبر الإنترنت على الموقع.",
+					],
+				},
+				{
+					h: "2. التوصيل",
+					p: [
+						"نقوم بالتوصيل داخل المغرب. وتُبلَّغ الآجال والإجراءات العملية عند تأكيد الطلب، بحسب وجهة التسليم وتوفر القطع.",
+						"يرجى تقديم عنوان دقيق ورقم هاتف يمكن الوصول إليه. وفي حال الغياب وقت التسليم، قد تترتب على محاولات إضافية رسوم وفقًا للشروط المعمول بها.",
+					],
+				},
+				{
+					h: "3. تأكيد الطلب",
+					p: [
+						"تُؤكَّد الطلبات المقدمة عبر الموقع أو واتساب هاتفيًا أو عبر واتساب. ولا يُعد الطلب نهائيًا إلا بعد تأكيده.",
+					],
+				},
+				{
+					h: "4. الاستبدال والإرجاع",
+					p: [
+						"يمكنكم طلب الاستبدال أو الإرجاع خلال 7 أيام من تاريخ الاستلام، بشرط أن تكون القطعة غير مستعملة وغير مغسولة ومع بطاقاتها وإثبات الشراء.",
+						"تكون رسوم الإرجاع على عاتقكم، إلا في حال وجود عيب أو خطأ من جانبنا — ففي هذه الحالة تتكفل Maison Titrit بالاستبدال أو الاسترداد بحسب الحالة.",
+					],
+				},
+				{
+					h: "5. الشكاوى والمساعدة",
+					p: [
+						"لأي سؤال يتعلق بالتوصيل أو الاستبدال أو الإرجاع أو عيب، تواصلوا معنا عبر بيانات التواصل الموثوقة المنشورة على الموقع، مع ذكر رقم الطلب وإرفاق صور عند الحاجة.",
+					],
+				},
+			],
+			related: [
+				{ label: "شروط البيع العامة", href: "/cgv" },
+				{ label: "اتصل بنا", href: "/contact" },
+				{ label: "دليل المقاسات", href: "/guide-des-tailles" },
+			],
+		},
+		sizing: {
+			eyebrow: "المساعدة والطلب",
+			title: "دليل المقاسات",
+			updated: "آخر تحديث: 19 نوفمبر 2026",
+			intro:
+				"يساعدكم هذا الدليل على اختيار المقاس الأنسب. قد تختلف القصّات والخامات والتوفر بحسب الموديل؛ لذلك يُرجى دائمًا الرجوع إلى معلومات صفحة المنتج والتواصل معنا عند الشك.",
+			sections: [
+				{
+					h: "1. كيفية أخذ القياسات",
+					p: [
+						"استخدموا شريط قياس مرنًا موضوعًا بشكل مستقيم على الجسم دون شد. وللحصول على قياس أدق، خذوا القياسات فوق ملابس خفيفة أو مباشرة على الجسم.",
+						"الصدر: قيسوا حول أوسع جزء. الخصر: قيسوا عند أضيق نقطة. الورك: قيسوا حول أوسع جزء. الطول: بحسب القطعة، قيسوا من الكتف أو الخصر حتى الطول المطلوب.",
+					],
+				},
+				{
+					h: "2. المقاسات والتوفر",
+					p: [
+						"تختلف المقاسات المتاحة بحسب كل قطعة (مثل S أو M أو L أو XL أو XXL حسب الموديل). وقد يتغير توفر المقاسات؛ لذا يرجى التحقق من صفحة المنتج أو التواصل مع الدار لتأكيد المقاس المطلوب.",
+					],
+				},
+				{
+					h: "3. القصّة والتعديلات والنصائح",
+					p: [
+						"تتميز بعض القطع بقصّة واسعة أو أربطة (حزام/رباط) تسمح بضبط السقوط. وإذا ترددتم بين مقاسين أو رغبتم في نصيحة مخصصة، ننصحكم بالتواصل معنا قبل تأكيد الطلب.",
+					],
+				},
+				{
+					h: "4. هل تحتاجون مساعدة؟",
+					p: [
+						"راسلونا عبر واتساب أو البريد الإلكتروني مع ذكر مرجع الموديل وقياساتكم وتفضيلاتكم في القصّة. سنساعدكم على اختيار المقاس الأنسب قبل تأكيد الطلب.",
+					],
+				},
+			],
+			related: [
+				{ label: "التوصيل والإرجاع", href: "/livraison-retours" },
+				{ label: "اتصل بنا", href: "/contact" },
+				{ label: "شروط البيع العامة", href: "/cgv" },
+			],
 		},
 	},
 
@@ -375,15 +763,15 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 		privacy: {
 			eyebrow: "Legal information",
 			title: "Privacy policy",
-			updated: "Last updated: November 14, 2026",
+			updated: "Last updated: November 19, 2026",
 			intro:
 				"This policy explains how Maison Titrit collects, uses and protects your personal data when you use this site. It applies in accordance with Moroccan Law No. 09-08 on the protection of individuals with regard to the processing of personal data and, where applicable, the EU General Data Protection Regulation (GDPR).",
 			sections: [
 				{
 					h: "1. Data controller",
 					p: [
-						"The data controller is Mohamed Moughamir — Sole Proprietor, operating the Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco).",
-						"For any question about your personal data: Maisontitrit67@gmail.com.",
+						"The data controller is the operator of the Maison Titrit website. Verified legal information and contact details (when provided by the operator) are available in the site's legal notices.",
+						"For any question about your personal data, use the verified contact/privacy details published on the site.",
 					],
 				},
 				{
@@ -423,7 +811,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. Your rights",
 					p: [
-						"You have the right to access, rectify, erase, object to and port your data. Exercise them by writing to Maisontitrit67@gmail.com — we will respond as soon as possible.",
+						"You have the right to access, rectify, erase, object to and port your data. Exercise them via the verified contact/privacy details published on the site; we will respond as soon as possible.",
 						"You may also lodge a complaint with Morocco's National Commission for the Protection of Personal Data (CNDP — cndp.ma).",
 					],
 				},
@@ -447,19 +835,23 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					],
 				},
 			],
-			related: [{ label: "Terms of sale", href: "/cgv" }],
+			related: [
+				{ label: "Terms of sale", href: "/cgv" },
+				{ label: "Legal notice", href: "/mentions-legales" },
+				{ label: "Cookies", href: "/cookies" },
+			],
 		},
 		terms: {
 			eyebrow: "Legal information",
 			title: "Terms of sale",
-			updated: "Last updated: November 14, 2026",
+			updated: "Last updated: November 19, 2026",
 			intro:
 				"These terms govern sales concluded on maisontitrit.com between Maison Titrit and any individual customer. Placing an order implies their unreserved acceptance.",
 			sections: [
 				{
 					h: "1. Site publisher",
 					p: [
-						"The site is published by Mohamed Moughamir — Sole Proprietor (RNAE 001609783000007), Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco). Contact: Maisontitrit67@gmail.com — 06 84 92 19 42.",
+						"The site is published and operated by the operator of the Maison Titrit brand. Verified legal notices (identity, contact details, host, where applicable) are published on the site when provided.",
 					],
 				},
 				{
@@ -530,7 +922,195 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 					],
 				},
 			],
-			related: [{ label: "Privacy policy", href: "/confidentialite" }],
+			related: [
+				{ label: "Privacy policy", href: "/confidentialite" },
+				{ label: "Delivery and returns", href: "/livraison-retours" },
+				{ label: "Size guide", href: "/guide-des-tailles" },
+			],
+		},
+		legalNotice: {
+			eyebrow: "Legal information",
+			title: "Legal notice",
+			updated: "Last updated: November 19, 2026",
+			intro:
+				"This legal notice identifies the publisher of maisontitrit.com and provides key information about its operation. It complements our privacy policy and terms of sale.",
+			sections: [
+				{
+					h: "1. Site publisher",
+					p: [
+						"The site is published and operated by the operator of the Maison Titrit brand. Verified information (identity, contact details, host) is published in the box above when provided by the operator.",
+					],
+				},
+				{
+					h: "2. Activity",
+					p: [
+						"Maison Titrit is a Moroccan couture house offering modest fashion pieces for women, crafted in our Bouskoura atelier (100% Made in Morocco), presented and available to order through the site and the contact channels indicated.",
+					],
+				},
+				{
+					h: "3. Hosting and technical services",
+					p: [
+						"The site relies on third-party technical providers (including for hosting, database, authentication, media and operational emails), as described in our privacy policy.",
+					],
+				},
+				{
+					h: "4. Intellectual property",
+					p: [
+						"The site, its content, the logo, the Amazigh motifs, the designs and the photographs are the exclusive property of Maison Titrit, unless otherwise stated. Any reproduction, in whole or in part, without prior written permission is prohibited.",
+					],
+				},
+				{
+					h: "5. Personal data and cookies",
+					p: [
+						"The processing of personal data and the use of cookies are detailed in our privacy policy and our dedicated cookies page. You can manage your consent preferences at any time using the preferences button displayed on the site.",
+					],
+				},
+				{
+					h: "6. Contact",
+					p: [
+						"For any question about the site, an order or this notice, contact us using the verified contact details published on the site.",
+					],
+				},
+			],
+			related: [
+				{ label: "Privacy policy", href: "/confidentialite" },
+				{ label: "Terms of sale", href: "/cgv" },
+				{ label: "Cookies", href: "/cookies" },
+			],
+		},
+		cookies: {
+			eyebrow: "Legal information",
+			title: "Cookies and preferences",
+			updated: "Last updated: November 19, 2026",
+			intro:
+				"This page explains how Maison Titrit uses cookies and similar technologies on maisontitrit.com, and the choices available to you. Analytics and marketing tools are activated only after your explicit consent, when you grant it.",
+			sections: [
+				{
+					h: "1. What is a cookie?",
+					p: [
+						"A cookie is a small file or piece of information stored on your device (browser, phone, computer) when you visit a site. Similar technologies (local storage, technical identifiers) may be used for equivalent purposes.",
+					],
+				},
+				{
+					h: "2. Necessary cookies and storage",
+					p: [
+						"Some elements are essential for the site to function, such as remembering your language, display preferences, cart state and consent choices. These elements are used without relying on optional analytics or marketing purposes.",
+					],
+				},
+				{
+					h: "3. Audience measurement (with consent)",
+					p: [
+						"If you allow it, we may use audience and performance measurement tools (for example Vercel Analytics/Speed Insights and, when configured, services such as Google Tag Manager/Google Analytics). Some Google services operate with consent mode: by default, storage related to analytics and advertising is denied, then updated according to your choices.",
+					],
+				},
+				{
+					h: "4. Marketing (with consent)",
+					p: [
+						"If you allow it, tools for measuring campaigns and marketing actions may be activated (for example Meta, Pinterest or TikTok, when configured). These tools are loaded only after your explicit consent in the consent banner.",
+					],
+				},
+				{
+					h: "5. Managing your choices",
+					p: [
+						"On your first visit, a banner lets you accept, reject or customize your preferences. You can change your choice at any time using the cookie preferences button displayed on the site. Refusing optional categories does not prevent you from using the essential functions of the site.",
+					],
+				},
+				{
+					h: "6. Learn more",
+					p: [
+						"For more information about personal data, recipients, retention periods and your rights, see our privacy policy or contact us using the verified contact details published on the site.",
+					],
+				},
+			],
+			related: [
+				{ label: "Privacy policy", href: "/confidentialite" },
+				{ label: "Legal notice", href: "/mentions-legales" },
+			],
+		},
+		deliveryReturns: {
+			eyebrow: "Help & orders",
+			title: "Delivery and returns",
+			updated: "Last updated: November 19, 2026",
+			intro:
+				"This page summarizes key information about delivery, cash on delivery and exchanges or returns at Maison Titrit. Full conditions are set out in our terms of sale; in case of any difference, the terms of sale prevail.",
+			sections: [
+				{
+					h: "1. Payment",
+					p: [
+						"Payment is cash on delivery (COD), paid in cash when you receive the package. No online payment is collected on the site.",
+					],
+				},
+				{
+					h: "2. Delivery",
+					p: [
+						"We deliver within Morocco. Timeframes and practical arrangements are communicated when your order is confirmed, depending on the destination and item availability.",
+						"Please provide an accurate address and a reachable phone number. In case of absence at delivery, additional attempts may incur fees in accordance with the applicable conditions.",
+					],
+				},
+				{
+					h: "3. Order confirmation",
+					p: [
+						"Orders placed through the site or WhatsApp are confirmed by phone or WhatsApp. An order is considered final only after confirmation.",
+					],
+				},
+				{
+					h: "4. Exchanges and returns",
+					p: [
+						"You may request an exchange or return within 7 days of receipt, provided the item is unworn, unwashed, with its tags and proof of purchase.",
+						"Return shipping is at your expense, unless there is a defect or an error on our part — in that case, Maison Titrit covers the exchange or refund as appropriate.",
+					],
+				},
+				{
+					h: "5. Claims and assistance",
+					p: [
+						"For any question about delivery, an exchange, a return or a defect, contact us using the verified contact details published on the site, quoting your order number and, if helpful, attaching photos.",
+					],
+				},
+			],
+			related: [
+				{ label: "Terms of sale", href: "/cgv" },
+				{ label: "Contact", href: "/contact" },
+				{ label: "Size guide", href: "/guide-des-tailles" },
+			],
+		},
+		sizing: {
+			eyebrow: "Help & orders",
+			title: "Size guide",
+			updated: "Last updated: November 19, 2026",
+			intro:
+				"This guide helps you choose the most suitable size. Cuts, fabrics and availability may vary by model; always refer to the product page information and contact us if you are unsure.",
+			sections: [
+				{
+					h: "1. How to take your measurements",
+					p: [
+						"Use a soft measuring tape, kept flat against the body without pulling tight. For better accuracy, take measurements over light clothing or directly on your body.",
+						"Bust: measure around the fullest part. Waist: measure at the natural waist. Hips: measure around the widest part. Length: depending on the piece, measure from the shoulder or waist to the desired length.",
+					],
+				},
+				{
+					h: "2. Sizes and availability",
+					p: [
+						"Available sizes depend on each piece (for example S, M, L, XL or XXL depending on the model). Size availability may change; check the product page or contact the house to confirm the size you want.",
+					],
+				},
+				{
+					h: "3. Fit, adjustments and tips",
+					p: [
+						"Some pieces have a relaxed fit or ties (belt, drawstring) that allow you to adjust the drape. If you are between two sizes or would like personalized advice, we recommend contacting us before ordering.",
+					],
+				},
+				{
+					h: "4. Need help?",
+					p: [
+						"Message us on WhatsApp or by email with the model reference, your measurements and your fit preferences. We will help you choose the most suitable size before confirming your order.",
+					],
+				},
+			],
+			related: [
+				{ label: "Delivery and returns", href: "/livraison-retours" },
+				{ label: "Contact", href: "/contact" },
+				{ label: "Terms of sale", href: "/cgv" },
+			],
 		},
 	},
 };
