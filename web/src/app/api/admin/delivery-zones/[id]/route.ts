@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { requirePermission } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { z } from "zod";
 
 export const dynamic = "force-dynamic";
 
@@ -17,13 +17,20 @@ export async function PATCH(
 	{ params }: { params: Promise<{ id: string }> },
 ) {
 	const { allowed } = await requirePermission("orders:write");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const { id } = await params;
 	try {
 		const body = await req.json();
 		const parsed = schema.parse(body);
 		const supabase = await createSupabaseServerClient();
-		const update: Record<string, unknown> = { updatedAt: new Date().toISOString() };
+		const update: {
+			updatedAt: string;
+			name?: string;
+			cities?: string;
+			fee?: number;
+			isActive?: boolean;
+		} = { updatedAt: new Date().toISOString() };
 		if (parsed.name !== undefined) update.name = parsed.name.trim();
 		if (parsed.cities !== undefined) update.cities = parsed.cities.trim();
 		if (parsed.fee !== undefined) update.fee = parsed.fee;
@@ -34,7 +41,8 @@ export async function PATCH(
 			.eq("id", id)
 			.select("*")
 			.single();
-		if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+		if (error)
+			return NextResponse.json({ error: error.message }, { status: 500 });
 		return NextResponse.json({ zone: data });
 	} catch (e) {
 		return NextResponse.json({ error: "Données invalides." }, { status: 400 });
@@ -46,10 +54,12 @@ export async function DELETE(
 	{ params }: { params: Promise<{ id: string }> },
 ) {
 	const { allowed } = await requirePermission("orders:write");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const { id } = await params;
 	const supabase = await createSupabaseServerClient();
 	const { error } = await supabase.from("DeliveryZone").delete().eq("id", id);
-	if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+	if (error)
+		return NextResponse.json({ error: error.message }, { status: 500 });
 	return NextResponse.json({ ok: true });
 }

@@ -222,7 +222,6 @@ model Order {
   @@index([idempotencyKey])
   @@index([deliveryZoneId])
 }
-}
 
 model OrderStatusHistory {
   id               String   @id @default(cuid())
