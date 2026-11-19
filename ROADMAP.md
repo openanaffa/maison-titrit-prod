@@ -1,6 +1,6 @@
 # Maison Titrit — Roadmap
 
-**Last updated:** 2026-11-18
+**Last updated:** 2026-11-19
 
 This file is the plan. For conventions and topology read [`ENTRYPOINT.md`](ENTRYPOINT.md), for the current system read [`README.md`](README.md), for deployment read [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), and for *why* past choices were made read [`docs/history/worklog-ws2.md`](docs/history/worklog-ws2.md) (tasks 1–31).
 
@@ -16,10 +16,11 @@ Here "PnP" means *plug and play*, not Yarn Plug'n'Play — see [Not planned](#no
 | Milestone | State | Summary |
 |---|---|---|
 | M0 — Product build-out | ✅ Shipped | Tasks 23–31: backoffice, ecommerce, SEO/content, Supabase, Vercel, marketing. PR #80 → `develop`, PR #81 → `main`. |
-| M1 — Quality gates | 🔄 In review | Biome 2.6.8, strict repo-wide check, git hooks, LSP fixes. PR #82 → `develop`, all checks green, awaiting merge. |
-| M2 — Architecture cleanup | 🔄 In review | DRY / KISS / YAGNI / hexagonal / scattered structure. First pass on PR #83; exit criteria not yet signed off. |
+| M1 — Quality gates | ✅ Shipped | PR #82 merged to `develop` (and released via #131/#139/#145): Biome 2.6.8, hooks, CI, LSP fixes all active. |
+| M2 — Architecture cleanup | 🔄 In progress | First pass landed with PR #83: shared React Query hooks (`web/src/hooks/api/`), repository layer (`web/src/lib/repositories/`), page/component splits. Still open: `/panier` split, YAGNI dependency audit, re-enabling `react-hooks/set-state-in-effect`. |
+| Commerce roadmap (issues #111–#128) | 🔄 In progress | M1 done (variants #115, ledger #116, transactional checkout #117, order lifecycle #118, delivery zones #119 — ADRs 0001–0005, merged with PRs #133–#143). M2 in flight: #120 inventory workspace (peer WIP), #121 fulfilment queue (PR #147), #122 customer 360 open. M3 #123–#125 blocked on the Wafine contract. M4 #126–#128 backlog. |
 | M3 — Forkable plug-and-play starter | 📋 Planned | De-brand, zero-secret bootstrap, packaging, fork docs, fork-agnostic CI. |
-| M4 — Hardening & scale | 🗓️ Backlog | Test coverage, a11y, perf budgets, dependency cadence. |
+| M4 — Hardening & scale | 🗓️ Backlog | Test coverage (now 59 tests), a11y, perf budgets, dependency cadence. |
 
 ## M0 — Product build-out ✅
 
@@ -34,7 +35,7 @@ Shipped in `docs/history/worklog-ws2.md`:
 - **Task 31** — marketing readiness: OG/Twitter/canonical metadata, JSON-LD, consent-gated GA4 + Meta events, UTM attribution.
 - **PR #80** — centralized vintage Tailwind roles/tokens, ~231 class-string replacements across 29 files, large components split (`66e0c2c` on `develop`); released to `main` via PR #81 (`86152df`).
 
-## M1 — Quality gates 🔄
+## M1 — Quality gates ✅
 
 - [x] Pin `@biomejs/biome@2.6.8` with Bun 1.3.14; `bun.lock` stays `lockfileVersion: 1`.
 - [x] `biome.json` scoped to app source; `useButtonType` and `noImgElement` are errors; generated Supabase types excluded.
@@ -42,12 +43,8 @@ Shipped in `docs/history/worklog-ws2.md`:
 - [x] Git hooks: `.githooks/pre-commit` (Biome on staged files), `.githooks/pre-push` (`tsc`). Install with `bun run hooks:install`.
 - [x] `bun-types` / `node` added to web `tsconfig.json`; `useToast` re-subscription bug fixed.
 - [x] CI workflow, CODEOWNERS, PR template, dependabot, `.editorconfig`, LF normalization.
-- [ ] **Merge PR #82 → `develop`**, then cut a `release/*` → `main`.
-- [ ] Clear the 34 non-blocking Biome warnings / 11 infos.
-
-Verification bar: `biome check` 0 errors · `tsc --noEmit` 0 · `eslint` 0/0 · `next build` ✓ · `bun test` 31 pass / 0 fail.
-
-Note: PR #83 already contains M1's commits (`a7fdb96`), so merging it into `develop` carries the Biome toolchain as well as the M2 work.
+- [x] PR #82 merged to `develop`; released to `main` via PRs #131/#139/#145.
+- [ ] Remaining repo-wide Biome warnings are pre-existing and tracked; they do not block CI.
 
 ## M2 — Architecture cleanup ⏭️
 
@@ -98,11 +95,11 @@ Goal: a fresh GitHub template clone boots with `bun install → cp .env.example 
 
 ## M4 — Hardening & scale 🗓️
 
-- [ ] Expand coverage beyond the current 31 tests: checkout, auth/RBAC, i18n, storage provider selection.
-- [ ] Accessibility pass on storefront + `/makteb` (keyboard paths, ARIA, contrast).
+- [ ] Expand coverage beyond the current 59 tests: checkout, auth/RBAC, i18n, storage provider selection; E2E suite (issue #126).
+- [ ] Accessibility pass on storefront + `/makteb` (keyboard paths, ARIA, contrast) — issue #127.
 - [ ] Performance budgets + bundle audit; keep images on `next/image`.
 - [ ] Dependency upgrade cadence for Next / React / Tailwind / Prisma; revisit the Bun 1.3 `bun.lock` v1 constraint once Vercel's build image ships Bun ≥ 1.4.
-- [ ] Get the `trail` CLI working in this shell (currently blocked by PowerShell execution policy), then run `trail build` after large structural changes.
+- [x] `trail` CLI works in this shell; run `trail build` after large structural changes.
 
 ## Not planned
 
