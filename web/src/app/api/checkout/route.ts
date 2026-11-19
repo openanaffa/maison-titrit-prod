@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 		const idempotencyKey =
 			typeof body.idempotencyKey === "string" && body.idempotencyKey.trim()
 				? body.idempotencyKey.trim()
-				: null;
+				: `checkout:${crypto.randomUUID()}`;
 
 		if (!cartLines) {
 			return NextResponse.json(
@@ -84,7 +84,7 @@ export async function POST(req: Request) {
 
 		// Resolve variants per line and reserve stock. Track reservations so we
 		// can release them if any later step fails (compensation).
-		const reservations: { variantId: string; qty: number; key: string }[] = [];
+		const reservations: { variantId: string; qty: number; key: string; owned: boolean }[] = [];
 		const lineVariants: (string | null)[] = [];
 		const lineVariantSkus: (string | null)[] = [];
 		try {
@@ -100,12 +100,14 @@ export async function POST(req: Request) {
 				lineVariants.push(variant?.id ?? null);
 				lineVariantSkus.push(variant?.sku ?? null);
 				if (variant) {
-					const resKey = `${idempotencyKey ?? "anon"}:reserve:${i}`;
-					await reserveStock(variant.id, line.qty, {
+					const resKey = `${idempotencyKey}:reserve:${i}`;
+					const res = await reserveStock(variant.id, line.qty, {
 						idempotencyKey: resKey,
 						sourceRef: "checkout",
 					});
-					reservations.push({ variantId: variant.id, qty: line.qty, key: resKey });
+					if (!res.replayed) {
+						reservations.push({ variantId: variant.id, qty: line.qty, key: resKey, owned: true });
+					}
 				} else if (!product.inStock) {
 					throw new Error("OUT_OF_STOCK");
 				}
