@@ -12,11 +12,14 @@ import { legalNotice, site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
 import { whatsappCatalog } from "@/lib/brand";
 
-/** A legal field is rendered only when it carries a real value — empty
- * strings and TODO placeholders stay hidden (see config/site.ts). */
+/** A legal field is rendered only when it carries a confirmed, real value.
+ * Empty strings, TODO placeholders, and masked placeholder blocks stay hidden. */
 function rendered(value: string): boolean {
 	const v = value.trim();
-	return v !== "" && !/^todo/i.test(v);
+	if (v === "" || /^todo/i.test(v)) return false;
+	// Treat masked placeholder blocks (e.g. ███) as unconfirmed.
+	if (/^[█\s\-–—]+$/.test(v)) return false;
+	return true;
 }
 
 export function SiteFooter() {
@@ -141,9 +144,11 @@ export function SiteFooter() {
 						{t("footer.legal")}
 					</p>
 					<ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 font-serif text-xs text-cream/70">
-						<li className="font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze-light">
-							{legalNotice.companyName}
-						</li>
+						{rendered(legalNotice.companyName) && (
+							<li className="font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze-light">
+								{legalNotice.companyName}
+							</li>
+						)}
 						<li>
 							<Link href="/confidentialite" className="hover:text-terracotta">
 								{t("legal.privacy")}

@@ -143,24 +143,26 @@ export type SiteAnalytics = typeof analytics;
  *  regime, Law 114-13). Auto-Entrepreneurs register with the RNAE (Registre
  *  National de l'Auto-Entrepreneur), not the RC — the `rcNumber` key keeps
  *  its name (matches the schema) but its VALUE is the RNAE number.
- *  ⚠️ TODO (user action required) — fill in the real values below:
- *     - rcNumber:            <RNAE number>
- *     - iceNumber:           TODO (15-digit ICE)
- *     - cndpDeclarationNumber: CNDP declaration reference number
- *     - dpoEmail:            derived from site.email (the owner's email)
- *  Until a value is filled in (or is still a TODO placeholder), its field
- *  is hidden in the footer.
+ *  ⚠️ TODO (owner confirmation required) — fill in the real, verified values:
+ *     - companyName:          official legal name / designation
+ *     - rcNumber:             RNAE number
+ *     - iceNumber:            15-digit ICE
+ *     - cndpDeclarationNumber: CNDP declaration/reference number
+ *     - dpoEmail:             confirmed privacy/DPO contact email
+ *  Until a value is confirmed, leave it empty so it is not rendered.
  * ============================================================================
  */
 export const legalNotice = {
-	/** Official legal name shown on the notice */
-	companyName: "███████ █████████ — ████-████████████",
-	rcNumber: "███████████████",
-	iceNumber: "███████████████",
-	/** TODO: file the Law 09-08 declaration on cndp.ma and set the reference. */
-	cndpDeclarationNumber: "█████-█████-███",
-	/** DPO / privacy contact — the site owner's existing email */
-	dpoEmail: site.email,
+	/** Official legal name shown on the notice (owner-confirmed). */
+	companyName: "",
+	/** RNAE number (stored in rcNumber for schema compatibility). */
+	rcNumber: "",
+	/** 15-digit ICE (owner-confirmed). */
+	iceNumber: "",
+	/** CNDP declaration/reference number (owner-confirmed). */
+	cndpDeclarationNumber: "",
+	/** Privacy/DPO contact email (owner-confirmed). */
+	dpoEmail: "",
 } as const;
 
 /* --- Default consent categories ----------------------------------------- */
