@@ -75,7 +75,7 @@ export function SiteFooter() {
 					</div>
 
 					{/* Nav */}
-					<div>
+					<nav aria-label={t("footer.nav")}>
 						<p className="font-label text-[0.66rem] uppercase tracking-[0.24em] text-bronze-light">
 							{t("footer.nav")}
 						</p>
@@ -91,7 +91,7 @@ export function SiteFooter() {
 								</li>
 							))}
 						</ul>
-					</div>
+					</nav>
 
 					{/* Contact + socials */}
 					<div>

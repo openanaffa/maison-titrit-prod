@@ -15,7 +15,9 @@ export default function SiteLayout({
 	return (
 		<>
 			<SiteHeader />
-			{children}
+			<main id="main-content" tabIndex={-1} className="flex-1 outline-none">
+				{children}
+			</main>
 			<SiteFooter />
 		</>
 	);

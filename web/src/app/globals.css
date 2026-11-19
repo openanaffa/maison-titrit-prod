@@ -575,6 +575,9 @@
   transform-origin: left;
   animation: titrit-meter-fill 3s cubic-bezier(0.2, 0.65, 0.15, 1) forwards;
 }
+[dir="rtl"] .titrit-loader__meter::after {
+  transform-origin: right;
+}
 .titrit-loader__status {
   margin-top: 14px;
   color: #886942;

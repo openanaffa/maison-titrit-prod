@@ -163,7 +163,7 @@ export default function CartPage() {
 							>
 								<Link href="/checkout">
 									{t("cta.checkout")}
-									<ArrowRight className="size-4" />
+									<ArrowRight className="size-4 rtl:rotate-180" />
 								</Link>
 							</Button>
 							<Link
