@@ -58,7 +58,20 @@ export const FLOW: string[] = [
 	"DISPATCHED",
 	"DELIVERED",
 	"CANCELLED",
+	"RETURN_REQUESTED",
+	"RETURNED",
 ];
+
+export const ALLOWED_TRANSITIONS: Record<string, string[]> = {
+	PENDING: ["CONFIRMED", "CANCELLED"],
+	CONFIRMED: ["PROCESSING", "CANCELLED"],
+	PROCESSING: ["DISPATCHED", "CANCELLED"],
+	DISPATCHED: ["DELIVERED"],
+	DELIVERED: ["RETURN_REQUESTED"],
+	RETURN_REQUESTED: ["RETURNED"],
+	CANCELLED: [],
+	RETURNED: [],
+};
 
 export const mad = (n: number) => `${n.toLocaleString("fr-FR")} Dhs`;
 

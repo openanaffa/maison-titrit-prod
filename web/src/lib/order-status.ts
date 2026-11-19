@@ -25,16 +25,8 @@ export const FULFILMENT_STATUSES = [
 ] as const;
 export type FulfilmentStatus = (typeof FULFILMENT_STATUSES)[number];
 
-export const ALLOWED_TRANSITIONS: Record<string, string[]> = {
-	PENDING: ["CONFIRMED", "CANCELLED"],
-	CONFIRMED: ["PROCESSING", "CANCELLED"],
-	PROCESSING: ["DISPATCHED", "CANCELLED"],
-	DISPATCHED: ["DELIVERED"],
-	DELIVERED: ["RETURN_REQUESTED"],
-	RETURN_REQUESTED: ["RETURNED"],
-	CANCELLED: [],
-	RETURNED: [],
-};
+import { ALLOWED_TRANSITIONS } from "@/lib/types/constants";
+export { ALLOWED_TRANSITIONS };
 
 export function isAllowedTransition(from: string, to: string): boolean {
 	return (ALLOWED_TRANSITIONS[from] ?? []).includes(to);

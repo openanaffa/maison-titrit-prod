@@ -15,7 +15,7 @@ import { useUpdateOrderStatus } from "@/hooks/api/orders";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import type { OrderRow } from "@/lib/types";
-import { FLOW, STATUS_LABELS } from "@/lib/types/constants";
+import { ALLOWED_TRANSITIONS, STATUS_LABELS } from "@/lib/types/constants";
 
 export type OrderDetailDialogProps = {
 	order: OrderRow | null;
@@ -31,6 +31,7 @@ export function OrderDetailDialog({ order, onClose }: OrderDetailDialogProps) {
 	const router = useRouter();
 	const { toast } = useToast();
 	const updateOrderStatus = useUpdateOrderStatus();
+	const allowed = order ? (ALLOWED_TRANSITIONS[order.status] ?? []) : [];
 
 	async function updateStatus(status: string) {
 		try {
@@ -118,7 +119,7 @@ export function OrderDetailDialog({ order, onClose }: OrderDetailDialogProps) {
 					<div>
 						<p className="mb-2 label-vintage-tight">Statut</p>
 						<div className="flex flex-wrap gap-2">
-							{FLOW.map((s) => (
+							{allowed.map((s) => (
 								<button
 									type="button"
 									key={s}
