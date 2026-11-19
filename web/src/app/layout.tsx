@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import * as Sentry from "@sentry/nextjs";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
 import { AttributionCapture } from "@/components/analytics/attribution-capture";
 import {
 	CookieConsent,
 	CookiePreferencesButton,
 } from "@/components/analytics/cookie-consent";
+import { VercelTelemetry } from "@/components/analytics/vercel-telemetry";
 import { AnnouncementBar } from "@/components/maison/announcement-bar";
 import { SupabaseAuthProvider } from "@/components/maison/supabase-auth-provider";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
@@ -231,8 +230,7 @@ gtag('consent', 'default', {
 					</LocaleProvider>
 				</ThemeProvider>
 				<Toaster />
-				<Analytics />
-				<SpeedInsights />
+				<VercelTelemetry />
 				<SwRegister />
 			</body>
 		</html>

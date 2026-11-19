@@ -220,20 +220,20 @@ export const French = {
 
 	"cookie.title": "Vos préférences de confidentialité",
 	"cookie.body":
-		"Nous utilisons des cookies pour mesurer l'audience (Google Analytics, Meta Pixel) et améliorer votre expérience. Vous choisissez ce que vous autorisez.",
+		"Nous utilisons des cookies et technologies similaires pour faire fonctionner le site, mesurer l’audience et, si vous l’autorisez, mener des actions marketing. Vous choisissez ce que vous autorisez.",
 	"cookie.accept": "Tout accepter",
 	"cookie.reject": "Tout refuser",
 	"cookie.customize": "Personnaliser",
 	"cookie.save": "Enregistrer",
-	"cookie.analytics": "Mesure d'audience (Google Analytics)",
+	"cookie.analytics": "Mesure d’audience",
 	"cookie.analyticsDesc":
-		"Statistiques de visite anonymisées pour améliorer le site.",
-	"cookie.marketing": "Marketing (Meta Pixel)",
+		"Mesure de la fréquentation et des performances du site afin de l’améliorer.",
+	"cookie.marketing": "Marketing",
 	"cookie.marketingDesc":
-		"Permet de mesurer les campagnes et de personnaliser les annonces.",
+		"Mesure des campagnes et actions marketing, uniquement avec votre accord.",
 	"cookie.necessary": "Cookies nécessaires",
 	"cookie.necessaryDesc":
-		"Langue, panier et préférences. Indispensables au site.",
+		"Langue, panier et préférences. Indispensables au fonctionnement du site.",
 	"cookie.aria": "Bandeau de consentement aux cookies",
 	"cookie.privacy": "Confidentialité",
 	"admin.nav.dashboard": "Tableau de bord",

@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Cookie, ShieldCheck, X } from "lucide-react";
+import { Check, Cookie, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -51,7 +51,7 @@ export function CookiePreferencesButton() {
 export function CookieConsent() {
 	const { t } = useT();
 	const pathname = usePathname();
-	const [state, setState] = React.useState<null | typeof DEFAULT_CONSENT>(null);
+	const [state, setState] = React.useState<typeof DEFAULT_CONSENT | null>(null);
 	const [customizing, setCustomizing] = React.useState(false);
 
 	React.useEffect(() => {
