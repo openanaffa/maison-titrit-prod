@@ -17,22 +17,22 @@ const outPath = join(here, "..", "src", "lib", "supabase", "database.types.ts");
 
 /** Prisma scalar -> TypeScript type as emitted by Supabase for Postgres. */
 const scalars: Record<string, string> = {
-  String: "string",
-  Int: "number",
-  Float: "number",
-  BigInt: "number",
-  Decimal: "number",
-  Boolean: "boolean",
-  DateTime: "string",
-  Json: "Json",
-  Bytes: "string",
+	String: "string",
+	Int: "number",
+	Float: "number",
+	BigInt: "number",
+	Decimal: "number",
+	Boolean: "boolean",
+	DateTime: "string",
+	Json: "Json",
+	Bytes: "string",
 };
 
 type Field = {
-  name: string;
-  type: string;
-  nullable: boolean;
-  optionalOnInsert: boolean;
+	name: string;
+	type: string;
+	nullable: boolean;
+	optionalOnInsert: boolean;
 };
 
 type Model = { name: string; fields: Field[] };
@@ -41,31 +41,30 @@ const schema = readFileSync(schemaPath, "utf8");
 const models: Model[] = [];
 
 for (const match of schema.matchAll(/model\s+(\w+)\s*\{([^}]*)\}/g)) {
-  const name = match[1];
-  const fields: Field[] = [];
+	const name = match[1];
+	const fields: Field[] = [];
 
-  for (const raw of match[2].split("\n")) {
-    const line = raw.trim();
-    if (!line || line.startsWith("//")) continue;
+	for (const raw of match[2].split("\n")) {
+		const line = raw.trim();
+		if (!line || line.startsWith("//")) continue;
 
-    const field = line.match(/^(\w+)\s+(\w+)(\[\])?(\?)?(?:\s+(.*))?$/);
-    if (!field) continue;
+		const field = line.match(/^(\w+)\s+(\w+)(\[\])?(\?)?(?:\s+(.*))?$/);
+		if (!field) continue;
 
-    const [, fieldName, prismaType, isArray, questionMark, attrs = ""] = field;
-    if (isArray || !(prismaType in scalars)) continue; // relation field
+		const [, fieldName, prismaType, isArray, questionMark, attrs = ""] = field;
+		if (isArray || !(prismaType in scalars)) continue; // relation field
 
-    fields.push({
-      name: fieldName,
-      type: scalars[prismaType],
-      nullable: Boolean(questionMark),
-      // Prisma sets @default and @updatedAt values server-side, so Supabase
-      // omits them from the required INSERT columns.
-      optionalOnInsert:
-        /@default\s*\(/.test(attrs) || /@updatedAt/.test(attrs),
-    });
-  }
+		fields.push({
+			name: fieldName,
+			type: scalars[prismaType],
+			nullable: Boolean(questionMark),
+			// Prisma sets @default and @updatedAt values server-side, so Supabase
+			// omits them from the required INSERT columns.
+			optionalOnInsert: /@default\s*\(/.test(attrs) || /@updatedAt/.test(attrs),
+		});
+	}
 
-  models.push({ name, fields });
+	models.push({ name, fields });
 }
 
 if (models.length === 0) throw new Error(`No models found in ${schemaPath}`);
@@ -74,20 +73,20 @@ const nullable = (f: Field) => (f.nullable ? " | null" : "");
 const rowFields = (f: Field) => `          ${f.name}: ${f.type}${nullable(f)}`;
 
 const tables = models
-  .map(({ name, fields }) => {
-    const insert = fields
-      .map(
-        (f) =>
-          `          ${f.name}${f.nullable || f.optionalOnInsert ? "?" : ""}: ${f.type}${nullable(f)}`
-      )
-      .join("\n");
-    const update = fields
-      .map((f) => `          ${f.name}?: ${f.type}${nullable(f)}`)
-      .join("\n");
+	.map(({ name, fields }) => {
+		const insert = fields
+			.map(
+				(f) =>
+					`          ${f.name}${f.nullable || f.optionalOnInsert ? "?" : ""}: ${f.type}${nullable(f)}`,
+			)
+			.join("\n");
+		const update = fields
+			.map((f) => `          ${f.name}?: ${f.type}${nullable(f)}`)
+			.join("\n");
 
-    return `      ${name}: {\n        Row: {\n${fields.map(rowFields).join("\n")}\n        }\n        Insert: {\n${insert}\n        }\n        Update: {\n${update}\n        }\n        Relationships: []\n      }`;
-  })
-  .join("\n");
+		return `      ${name}: {\n        Row: {\n${fields.map(rowFields).join("\n")}\n        }\n        Insert: {\n${insert}\n        }\n        Update: {\n${update}\n        }\n        Relationships: []\n      }`;
+	})
+	.join("\n");
 
 const output = `/**
  * GENERATED FILE — do not edit by hand.
@@ -194,5 +193,5 @@ export type TablesUpdate<
 
 writeFileSync(outPath, output, "utf8");
 console.log(
-  `Generated ${outPath} from ${schemaPath} (${models.length} tables)`
+	`Generated ${outPath} from ${schemaPath} (${models.length} tables)`,
 );

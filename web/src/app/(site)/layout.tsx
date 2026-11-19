@@ -1,5 +1,5 @@
-import { SiteHeader } from "@/components/maison/site-header";
 import { SiteFooter } from "@/components/maison/site-footer";
+import { SiteHeader } from "@/components/maison/site-header";
 
 /**
  * Shared chrome for every public page (route group does not affect URLs).
@@ -7,12 +7,16 @@ import { SiteFooter } from "@/components/maison/site-footer";
  * this group keep state across sibling navigations, per the Next.js layout
  * hierarchy. Auth (/auth) and the backoffice (/makteb) define their own.
  */
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <SiteHeader />
-      {children}
-      <SiteFooter />
-    </>
-  );
+export default function SiteLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
+	return (
+		<>
+			<SiteHeader />
+			{children}
+			<SiteFooter />
+		</>
+	);
 }

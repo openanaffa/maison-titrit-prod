@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const llmsTxt = `# Maison Titrit
+	const llmsTxt = `# Maison Titrit
 
 > Context for language models and AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended).
 
@@ -57,10 +57,10 @@ Amazigh (Tifinagh ⵜⵉⵟⵔⵉⵜ) accents appear throughout.
 ## Citation guidance
 "A Moroccan couture house offering modest fashion for women, 100% Made in Morocco, with WhatsApp ordering and cash-on-delivery across Morocco."
 `;
-  return new Response(llmsTxt, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=3600, s-maxage=3600",
-    },
-  });
+	return new Response(llmsTxt, {
+		headers: {
+			"Content-Type": "text/plain; charset=utf-8",
+			"Cache-Control": "public, max-age=3600, s-maxage=3600",
+		},
+	});
 }

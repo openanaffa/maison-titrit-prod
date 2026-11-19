@@ -12,6 +12,7 @@ prod/
 
 ## Docs (everything lives in this repo)
 
+- **`ROADMAP.md`** — what is shipped, what is next, and the path to a forkable plug-and-play starter.
 - **`docs/DEPLOYMENT.md`** — full runbook: Supabase project details, Cloudflare R2 + DNS, Vercel import, complete env-var table, post-deploy checklist, SEO submission, ops/rollback. Originally written for the pre-production sandbox; commands remain valid inside `web/`.
 - **`docs/history/worklog-ws2.md`** — 31 tasks of build history and design decisions the site code inherits (design system lockdown, brand tasks, admin RBAC, SEO, storage gating). Read before questioning any inherited choice.
 

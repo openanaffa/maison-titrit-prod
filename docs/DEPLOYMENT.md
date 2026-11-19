@@ -118,6 +118,11 @@ Vercel's filesystem is **ephemeral** — uploaded images won't persist. R2 is S3
    | `GA_API_SECRET` | `<from GA4>` | Production (optional, server) |
    | `META_PIXEL_ID` | `<Meta Pixel ID>` | Production (optional, server) |
    | `META_CAPI_ACCESS_TOKEN` | `<Meta CAPI token>` | Production (optional, server) |
+   | `NEXT_PUBLIC_SENTRY_DSN` | `<DSN of sentry project maison-titrit-web>` | Production + Preview |
+   | `SENTRY_DSN` | `<same DSN>` | Production + Preview (server) |
+   | `SENTRY_ORG` | `maison-titrit` | Production + Preview |
+   | `SENTRY_PROJECT` | `maison-titrit-web` | Production + Preview |
+   | `SENTRY_AUTH_TOKEN` | `<Sentry org auth token, source-map upload>` | Production + Preview (build-time, secret) |
 
    `ADMIN_EMAIL` is only needed when `seed:prod` should create a founder profile. Google credentials belong in Supabase Auth provider settings, not Vercel.
 

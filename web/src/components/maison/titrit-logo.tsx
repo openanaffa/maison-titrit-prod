@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
+import { cn } from "@/lib/utils";
 
 /**
  * Titrit logo lockup — uses the supplied traced vector logo (gold by default,
@@ -11,58 +12,58 @@ import { useT } from "@/i18n/locale-provider";
  * accent. The wordmark text is translated via i18n (hero.wordmark).
  */
 export function TitritLogo({
-  className,
-  showWordmark = true,
-  logoClassName,
-  wordmarkClassName,
-  wordmarkContainerClassName,
-  variant = "auto",
+	className,
+	showWordmark = true,
+	logoClassName,
+	wordmarkClassName,
+	wordmarkContainerClassName,
+	variant = "auto",
 }: {
-  className?: string;
-  showWordmark?: boolean;
-  logoClassName?: string;
-  wordmarkClassName?: string;
-  /** Classes for the stacked wordmark + Tifinagh column (e.g. hide below lg). */
-  wordmarkContainerClassName?: string;
-  variant?: "auto" | "mono";
+	className?: string;
+	showWordmark?: boolean;
+	logoClassName?: string;
+	wordmarkClassName?: string;
+	/** Classes for the stacked wordmark + Tifinagh column (e.g. hide below lg). */
+	wordmarkContainerClassName?: string;
+	variant?: "auto" | "mono";
 }) {
-  const { t } = useT();
-  return (
-    <span className={cn("inline-flex items-center gap-3", className)}>
-      <img
-        src="/assets/titrit-logo-gold.svg"
-        alt=""
-        aria-hidden="true"
-        width={44}
-        height={44}
-        className={cn(
-          "titrit-logo-mark h-9 w-9 shrink-0 select-none sm:h-11 sm:w-11",
-          variant === "mono" && "titrit-logo-mark--mono",
-          logoClassName,
-        )}
-        draggable={false}
-      />
-      {showWordmark && (
-        <span
-          className={cn(
-            "flex flex-col leading-none",
-            wordmarkContainerClassName,
-          )}
-        >
-          <span
-            className={cn(
-              "wordmark text-[0.95rem] uppercase text-ink sm:text-[1.05rem] dark:text-cream",
-              wordmarkClassName,
-            )}
-          >
-            {t("hero.wordmark")}
-          </span>
-          <span className="tifinagh mt-1 text-[0.6rem] text-bronze sm:text-[0.66rem]">
-            {site.nameAmazigh}
-          </span>
-        </span>
-      )}
-    </span>
-  );
+	const { t } = useT();
+	return (
+		<span className={cn("inline-flex items-center gap-3", className)}>
+			<Image
+				src="/assets/titrit-logo-gold.svg"
+				alt=""
+				aria-hidden="true"
+				width={44}
+				height={44}
+				className={cn(
+					"titrit-logo-mark h-9 w-9 shrink-0 select-none sm:h-11 sm:w-11",
+					variant === "mono" && "titrit-logo-mark--mono",
+					logoClassName,
+				)}
+				draggable={false}
+				unoptimized
+			/>
+			{showWordmark && (
+				<span
+					className={cn(
+						"flex flex-col leading-none",
+						wordmarkContainerClassName,
+					)}
+				>
+					<span
+						className={cn(
+							"wordmark text-[0.95rem] uppercase text-ink sm:text-[1.05rem] dark:text-cream",
+							wordmarkClassName,
+						)}
+					>
+						{t("hero.wordmark")}
+					</span>
+					<span className="tifinagh mt-1 text-[0.6rem] text-bronze sm:text-[0.66rem]">
+						{site.nameAmazigh}
+					</span>
+				</span>
+			)}
+		</span>
+	);
 }
-

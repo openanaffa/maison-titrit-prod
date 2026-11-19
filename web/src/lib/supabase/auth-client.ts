@@ -8,7 +8,7 @@ export type AuthenticatedUser = User & { role: string };
 export { getRoleFromAccessToken };
 
 export async function signOut(callbackUrl = "/") {
-  const { error } = await createSupabaseBrowserClient().auth.signOut();
-  if (error) throw error;
-  window.location.assign(callbackUrl);
+	const { error } = await createSupabaseBrowserClient().auth.signOut();
+	if (error) throw error;
+	window.location.assign(callbackUrl);
 }

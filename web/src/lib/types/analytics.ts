@@ -3,11 +3,11 @@
 export type ConsentCategory = "analytics" | "marketing";
 
 export type ConsentState = {
-  version: number;
-  necessary: true; // always
-  analytics: boolean;
-  marketing: boolean;
-  decided: boolean; // whether the user has made a choice
+	version: number;
+	necessary: true; // always
+	analytics: boolean;
+	marketing: boolean;
+	decided: boolean; // whether the user has made a choice
 };
 
 export type Listener = (s: ConsentState) => void;
