@@ -16,6 +16,7 @@ export type StockResult = {
 	reserved: number;
 	available: number;
 	movementId: string;
+	replayed: boolean;
 };
 
 export type StockOptions = {
@@ -63,6 +64,7 @@ async function applyMovement(
 				reserved: v.reserved,
 				available: availableOf(v),
 				movementId: replay.id,
+				replayed: true,
 			};
 		}
 
@@ -114,6 +116,7 @@ async function applyMovement(
 				reserved: result.reserved,
 				available: result.onHand - result.reserved,
 				movementId: result.movementId,
+				replayed: false,
 			};
 		} catch (e) {
 			// Concurrent replay with the same idempotency key: return existing.
@@ -131,6 +134,7 @@ async function applyMovement(
 						reserved: vv.reserved,
 						available: availableOf(vv),
 						movementId: replayMov.id,
+						replayed: true,
 					};
 				}
 			}
