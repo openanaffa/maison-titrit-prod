@@ -23,6 +23,7 @@ export function AdminShell({
 		pendingOrders: number;
 		customers: number;
 		categories: number;
+		fulfilmentQueue: number;
 	};
 	children: React.ReactNode;
 }) {
