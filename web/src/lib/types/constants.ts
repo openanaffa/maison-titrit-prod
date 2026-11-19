@@ -35,9 +35,13 @@ export const STATUS_STYLES: Record<string, string> = {
 export const STATUS_LABELS: Record<string, string> = {
 	PENDING: "En attente",
 	CONFIRMED: "Confirmée",
-	SHIPPED: "Expédiée",
+	PROCESSING: "En préparation",
+	DISPATCHED: "Expédiée",
 	DELIVERED: "Livrée",
 	CANCELLED: "Annulée",
+	RETURN_REQUESTED: "Retour demandé",
+	RETURNED: "Retournée",
+	SHIPPED: "Expédiée",
 };
 
 export const DAYS = [
@@ -50,10 +54,24 @@ export type DaysT = typeof DAYS;
 export const FLOW: string[] = [
 	"PENDING",
 	"CONFIRMED",
-	"SHIPPED",
+	"PROCESSING",
+	"DISPATCHED",
 	"DELIVERED",
 	"CANCELLED",
+	"RETURN_REQUESTED",
+	"RETURNED",
 ];
+
+export const ALLOWED_TRANSITIONS: Record<string, string[]> = {
+	PENDING: ["CONFIRMED", "CANCELLED"],
+	CONFIRMED: ["PROCESSING", "CANCELLED"],
+	PROCESSING: ["DISPATCHED", "CANCELLED"],
+	DISPATCHED: ["DELIVERED"],
+	DELIVERED: ["RETURN_REQUESTED"],
+	RETURN_REQUESTED: ["RETURNED"],
+	CANCELLED: [],
+	RETURNED: [],
+};
 
 export const mad = (n: number) => `${n.toLocaleString("fr-FR")} Dhs`;
 
