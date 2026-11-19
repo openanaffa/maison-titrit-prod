@@ -15,9 +15,11 @@ BEGIN
 END $$;
 
 -- 2. Backfill existing orders based on status.
+-- Convert legacy SHIPPED status to the new DISPATCHED status.
+UPDATE public."Order" SET "status" = 'DISPATCHED' WHERE "status" = 'SHIPPED';
 UPDATE public."Order" SET "paymentStatus" = 'PAID' WHERE "status" = 'DELIVERED' AND "paymentStatus" = 'UNPAID';
-UPDATE public."Order" SET "paymentStatus" = 'UNPAID' WHERE "status" IN ('PENDING','CONFIRMED','PROCESSING','DISPATCHED','CANCELLED') AND "paymentStatus" IS NULL;
-UPDATE public."Order" SET "fulfilmentStatus" = 'DELIVERED' WHERE "status" = 'DELIVERED';
+UPDATE public."Order" SET "paymentStatus" = 'UNPAID' WHERE "status" IN ('PENDING','CONFIRMED','PROCESSING','DISPATCHED','CANCELLED','RETURN_REQUESTED') AND "paymentStatus" IS NULL;
+UPDATE public."Order" SET "fulfilmentStatus" = 'DELIVERED' WHERE "status" IN ('DELIVERED','RETURN_REQUESTED');
 UPDATE public."Order" SET "fulfilmentStatus" = 'SHIPPED' WHERE "status" = 'DISPATCHED';
 UPDATE public."Order" SET "fulfilmentStatus" = 'PROCESSING' WHERE "status" = 'PROCESSING';
 UPDATE public."Order" SET "fulfilmentStatus" = 'UNFULFILLED' WHERE "status" IN ('PENDING','CONFIRMED','CANCELLED');

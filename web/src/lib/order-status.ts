@@ -43,6 +43,7 @@ export function isAllowedTransition(from: string, to: string): boolean {
 export function paymentStatusFor(status: OrderStatus): PaymentStatus {
 	switch (status) {
 		case "DELIVERED":
+		case "RETURN_REQUESTED":
 			return "PAID";
 		case "CANCELLED":
 			return "UNPAID";
@@ -101,8 +102,17 @@ export async function transitionOrder(
 	const nextFulfilment = fulfilmentStatusFor(normalized as OrderStatus);
 
 	const updated = await db.$transaction(async (tx) => {
-		const o = await tx.order.update({
-			where: { id: orderId },
+		// Re-read and revalidate inside the transaction to avoid stale overwrites.
+		const current = await tx.order.findUnique({ where: { id: orderId } });
+		if (!current) throw new Error("NOT_FOUND");
+		if (current.status === normalized) {
+			return current;
+		}
+		if (!isAllowedTransition(current.status, normalized)) {
+			throw new Error("INVALID_TRANSITION");
+		}
+		const result = await tx.order.updateMany({
+			where: { id: orderId, status: current.status },
 			data: {
 				status: normalized,
 				paymentStatus: nextPayment,
@@ -110,10 +120,14 @@ export async function transitionOrder(
 				updatedAt: new Date(),
 			},
 		});
+		if (result.count !== 1) {
+			throw new Error("CONCURRENT_MODIFICATION");
+		}
+		const o = await tx.order.findUnique({ where: { id: orderId } });
 		await tx.orderStatusHistory.create({
 			data: {
 				orderId,
-				fromStatus: order.status,
+				fromStatus: current.status,
 				toStatus: normalized,
 				paymentStatus: nextPayment,
 				fulfilmentStatus: nextFulfilment,
@@ -121,7 +135,7 @@ export async function transitionOrder(
 				reason: opts.reason ?? null,
 			},
 		});
-		return o;
+		return o!;
 	});
 	return updated;
 }
