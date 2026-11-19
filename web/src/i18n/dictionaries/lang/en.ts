@@ -217,18 +217,20 @@ export const English = {
 
 	"cookie.title": "Your privacy preferences",
 	"cookie.body":
-		"We use cookies to measure audience (Google Analytics, Meta Pixel) and improve your experience. You choose what you allow.",
+		"We use cookies and similar technologies to operate the site, measure audience, and, if you allow it, run marketing activities. You choose what you allow.",
 	"cookie.accept": "Accept all",
 	"cookie.reject": "Reject all",
 	"cookie.customize": "Customize",
 	"cookie.save": "Save",
-	"cookie.analytics": "Audience measurement (Google Analytics)",
-	"cookie.analyticsDesc": "Anonymised visit statistics to improve the site.",
-	"cookie.marketing": "Marketing (Meta Pixel)",
-	"cookie.marketingDesc": "Measures campaigns and personalises ads.",
+	"cookie.analytics": "Audience measurement",
+	"cookie.analyticsDesc":
+		"Measures site visits and performance to help improve the site.",
+	"cookie.marketing": "Marketing",
+	"cookie.marketingDesc":
+		"Measures campaigns and marketing actions, only with your consent.",
 	"cookie.necessary": "Necessary cookies",
 	"cookie.necessaryDesc":
-		"Language, cart and preferences. Essential to the site.",
+		"Language, cart and preferences. Essential for the site to work.",
 	"cookie.aria": "Cookie consent banner",
 	"cookie.privacy": "Privacy",
 	"admin.nav.dashboard": "Dashboard",

@@ -166,4 +166,4 @@ export const legalNotice = {
 } as const;
 
 /* --- Default consent categories ----------------------------------------- */
-export const CONSENT_VERSION = 1; // bump to re-show banner after policy change
+export const CONSENT_VERSION = 2; // bump to re-show banner after policy change

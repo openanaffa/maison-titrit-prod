@@ -53,8 +53,9 @@ function gtagConsentValues(s: ConsentState) {
 }
 
 function pushGtagConsentUpdate(s: ConsentState) {
-	// default already denies everything; only granted states need an update
-	if (!(s.analytics || s.marketing)) return;
+	// Default is denied in layout. Push explicit updates when the user has made
+	// a choice (including reject-all) or when a category is granted/restored.
+	if (!s.decided && !s.analytics && !s.marketing) return;
 	pushGtag("consent", "update", gtagConsentValues(s));
 }
 
@@ -427,6 +428,10 @@ function toGtmItem(p: {
 /* --- UTM + first-touch attribution (captured on first visit) ------------ */
 export function captureAttribution() {
 	if (typeof window === "undefined") return;
+	// Attribution is used for marketing measurement — capture only after
+	// explicit marketing consent.
+	const consent = getConsent();
+	if (!consent.decided || !consent.marketing) return;
 	try {
 		const url = new URL(window.location.href);
 		const utm = {
