@@ -5,6 +5,7 @@ import { rejectBots } from "@/lib/bot";
 import { parseCartLines, priceCart } from "@/lib/checkout";
 import { db } from "@/lib/db";
 import { releaseReservation, reserveStock } from "@/lib/inventory";
+import { getDeliveryQuote } from "@/lib/delivery";
 import { notifyStaffNewOrder } from "@/lib/notify";
 import { getCurrentUser } from "@/lib/session";
 
@@ -80,7 +81,19 @@ export async function POST(req: Request) {
 		if (!priced.ok) {
 			return NextResponse.json({ error: priced.error }, { status: 409 });
 		}
-		const { items, total } = priced;
+		const { items, total: itemsTotal } = priced;
+
+		// Delivery quote (server-side source of truth).
+		const quote = await getDeliveryQuote(
+			typeof customer.city === "string" ? customer.city : null,
+		);
+		if (!quote.covered) {
+			return NextResponse.json(
+				{ error: "Destination de livraison non couverte." },
+				{ status: 409 },
+			);
+		}
+		const total = itemsTotal + quote.fee;
 
 		// Resolve variants per line and reserve stock. Track reservations so we
 		// can release them if any later step fails (compensation).
@@ -184,6 +197,9 @@ export async function POST(req: Request) {
 				payment: "COD",
 				userId,
 				idempotencyKey,
+				deliveryZoneId: quote.zoneId,
+				deliveryZoneName: quote.zoneName,
+				deliveryFee: quote.fee,
 				items: {
 					create: items.map((it, idx) => ({
 						productId: it.productId,

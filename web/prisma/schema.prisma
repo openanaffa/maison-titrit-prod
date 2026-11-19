@@ -149,6 +149,20 @@ model StockMovement {
   @@index([idempotencyKey])
 }
 
+model DeliveryZone {
+  id        String   @id @default(cuid())
+  name      String
+  cities    String   // comma-separated, matched case-insensitively
+  fee       Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders    Order[]
+
+  @@index([isActive])
+}
+
 model Image {
   id        String   @id @default(cuid())
   productId String
@@ -190,6 +204,10 @@ model Order {
   userId      String?
   user        User?       @relation(fields: [userId], references: [id])
   idempotencyKey String?  @unique
+  deliveryZoneId String?
+  deliveryZone   DeliveryZone? @relation(fields: [deliveryZoneId], references: [id])
+  deliveryZoneName String?
+  deliveryFee    Int      @default(0)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
@@ -202,6 +220,7 @@ model Order {
   @@index([userId])
   @@index([createdAt])
   @@index([idempotencyKey])
+  @@index([deliveryZoneId])
 }
 
 model OrderStatusHistory {
