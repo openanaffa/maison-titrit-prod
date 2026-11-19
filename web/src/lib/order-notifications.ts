@@ -5,6 +5,9 @@ import type {
 	CustomerOrderUpdatePayload,
 } from "@/lib/types/notifications";
 
+/** A SENDING claim older than this is considered abandoned. */
+const STALE_CLAIM_MS = 60_000;
+
 /** Prisma channel enum mirror (SQLite-compatible string column). */
 export type NotificationChannel = "EMAIL" | "WHATSAPP";
 
@@ -68,7 +71,7 @@ export async function queueCustomerNotifications(
 			where: {
 				orderId: order.id,
 				event,
-				status: { in: ["PENDING", "FAILED"] },
+				status: { in: ["PENDING", "FAILED", "SENDING"] },
 			},
 		});
 		await Promise.all(pending.map((row) => dispatchRow(row.id)));
@@ -82,6 +85,22 @@ async function dispatchRow(id: string): Promise<void> {
 	try {
 		const row = await db.orderNotification.findUnique({ where: { id } });
 		if (!row || row.status === "SENT") return;
+		// Claim atomically (Codex P2): concurrent queue/retry runs must not
+		// both send. Claim PENDING/FAILED outright; recover a SENDING row only
+		// when its claim looks stale (no attempt recorded recently, e.g. a
+		// crashed process). The conditional update succeeds for one caller.
+		const staleBefore = new Date(Date.now() - STALE_CLAIM_MS);
+		const claimed = await db.orderNotification.updateMany({
+			where: {
+				id,
+				OR: [
+					{ status: { in: ["PENDING", "FAILED"] } },
+					{ status: "SENDING", lastAttemptAt: { lt: staleBefore } },
+				],
+			},
+			data: { status: "SENDING" },
+		});
+		if (claimed.count !== 1) return;
 		const order = await db.order.findUnique({
 			where: { id: row.orderId },
 			select: {

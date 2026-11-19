@@ -22,11 +22,14 @@ export function FulfilmentQueueClient({
 	counts,
 	activeQueue,
 	rows,
+	canWrite,
 }: {
 	queues: Queue[];
 	counts: Record<string, number>;
 	activeQueue: string;
 	rows: FulfilmentOrderRow[];
+	/** Staff without orders:write see the queues read-only (Codex P2). */
+	canWrite: boolean;
 }) {
 	const { t } = useT();
 	const router = useRouter();
@@ -265,7 +268,7 @@ export function FulfilmentQueueClient({
 											</td>
 											<td className="p-3 text-end">
 												<div className="flex items-center justify-end gap-2">
-													{o.failedNotifications > 0 && (
+													{canWrite && o.failedNotifications > 0 && (
 														<button
 															type="button"
 															onClick={() => retryFailed(o)}
@@ -276,7 +279,7 @@ export function FulfilmentQueueClient({
 															{t("admin.fulfilment.retry")}
 														</button>
 													)}
-													{next && (
+													{canWrite && next && (
 														<button
 															type="button"
 															onClick={() =>
@@ -293,7 +296,7 @@ export function FulfilmentQueueClient({
 																: t(`admin.fulfilment.action.${next}`)}
 														</button>
 													)}
-													{next && next !== "CANCELLED" && (
+													{canWrite && next && next !== "CANCELLED" && (
 														<button
 															type="button"
 															onClick={() => openForm(o.id, "CANCELLED")}

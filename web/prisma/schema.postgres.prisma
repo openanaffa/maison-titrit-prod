@@ -259,7 +259,7 @@ model OrderNotification {
   event         String   // CONFIRMED | DISPATCHED | DELIVERED
   channel       String   // EMAIL | WHATSAPP
   to            String   // email address or digits-only phone
-  status        String   @default("PENDING") // SENT | FAILED | PENDING
+  status        String   @default("PENDING") // SENT | FAILED | PENDING | SENDING
   attempts      Int      @default(0)
   lastError     String?
   lastAttemptAt DateTime?

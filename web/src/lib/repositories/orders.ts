@@ -135,6 +135,31 @@ export type FulfilmentOrderRow = OrderListRow & {
 };
 
 /** Notification-attempt counts per order (retry visibility in the queue). */
+/**
+ * Date-window filter: a bare `YYYY-MM-DD` end date must be inclusive, so
+ * it becomes the start of the following day (exclusive upper bound).
+ */
+function endOfDayBound(to: string): string {
+	if (!/^\d{4}-\d{2}-\d{2}$/.test(to)) return to;
+	const next = new Date(`${to}T00:00:00.000Z`);
+	next.setUTCDate(next.getUTCDate() + 1);
+	return next.toISOString();
+}
+
+/**
+ * Staff search a phone as digits even when the stored value carries the
+ * customer's formatting (+ prefix, spaces). For digit-only terms, insert
+ * `%` between the digits so the pattern matches either format.
+ */
+function phoneSearchPatterns(term: string): string[] {
+	const digits = term.replace(/\D/g, "");
+	if (digits.length < 4 || digits !== term.replace(/[\s+\-().]/g, "")) {
+		return [];
+	}
+	return [`%${digits.split("").join("%")}%`];
+}
+
+/** Notification-attempt counts per order (retry visibility in the queue). */
 async function notificationCounts(
 	supabase: SupabaseClient<Database>,
 	orderIds: string[],
@@ -171,12 +196,18 @@ export async function listFulfilmentOrders(
 	if (opts.statuses.length > 0) query = query.in("status", opts.statuses);
 	if (opts.search) {
 		const term = opts.search.replace(/[,%()]/g, "");
-		query = query.or(
-			`number.ilike.%${term}%,customerName.ilike.%${term}%,customerPhone.ilike.%${term}%`,
-		);
+		const orFilters = [
+			`number.ilike.%${term}%`,
+			`customerName.ilike.%${term}%`,
+			`customerPhone.ilike.%${term}%`,
+		];
+		for (const pattern of phoneSearchPatterns(term)) {
+			orFilters.push(`customerPhone.ilike.${pattern}`);
+		}
+		query = query.or(orFilters.join(","));
 	}
 	if (opts.from) query = query.gte("createdAt", opts.from);
-	if (opts.to) query = query.lt("createdAt", opts.to);
+	if (opts.to) query = query.lt("createdAt", endOfDayBound(opts.to));
 	if (opts.limit) query = query.limit(opts.limit);
 	const { data: orders, error } = await query.throwOnError();
 	if (error) throw error;
