@@ -1,5 +1,9 @@
 import { describe, expect, test } from "bun:test";
-import { isAllowedTransition, paymentStatusFor, fulfilmentStatusFor } from "./order-status";
+import {
+	fulfilmentStatusFor,
+	isAllowedTransition,
+	paymentStatusFor,
+} from "./order-status";
 
 describe("isAllowedTransition", () => {
 	test("allows forward progression", () => {
