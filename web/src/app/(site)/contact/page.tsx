@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { ContactSupportPage } from "@/components/maison/contact-support-page";
 import { buildPageMetadata } from "@/lib/seo/build-page.metadata";
 

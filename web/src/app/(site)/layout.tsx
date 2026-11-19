@@ -1,5 +1,6 @@
 import { SiteFooter } from "@/components/maison/site-footer";
 import { SiteHeader } from "@/components/maison/site-header";
+import { getLegalIdentity } from "@/lib/legal-identity";
 
 /**
  * Shared chrome for every public page (route group does not affect URLs).
@@ -7,18 +8,19 @@ import { SiteHeader } from "@/components/maison/site-header";
  * this group keep state across sibling navigations, per the Next.js layout
  * hierarchy. Auth (/auth) and the backoffice (/makteb) define their own.
  */
-export default function SiteLayout({
+export default async function SiteLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	const legalIdentity = await getLegalIdentity();
 	return (
 		<>
 			<SiteHeader />
 			<main id="main-content" tabIndex={-1} className="flex-1 outline-none">
 				{children}
 			</main>
-			<SiteFooter />
+			<SiteFooter legalIdentity={legalIdentity} />
 		</>
 	);
 }

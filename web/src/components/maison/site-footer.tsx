@@ -8,23 +8,40 @@ import {
 	WhatsAppIcon,
 } from "@/components/maison/motifs";
 import { SocialIcons } from "@/components/maison/social-icons";
-import { legalNotice, site } from "@/config/site";
+import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
 import { whatsappCatalog } from "@/lib/brand";
+import { hasVerifiedLegalValue } from "@/lib/legal-identity-utils";
+import type { LegalIdentity } from "@/lib/types/legal-identity";
 
-/** A legal field is rendered only when it carries a confirmed, real value.
- * Empty strings, TODO placeholders, and masked placeholder blocks stay hidden. */
-function rendered(value: string): boolean {
-	const v = value.trim();
-	if (v === "" || /^todo/i.test(v)) return false;
-	// Treat masked placeholder blocks (e.g. ███) as unconfirmed.
-	if (/^[█\s\-–—]+$/.test(v)) return false;
-	return true;
-}
+type SiteFooterProps = {
+	legalIdentity?: LegalIdentity;
+};
 
-export function SiteFooter() {
+export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 	const { t } = useT();
 	const year = new Date().getFullYear();
+	const legal = legalIdentity;
+	const operatorLabel =
+		legal?.operatorName || legal?.responsiblePublisher || "";
+	const showOperator = hasVerifiedLegalValue(operatorLabel);
+	const showLegalStatus = hasVerifiedLegalValue(legal?.legalStatus ?? "");
+	const showPublisher = hasVerifiedLegalValue(
+		legal?.responsiblePublisher ?? "",
+	);
+	const showAddress = hasVerifiedLegalValue(legal?.address ?? "");
+	const showEmail = hasVerifiedLegalValue(legal?.email ?? "");
+	const showPhone = hasVerifiedLegalValue(legal?.phone ?? "");
+	const showRcRnae = hasVerifiedLegalValue(legal?.rcRnae ?? "");
+	const showIce = hasVerifiedLegalValue(legal?.ice ?? "");
+	const showIf = hasVerifiedLegalValue(legal?.taxIdIf ?? "");
+	const showPatente = hasVerifiedLegalValue(legal?.patente ?? "");
+	const showCndp = hasVerifiedLegalValue(legal?.cndpDeclarationNumber ?? "");
+	const showDpo = hasVerifiedLegalValue(legal?.dpoContact ?? "");
+	const showHost =
+		hasVerifiedLegalValue(legal?.hostName ?? "") ||
+		hasVerifiedLegalValue(legal?.hostAddress ?? "") ||
+		hasVerifiedLegalValue(legal?.hostContact ?? "");
 
 	return (
 		<footer className="mt-auto border-t border-bronze/30 bg-ink text-cream dark:border-bronze/20">
@@ -133,22 +150,35 @@ export function SiteFooter() {
 					</div>
 				</div>
 
-				{/* Legal — Auto-Entrepreneur (Law 114-13) · Moroccan Law 09-08 (CNDP)
-            + EU GDPR. Values come from src/config/site.ts (`legalNotice`).
-            A field with an empty or TODO-placeholder value is hidden until the
-            owner fills it in. Labels: ICE / RNAE-RC (Auto-Entrepreneurs
-            register with the RNAE, not the RC — both names shown for
-            tolerance) / CNDP / DPO. */}
+				{/* Legal identity — only verified, owner-provided values are shown. */}
 				<div className="mt-12 border-t border-cream/15 pt-6">
 					<p className="max-w-4xl font-serif text-xs leading-relaxed text-cream/60">
 						{t("footer.legal")}
 					</p>
 					<ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 font-serif text-xs text-cream/70">
-						{rendered(legalNotice.companyName) && (
+						{showOperator ? (
 							<li className="font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze-light">
-								{legalNotice.companyName}
+								{operatorLabel}
 							</li>
-						)}
+						) : null}
+						{showLegalStatus ? <li>{legal?.legalStatus}</li> : null}
+						{showPublisher && legal?.responsiblePublisher !== operatorLabel ? (
+							<li>Publication&nbsp;: {legal?.responsiblePublisher}</li>
+						) : null}
+						{showAddress ? (
+							<li className="whitespace-pre-line">{legal?.address}</li>
+						) : null}
+						{showEmail ? (
+							<li>
+								<a
+									href={`mailto:${legal?.email}`}
+									className="hover:text-terracotta"
+								>
+									{legal?.email}
+								</a>
+							</li>
+						) : null}
+						{showPhone ? <li>{legal?.phone}</li> : null}
 						<li>
 							<Link href="/mentions-legales" className="hover:text-terracotta">
 								{t("legal.notice")}
@@ -169,6 +199,16 @@ export function SiteFooter() {
 								{t("legal.terms")}
 							</Link>
 						</li>
+						{showRcRnae ? <li>RNAE/RC&nbsp;: {legal?.rcRnae}</li> : null}
+						{showIce ? <li>ICE&nbsp;: {legal?.ice}</li> : null}
+						{showIf ? <li>IF&nbsp;: {legal?.taxIdIf}</li> : null}
+						{showPatente ? <li>Patente&nbsp;: {legal?.patente}</li> : null}
+						{showCndp ? (
+							<li>Déclaration CNDP&nbsp;: {legal?.cndpDeclarationNumber}</li>
+						) : null}
+						{showDpo ? (
+							<li>DPO / confidentialité&nbsp;: {legal?.dpoContact}</li>
+						) : null}
 						<li>
 							<Link href="/livraison-retours" className="hover:text-terracotta">
 								{t("legal.deliveryReturns")}
@@ -184,27 +224,14 @@ export function SiteFooter() {
 								{t("nav.contact")}
 							</Link>
 						</li>
-						{rendered(legalNotice.rcNumber) && (
-							<li>RNAE/RC&nbsp;: {legalNotice.rcNumber}</li>
-						)}
-						{rendered(legalNotice.iceNumber) && (
-							<li>ICE&nbsp;: {legalNotice.iceNumber}</li>
-						)}
-						{rendered(legalNotice.cndpDeclarationNumber) && (
+						{showHost ? (
 							<li>
-								Déclaration CNDP&nbsp;: {legalNotice.cndpDeclarationNumber}
+								Hébergeur&nbsp;:{" "}
+								{[legal?.hostName, legal?.hostAddress, legal?.hostContact]
+									.filter((v) => hasVerifiedLegalValue(v ?? ""))
+									.join(" — ")}
 							</li>
-						)}
-						{rendered(legalNotice.dpoEmail) && (
-							<li>
-								<a
-									href={`mailto:${legalNotice.dpoEmail}`}
-									className="hover:text-terracotta"
-								>
-									DPO&nbsp;: {legalNotice.dpoEmail}
-								</a>
-							</li>
-						)}
+						) : null}
 					</ul>
 				</div>
 

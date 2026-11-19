@@ -1,11 +1,11 @@
 /**
  * ============================================================================
- *  MAISON TITRIT — CENTRAL SITE CONFIG
+ *  MAISON TITRIT â€” CENTRAL SITE CONFIG
  * ----------------------------------------------------------------------------
  *  This is the SINGLE source of truth for brand identity, contact details,
  *  social profiles, store location/hours, navigation, and tracking IDs.
  *
- *  👉 To refine the site, edit values in THIS file. No other file needs to
+ *  ðŸ‘‰ To refine the site, edit values in THIS file. No other file needs to
  *     change for content/contact/socials/analytics IDs.
  *
  *  UI text strings (FR / AR / EN) live in  src/i18n/dictionaries.ts
@@ -22,10 +22,10 @@ export function baseUrl(): string {
 export const site = {
 	/* --- Identity ----------------------------------------------------------- */
 	name: "Maison Titrit",
-	nameAmazigh: "ⵜⵉⵟⵔⵉⵜ",
+	nameAmazigh: "âµœâµ‰âµŸâµ”âµ‰âµœ",
 	taglineKey: "brand.tagline", // resolved via i18n: "Maison de Couture"
-	signature: "100% MADE IN MOROCCO 🇲🇦",
-	arabicWelcome: "مرحبا ب طلباتكم 🥰", // shown as a flourish / in AR locale
+	signature: "100% MADE IN MOROCCO ðŸ‡²ðŸ‡¦",
+	arabicWelcome: "Ù…Ø±Ø­Ø¨Ø§ Ø¨ Ø·Ù„Ø¨Ø§ØªÙƒÙ… ðŸ¥°", // shown as a flourish / in AR locale
 
 	/* --- Contact ------------------------------------------------------------ */
 	phones: [
@@ -57,7 +57,7 @@ export const site = {
 	],
 
 	/* --- Social profiles ---------------------------------------------------- */
-	// Instagram · Pinterest · Facebook · TikTok · YouTube
+	// Instagram Â· Pinterest Â· Facebook Â· TikTok Â· YouTube
 	socials: {
 		instagram: "https://www.instagram.com/maison__titrit/",
 		instagramHandle: "@maison__titrit",
@@ -81,7 +81,7 @@ export const site = {
 	},
 
 	/* --- Map (Google Maps) -------------------------------------------------- */
-	// Basic embed via google.com/maps?q=...&output=embed — no API key required.
+	// Basic embed via google.com/maps?q=...&output=embed â€” no API key required.
 	// To upgrade to a keyed Maps JavaScript API embed, set NEXT_PUBLIC_GMAPS_KEY.
 	map: {
 		lat: 33.4496,
@@ -96,7 +96,7 @@ export const site = {
 
 	/* --- Navigation --------------------------------------------------------- */
 	nav: [
-		// Anchors are home-scoped (/#…) so the header works from every page;
+		// Anchors are home-scoped (/#â€¦) so the header works from every page;
 		// /blog is a real route (Journal).
 		{ href: "/#maison", labelKey: "nav.maison" },
 		{ href: "/#collection", labelKey: "nav.collection" },
@@ -113,7 +113,7 @@ export type SiteConfig = typeof site;
  *  ANALYTICS & MARKETING TAGS
  * ----------------------------------------------------------------------------
  *  Replace the placeholder IDs with your real IDs (or set the env vars).
- *  Scripts are consent-gated by the cookie banner — they only load after the
+ *  Scripts are consent-gated by the cookie banner â€” they only load after the
  *  visitor accepts analytics/marketing cookies.
  * ============================================================================
  */
@@ -127,41 +127,33 @@ export const analytics = {
 	// Domain for Meta verification (optional)
 	metaDomainVerification: process.env.NEXT_PUBLIC_META_DOMAIN || "",
 	/* --- Phase-2 marketing SDK IDs (each activates only when set + real) ---- */
-	// Pinterest Tag ID — numeric, from Pinterest Ads → Conversions → Tag Manager → Install tag
+	// Pinterest Tag ID â€” numeric, from Pinterest Ads â†’ Conversions â†’ Tag Manager â†’ Install tag
 	pinterestTagId: process.env.NEXT_PUBLIC_PINTEREST_TAG_ID || "",
-	// TikTok Pixel ID — numeric, from TikTok Ads → Events → Pixel
+	// TikTok Pixel ID â€” numeric, from TikTok Ads â†’ Events â†’ Pixel
 	tiktokPixelId: process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID || "",
-	// YouTube channel handle or channel ID (e.g. "@maison__titrit" or "UC…")
+	// YouTube channel handle or channel ID (e.g. "@maison__titrit" or "UCâ€¦")
 	youtubeChannelId: process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_ID || "",
 } as const;
 export type SiteAnalytics = typeof analytics;
 /* ============================================================================
- *  LEGAL NOTICE — Auto-Entrepreneur (Morocco, Law 114-13) · Law 09-08 · GDPR
+ *  LEGAL NOTICE — defaults (owner-configurable in /makteb/settings)
  * ----------------------------------------------------------------------------
- *  Mandatory legal notice rendered in the site footer (site-footer.tsx).
- *  The legal entity IS the site owner: an Auto-Entrepreneur (Moroccan
- *  regime, Law 114-13). Auto-Entrepreneurs register with the RNAE (Registre
- *  National de l'Auto-Entrepreneur), not the RC — the `rcNumber` key keeps
- *  its name (matches the schema) but its VALUE is the RNAE number.
- *  ⚠️ TODO (owner confirmation required) — fill in the real, verified values:
- *     - companyName:          official legal name / designation
- *     - rcNumber:             RNAE number
- *     - iceNumber:            15-digit ICE
- *     - cndpDeclarationNumber: CNDP declaration/reference number
- *     - dpoEmail:             confirmed privacy/DPO contact email
- *  Until a value is confirmed, leave it empty so it is not rendered.
+ *  Verified legal identity is stored in Setting key `site.legal` and surfaced
+ *  via getLegalIdentity() / /api/settings/legal. Keep defaults empty here so
+ *  unconfirmed identifiers are never published; the footer and legal surfaces
+ *  render only verified, non-empty values.
+ *  The legal entity IS the site owner: an Auto-Entrepreneur (Moroccan regime,
+ *  Law 114-13) registers with the RNAE — the `rcNumber` key keeps its name
+ *  (schema compatibility) but its VALUE is the RNAE number.
  * ============================================================================
  */
 export const legalNotice = {
-	/** Official legal name shown on the notice (owner-confirmed). */
 	companyName: "",
-	/** RNAE number (stored in rcNumber for schema compatibility). */
 	rcNumber: "",
-	/** 15-digit ICE (owner-confirmed). */
 	iceNumber: "",
-	/** CNDP declaration/reference number (owner-confirmed). */
 	cndpDeclarationNumber: "",
-	/** Privacy/DPO contact email (owner-confirmed). */
+	/** Privacy/DPO contact email — superseded per-surface by
+	 *  getLegalIdentity().dpoContact where the identity system is wired. */
 	dpoEmail: "",
 } as const;
 

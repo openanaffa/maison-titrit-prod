@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import { Check, Clock, Loader2, Megaphone } from "lucide-react";
 import * as React from "react";
 import { IntegrationsForm } from "@/components/admin/integrations-form";
+import { LegalIdentityForm } from "@/components/admin/legal-identity-form";
 import { AmazighStar } from "@/components/maison/motifs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,6 +54,9 @@ export function SettingsClient() {
 					Barre d&apos;annonce, horaires, et intégrations.
 				</p>
 			</div>
+
+			{/* Legal identity & mentions */}
+			<LegalIdentityForm />
 
 			{/* Announcement bar */}
 			<form onSubmit={saveAnnouncement} className="card-vintage rounded-sm p-6">

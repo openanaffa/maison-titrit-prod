@@ -1,5 +1,6 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { LegalPage } from "@/components/maison/legal-page";
+import { getLegalIdentity } from "@/lib/legal-identity";
 import { buildPageMetadata } from "@/lib/seo/build-page.metadata";
 
 /** Public, indexable — trust/support page. */
@@ -17,6 +18,7 @@ export const metadata: Metadata = buildPageMetadata({
 	],
 });
 
-export default function Page() {
-	return <LegalPage doc="legalNotice" />;
+export default async function MentionsLegalesPage() {
+	const legalIdentity = await getLegalIdentity();
+	return <LegalPage doc="legalNotice" legalIdentity={legalIdentity} />;
 }

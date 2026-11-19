@@ -53,8 +53,8 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Responsable du traitement",
 					p: [
-						"Le responsable du traitement est Mohamed Moughamir — Auto-Entrepreneur, exploitant la marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc).",
-						"Pour toute question relative à vos données personnelles : hello@maisontitrit.com.",
+						"Le responsable du traitement est l'exploitant du site Maison Titrit. Les informations légales et coordonnées vérifiées (lorsqu'elles sont fournies par l'exploitant) sont disponibles dans les mentions légales du site.",
+						"Pour toute question relative à vos données personnelles, utilisez les coordonnées de contact/confidentialité vérifiées publiées sur le site.",
 					],
 				},
 				{
@@ -94,7 +94,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. Vos droits",
 					p: [
-						"Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Exercez-les en écrivant à hello@maisontitrit.com — nous vous répondrons dans les meilleurs délais.",
+						"Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Exercez-les via les coordonnées de contact/confidentialité vérifiées publiées sur le site ; nous vous répondrons dans les meilleurs délais.",
 						"Vous pouvez également introduire une réclamation auprès de la Commission Nationale de Contrôle de la Protection des Données à caractère Personnel (CNDP — cndp.ma).",
 					],
 				},
@@ -134,7 +134,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Éditeur du site",
 					p: [
-						"Le site est édité par Mohamed Moughamir — Auto-Entrepreneur (RNAE 001609783000007), marque Maison Titrit, Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc). Contact : hello@maisontitrit.com — 06 84 92 19 42.",
+						"Le site est édité et exploité par l'exploitant de la marque Maison Titrit. Les mentions légales vérifiées (identité, coordonnées, hébergeur, le cas échéant) sont publiées sur le site lorsqu'elles sont fournies.",
 					],
 				},
 				{
@@ -222,9 +222,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Éditeur du site",
 					p: [
-						"Le site est édité par Mohamed Moughamir — Auto-Entrepreneur (RNAE 001609783000007), exploitant la marque Maison Titrit.",
-						"Adresse : Magasin N°4, Lots 5-6, Lotissement Dar Najeddine, Bouskoura, Casablanca (Maroc).",
-						"Contact : hello@maisontitrit.com — 06 84 92 19 42 — WhatsApp : +212 684 921 942.",
+						"Le site est édité et exploité par l'exploitant de la marque Maison Titrit. Les informations vérifiées (identité, coordonnées, hébergeur) sont publiées dans l'encadré ci-dessus lorsqu'elles sont fournies par l'exploitant.",
 					],
 				},
 				{
@@ -254,7 +252,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. Contact",
 					p: [
-						"Pour toute question concernant le site, une commande ou ces mentions, contactez-nous par e-mail à hello@maisontitrit.com, par téléphone au 06 84 92 19 42 ou via WhatsApp.",
+						"Pour toute question concernant le site, une commande ou ces mentions, contactez-nous via les coordonnées de contact vérifiées publiées sur le site.",
 					],
 				},
 			],
@@ -304,7 +302,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. Pour en savoir plus",
 					p: [
-						"Pour plus d'informations sur les données personnelles, les destinataires, les durées de conservation et vos droits, consultez notre politique de confidentialité ou contactez-nous à hello@maisontitrit.com.",
+						"Pour plus d'informations sur les données personnelles, les destinataires, les durées de conservation et vos droits, consultez notre politique de confidentialité ou contactez-nous via les coordonnées publiées sur le site.",
 					],
 				},
 			],
@@ -349,7 +347,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. Réclamations et assistance",
 					p: [
-						"Pour toute question relative à une livraison, un échange, un retour ou un défaut, contactez-nous sur WhatsApp ou par e-mail (hello@maisontitrit.com) en indiquant votre numéro de commande et, si utile, des photos.",
+						"Pour toute question relative à une livraison, un échange, un retour ou un défaut, contactez-nous via les coordonnées de contact vérifiées publiées sur le site, en indiquant votre numéro de commande et, si utile, des photos.",
 					],
 				},
 			],
@@ -414,8 +412,8 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. مسؤول المعالجة",
 					p: [
-						"مسؤول المعالجة هو محمد مغيمل — مقاول ذاتي، صاحب علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب).",
-						"لأي سؤال يتعلق ببياناتك الشخصية: hello@maisontitrit.com.",
+						"المسؤول عن المعالجة هو مُشغِّل موقع Maison Titrit. تتوفر المعلومات القانونية وبيانات الاتصال الموثوقة (عند توفيرها من المُشغِّل) ضمن الإشعارات القانونية للموقع.",
+						"لأي سؤال يتعلق ببياناتك الشخصية، يرجى استخدام بيانات الاتصال/الخصوصية الموثوقة المنشورة على الموقع.",
 					],
 				},
 				{
@@ -455,7 +453,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. حقوقك",
 					p: [
-						"يحق لك الاطلاع على بياناتك وتصحيحها وحذفها والاعتراض عليها ونقلها. مارس حقوقك عبر مراسلة hello@maisontitrit.com — وسنرد عليك في أقرب وقت ممكن.",
+						"لك الحق في الولوج إلى بياناتك وتصحيحها ومحوها والاعتراض على معالجتها ونقلها. يمكنك ممارسة هذه الحقوق عبر بيانات الاتصال/الخصوصية الموثوقة المنشورة على الموقع، وسنرد في أقرب الآجال.",
 						"يمكنك أيضًا تقديم شكوى لدى اللجنة الوطنية للرقابة على حماية المعطيات ذات الطابع الشخصي (CNDP — cndp.ma).",
 					],
 				},
@@ -495,7 +493,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. مُحرِّر الموقع",
 					p: [
-						"يُحرِّر الموقع محمد مغيمل — مقاول ذاتي (RNAE 001609783000007)، علامة ميزون تيتريت، المحل رقم 4، القطع 5-6، تجزئة دار نجيد، بوسكورة، الدار البيضاء (المغرب). التواصل: hello@maisontitrit.com — 06 84 92 19 42.",
+						"يُنشر الموقع ويُشغَّل من طرف مُشغِّل علامة Maison Titrit. تُنشر الإشعارات القانونية الموثوقة (الهوية، بيانات الاتصال، المستضيف، عند الاقتضاء) على الموقع عند توفيرها.",
 					],
 				},
 				{
@@ -582,9 +580,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. ناشر الموقع",
 					p: [
-						"ينشر الموقع محمد مغاير — مقاول ذاتي (RNAE 001609783000007)، المستغل لعلامة Maison Titrit.",
-						"العنوان: المحل رقم 4، القطعتان 5-6، تجزئة دار النجدين، بوسكورة، الدار البيضاء (المغرب).",
-						"للتواصل: hello@maisontitrit.com — 06 84 92 19 42 — واتساب: +212 684 921 942.",
+						"ينشر الموقع مُشغِّل علامة Maison Titrit. المعلومات الموثوقة (الهوية، بيانات الاتصال، الاستضافة) تُنشر في الإطار أعلاه عند توفيرها من المُشغِّل.",
 					],
 				},
 				{
@@ -614,7 +610,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. التواصل",
 					p: [
-						"لأي استفسار بشأن الموقع أو طلب أو هذه الإشعارات، تواصلوا معنا عبر البريد الإلكتروني hello@maisontitrit.com أو الهاتف 06 84 92 19 42 أو واتساب.",
+						"لأي استفسار بشأن الموقع أو طلب أو هذه الإشعارات، تواصلوا معنا عبر بيانات التواصل الموثوقة المنشورة على الموقع.",
 					],
 				},
 			],
@@ -664,7 +660,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. لمزيد من المعلومات",
 					p: [
-						"لمزيد من المعلومات حول البيانات الشخصية والجهات المستلمة ومدد الاحتفاظ وحقوقكم، يرجى الرجوع إلى سياسة الخصوصية أو التواصل معنا عبر hello@maisontitrit.com.",
+						"لمزيد من المعلومات حول البيانات الشخصية والجهات المستلمة ومدد الاحتفاظ وحقوقكم، يرجى الرجوع إلى سياسة الخصوصية أو التواصل معنا عبر بيانات التواصل الموثوقة المنشورة على الموقع.",
 					],
 				},
 			],
@@ -709,7 +705,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. الشكاوى والمساعدة",
 					p: [
-						"لأي سؤال يتعلق بالتوصيل أو الاستبدال أو الإرجاع أو عيب، تواصلوا معنا عبر واتساب أو البريد الإلكتروني (hello@maisontitrit.com) مع ذكر رقم الطلب، وإرفاق صور عند الحاجة.",
+						"لأي سؤال يتعلق بالتوصيل أو الاستبدال أو الإرجاع أو عيب، تواصلوا معنا عبر بيانات التواصل الموثوقة المنشورة على الموقع، مع ذكر رقم الطلب وإرفاق صور عند الحاجة.",
 					],
 				},
 			],
@@ -774,8 +770,8 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Data controller",
 					p: [
-						"The data controller is Mohamed Moughamir — Sole Proprietor, operating the Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco).",
-						"For any question about your personal data: hello@maisontitrit.com.",
+						"The data controller is the operator of the Maison Titrit website. Verified legal information and contact details (when provided by the operator) are available in the site's legal notices.",
+						"For any question about your personal data, use the verified contact/privacy details published on the site.",
 					],
 				},
 				{
@@ -815,7 +811,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "7. Your rights",
 					p: [
-						"You have the right to access, rectify, erase, object to and port your data. Exercise them by writing to hello@maisontitrit.com — we will respond as soon as possible.",
+						"You have the right to access, rectify, erase, object to and port your data. Exercise them via the verified contact/privacy details published on the site; we will respond as soon as possible.",
 						"You may also lodge a complaint with Morocco's National Commission for the Protection of Personal Data (CNDP — cndp.ma).",
 					],
 				},
@@ -855,7 +851,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Site publisher",
 					p: [
-						"The site is published by Mohamed Moughamir — Sole Proprietor (RNAE 001609783000007), Maison Titrit brand, Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco). Contact: hello@maisontitrit.com — 06 84 92 19 42.",
+						"The site is published and operated by the operator of the Maison Titrit brand. Verified legal notices (identity, contact details, host, where applicable) are published on the site when provided.",
 					],
 				},
 				{
@@ -942,9 +938,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. Site publisher",
 					p: [
-						"The site is published by Mohamed Moughamir — Sole Proprietor (RNAE 001609783000007), operating the Maison Titrit brand.",
-						"Address: Shop No. 4, Lots 5-6, Dar Najeddine Estate, Bouskoura, Casablanca (Morocco).",
-						"Contact: hello@maisontitrit.com — 06 84 92 19 42 — WhatsApp: +212 684 921 942.",
+						"The site is published and operated by the operator of the Maison Titrit brand. Verified information (identity, contact details, host) is published in the box above when provided by the operator.",
 					],
 				},
 				{
@@ -974,7 +968,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. Contact",
 					p: [
-						"For any question about the site, an order or this notice, contact us by email at hello@maisontitrit.com, by phone at 06 84 92 19 42, or via WhatsApp.",
+						"For any question about the site, an order or this notice, contact us using the verified contact details published on the site.",
 					],
 				},
 			],
@@ -1024,7 +1018,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "6. Learn more",
 					p: [
-						"For more information about personal data, recipients, retention periods and your rights, see our privacy policy or contact us at hello@maisontitrit.com.",
+						"For more information about personal data, recipients, retention periods and your rights, see our privacy policy or contact us using the verified contact details published on the site.",
 					],
 				},
 			],
@@ -1069,7 +1063,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. Claims and assistance",
 					p: [
-						"For any question about delivery, an exchange, a return or a defect, contact us on WhatsApp or by email (hello@maisontitrit.com) with your order number and, if helpful, photos.",
+						"For any question about delivery, an exchange, a return or a defect, contact us using the verified contact details published on the site, quoting your order number and, if helpful, attaching photos.",
 					],
 				},
 			],
