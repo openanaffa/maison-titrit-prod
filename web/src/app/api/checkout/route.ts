@@ -4,9 +4,9 @@ import { site } from "@/config/site";
 import { rejectBots } from "@/lib/bot";
 import { parseCartLines, priceCart } from "@/lib/checkout";
 import { db } from "@/lib/db";
+import { releaseReservation, reserveStock } from "@/lib/inventory";
 import { notifyStaffNewOrder } from "@/lib/notify";
 import { getCurrentUser } from "@/lib/session";
-import { reserveStock, releaseReservation } from "@/lib/inventory";
 
 export const dynamic = "force-dynamic";
 
@@ -84,13 +84,19 @@ export async function POST(req: Request) {
 
 		// Resolve variants per line and reserve stock. Track reservations so we
 		// can release them if any later step fails (compensation).
-		const reservations: { variantId: string; qty: number; key: string; owned: boolean }[] = [];
+		const reservations: {
+			variantId: string;
+			qty: number;
+			key: string;
+			owned: boolean;
+		}[] = [];
 		const lineVariants: (string | null)[] = [];
 		const lineVariantSkus: (string | null)[] = [];
 		try {
 			for (let i = 0; i < cartLines.length; i++) {
 				const line = cartLines[i];
-				const product = products.find((p) => p.id === line.productId)!;
+				const product = products.find((p) => p.id === line.productId);
+				if (!product) throw new Error("OUT_OF_STOCK");
 				// Resolve a variant matching (product, size, null color). Fall back
 				// to null when none exists (legacy product-level availability).
 				const variant = await db.productVariant.findFirst({
@@ -106,7 +112,12 @@ export async function POST(req: Request) {
 						sourceRef: "checkout",
 					});
 					if (!res.replayed) {
-						reservations.push({ variantId: variant.id, qty: line.qty, key: resKey, owned: true });
+						reservations.push({
+							variantId: variant.id,
+							qty: line.qty,
+							key: resKey,
+							owned: true,
+						});
 					}
 				} else if (!product.inStock) {
 					throw new Error("OUT_OF_STOCK");
@@ -132,7 +143,7 @@ export async function POST(req: Request) {
 		}
 
 		const userId = user ? await getOrderUserId(user) : null;
-		let order;
+		let order: Awaited<ReturnType<typeof createOrderWithNumber>>;
 		try {
 			order = await createOrderWithNumber({
 				status: "PENDING",
@@ -280,7 +291,9 @@ async function createOrderWithNumber(
 	for (let attempt = 0; ; attempt++) {
 		const count = await db.order.count();
 		try {
-			return await db.order.create({ data: { ...data, number: `MT-${1001 + count + attempt}` } });
+			return await db.order.create({
+				data: { ...data, number: `MT-${1001 + count + attempt}` },
+			});
 		} catch (e) {
 			const collision =
 				e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002";
@@ -289,7 +302,26 @@ async function createOrderWithNumber(
 	}
 }
 
-function buildWhatsappLink(order: { number: string; total: number; customerName: string; customerPhone: string; customerEmail: string | null; city: string | null; address: string | null; notes: string | null; payment: string; items: { name: string; size: string | null; price: number; quantity: number }[] }, siteCfg: typeof site) {
+function buildWhatsappLink(
+	order: {
+		number: string;
+		total: number;
+		customerName: string;
+		customerPhone: string;
+		customerEmail: string | null;
+		city: string | null;
+		address: string | null;
+		notes: string | null;
+		payment: string;
+		items: {
+			name: string;
+			size: string | null;
+			price: number;
+			quantity: number;
+		}[];
+	},
+	siteCfg: typeof site,
+) {
 	const lines = [
 		`Bonjour Maison Titrit 👋`,
 		``,
