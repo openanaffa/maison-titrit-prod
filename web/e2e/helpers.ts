@@ -75,7 +75,14 @@ export async function signInAsStaff(page: Page): Promise<void> {
 	await page.getByLabel(/password|mot de passe/i).fill(staff.password);
 	await page.getByRole("button", { name: /se connecter|sign in/i }).click();
 	// The dev server may still be compiling /makteb on the first staff hit.
-	await page.waitForURL(/makteb/, { timeout: 45_000 });
+	try {
+		await page.waitForURL(/makteb/, { timeout: 45_000 });
+	} catch (error) {
+		// Diagnostic only — cookie names never contain secrets.
+		const names = (await page.context().cookies()).map((c) => c.name).join(",");
+		console.log(`signInAsStaff: stuck at ${page.url()} — cookies: ${names}`);
+		throw error;
+	}
 	await page.waitForLoadState("networkidle");
 }
 

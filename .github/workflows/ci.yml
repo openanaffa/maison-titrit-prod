@@ -107,10 +107,20 @@ jobs:
         run: |
           ANON=$(sed -n 's/^NEXT_PUBLIC_SUPABASE_ANON_KEY=//p' .env.e2e)
           curl -s -o /dev/null -w 'auth health: %{http_code}\n' http://127.0.0.1:54321/auth/v1/health
-          curl -s -X POST 'http://127.0.0.1:54321/auth/v1/token?grant_type=password' \
+          RESP=$(curl -s -X POST 'http://127.0.0.1:54321/auth/v1/token?grant_type=password' \
             -H "apikey: $ANON" -H 'Content-Type: application/json' \
-            -d '{"email":"e2e-founder@e2e.local","password":"e2e-founder-password"}' \
-            | head -c 160; echo
+            -d '{"email":"e2e-founder@e2e.local","password":"e2e-founder-password"}')
+          TOKEN=$(printf '%s' "$RESP" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("access_token",""))')
+          echo "token acquired: ${#TOKEN} chars"
+          SUB=$(printf '%s' "$TOKEN" | python3 -c 'import sys,json,base64; print(json.loads(base64.urlsafe_b64decode(sys.stdin.read().split(".")[1] + "=" * (-4 * len(sys.stdin.read()) % 4))).get("sub",""))')
+          echo "sub: $SUB"
+          curl -s "http://127.0.0.1:54321/rest/v1/User?select=id,supabaseId,role&supabaseId=eq.$SUB" \
+            -H "apikey: $ANON" -H "Authorization: Bearer $TOKEN"; echo
+          # Full server loop: cookie in @supabase/ssr format must authenticate /makteb.
+          SESSION_B64=$(printf '%s' "$RESP" | python3 -c 'import sys,json,base64; d=json.load(sys.stdin); print(base64.urlsafe_b64encode(json.dumps(d).encode()).decode().rstrip("="))')
+          echo "cookie payload: ${#SESSION_B64} chars"
+          curl -s -o /dev/null -w 'makteb via cookie: %{http_code} -> %{redirect_url}\n' \
+            "http://127.0.0.1:3000/makteb" -H "Cookie: sb-127-auth-token=$SESSION_B64"
 
       - name: Run E2E
         working-directory: web
