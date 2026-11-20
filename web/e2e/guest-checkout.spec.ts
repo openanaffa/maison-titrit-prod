@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { addToCart, queryDb } from "./helpers";
+import { addToCart, queryDb, waitForHydration } from "./helpers";
 
 test("guest checkout persists a COD order end to end", async ({ page }) => {
 	await page.goto("/produit/E2E-LEGACY-001");
@@ -8,6 +8,8 @@ test("guest checkout persists a COD order end to end", async ({ page }) => {
 	await addToCart(page);
 	await page.goto("/checkout");
 	await expect(page).toHaveURL(/\/checkout/);
+	// The submit click must reach the hydrated handler (no native submit).
+	await waitForHydration(page, /confirmer et commander/);
 
 	await page.getByLabel(/nom complet/i).fill("E2E Cliente");
 	await page.getByLabel(/téléphone/i).fill("0611223344");
@@ -63,6 +65,7 @@ test("guest checkout without a delivery-zone city still records a zone-less orde
 	await page.getByLabel(/téléphone/i).fill("0622334455");
 	await page.getByLabel(/ville/i).fill("VilleInconnue");
 	await page.getByLabel(/adresse/i).fill("1 rue E2E");
+	await waitForHydration(page, /confirmer et commander/);
 	await page.getByRole("button", { name: /confirmer et commander/i }).click();
 	const success = page.getByText(/MT-/).first();
 	await expect(success).toBeVisible({ timeout: 20_000 });

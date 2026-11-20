@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { addToCart, queryDb } from "./helpers";
+import { addToCart, queryDb, waitForHydration } from "./helpers";
 
 /**
  * Concurrent checkout and duplicate submission: the idempotency key
@@ -24,6 +24,7 @@ test("double submission creates exactly one order", async ({ page }) => {
 
 	// Force two rapid submissions of the same form state: the first click
 	// may disable the button, but a stale double-press must still be safe.
+	await waitForHydration(page, /confirmer et commander/);
 	const button = page.getByRole("button", { name: /confirmer et commander/i });
 	await button.click({ force: true });
 	await button.click({ force: true }).catch(() => {

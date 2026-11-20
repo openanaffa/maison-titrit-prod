@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { customer, queryDb, signInAsStaff, signOut } from "./helpers";
+import { customer, queryDb, signInAsStaff, signOut, waitForHydration } from "./helpers";
 
 test("anonymous visitors are redirected away from /makteb", async ({ page }) => {
 	await page.goto("/makteb");
@@ -27,16 +27,13 @@ test("a CUSTOMER session cannot write customer records", async ({ page }) => {
 		"requires the local Supabase instance",
 	);
 
-	// Sign in as the seeded CUSTOMER (hydration-retried like signInAsStaff).
+	// Sign in as the seeded CUSTOMER (hydration-safe like signInAsStaff).
 	await page.goto("/auth/signin?callbackUrl=/makteb");
-	await expect(async () => {
-		await page.getByLabel(/e-?mail|courriel/i).fill(customer.email);
-		await page.getByLabel(/password|mot de passe/i).fill(customer.password);
-		await page
-			.getByRole("button", { name: /se connecter|sign in/i })
-			.click();
-		await page.waitForURL(/makteb/, { timeout: 5_000 });
-	}).toPass({ timeout: 45_000 });
+	await waitForHydration(page, /se connecter|sign in/);
+	await page.getByLabel(/e-?mail|courriel/i).fill(customer.email);
+	await page.getByLabel(/password|mot de passe/i).fill(customer.password);
+	await page.getByRole("button", { name: /se connecter|sign in/i }).click();
+	await page.waitForURL(/makteb/, { timeout: 45_000 });
 
 	// The customers workspace itself redirects non-readers.
 	await page.goto("/makteb/customers");

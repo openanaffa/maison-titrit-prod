@@ -71,51 +71,63 @@ export async function queryDb<T = Record<string, unknown>>(
 /** Staff sign-in through the real /auth/signin password form (local auth). */
 export async function signInAsStaff(page: Page): Promise<void> {
 	await page.goto("/auth/signin?callbackUrl=/makteb");
-	// A click before React hydrates falls through to the form's native
-	// submit (query dropped, no session) — retry the whole sequence until
-	// the workspace URL is reached.
-	await expect(async () => {
-		await page.getByLabel(/e-?mail|courriel/i).fill(staff.email);
-		await page.getByLabel(/password|mot de passe/i).fill(staff.password);
-		await page
-			.getByRole("button", { name: /se connecter|sign in/i })
-			.click();
-		await page.waitForURL(/makteb/, { timeout: 5_000 });
-	}).toPass({ timeout: 45_000 });
+	// Clicking before hydration falls through to the form's native submit
+	// (callbackUrl query dropped, no session cookie) — wait for the
+	// hydrated handler before filling and submitting.
+	await waitForHydration(page, /se connecter|sign in/);
+	await page.getByLabel(/e-?mail|courriel/i).fill(staff.email);
+	await page.getByLabel(/password|mot de passe/i).fill(staff.password);
+	await page.getByRole("button", { name: /se connecter|sign in/i }).click();
 	// The dev server may still be compiling /makteb on the first staff hit.
+	await page.waitForURL(/makteb/, { timeout: 45_000 });
 	await page.waitForLoadState("networkidle");
 }
 
 /**
+ * Wait until React has attached event props to the button with the given
+ * label. React-dom stores hydrated props (including onClick) on DOM nodes
+ * under a `__reactProps$…` key during hydration — the reliable signal
+ * that a click will actually reach the app's handler. A click before
+ * hydration falls through (native form submit, lost handler).
+ */
+export async function waitForHydration(page: Page, buttonText: RegExp): Promise<void> {
+	await page.waitForFunction(
+		(pattern) => {
+			const regex = new RegExp(pattern, "i");
+			return [...document.querySelectorAll("button")].some(
+				(button) =>
+					regex.test(button.textContent ?? "") &&
+					Object.keys(button).some((key) => key.startsWith("__reactProps$")),
+			);
+		},
+		buttonText.source,
+		{ timeout: 60_000 },
+	);
+}
+
+/**
  * Add the main product to the cart and wait for the app's own
- * confirmation toast. The toast doubles as a hydration signal: a click
- * issued before React hydrates is a lost no-op, so the whole
- * (optionally size-selecting) sequence is retried via expect.toPass.
+ * confirmation toast (success signal). Hydration is awaited explicitly
+ * (see waitForHydration) so the click is never lost.
  *
  * The product page renders related-product cards with their own
  * add-to-cart buttons below the purchase section — the main product's
  * button is the first in DOM order.
  */
 export async function addToCart(page: Page, opts?: { size?: string }): Promise<void> {
-	// Wait for the initial chunks to settle so the first click is usually
-	// post-hydration (dev-server compiles can be slow in CI).
-	await page.waitForLoadState("networkidle").catch(() => {});
-	await expect(async () => {
-		if (opts?.size) {
-			await page
-				.getByRole("button", { name: opts.size, exact: true })
-				.click();
-		}
+	await waitForHydration(page, /ajouter au panier/);
+	if (opts?.size) {
 		await page
-			.getByRole("button", { name: /ajouter au panier/i })
-			.first()
+			.getByRole("button", { name: opts.size, exact: true })
 			.click();
-		await expect(
-			page.getByText(/ajouté au panier/i).first(),
-		).toBeVisible();
-	}).toPass({ timeout: 20_000 });
-	// Close the toast wait deterministically.
-	await page.waitForTimeout(300);
+	}
+	await page
+		.getByRole("button", { name: /ajouter au panier/i })
+		.first()
+		.click();
+	await expect(page.getByText(/ajouté au panier/i).first()).toBeVisible({
+		timeout: 15_000,
+	});
 }
 
 /** Sign out (clears the local auth session, incl. httpOnly cookies). */
