@@ -78,6 +78,13 @@ export function readDotEnv(): Record<string, string> {
 	}
 }
 
+function parseStatusKey(output: string, name: string): string | null {
+	// `supabase status -o env` may quote values depending on CLI version —
+	// strip surrounding quotes so the bearer token stays a valid JWT.
+	const m = new RegExp(`${name}=?"?([^\"\\r\\n\\s]+)"?`).exec(output);
+	return m?.[1] ?? null;
+}
+
 /** Read the local anon/service keys from `supabase status -o env`. */
 export function readLocalSupabaseKeys(): {
 	anonKey: string;
@@ -89,8 +96,8 @@ export function readLocalSupabaseKeys(): {
 		shell: process.platform === "win32",
 	});
 	if (res.status !== 0 || !res.stdout) return null;
-	const anon = /ANON_KEY=(\S+)/.exec(res.stdout)?.[1];
-	const service = /SERVICE_ROLE_KEY=(\S+)/.exec(res.stdout)?.[1];
+	const anon = parseStatusKey(res.stdout, "ANON_KEY");
+	const service = parseStatusKey(res.stdout, "SERVICE_ROLE_KEY");
 	if (!anon || !service) return null;
 	return { anonKey: anon, serviceKey: service };
 }
