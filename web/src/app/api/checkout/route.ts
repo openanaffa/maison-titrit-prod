@@ -1,6 +1,8 @@
 import { Prisma } from "@prisma/client";
+import { SeverityNumber } from "@opentelemetry/api-logs";
 import { after, NextResponse } from "next/server";
 import { site } from "@/config/site";
+import { posthogLogger, posthogLoggerProvider } from "@/instrumentation";
 import { rejectBots } from "@/lib/bot";
 import { parseCartLines, priceCart } from "@/lib/checkout";
 import { db } from "@/lib/db";
@@ -290,6 +292,17 @@ export async function POST(req: Request) {
 		const text = encodeURIComponent(lines.join("\n"));
 		const whatsapp = `https://wa.me/${site.whatsapp.chat}?text=${text}`;
 
+		posthogLogger?.emit({
+			body: "Checkout order created",
+			severityNumber: SeverityNumber.INFO,
+			attributes: {
+				endpoint: "/api/checkout",
+				item_count: items.length,
+				currency: site.currency,
+			},
+		});
+		flushPosthogLogs();
+
 		after(() =>
 			notifyStaffNewOrder({
 				number: order.number,
@@ -305,11 +318,25 @@ export async function POST(req: Request) {
 			whatsapp,
 		});
 	} catch (e) {
+		posthogLogger?.emit({
+			body: "Checkout order creation failed",
+			severityNumber: SeverityNumber.ERROR,
+			attributes: { endpoint: "/api/checkout" },
+		});
+		flushPosthogLogs();
 		console.error("POST /api/checkout failed", e);
 		return NextResponse.json(
 			{ error: "Commande impossible." },
 			{ status: 500 },
 		);
+	}
+}
+
+function flushPosthogLogs() {
+	if (posthogLoggerProvider) {
+		after(async () => {
+			await posthogLoggerProvider.forceFlush().catch(() => {});
+		});
 	}
 }
 

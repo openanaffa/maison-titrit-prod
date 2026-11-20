@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import * as React from "react";
 import { CategoryIcon } from "@/components/maison/category-icons";
 import { NeedleThread, Reveal } from "@/components/maison/motifs";
@@ -49,6 +50,19 @@ export function ProductPurchase({
 		if (!product.inStock) return;
 		if (!size && sizes.length > 1) return setSizePrompt(true);
 		setSizePrompt(false);
+		if (
+			process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+			process.env.NEXT_PUBLIC_POSTHOG_HOST
+		) {
+			posthog.capture("product_order_initiated", {
+				product_ref: product.ref,
+				product_category: product.category,
+				quantity: qty,
+				total: total,
+				currency: product.currency,
+				order_channel: "whatsapp",
+			});
+		}
 		track("select_item", {
 			item_id: product.ref,
 			item_name: product.name,
@@ -106,6 +120,18 @@ export function ProductPurchase({
 			},
 			qty,
 		);
+		if (
+			process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+			process.env.NEXT_PUBLIC_POSTHOG_HOST
+		) {
+			posthog.capture("product_added_to_cart", {
+				product_ref: product.ref,
+				product_category: product.category,
+				quantity: qty,
+				unit_price: unitPrice,
+				currency: product.currency,
+			});
+		}
 		trackAddToCart({
 			ref: product.ref,
 			name: product.name,

@@ -3,6 +3,7 @@
 import { ArrowLeft, Loader2, Truck } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 import * as React from "react";
 import { CheckoutForm } from "@/components/maison/checkout-form";
 import {
@@ -139,6 +140,18 @@ export default function CheckoutPage() {
 			if (!res.ok) {
 				setError(json.error || "Erreur");
 				return;
+			}
+			if (
+				process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+				process.env.NEXT_PUBLIC_POSTHOG_HOST
+			) {
+				posthog.capture("checkout_order_placed", {
+					total: json.order.total,
+					currency: "MAD",
+					item_count: items.reduce((count, item) => count + item.qty, 0),
+					product_count: items.length,
+					payment_method: "cod",
+				});
 			}
 			// Purchase is dispatched server-first via trackPurchase (See
 			// src/lib/analytics.ts division of labor) — no separate client fbq fire,

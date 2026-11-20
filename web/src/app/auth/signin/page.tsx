@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import posthog from "posthog-js";
 import * as React from "react";
 import { SigninForm } from "@/components/auth/signin-form";
 import { useT } from "@/i18n/locale-provider";
@@ -94,6 +95,12 @@ function AuthPageInner() {
 					},
 				});
 				if (authError) throw authError;
+				if (
+					process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+					process.env.NEXT_PUBLIC_POSTHOG_HOST
+				) {
+					posthog.capture("account_signed_up", { auth_method: "email" });
+				}
 				if (data.session) {
 					window.location.assign(await postAuthDestination(supabase));
 				} else {
@@ -105,6 +112,12 @@ function AuthPageInner() {
 					password: payload.password,
 				});
 				if (authError) throw authError;
+				if (
+					process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+					process.env.NEXT_PUBLIC_POSTHOG_HOST
+				) {
+					posthog.capture("account_signed_in", { auth_method: "email" });
+				}
 				window.location.assign(await postAuthDestination(supabase));
 			}
 		} catch (authError) {

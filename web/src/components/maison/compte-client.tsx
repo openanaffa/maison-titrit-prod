@@ -2,6 +2,7 @@
 
 import { Check, Loader2, LogOut, Package, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 import * as React from "react";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { AmazighStar, OrnamentDivider } from "@/components/maison/motifs";
@@ -38,6 +39,12 @@ export function CompteClient({
 		setSaving(true);
 		try {
 			await updateProfile.mutateAsync({ name, phone });
+			if (
+				process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+				process.env.NEXT_PUBLIC_POSTHOG_HOST
+			) {
+				posthog.capture("account_profile_updated");
+			}
 			toast({ title: t("compte.save") });
 			router.refresh();
 		} catch {

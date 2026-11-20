@@ -1,6 +1,7 @@
 "use client";
 
 import type { Session } from "@supabase/supabase-js";
+import posthog from "posthog-js";
 import * as React from "react";
 import type { AuthenticatedUser } from "@/lib/supabase/auth-client";
 import { getRoleFromAccessToken } from "@/lib/supabase/auth-client";
@@ -24,6 +25,22 @@ function userFromSession(session: Session | null): AuthenticatedUser | null {
 	};
 }
 
+function identifyPostHogUser(session: Session): boolean {
+	if (
+		!process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN ||
+		!process.env.NEXT_PUBLIC_POSTHOG_HOST
+	)
+		return false;
+
+	const name = session.user.user_metadata.name;
+	posthog.identify(session.user.id, {
+		email: session.user.email,
+		name: typeof name === "string" ? name : undefined,
+		role: getRoleFromAccessToken(session.access_token),
+	});
+	return true;
+}
+
 export function SupabaseAuthProvider({
 	children,
 }: {
@@ -33,6 +50,7 @@ export function SupabaseAuthProvider({
 		user: null,
 		loading: true,
 	});
+	const identifiedUserId = React.useRef<string | null>(null);
 
 	React.useEffect(() => {
 		let supabase: ReturnType<typeof createSupabaseBrowserClient>;
@@ -48,7 +66,17 @@ export function SupabaseAuthProvider({
 		let active = true;
 		const {
 			data: { subscription },
-		} = supabase.auth.onAuthStateChange((_event, session) => {
+		} = supabase.auth.onAuthStateChange((event, session) => {
+			if (event === "SIGNED_OUT") {
+				if (identifiedUserId.current) posthog.reset();
+				identifiedUserId.current = null;
+			} else if (session?.user && identifiedUserId.current !== session.user.id) {
+				if (identifiedUserId.current) posthog.reset();
+				if (identifyPostHogUser(session)) {
+					identifiedUserId.current = session.user.id;
+				}
+			}
+
 			if (active) setState({ user: userFromSession(session), loading: false });
 		});
 
