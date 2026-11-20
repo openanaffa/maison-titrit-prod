@@ -80,24 +80,32 @@ test("guest checkout persists a COD order end to end", async ({ page }) => {
 	expect(history[0].toStatus).toBe("PENDING");
 });
 
-test("guest checkout without a delivery-zone city still records a zone-less order", async ({ page }) => {
-	await page.goto("/produit/E2E-LEGACY-001");
-	await addToCart(page);
-	await page.goto("/checkout");
-	await page.getByLabel(/nom complet/i).fill("E2E Sans Zone");
-	await page.getByLabel(/téléphone/i).fill("0622334455");
-	await page.getByLabel(/ville/i).fill("VilleInconnue");
-	await page.getByLabel(/adresse/i).fill("1 rue E2E");
-	await waitForHydration(page, /confirmer et commander/);
-	await page.getByRole("button", { name: /confirmer et commander/i }).click();
-	const success = page.getByText(/MT-\d+/).first();
-	await expect(success).toBeVisible({ timeout: 20_000 });
-	// The paragraph reads "N° de commande: MT-1003" — extract the number.
-	const orderNumber =
-		/MT-\d+/.exec((await success.textContent()) ?? "")?.[0] ?? "";
-	const orders = await queryDb<{ total: number }>(
-		'SELECT total FROM "Order" WHERE number = $1',
-		[orderNumber],
+test("an out-of-zone delivery city is rejected and persists nothing", async ({
+	request,
+}) => {
+	// The app enforces delivery zones (#121): an unknown city gets 409 from
+	// /api/checkout and no order row — matching the sold-out contract.
+	const product = (
+		await queryDb<{ id: string }>(
+			"SELECT id FROM \"Product\" WHERE ref = 'E2E-LEGACY-001'",
+		)
+	)[0];
+	const res = await request.post("/api/checkout", {
+		data: {
+			items: [{ productId: product.id, qty: 1 }],
+			customer: {
+				name: "E2E Sans Zone",
+				phone: "0622334455",
+				city: "VilleInconnue",
+				address: "1 rue E2E",
+			},
+			idempotencyKey: `e2e-nozone-${Date.now()}`,
+		},
+	});
+	expect(res.status()).toBe(409);
+	const orders = await queryDb<{ n: number }>(
+		'SELECT count(*)::int AS n FROM "Order" WHERE "customerName" = $1',
+		["E2E Sans Zone"],
 	);
-	expect(orders[0]?.total).toBe(450);
+	expect(orders[0].n).toBe(0);
 });

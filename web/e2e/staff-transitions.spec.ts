@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { isFullSuite, queryDb, signInAsStaff, signOut } from "./helpers";
+import { isFullSuite, queryDb, signInAsStaff, signOut, waitForHydration } from "./helpers";
 
 /**
  * COD confirmation and allowed order transitions, driven by a real staff
@@ -39,10 +39,15 @@ test("staff processes an order through every allowed COD transition", async ({ p
 	const number = await createSeededOrder();
 	await signInAsStaff(page);
 
-	// Fulfilment queue: to-confirm.
+	// Fulfilment queue: to-confirm. A click before React hydrates is a
+	// lost no-op — wait for the hydrated handler on every queue load.
+	const hydrateQueue = () =>
+		waitForHydration(page, /confirmer|préparer|expédier|livrer|valider/);
+
 	await page.goto("/makteb/fulfilment?queue=to-confirm");
 	const row = page.locator("tr", { hasText: number });
 	await expect(row).toBeVisible();
+	await hydrateQueue();
 
 	await row.getByRole("button", { name: /confirmer/i }).click();
 	await expect(
@@ -51,17 +56,20 @@ test("staff processes an order through every allowed COD transition", async ({ p
 
 	// to-prepare → start preparing.
 	await page.goto("/makteb/fulfilment?queue=to-prepare");
+	await hydrateQueue();
 	await page
 		.locator("tr", { hasText: number })
 		.getByRole("button", { name: /préparer/i })
 		.click();
 	await page.goto("/makteb/fulfilment?queue=to-dispatch");
+	await hydrateQueue();
 	await page
 		.locator("tr", { hasText: number })
 		.getByRole("button", { name: /expédier/i })
 		.click();
 	// Dispatch opens the inline form (provider/reference).
 	const dispatchRow = page.locator("tr", { hasText: number });
+	await waitForHydration(page, /valider/);
 	await dispatchRow.getByRole("button", { name: /valider/i }).click();
 	await expect(
 		page.locator("tr", { hasText: number }).getByText(/DISPATCHED|Expédiée/i, { exact: false }).first(),
@@ -69,6 +77,7 @@ test("staff processes an order through every allowed COD transition", async ({ p
 
 	// In transit → deliver.
 	await page.goto("/makteb/fulfilment?queue=in-transit");
+	await hydrateQueue();
 	await page
 		.locator("tr", { hasText: number })
 		.getByRole("button", { name: /livrer/i })
@@ -134,6 +143,8 @@ test("cancelling an order releases its variant reservation", async ({ page }) =>
 	await signInAsStaff(page);
 	await page.goto("/makteb/fulfilment?queue=to-confirm");
 	const row = page.locator("tr", { hasText: number });
+	await expect(row).toBeVisible();
+	await waitForHydration(page, /annuler|valider/);
 	await row.getByRole("button", { name: /annuler/i }).click();
 	await row.getByRole("button", { name: /valider/i }).click();
 	await expect(
