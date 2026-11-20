@@ -54,11 +54,8 @@ jobs:
         with:
           bun-version: "1.3.14"
 
-      - name: Setup Supabase CLI
-        uses: supabase/setup-cli@v1
-        with:
-          version: latest
-
+      # The CLI runs via npx (the npm package bundles the platform binary) —
+      # supabase/setup-cli resolves GitHub releases and can hit API rate limits.
       - name: Start local Supabase (migrations deferred)
         # supabase start auto-applies supabase/migrations on a fresh DB, but
         # those migrations ALTER Prisma-created tables — they must run AFTER
