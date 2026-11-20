@@ -17,10 +17,20 @@ export async function POST(
 	const { id } = await params;
 	try {
 		const body = await req.json();
-		const consent =
-			body.consent === "OPTED_IN" || body.consent === "OPTED_OUT"
-				? (body.consent as string)
-				: null;
+		// Strict validation (Codex P2): unsupported values are rejected; an
+		// explicit null is the only way to unset consent — a typo must not
+		// silently clear a customer's recorded consent.
+		let consent: string | null;
+		if (body.consent === null) {
+			consent = null;
+		} else if (body.consent === "OPTED_IN" || body.consent === "OPTED_OUT") {
+			consent = body.consent as string;
+		} else {
+			return NextResponse.json(
+				{ error: "Valeur de consentement invalide." },
+				{ status: 400 },
+			);
+		}
 		const customer = await db.user.findFirst({
 			where: { id, role: "CUSTOMER" },
 			select: { id: true, marketingConsent: true },
