@@ -36,6 +36,11 @@ test("guest checkout persists a COD order end to end", async ({ page }) => {
 	// Persisted state — not just the UI message.
 	console.log("checkout responses:", JSON.stringify(checkoutResponses));
 	console.log(
+		"query param chars:",
+		JSON.stringify(orderNumber),
+		[...(orderNumber ?? "")].map((c) => c.charCodeAt(0)),
+	);
+	console.log(
 		"orders in DB:",
 		JSON.stringify(
 			await queryDb(
