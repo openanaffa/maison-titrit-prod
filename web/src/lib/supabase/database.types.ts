@@ -26,6 +26,7 @@ export type Database = {
           phone: string | null
           createdAt: string
           updatedAt: string
+          marketingConsent: string | null
         }
         Insert: {
           id?: string
@@ -38,6 +39,7 @@ export type Database = {
           phone?: string | null
           createdAt?: string
           updatedAt?: string
+          marketingConsent?: string | null
         }
         Update: {
           id?: string
@@ -50,6 +52,58 @@ export type Database = {
           phone?: string | null
           createdAt?: string
           updatedAt?: string
+          marketingConsent?: string | null
+        }
+        Relationships: []
+      }
+      CustomerNote: {
+        Row: {
+          id: string
+          userId: string
+          authorId: string
+          body: string
+          createdAt: string
+        }
+        Insert: {
+          id?: string
+          userId: string
+          authorId: string
+          body: string
+          createdAt?: string
+        }
+        Update: {
+          id?: string
+          userId?: string
+          authorId?: string
+          body?: string
+          createdAt?: string
+        }
+        Relationships: []
+      }
+      CustomerAuditEvent: {
+        Row: {
+          id: string
+          userId: string | null
+          actorId: string
+          action: string
+          detail: string | null
+          createdAt: string
+        }
+        Insert: {
+          id?: string
+          userId?: string | null
+          actorId: string
+          action: string
+          detail?: string | null
+          createdAt?: string
+        }
+        Update: {
+          id?: string
+          userId?: string | null
+          actorId?: string
+          action?: string
+          detail?: string | null
+          createdAt?: string
         }
         Relationships: []
       }

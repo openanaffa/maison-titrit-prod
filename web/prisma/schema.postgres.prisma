@@ -39,10 +39,40 @@ model User {
   updatedAt     DateTime  @updatedAt
 
   orders      Order[]
+  marketingConsent String? // OPTED_IN | OPTED_OUT | null = unknown
+  notes       CustomerNote[] @relation("CustomerNoteAuthor")
+  notesOn     CustomerNote[] @relation("CustomerNoteTarget")
+  audits      CustomerAuditEvent[] @relation("CustomerAuditActor")
+  auditsOf    CustomerAuditEvent[] @relation("CustomerAuditTarget")
   invitesSent Invite[] @relation("InviteSender")
   invitesUsed Invite?  @relation("InviteUsedBy")
 
   @@index([role])
+}
+
+model CustomerNote {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation("CustomerNoteTarget", fields: [userId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation("CustomerNoteAuthor", fields: [authorId], references: [id])
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model CustomerAuditEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation("CustomerAuditTarget", fields: [userId], references: [id], onDelete: SetNull)
+  actorId   String
+  actor     User     @relation("CustomerAuditActor", fields: [actorId], references: [id])
+  action    String   // VIEW_CUSTOMER | NOTE_ADDED | NOTE_REMOVED | CONSENT_CHANGED
+  detail    String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 /**
