@@ -31,7 +31,7 @@ test("a CUSTOMER session cannot write customer records", async ({ page }) => {
 	await page.goto("/auth/signin?callbackUrl=/makteb");
 	await page.getByLabel(/e-?mail|courriel/i).fill(customer.email);
 	await page.getByLabel(/password|mot de passe/i).fill(customer.password);
-	await page.getByRole("button", { name: /sign in|connexion/i }).click();
+	await page.getByRole("button", { name: /se connecter|sign in/i }).click();
 	await page.waitForURL(/makteb/, { timeout: 15_000 });
 
 	// The customers workspace itself redirects non-readers.

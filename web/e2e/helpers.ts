@@ -74,7 +74,9 @@ export async function signInAsStaff(page: Page): Promise<void> {
 	await page.getByLabel(/e-?mail|courriel/i).fill(staff.email);
 	await page.getByLabel(/password|mot de passe/i).fill(staff.password);
 	await page.getByRole("button", { name: /se connecter|sign in/i }).click();
-	await page.waitForURL(/makteb/, { timeout: 15_000 });
+	// The dev server may still be compiling /makteb on the first staff hit.
+	await page.waitForURL(/makteb/, { timeout: 45_000 });
+	await page.waitForLoadState("networkidle");
 }
 
 /**

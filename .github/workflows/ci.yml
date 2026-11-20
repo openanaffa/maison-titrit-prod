@@ -102,6 +102,14 @@ jobs:
           SQL
           bun e2e/seed.ts
 
+      - name: Auth smoke test
+        working-directory: web
+        run: |
+          ANON=$(sed -n 's/^NEXT_PUBLIC_SUPABASE_ANON_KEY=//p' .env.e2e)
+          curl -s -o /dev/null -w "auth health: %{http_code}
+" http://127.0.0.1:54321/auth/v1/health
+          curl -s -X POST "http://127.0.0.1:54321/auth/v1/token?grant_type=password"             -H "apikey: $ANON" -H "Content-Type: application/json"             -d '{"email":"e2e-founder@e2e.local","password":"e2e-founder-password"}'             | head -c 160; echo
+
       - name: Run E2E
         working-directory: web
         env:
