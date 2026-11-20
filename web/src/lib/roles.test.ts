@@ -96,3 +96,26 @@ describe("RBAC role helpers", () => {
 		}
 	});
 });
+
+describe("customers permissions (#122)", () => {
+	test("customers:read covers all staff roles", () => {
+		for (const role of [
+			"FOUNDER",
+			"DEVELOPER",
+			"ADMIN",
+			"MANAGER",
+			"MARKETER",
+		]) {
+			expect(can(role, "customers:read")).toBe(true);
+		}
+		expect(can("CUSTOMER", "customers:read")).toBe(false);
+	});
+	test("customers:write excludes managers and marketers", () => {
+		for (const role of ["FOUNDER", "DEVELOPER", "ADMIN"]) {
+			expect(can(role, "customers:write")).toBe(true);
+		}
+		for (const role of ["MANAGER", "MARKETER", "CUSTOMER"]) {
+			expect(can(role, "customers:write")).toBe(false);
+		}
+	});
+});

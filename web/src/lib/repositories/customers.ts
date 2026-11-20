@@ -40,6 +40,20 @@ export function digitsOf(raw: string): string {
 	return raw.replace(/\D/g, "");
 }
 
+/**
+ * Candidate phone forms for matching: raw digits, international form
+ * (leading country code 212 stripped) and national form (leading trunk
+ * 0 stripped). Covers the store's Moroccan numbers written both ways.
+ */
+export function phoneCandidates(raw: string): string[] {
+	const digits = digitsOf(raw);
+	if (!digits) return [];
+	const forms = new Set([digits]);
+	if (digits.startsWith("212")) forms.add(digits.slice(3));
+	if (digits.startsWith("0")) forms.add(digits.slice(1));
+	return [...forms];
+}
+
 /** Normalized email comparison (case-insensitive trim). */
 export function normalizeEmail(raw: string): string {
 	return raw.trim().toLowerCase();
@@ -55,9 +69,12 @@ export function guestOrderMatches(
 	guest: { customerPhone: string; customerEmail: string | null },
 	customer: { phone: string; email: string },
 ): boolean {
+	const guestForms = phoneCandidates(guest.customerPhone);
+	const customerForms = phoneCandidates(customer.phone);
 	if (
-		customer.phone &&
-		digitsOf(guest.customerPhone) === digitsOf(customer.phone)
+		guestForms.length > 0 &&
+		customerForms.length > 0 &&
+		guestForms.some((g) => customerForms.includes(g))
 	) {
 		return true;
 	}
