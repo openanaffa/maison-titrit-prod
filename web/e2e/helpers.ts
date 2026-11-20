@@ -71,18 +71,18 @@ export async function queryDb<T = Record<string, unknown>>(
 /** Staff sign-in through the real /auth/signin password form (local auth). */
 export async function signInAsStaff(page: Page): Promise<void> {
 	await page.goto("/auth/signin?callbackUrl=/makteb");
-	await page.getByLabel(/e-?mail|courriel/i).fill(staff.email);
-	await page.getByLabel(/password|mot de passe/i).fill(staff.password);
-	await page.getByRole("button", { name: /se connecter|sign in/i }).click();
+	// A click before React hydrates falls through to the form's native
+	// submit (query dropped, no session) — retry the whole sequence until
+	// the workspace URL is reached.
+	await expect(async () => {
+		await page.getByLabel(/e-?mail|courriel/i).fill(staff.email);
+		await page.getByLabel(/password|mot de passe/i).fill(staff.password);
+		await page
+			.getByRole("button", { name: /se connecter|sign in/i })
+			.click();
+		await page.waitForURL(/makteb/, { timeout: 5_000 });
+	}).toPass({ timeout: 45_000 });
 	// The dev server may still be compiling /makteb on the first staff hit.
-	try {
-		await page.waitForURL(/makteb/, { timeout: 45_000 });
-	} catch (error) {
-		// Diagnostic only — cookie names never contain secrets.
-		const names = (await page.context().cookies()).map((c) => c.name).join(",");
-		console.log(`signInAsStaff: stuck at ${page.url()} — cookies: ${names}`);
-		throw error;
-	}
 	await page.waitForLoadState("networkidle");
 }
 
@@ -97,6 +97,9 @@ export async function signInAsStaff(page: Page): Promise<void> {
  * button is the first in DOM order.
  */
 export async function addToCart(page: Page, opts?: { size?: string }): Promise<void> {
+	// Wait for the initial chunks to settle so the first click is usually
+	// post-hydration (dev-server compiles can be slow in CI).
+	await page.waitForLoadState("networkidle").catch(() => {});
 	await expect(async () => {
 		if (opts?.size) {
 			await page

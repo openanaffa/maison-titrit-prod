@@ -27,12 +27,16 @@ test("a CUSTOMER session cannot write customer records", async ({ page }) => {
 		"requires the local Supabase instance",
 	);
 
-	// Sign in as the seeded CUSTOMER.
+	// Sign in as the seeded CUSTOMER (hydration-retried like signInAsStaff).
 	await page.goto("/auth/signin?callbackUrl=/makteb");
-	await page.getByLabel(/e-?mail|courriel/i).fill(customer.email);
-	await page.getByLabel(/password|mot de passe/i).fill(customer.password);
-	await page.getByRole("button", { name: /se connecter|sign in/i }).click();
-	await page.waitForURL(/makteb/, { timeout: 15_000 });
+	await expect(async () => {
+		await page.getByLabel(/e-?mail|courriel/i).fill(customer.email);
+		await page.getByLabel(/password|mot de passe/i).fill(customer.password);
+		await page
+			.getByRole("button", { name: /se connecter|sign in/i })
+			.click();
+		await page.waitForURL(/makteb/, { timeout: 5_000 });
+	}).toPass({ timeout: 45_000 });
 
 	// The customers workspace itself redirects non-readers.
 	await page.goto("/makteb/customers");

@@ -32,10 +32,8 @@ test("a locally granted session cookie authenticates /makteb", async ({ page }) 
 	const session = (await res.json()) as Record<string, unknown>;
 	expect(session.access_token).toBeTruthy();
 
-	const payload = Buffer.from(
-		JSON.stringify(session),
-		"utf8",
-	).toString("base64url");
+	// @supabase/ssr encodes cookie values as `base64-` + base64url(JSON).
+	const payload = `base64-${Buffer.from(JSON.stringify(session), "utf8").toString("base64url")}`;
 
 	await page.context().addCookies([
 		{
