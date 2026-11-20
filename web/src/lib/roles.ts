@@ -58,6 +58,8 @@ export function can(
 		case "orders:read":
 		case "customers:read":
 			return isStaffRole(role);
+		case "customers:write":
+			return role === "FOUNDER" || role === "DEVELOPER" || role === "ADMIN";
 		case "content:write":
 			return (
 				role === "FOUNDER" ||
@@ -87,6 +89,7 @@ export type Permission =
 	| "categories:write"
 	| "content:write"
 	| "customers:read"
+	| "customers:write"
 	| "integrations:write"
 	| "users:manage"
 	| "invites:manage"
