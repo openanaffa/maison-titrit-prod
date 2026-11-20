@@ -33,12 +33,15 @@ export default defineConfig({
 		trace: "retain-on-failure",
 	},
 	webServer: {
-		command: "bun run dev",
+		// CI runs the production server — dev-mode hydration is racy under
+		// parallel compiles (chunks stall, clicks land pre-hydration). A
+		// build+start also mirrors what real visitors use.
+		command: process.env.PW_DEV ? "bun run dev" : "bun run build && bun run start",
 		cwd: path.resolve(__dirname, ".."),
 		port: 3000,
 		reuseExistingServer: !process.env.CI,
 		env,
-		timeout: 120_000,
+		timeout: 420_000,
 	},
 	projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 });
