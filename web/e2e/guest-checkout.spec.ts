@@ -2,6 +2,13 @@ import { expect, test } from "@playwright/test";
 import { addToCart, queryDb, waitForHydration } from "./helpers";
 
 test("guest checkout persists a COD order end to end", async ({ page }) => {
+	// Capture the real checkout API exchange (status + body) for diagnosis.
+	const checkoutResponses: { status: number; body: string }[] = [];
+	page.on("response", async (res) => {
+		if (res.url().includes("/api/checkout")) {
+			checkoutResponses.push({ status: res.status(), body: (await res.text()).slice(0, 300) });
+		}
+	});
 	await page.goto("/produit/E2E-LEGACY-001");
 	await expect(page.getByRole("heading", { name: /E2E Caftan/i })).toBeVisible();
 
@@ -27,6 +34,15 @@ test("guest checkout persists a COD order end to end", async ({ page }) => {
 		/MT-\d+/.exec((await success.textContent()) ?? "")?.[0] ?? "";
 
 	// Persisted state — not just the UI message.
+	console.log("checkout responses:", JSON.stringify(checkoutResponses));
+	console.log(
+		"orders in DB:",
+		JSON.stringify(
+			await queryDb(
+				'SELECT number, "customerName", total FROM "Order" ORDER BY "createdAt"',
+			),
+		),
+	);
 	const orders = await queryDb<{ id: string; status: string; total: number; city: string }>(
 		'SELECT id, status, total, city FROM "Order" WHERE number = $1',
 		[orderNumber],
