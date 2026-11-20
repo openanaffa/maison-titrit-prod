@@ -34,7 +34,7 @@ jobs:
 
       - name: Test
         working-directory: web
-        run: bun test
+        run: bun test src
 
       - name: Build
         run: bun run build
@@ -59,11 +59,18 @@ jobs:
         with:
           version: latest
 
-      - name: Start local Supabase
+      - name: Start local Supabase (migrations deferred)
+        # supabase start auto-applies supabase/migrations on a fresh DB, but
+        # those migrations ALTER Prisma-created tables — they must run AFTER
+        # prisma db push. So the migrations dir is deferred: start the stack
+        # clean, push the schema, then apply the migrations explicitly.
         # Exclusions follow the container names accepted by supabase CLI 3.x
         # (mailpit = the mail catcher; the seed creates confirmed users via
         # the local admin API, so no mail service is needed).
-        run: npx supabase start -x studio,imgproxy,logflare,mailpit,vector,edge-runtime
+        run: |
+          mv supabase/migrations /tmp/supabase-migrations
+          npx supabase start -x studio,imgproxy,logflare,mailpit,vector,edge-runtime
+          mv /tmp/supabase-migrations supabase/migrations
 
       - name: Install
         run: bun install --frozen-lockfile
@@ -77,10 +84,7 @@ jobs:
       - name: Install Playwright browsers
         run: bunx playwright install --with-deps chromium
 
-      - name: Apply Supabase migrations
-        run: npx supabase db reset
-
-      - name: Push Prisma schema + seed
+      - name: Push Prisma schema, apply migrations, seed
         working-directory: web
         env:
           DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
@@ -88,6 +92,17 @@ jobs:
         run: |
           bunx prisma generate --schema=prisma/schema.postgres.prisma
           bunx prisma db push --schema=prisma/schema.postgres.prisma --skip-generate --accept-data-loss
+          for f in ../supabase/migrations/*.sql; do
+            echo "applying $f"
+            bunx prisma db execute --schema=prisma/schema.postgres.prisma --file "$f"
+          done
+          # supabase-js (anon/authenticated roles) needs API grants for the
+          # Prisma-owned tables; row access is governed by the RLS policies
+          # the migrations just installed.
+          bunx prisma db execute --schema=prisma/schema.postgres.prisma --stdin <<'SQL'
+          GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+          GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+          SQL
           bun e2e/seed.ts
 
       - name: Run E2E
