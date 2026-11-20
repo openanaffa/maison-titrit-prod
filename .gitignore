@@ -54,3 +54,8 @@ web/prisma/db/*.db
 # Deepwork orchestrator state (resume index, not committed)
 .slim/deepwork/
 repomix-output*
+
+# E2E runtime state (written by web/e2e/seed.ts)
+web/.env.e2e
+web/playwright-report/
+web/test-results/

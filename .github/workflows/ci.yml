@@ -38,3 +38,67 @@ jobs:
 
       - name: Build
         run: bun run build
+
+  e2e:
+    # Issue #126: browser-level commerce paths against an isolated local
+    # Supabase (auth + Postgres). Never touches the deployed project —
+    # web/e2e/env.ts hard-fails on non-local URLs.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services: {}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.14"
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start local Supabase
+        run: npx supabase start -x studio,imgproxy,inbucket,logflare,vector,edge-runtime,analytics
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('web/package.json') }}
+
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps chromium
+
+      - name: Apply Supabase migrations
+        run: npx supabase db reset
+
+      - name: Push Prisma schema + seed
+        working-directory: web
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+        run: |
+          bunx prisma generate --schema=prisma/schema.postgres.prisma
+          bunx prisma db push --schema=prisma/schema.postgres.prisma --skip-generate --accept-data-loss
+          bun e2e/seed.ts
+
+      - name: Run E2E
+        working-directory: web
+        env:
+          CI: "1"
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+        run: bunx playwright test
+
+      - name: Upload E2E report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: web/playwright-report/
+          retention-days: 7
