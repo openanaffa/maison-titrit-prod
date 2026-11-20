@@ -20,9 +20,11 @@ test("guest checkout persists a COD order end to end", async ({ page }) => {
 		.click();
 
 	// Success state renders the persisted order number (UI evidence).
-	const success = page.getByText(/MT-/).first();
+	const success = page.getByText(/MT-\d+/).first();
 	await expect(success).toBeVisible({ timeout: 20_000 });
-	const orderNumber = (await success.textContent())?.trim() ?? "";
+	// The paragraph reads "N° de commande: MT-1003" — extract the number.
+	const orderNumber =
+		/MT-\d+/.exec((await success.textContent()) ?? "")?.[0] ?? "";
 
 	// Persisted state — not just the UI message.
 	const orders = await queryDb<{ id: string; status: string; total: number; city: string }>(
@@ -67,9 +69,11 @@ test("guest checkout without a delivery-zone city still records a zone-less orde
 	await page.getByLabel(/adresse/i).fill("1 rue E2E");
 	await waitForHydration(page, /confirmer et commander/);
 	await page.getByRole("button", { name: /confirmer et commander/i }).click();
-	const success = page.getByText(/MT-/).first();
+	const success = page.getByText(/MT-\d+/).first();
 	await expect(success).toBeVisible({ timeout: 20_000 });
-	const orderNumber = (await success.textContent())?.trim() ?? "";
+	// The paragraph reads "N° de commande: MT-1003" — extract the number.
+	const orderNumber =
+		/MT-\d+/.exec((await success.textContent()) ?? "")?.[0] ?? "";
 	const orders = await queryDb<{ total: number }>(
 		'SELECT total FROM "Order" WHERE number = $1',
 		[orderNumber],
