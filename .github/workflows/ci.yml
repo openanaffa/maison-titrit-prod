@@ -60,7 +60,10 @@ jobs:
           version: latest
 
       - name: Start local Supabase
-        run: npx supabase start -x studio,imgproxy,inbucket,logflare,vector,edge-runtime,analytics
+        # Exclusions follow the container names accepted by supabase CLI 3.x
+        # (mailpit = the mail catcher; the seed creates confirmed users via
+        # the local admin API, so no mail service is needed).
+        run: npx supabase start -x studio,imgproxy,logflare,mailpit,vector,edge-runtime
 
       - name: Install
         run: bun install --frozen-lockfile
