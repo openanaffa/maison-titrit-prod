@@ -116,12 +116,6 @@ jobs:
           echo "sub: $SUB"
           curl -s "http://127.0.0.1:54321/rest/v1/User?select=id,supabaseId,role&supabaseId=eq.$SUB" \
             -H "apikey: $ANON" -H "Authorization: Bearer $TOKEN"; echo
-          # Full server loop: cookie in @supabase/ssr format must authenticate /makteb.
-          SESSION_B64=$(printf '%s' "$RESP" | python3 -c 'import sys,json,base64; d=json.load(sys.stdin); print(base64.urlsafe_b64encode(json.dumps(d).encode()).decode().rstrip("="))')
-          echo "cookie payload: ${#SESSION_B64} chars"
-          curl -s -o /dev/null -w 'makteb via cookie: %{http_code} -> %{redirect_url}\n' \
-            "http://127.0.0.1:3000/makteb" -H "Cookie: sb-127-auth-token=$SESSION_B64"
-
       - name: Run E2E
         working-directory: web
         env:
