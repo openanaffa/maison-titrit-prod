@@ -36,8 +36,8 @@ export default defineConfig({
 		// CI runs the production server — dev-mode hydration is racy under
 		// parallel compiles (chunks stall, clicks land pre-hydration). A
 		// build+start also mirrors what real visitors use.
-		command: process.env.PW_DEV ? "bun run dev" : "bun run build && bun node_modules/next/dist/bin/next start",
-		cwd: path.resolve(__dirname, ".."),
+		command: process.env.PW_DEV ? "bun run dev" : "bun run build && bun run start",
+		cwd: __dirname,
 		port: 3000,
 		reuseExistingServer: !process.env.CI,
 		env,
