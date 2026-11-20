@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { queryDb } from "./helpers";
+import { addToCart, queryDb } from "./helpers";
 
 test("guest checkout persists a COD order end to end", async ({ page }) => {
 	await page.goto("/produit/E2E-LEGACY-001");
 	await expect(page.getByRole("heading", { name: /E2E Caftan/i })).toBeVisible();
 
-	await page.getByRole("button", { name: /ajouter au panier/i }).click();
+	await addToCart(page);
 	await page.goto("/checkout");
 	await expect(page).toHaveURL(/\/checkout/);
 
@@ -57,7 +57,7 @@ test("guest checkout persists a COD order end to end", async ({ page }) => {
 
 test("guest checkout without a delivery-zone city still records a zone-less order", async ({ page }) => {
 	await page.goto("/produit/E2E-LEGACY-001");
-	await page.getByRole("button", { name: /ajouter au panier/i }).click();
+	await addToCart(page);
 	await page.goto("/checkout");
 	await page.getByLabel(/nom complet/i).fill("E2E Sans Zone");
 	await page.getByLabel(/téléphone/i).fill("0622334455");

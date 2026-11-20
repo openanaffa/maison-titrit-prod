@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { queryDb } from "./helpers";
+import { addToCart, queryDb } from "./helpers";
 
 /**
  * Concurrent checkout and duplicate submission: the idempotency key
@@ -8,7 +8,7 @@ import { queryDb } from "./helpers";
 test("double submission creates exactly one order", async ({ page }) => {
 	test.setTimeout(90_000);
 	await page.goto("/produit/E2E-LEGACY-001");
-	await page.getByRole("button", { name: /ajouter au panier/i }).click();
+	await addToCart(page);
 	await page.goto("/checkout");
 	await page.getByLabel(/nom complet/i).fill("E2E Doublon");
 	await page.getByLabel(/téléphone/i).fill("0655667788");

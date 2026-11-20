@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { readFileSync } from "node:fs";
 import { Pool } from "pg";
-import type { Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 const WEB_DIR = path.resolve(__dirname, "..");
 
@@ -73,8 +73,37 @@ export async function signInAsStaff(page: Page): Promise<void> {
 	await page.goto("/auth/signin?callbackUrl=/makteb");
 	await page.getByLabel(/e-?mail|courriel/i).fill(staff.email);
 	await page.getByLabel(/password|mot de passe/i).fill(staff.password);
-	await page.getByRole("button", { name: /sign in|connexion/i }).click();
+	await page.getByRole("button", { name: /se connecter|sign in/i }).click();
 	await page.waitForURL(/makteb/, { timeout: 15_000 });
+}
+
+/**
+ * Add the main product to the cart and wait for the app's own
+ * confirmation toast. The toast doubles as a hydration signal: a click
+ * issued before React hydrates is a lost no-op, so the whole
+ * (optionally size-selecting) sequence is retried via expect.toPass.
+ *
+ * The product page renders related-product cards with their own
+ * add-to-cart buttons below the purchase section — the main product's
+ * button is the first in DOM order.
+ */
+export async function addToCart(page: Page, opts?: { size?: string }): Promise<void> {
+	await expect(async () => {
+		if (opts?.size) {
+			await page
+				.getByRole("button", { name: opts.size, exact: true })
+				.click();
+		}
+		await page
+			.getByRole("button", { name: /ajouter au panier/i })
+			.first()
+			.click();
+		await expect(
+			page.getByText(/ajouté au panier/i).first(),
+		).toBeVisible();
+	}).toPass({ timeout: 20_000 });
+	// Close the toast wait deterministically.
+	await page.waitForTimeout(300);
 }
 
 /** Sign out (clears the local auth session, incl. httpOnly cookies). */

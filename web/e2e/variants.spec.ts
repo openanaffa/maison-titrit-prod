@@ -1,13 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { queryDb } from "./helpers";
+import { addToCart, queryDb } from "./helpers";
 
 test("variant selection reserves stock per size and persists the variant link", async ({ page }) => {
 	await page.goto("/produit/E2E-VARIANT-001");
 	await expect(page.getByRole("heading", { name: /E2E Robe/i })).toBeVisible();
 
-	// Pick size M and add to cart.
-	await page.getByRole("button", { name: "M", exact: true }).click();
-	await page.getByRole("button", { name: /ajouter au panier/i }).click();
+	// Pick size M and add to cart (size click is hydration-retried too).
+	await addToCart(page, { size: "M" });
 	await page.goto("/checkout");
 	await page.getByLabel(/nom complet/i).fill("E2E Variante");
 	await page.getByLabel(/téléphone/i).fill("0633445566");
@@ -50,8 +49,7 @@ test("a size without stock is not purchasable", async ({ page }) => {
 	await page.goto("/produit/E2E-VARIANT-001");
 	// Size L has on-hand 0 — selecting it must not produce a purchasable
 	// cart line; the checkout API rejects it.
-	await page.getByRole("button", { name: "L", exact: true }).click();
-	await page.getByRole("button", { name: /ajouter au panier/i }).click();
+	await addToCart(page, { size: "L" });
 	await page.goto("/checkout");
 	await page.getByLabel(/nom complet/i).fill("E2E Sans Stock");
 	await page.getByLabel(/téléphone/i).fill("0644556677");
@@ -72,8 +70,7 @@ test("a size without stock is not purchasable", async ({ page }) => {
 
 test("an out-of-stock product cannot be purchased", async ({ page }) => {
 	await page.goto("/produit/E2E-SOLDOUT-001");
-	const button = page.getByRole("button", { name: /rupture/i });
-	await expect(button).toBeVisible();
+	await expect(page.getByRole("button", { name: /épuisé/i })).toBeVisible();
 	await page.goto("/checkout");
 	// No cart contents → checkout is not placeable; verify no order was
 	// created for the sold-out product ref.

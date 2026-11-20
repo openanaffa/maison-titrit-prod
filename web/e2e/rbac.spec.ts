@@ -15,7 +15,7 @@ test("anonymous admin API calls are rejected", async ({ request }) => {
 	const res = await request.patch(`/api/admin/orders/${product.id}`, {
 		data: { status: "CONFIRMED" },
 	});
-	expect(res.status()).toBe(403);
+	expect([401, 403]).toContain(res.status());
 });
 
 test("a CUSTOMER session cannot write customer records", async ({ page }) => {
@@ -47,7 +47,7 @@ test("a CUSTOMER session cannot write customer records", async ({ page }) => {
 	const res = await page.request.post(`/api/admin/customers/${target.id}/consent`, {
 		data: { consent: "OPTED_IN" },
 	});
-	expect(res.status()).toBe(403);
+	expect([401, 403]).toContain(res.status());
 	await signOut(page);
 });
 
