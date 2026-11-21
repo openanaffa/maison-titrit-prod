@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/session";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -23,28 +23,19 @@ export async function PATCH(
 	try {
 		const body = await req.json();
 		const parsed = schema.parse(body);
-		const supabase = await createSupabaseServerClient();
-		const update: {
-			updatedAt: string;
-			name?: string;
-			cities?: string;
-			fee?: number;
-			isActive?: boolean;
-		} = { updatedAt: new Date().toISOString() };
-		if (parsed.name !== undefined) update.name = parsed.name.trim();
-		if (parsed.cities !== undefined) update.cities = parsed.cities.trim();
-		if (parsed.fee !== undefined) update.fee = parsed.fee;
-		if (parsed.isActive !== undefined) update.isActive = parsed.isActive;
-		const { data, error } = await supabase
-			.from("DeliveryZone")
-			.update(update)
-			.eq("id", id)
-			.select("*")
-			.single();
-		if (error)
-			return NextResponse.json({ error: error.message }, { status: 500 });
-		return NextResponse.json({ zone: data });
-	} catch (e) {
+		const zone = await db.deliveryZone.update({
+			where: { id },
+			data: {
+				...(parsed.name !== undefined ? { name: parsed.name.trim() } : {}),
+				...(parsed.cities !== undefined
+					? { cities: parsed.cities.trim() }
+					: {}),
+				...(parsed.fee !== undefined ? { fee: parsed.fee } : {}),
+				...(parsed.isActive !== undefined ? { isActive: parsed.isActive } : {}),
+			},
+		});
+		return NextResponse.json({ zone });
+	} catch {
 		return NextResponse.json({ error: "Données invalides." }, { status: 400 });
 	}
 }
@@ -57,9 +48,13 @@ export async function DELETE(
 	if (!allowed)
 		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const { id } = await params;
-	const supabase = await createSupabaseServerClient();
-	const { error } = await supabase.from("DeliveryZone").delete().eq("id", id);
-	if (error)
-		return NextResponse.json({ error: error.message }, { status: 500 });
-	return NextResponse.json({ ok: true });
+	try {
+		await db.deliveryZone.delete({ where: { id } });
+		return NextResponse.json({ ok: true });
+	} catch {
+		return NextResponse.json(
+			{ error: "Suppression impossible." },
+			{ status: 500 },
+		);
+	}
 }

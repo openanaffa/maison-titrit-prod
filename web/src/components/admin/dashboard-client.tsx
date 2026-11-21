@@ -68,6 +68,13 @@ export function DashboardClient({
 			label: t("admin.dashboard.lowStock"),
 			href: "/makteb/products",
 		},
+		{
+			key: "inventory",
+			icon: Package,
+			value: "—",
+			label: "Inventaire",
+			href: "/makteb/inventory",
+		},
 	];
 
 	return (
