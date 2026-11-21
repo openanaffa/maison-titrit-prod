@@ -51,7 +51,10 @@ export function share(orders: number, total: number) {
 }
 
 function isTestValue(v?: string | null) {
-	return /test|dev|staging/i.test(v ?? "");
+	// Match explicit test markers as tokens — a bare substring would
+	// misclassify legitimate values like "contest" or "latest".
+	const s = (v ?? "").toLowerCase();
+	return /(^|[^a-z])(test|dev|staging|e2e)([^a-z]|$)/.test(s);
 }
 
 type MediumNode = {
@@ -187,11 +190,16 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 				const sourceMatches = !q || match(s.source) || campaigns.length > 0;
 				if (!sourceMatches) return null;
 
+				// Derive source totals from the same filtered orders the campaign
+				// nodes use — unfiltered aggregates would disagree with the visible
+				// children when the test filter excludes only some orders.
+				const sourceOrders = campaigns.reduce((a, c) => a + c.orders, 0);
+				const sourceRevenue = campaigns.reduce((a, c) => a + c.revenue, 0);
 				return {
 					id: `src:${s.source}`,
 					source: s.source,
-					orders: s.orders,
-					revenue: s.revenue,
+					orders: sourceOrders,
+					revenue: sourceRevenue,
 					campaigns,
 					suspectedTypo: s.source.toLowerCase() === "ms-egde",
 				};
@@ -290,6 +298,12 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 		}
 		return list;
 	}, [tree, expanded]);
+	// Filtering can shrink the tree below the remembered focus index —
+	// clamp so a tab stop always exists among the visible rows.
+	const clampedFocusIndex = Math.max(
+		0,
+		Math.min(focusIndex, visibleNodes.length - 1),
+	);
 
 	const toggle = (id: string) =>
 		setExpanded((prev) => {
@@ -582,7 +596,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 										aria-level={node.level}
 										aria-expanded={node.hasChildren ? isExpanded : undefined}
 										aria-selected={node.id === selectedId}
-										tabIndex={index === focusIndex ? 0 : -1}
+										tabIndex={index === clampedFocusIndex ? 0 : -1}
 										ref={(el) => {
 											if (el) nodeRefs.current.set(node.id, el);
 											else nodeRefs.current.delete(node.id);
