@@ -257,20 +257,6 @@ export async function POST(req: Request) {
 			throw e;
 		}
 
-		// Seed the status ledger with the initial state so the audit trail is
-		// complete from the moment the order exists (the queue walk in the
-		// E2E suite and the admin history view both expect a PENDING entry).
-		await db.orderStatusHistory.create({
-			data: {
-				orderId: order.id,
-				fromStatus: null,
-				toStatus: "PENDING",
-				paymentStatus: order.paymentStatus,
-				fulfilmentStatus: order.fulfilmentStatus,
-				actorId: userId,
-			},
-		});
-
 		const pricedItems = items.map((i) => ({
 			name: i.name,
 			size: i.size,
@@ -351,8 +337,23 @@ async function createOrderWithNumber(
 	for (let attempt = 0; ; attempt++) {
 		const count = await db.order.count();
 		try {
-			return await db.order.create({
-				data: { ...data, number: `MT-${1001 + count + attempt}` },
+			// Order + initial ledger entry commit atomically: a failure here
+			// leaves nothing behind, so a retry creates both cleanly.
+			return await db.$transaction(async (tx) => {
+				const order = await tx.order.create({
+					data: { ...data, number: `MT-${1001 + count + attempt}` },
+				});
+				await tx.orderStatusHistory.create({
+					data: {
+						orderId: order.id,
+						fromStatus: null,
+						toStatus: "PENDING",
+						paymentStatus: order.paymentStatus,
+						fulfilmentStatus: order.fulfilmentStatus,
+						actorId: data.userId ?? null,
+					},
+				});
+				return order;
 			});
 		} catch (e) {
 			const collision =
