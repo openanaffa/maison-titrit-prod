@@ -216,7 +216,7 @@ export default function CheckoutPage() {
 							))}
 						</ul>
 						<div className="mt-4 flex items-center justify-between border-t border-bronze/25 pt-4">
-							<span className="font-label text-[0.66rem] uppercase tracking-[0.18em] text-bronze">
+							<span className="font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink">
 								{t("cart.total")}
 							</span>
 							<span className="heading-vintage-md">
@@ -232,7 +232,7 @@ export default function CheckoutPage() {
 							<p
 								role="alert"
 								aria-live="assertive"
-								className="mt-4 rounded-sm bg-terracotta/10 p-3 text-center font-serif text-sm text-terracotta"
+								className="mt-4 rounded-sm bg-terracotta/10 p-3 text-center font-serif text-sm text-ink"
 							>
 								{error}
 							</p>
@@ -252,7 +252,7 @@ export default function CheckoutPage() {
 						</Button>
 						<Link
 							href="/panier"
-							className="mt-3 flex items-center justify-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
+							className="mt-3 flex items-center justify-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
 						>
 							<ArrowLeft className="size-3 rtl:rotate-180" />
 							{t("cart.title")}

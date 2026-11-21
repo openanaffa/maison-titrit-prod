@@ -93,7 +93,7 @@ export function AdminShell({
 							<span className="wordmark text-sm uppercase text-ink dark:text-cream">
 								Maison Titrit
 							</span>
-							<span className="font-label text-[0.52rem] uppercase tracking-[0.22em] text-bronze">
+							<span className="font-label text-[0.52rem] uppercase tracking-[0.22em] text-ink">
 								/ makteb
 							</span>
 						</div>
@@ -192,7 +192,7 @@ export function AdminShell({
 					>
 						<Menu className="size-5" />
 					</button>
-					<div className="hidden font-label text-[0.62rem] uppercase tracking-[0.22em] text-bronze sm:block">
+					<div className="hidden font-label text-[0.62rem] uppercase tracking-[0.22em] text-ink sm:block">
 						Tableau de bord · {user.role}
 					</div>
 					<div className="flex items-center gap-3">
