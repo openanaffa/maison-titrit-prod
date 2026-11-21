@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { requirePermission } from "@/lib/session";
-import { receiveStock, adjustStock, damageStock, returnStock, releaseReservation, commitStock, reconcileVariant } from "@/lib/inventory";
 import { z } from "zod";
+import { db } from "@/lib/db";
+import {
+	adjustStock,
+	commitStock,
+	damageStock,
+	receiveStock,
+	reconcileVariant,
+	releaseReservation,
+	returnStock,
+} from "@/lib/inventory";
+import { requirePermission } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +26,8 @@ export async function GET(
 	{ params }: { params: Promise<{ variantId: string }> },
 ) {
 	const { allowed } = await requirePermission("products:read");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const { variantId } = await params;
 	const movements = await db.stockMovement.findMany({
 		where: { variantId },
@@ -34,13 +43,14 @@ export async function POST(
 	{ params }: { params: Promise<{ variantId: string }> },
 ) {
 	const { user, allowed } = await requirePermission("products:write");
-	if (!user || !allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	if (!user || !allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const { variantId } = await params;
 	try {
 		const body = await req.json();
 		const parsed = adjustSchema.parse(body);
 		const opts = { actorId: user.id, reason: parsed.reason ?? null };
-		let result;
+		let result: Awaited<ReturnType<typeof receiveStock>>;
 		switch (parsed.type) {
 			case "receive":
 				result = await receiveStock(variantId, parsed.qty, opts);
@@ -55,7 +65,11 @@ export async function POST(
 				result = await returnStock(variantId, Math.abs(parsed.qty), opts);
 				break;
 			case "release":
-				result = await releaseReservation(variantId, Math.abs(parsed.qty), opts);
+				result = await releaseReservation(
+					variantId,
+					Math.abs(parsed.qty),
+					opts,
+				);
 				break;
 			case "commit":
 				result = await commitStock(variantId, Math.abs(parsed.qty), opts);

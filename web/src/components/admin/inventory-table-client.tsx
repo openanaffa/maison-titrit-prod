@@ -1,11 +1,11 @@
 "use client";
 
-import { Download, History, Plus, Search } from "lucide-react";
+import { Download, History, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 
 type Row = {
 	id: string;
@@ -33,7 +33,16 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 	const [qty, setQty] = React.useState<number>(1);
 	const [reason, setReason] = React.useState("");
 	const [history, setHistory] = React.useState<Row | null>(null);
-	const [movements, setMovements] = React.useState<unknown[]>([]);
+	type MovementRow = {
+		id: string;
+		createdAt: string;
+		type: string;
+		quantity: number;
+		onHandAfter?: number;
+		reservedAfter?: number;
+		reason?: string | null;
+	};
+	const [movements, setMovements] = React.useState<MovementRow[]>([]);
 
 	const filtered = rows.filter((r) => {
 		const q = query.trim().toLowerCase();
@@ -61,7 +70,10 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 				const j = await res.json().catch(() => ({}));
 				throw new Error(j.error ?? "Erreur");
 			}
-			toast({ title: "Stock mis à jour", description: active.sku ?? active.id });
+			toast({
+				title: "Stock mis à jour",
+				description: active.sku ?? active.id,
+			});
 			setActive(null);
 			setAction("");
 			setQty(1);
@@ -84,7 +96,8 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 	}
 
 	function exportCsv() {
-		const header = "productRef,productName,sku,size,color,onHand,reserved,available,lowStockThreshold";
+		const header =
+			"productRef,productName,sku,size,color,onHand,reserved,available,lowStockThreshold";
 		const lines = rows.map((r) =>
 			[
 				r.productRef,
@@ -98,7 +111,9 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 				r.lowStockThreshold,
 			].join(","),
 		);
-		const blob = new Blob([header + "\n" + lines.join("\n")], { type: "text/csv" });
+		const blob = new Blob([header + "\n" + lines.join("\n")], {
+			type: "text/csv",
+		});
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement("a");
 		a.href = url;
@@ -156,13 +171,27 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 					<table className="w-full text-sm">
 						<thead className="bg-ink/5">
 							<tr>
-								<th className="text-left p-3 font-label text-[0.6rem] uppercase">Produit</th>
-								<th className="text-left p-3 font-label text-[0.6rem] uppercase">SKU</th>
-								<th className="text-left p-3 font-label text-[0.6rem] uppercase">Taille/Couleur</th>
-								<th className="text-right p-3 font-label text-[0.6rem] uppercase">En stock</th>
-								<th className="text-right p-3 font-label text-[0.6rem] uppercase">Réservé</th>
-								<th className="text-right p-3 font-label text-[0.6rem] uppercase">Disponible</th>
-								<th className="text-right p-3 font-label text-[0.6rem] uppercase">Actions</th>
+								<th className="text-left p-3 font-label text-[0.6rem] uppercase">
+									Produit
+								</th>
+								<th className="text-left p-3 font-label text-[0.6rem] uppercase">
+									SKU
+								</th>
+								<th className="text-left p-3 font-label text-[0.6rem] uppercase">
+									Taille/Couleur
+								</th>
+								<th className="text-right p-3 font-label text-[0.6rem] uppercase">
+									En stock
+								</th>
+								<th className="text-right p-3 font-label text-[0.6rem] uppercase">
+									Réservé
+								</th>
+								<th className="text-right p-3 font-label text-[0.6rem] uppercase">
+									Disponible
+								</th>
+								<th className="text-right p-3 font-label text-[0.6rem] uppercase">
+									Actions
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -263,8 +292,11 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 							{active.productName} — {active.sku}
 						</p>
 						<div>
-							<label className="label-vintage-tight">Quantité</label>
+							<label htmlFor="inv-qty" className="label-vintage-tight">
+								Quantité
+							</label>
 							<Input
+								id="inv-qty"
 								type="number"
 								value={qty}
 								onChange={(e) => setQty(Number(e.target.value))}
@@ -272,8 +304,11 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 							/>
 						</div>
 						<div>
-							<label className="label-vintage-tight">Motif</label>
+							<label htmlFor="inv-reason" className="label-vintage-tight">
+								Motif
+							</label>
 							<Input
+								id="inv-reason"
 								value={reason}
 								onChange={(e) => setReason(e.target.value)}
 								className="field-vintage"
@@ -324,7 +359,7 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 									</tr>
 								</thead>
 								<tbody>
-									{movements.map((m: any) => (
+									{movements.map((m: MovementRow) => (
 										<tr key={m.id} className="border-t border-bronze/10">
 											<td className="p-2">
 												{new Date(m.createdAt).toLocaleString("fr-FR")}

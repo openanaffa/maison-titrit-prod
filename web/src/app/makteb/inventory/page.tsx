@@ -1,7 +1,6 @@
 import { InventoryTableClient } from "@/components/admin/inventory-table-client";
-import { requirePagePermission } from "@/lib/session";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
+import { requirePagePermission } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 

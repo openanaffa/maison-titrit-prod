@@ -6,7 +6,8 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
 	const { allowed } = await requirePermission("products:read");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 
 	const url = new URL(req.url);
 	const q = (url.searchParams.get("q") ?? "").trim().toLowerCase();
@@ -14,7 +15,9 @@ export async function GET(req: Request) {
 	const outOnly = url.searchParams.get("outOfStock") === "1";
 
 	const variants = await db.productVariant.findMany({
-		include: { product: { select: { id: true, ref: true, name: true, inStock: true } } },
+		include: {
+			product: { select: { id: true, ref: true, name: true, inStock: true } },
+		},
 		orderBy: { createdAt: "asc" },
 	});
 
@@ -35,7 +38,8 @@ export async function GET(req: Request) {
 		}))
 		.filter((r) => {
 			if (q) {
-				const hay = `${r.product.ref} ${r.product.name} ${r.sku ?? ""} ${r.size ?? ""} ${r.color ?? ""}`.toLowerCase();
+				const hay =
+					`${r.product.ref} ${r.product.name} ${r.sku ?? ""} ${r.size ?? ""} ${r.color ?? ""}`.toLowerCase();
 				if (!hay.includes(q)) return false;
 			}
 			if (lowOnly && !r.lowStock) return false;
