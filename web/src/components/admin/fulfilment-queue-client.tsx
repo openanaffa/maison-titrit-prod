@@ -2,7 +2,7 @@
 
 import { AlertTriangle, Calendar, RefreshCcw, Search } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { useUpdateOrderStatus } from "@/hooks/api/orders";
@@ -33,6 +33,8 @@ export function FulfilmentQueueClient({
 }) {
 	const { t } = useT();
 	const router = useRouter();
+	// Read query params via the router (window is not defined during SSR).
+	const searchParams = useSearchParams();
 	const { toast } = useToast();
 	const updateOrderStatus = useUpdateOrderStatus();
 	const [pending, setPending] = React.useState<string | null>(null);
@@ -43,7 +45,7 @@ export function FulfilmentQueueClient({
 	const [retries, setRetries] = React.useState<string | null>(null);
 
 	function navigate(next: Record<string, string | undefined>) {
-		const params = new URLSearchParams(window.location.search);
+		const params = new URLSearchParams(searchParams.toString());
 		for (const [k, v] of Object.entries(next)) {
 			if (v) params.set(k, v);
 			else params.delete(k);
@@ -145,9 +147,7 @@ export function FulfilmentQueueClient({
 					<input
 						type="search"
 						placeholder={t("admin.common.search")}
-						defaultValue={
-							new URLSearchParams(window.location.search).get("q") ?? ""
-						}
+						defaultValue={searchParams.get("q") ?? ""}
 						onKeyDown={(e) => {
 							if (e.key === "Enter") {
 								navigate({ q: (e.target as HTMLInputElement).value });
@@ -159,18 +159,14 @@ export function FulfilmentQueueClient({
 				<Calendar className="w-4 h-4 text-bronze" />
 				<input
 					type="date"
-					defaultValue={
-						new URLSearchParams(window.location.search).get("from") ?? ""
-					}
+					defaultValue={searchParams.get("from") ?? ""}
 					onChange={(e) => navigate({ from: e.target.value })}
 					className="px-2 py-2 rounded border border-bronze/45 bg-transparent text-sm text-ink dark:text-cream"
 					aria-label={t("admin.fulfilment.from")}
 				/>
 				<input
 					type="date"
-					defaultValue={
-						new URLSearchParams(window.location.search).get("to") ?? ""
-					}
+					defaultValue={searchParams.get("to") ?? ""}
 					onChange={(e) => navigate({ to: e.target.value })}
 					className="px-2 py-2 rounded border border-bronze/45 bg-transparent text-sm text-ink dark:text-cream"
 					aria-label={t("admin.fulfilment.to")}

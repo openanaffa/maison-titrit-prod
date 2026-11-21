@@ -337,8 +337,23 @@ async function createOrderWithNumber(
 	for (let attempt = 0; ; attempt++) {
 		const count = await db.order.count();
 		try {
-			return await db.order.create({
-				data: { ...data, number: `MT-${1001 + count + attempt}` },
+			// Order + initial ledger entry commit atomically: a failure here
+			// leaves nothing behind, so a retry creates both cleanly.
+			return await db.$transaction(async (tx) => {
+				const order = await tx.order.create({
+					data: { ...data, number: `MT-${1001 + count + attempt}` },
+				});
+				await tx.orderStatusHistory.create({
+					data: {
+						orderId: order.id,
+						fromStatus: null,
+						toStatus: "PENDING",
+						paymentStatus: order.paymentStatus,
+						fulfilmentStatus: order.fulfilmentStatus,
+						actorId: data.userId ?? null,
+					},
+				});
+				return order;
 			});
 		} catch (e) {
 			const collision =

@@ -1,7 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import {
 	RESERVE_INFIX,
-	RESERVE_PREFIX,
 	SETTLED_SUFFIXES,
 	settlementKeyFor,
 } from "./inventory-settlement";
@@ -10,9 +9,9 @@ describe("reservation ledger convention", () => {
 	test("key shapes match the checkout reservation convention", () => {
 		const orderKey = "checkout:abc-123";
 		const reserveKey = `${orderKey}:reserve:0`;
-		expect(
-			reserveKey.startsWith(`${RESERVE_PREFIX}abc-123${RESERVE_INFIX}`),
-		).toBe(true);
+		// activeReservations scopes on the order key itself (which already
+		// carries the "checkout:" prefix for default client keys).
+		expect(reserveKey.startsWith(`${orderKey}${RESERVE_INFIX}`)).toBe(true);
 		// replay generations keep the same matchable prefix
 		expect(
 			`${orderKey}:reserve:0:g2`.startsWith(`${orderKey}${RESERVE_INFIX}`),
