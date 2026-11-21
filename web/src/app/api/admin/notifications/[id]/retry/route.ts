@@ -28,6 +28,12 @@ export async function POST(
 				{ status: 409 },
 			);
 		}
+		if (result === "NOT_SUPPORTED") {
+			return NextResponse.json(
+				{ error: "Ce canal de notification n'est plus pris en charge." },
+				{ status: 409 },
+			);
+		}
 		return NextResponse.json({ status: result });
 	} catch (e) {
 		console.error("POST /api/admin/notifications/[id]/retry failed", e);

@@ -4,8 +4,8 @@ Status: Accepted (issue #119)
 
 ## Context
 
-Delivery coverage and fees were implicit. Checkout and (later) Wafine need a
-single, server-side source of truth for coverage and fees.
+Delivery coverage and fees were implicit. Checkout needs a single,
+server-side source of truth for coverage and fees.
 
 ## Decision
 
@@ -18,7 +18,7 @@ single, server-side source of truth for coverage and fees.
 
 ## Consequences
 
-- Checkout and Wafine share one quote service.
+- Checkout uses the quote service; future consumers must use the same source of truth.
 - Unsupported destinations are handled clearly (covered: false).
 - Immutable order total includes the delivery fee.
 

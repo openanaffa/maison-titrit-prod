@@ -169,6 +169,7 @@ async function notificationCounts(
 		.from("OrderNotification")
 		.select("orderId,status")
 		.in("orderId", orderIds)
+		.eq("channel", "EMAIL")
 		.throwOnError();
 	if (error) throw error;
 	const counts = new Map<string, { failed: number; pending: number }>();

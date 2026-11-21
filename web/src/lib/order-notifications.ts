@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { attemptCustomerNotification, digitsOnly } from "@/lib/notify";
+import { sendCustomerOrderUpdateEmail } from "@/lib/notify";
 import type {
 	CustomerNotificationEvent,
 	CustomerOrderUpdatePayload,
@@ -9,7 +9,7 @@ import type {
 const STALE_CLAIM_MS = 60_000;
 
 /** Prisma channel enum mirror (SQLite-compatible string column). */
-export type NotificationChannel = "EMAIL" | "WHATSAPP";
+export type NotificationChannel = "EMAIL";
 
 /** The transition events that trigger a customer notification. */
 const NOTIFYING_EVENTS: CustomerNotificationEvent[] = [
@@ -25,17 +25,11 @@ export function isNotifyingEvent(status: string): boolean {
 }
 
 /** Channels that can carry this order's notification, with destinations. */
-function channelsFor(order: {
+export function notificationChannelsFor(order: {
 	customerEmail: string | null;
-	customerPhone: string;
 }): { channel: NotificationChannel; to: string }[] {
-	const channels: { channel: NotificationChannel; to: string }[] = [];
 	const email = order.customerEmail?.trim();
-	if (email) channels.push({ channel: "EMAIL", to: email });
-	if (digitsOnly(order.customerPhone)) {
-		channels.push({ channel: "WHATSAPP", to: order.customerPhone });
-	}
-	return channels;
+	return email ? [{ channel: "EMAIL", to: email }] : [];
 }
 
 /**
@@ -52,11 +46,11 @@ export async function queueCustomerNotifications(
 		// already have one for this (order, event) pair. The unique index
 		// @@unique([orderId, event, channel]) is the ultimate backstop.
 		const existing = await db.orderNotification.findMany({
-			where: { orderId: order.id, event },
+			where: { orderId: order.id, event, channel: "EMAIL" },
 			select: { channel: true },
 		});
 		const known = new Set(existing.map((r) => r.channel));
-		const rows = channelsFor(order)
+		const rows = notificationChannelsFor(order)
 			.filter((c) => !known.has(c.channel))
 			.map((c) => ({
 				orderId: order.id,
@@ -71,6 +65,7 @@ export async function queueCustomerNotifications(
 			where: {
 				orderId: order.id,
 				event,
+				channel: "EMAIL",
 				status: { in: ["PENDING", "FAILED", "SENDING"] },
 			},
 		});
@@ -84,7 +79,7 @@ export async function queueCustomerNotifications(
 async function dispatchRow(id: string): Promise<void> {
 	try {
 		const row = await db.orderNotification.findUnique({ where: { id } });
-		if (!row || row.status === "SENT") return;
+		if (!row || row.status === "SENT" || row.channel !== "EMAIL") return;
 		// Claim atomically (Codex P2): concurrent queue/retry runs must not
 		// both send. Claim PENDING/FAILED outright; recover a SENDING row only
 		// when its claim looks stale (no attempt recorded recently, e.g. a
@@ -126,8 +121,7 @@ async function dispatchRow(id: string): Promise<void> {
 			return;
 		}
 		try {
-			await attemptCustomerNotification(
-				row.channel as NotificationChannel,
+			await sendCustomerOrderUpdateEmail(
 				row.to,
 				row.event as CustomerNotificationEvent,
 				{
@@ -171,9 +165,10 @@ async function dispatchRow(id: string): Promise<void> {
 /** Staff-triggered retry: re-attempt a FAILED/PENDING notification. */
 export async function retryNotification(
 	id: string,
-): Promise<"SENT" | "FAILED" | "NOT_FOUND" | "ALREADY_SENT"> {
+): Promise<"SENT" | "FAILED" | "NOT_FOUND" | "ALREADY_SENT" | "NOT_SUPPORTED"> {
 	const row = await db.orderNotification.findUnique({ where: { id } });
 	if (!row) return "NOT_FOUND";
+	if (row.channel !== "EMAIL") return "NOT_SUPPORTED";
 	if (row.status === "SENT") return "ALREADY_SENT";
 	await dispatchRow(id);
 	const updated = await db.orderNotification.findUnique({

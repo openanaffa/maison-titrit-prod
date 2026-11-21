@@ -1,8 +1,8 @@
 /**
  * Delivery zone quote service.
  *
- * Single source of truth for coverage and fees, used by checkout and (later)
- * Wafine. Pure helpers + Prisma-backed CRUD.
+ * Single source of truth for coverage and fees, used by checkout. Pure helpers
+ * + Prisma-backed CRUD.
  */
 
 import { db } from "@/lib/db";
@@ -39,7 +39,7 @@ export async function listDeliveryZones(activeOnly = false) {
 export async function getDeliveryQuote(
 	city: string | null | undefined,
 ): Promise<DeliveryQuote> {
-	if (!city || !city.trim()) {
+	if (!city?.trim()) {
 		return { covered: false, zoneId: null, zoneName: null, fee: 0 };
 	}
 	const zones = await db.deliveryZone.findMany({ where: { isActive: true } });

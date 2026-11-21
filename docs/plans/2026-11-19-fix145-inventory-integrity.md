@@ -56,5 +56,5 @@ commits (CANCELLED/DELIVERED only); the admin PATCH route also invokes it
 on the same-status early return so a previously failed settlement can be
 re-triggered by re-saving the status.
 
-Out of scope (tracked): RETURNED return-to-stock movements; Wafine
+Out of scope (tracked): RETURNED return-to-stock movements. Wafine integration was later cancelled as Not planned because it does not use the official WhatsApp API.
 lifecycle messaging (#123–#125).

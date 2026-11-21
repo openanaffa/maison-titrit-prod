@@ -116,7 +116,7 @@ export function staffNewOrderEmail(
 	};
 }
 
-/** Plain-text version — used for the email fallback AND the WAFINE WhatsApp message. */
+/** Plain-text version of the staff new-order email. */
 export function staffNewOrderText(
 	order: StaffOrderPayload,
 	ordersUrl: string,

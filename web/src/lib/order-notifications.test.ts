@@ -1,7 +1,9 @@
 import { describe, expect, test } from "bun:test";
 import { customerOrderUpdateEmail } from "./email-templates";
-import { digitsOnly } from "./notify";
-import { isNotifyingEvent } from "./order-notifications";
+import {
+	isNotifyingEvent,
+	notificationChannelsFor,
+} from "./order-notifications";
 import {
 	ALLOWED_TRANSITIONS,
 	FULFILMENT_QUEUES,
@@ -47,10 +49,17 @@ describe("isNotifyingEvent", () => {
 	});
 });
 
-describe("digitsOnly", () => {
-	test("normalizes WhatsApp-friendly input", () => {
-		expect(digitsOnly("+212 612-345-678")).toBe("212612345678");
-		expect(digitsOnly("06 00 00 00 00")).toBe("0600000000");
+describe("notificationChannelsFor", () => {
+	test("uses email only and never queues a WhatsApp API send", () => {
+		expect(
+			notificationChannelsFor({
+				customerEmail: " customer@example.test ",
+			}),
+		).toEqual([{ channel: "EMAIL", to: "customer@example.test" }]);
+	});
+
+	test("skips customer notifications when no email is available", () => {
+		expect(notificationChannelsFor({ customerEmail: null })).toEqual([]);
 	});
 });
 

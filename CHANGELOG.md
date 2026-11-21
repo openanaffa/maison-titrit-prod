@@ -7,13 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Removed unofficial Wafine WhatsApp API sends; staff and customer order notifications now use email only. Customer-initiated wa.me links remain available.
+
 ## [1.1.0] - 2026-11-07
 
 ### Added
 - Categories CRUD edit gap closed: `PATCH /api/admin/categories/[id]` (name/slug/position, `categories:write`) and inline edit UI in `categories-client.tsx` alongside existing add/delete (makteb backoffice)
 - Makteb order details page (O1-O3)
 - Add-to-cart on product cards with inline size picker
-- Staff new-order alerts (email + WAFINE WhatsApp), branded emails
+- Staff new-order email alerts, branded emails
 - Vercel BotID on checkout, register, and track
 - Nightly encrypted Supabase backups to R2
 - Runtime-configurable trackers and domain-verification tags editable via `/makteb/settings` without a redeploy: GTM, GA4, Meta Pixel, Pinterest Tag, TikTok Pixel, YouTube channel, plus Google, Facebook, Instagram, TikTok and custom verification tags

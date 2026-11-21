@@ -10,8 +10,6 @@ import {
 	staffNewOrderEmail,
 } from "./email-templates";
 
-const WAFINE_TIMEOUT_MS = 5_000;
-
 const smtpPort = Number(process.env.EMAIL_SERVER_PORT ?? 587);
 /** SMTP config shared with the auth magic-link email (lib/auth.ts). */
 export const smtpServer = {
@@ -60,55 +58,9 @@ async function sendStaffEmail(tpl: {
 	}
 }
 
-async function sendStaffWhatsApp(text: string): Promise<void> {
-	const { WAFINE_API_URL, WAFINE_API_KEY, WAFINE_SESSION_ID } = process.env;
-	if (!WAFINE_API_URL || !WAFINE_API_KEY || !WAFINE_SESSION_ID) {
-		console.info("[notify] WAFINE_* unset — staff WhatsApp skipped");
-		return;
-	}
-	const numbers = commaList(process.env.STAFF_WHATSAPP)
-		.map((w) => w.replace(/^\+/, ""))
-		.filter((w) => /^\d+$/.test(w));
-	if (numbers.length === 0) {
-		console.info("[notify] STAFF_WHATSAPP unset — staff WhatsApp skipped");
-		return;
-	}
-	for (const digits of numbers) {
-		const chatId = `${digits}@c.us`;
-		try {
-			const controller = new AbortController();
-			const timer = setTimeout(() => controller.abort(), WAFINE_TIMEOUT_MS);
-			let res: Response;
-			try {
-				res = await fetch(
-					`${WAFINE_API_URL}/api/sessions/${WAFINE_SESSION_ID}/messages/send-text`,
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							"X-API-Key": WAFINE_API_KEY,
-						},
-						body: JSON.stringify({ chatId, text }),
-						signal: controller.signal,
-					},
-				);
-			} finally {
-				clearTimeout(timer);
-			}
-			if (res.status !== 201) {
-				console.error(
-					`[notify] WAFINE send-text to ${chatId} → HTTP ${res.status}`,
-				);
-			}
-		} catch (e) {
-			console.error(`[notify] WAFINE send-text to ${chatId} failed`, e);
-		}
-	}
-}
-
 /**
- * Notify the store staff of a new order (email + WhatsApp). Fire-and-forget:
- * resolves even when every channel fails; never throws.
+ * Notify the store staff of a new order by email. Fire-and-forget: resolves
+ * even when email delivery fails; never throws.
  */
 export async function notifyStaffNewOrder(
 	order: StaffOrderPayload,
@@ -116,15 +68,10 @@ export async function notifyStaffNewOrder(
 	try {
 		const ordersUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.com"}/makteb/orders`;
 		const tpl = staffNewOrderEmail(order, ordersUrl);
-		await Promise.all([sendStaffEmail(tpl), sendStaffWhatsApp(tpl.text)]);
+		await sendStaffEmail(tpl);
 	} catch (e) {
 		console.error("[notify] notifyStaffNewOrder failed", e);
 	}
-}
-
-/** Digits-only phone (Wafine chatIds are <digits>@c.us). */
-export function digitsOnly(raw: string): string {
-	return raw.replace(/\D/g, "");
 }
 
 async function sendCustomerEmail(
@@ -144,50 +91,11 @@ async function sendCustomerEmail(
 	});
 }
 
-async function sendCustomerWhatsApp(
-	digits: string,
-	text: string,
-): Promise<void> {
-	const { WAFINE_API_URL, WAFINE_API_KEY, WAFINE_SESSION_ID } = process.env;
-	if (!WAFINE_API_URL || !WAFINE_API_KEY || !WAFINE_SESSION_ID) {
-		throw new Error("WAFINE_* unset");
-	}
-	const chatId = `${digits}@c.us`;
-	const controller = new AbortController();
-	const timer = setTimeout(() => controller.abort(), WAFINE_TIMEOUT_MS);
-	let res: Response;
-	try {
-		res = await fetch(
-			`${WAFINE_API_URL}/api/sessions/${WAFINE_SESSION_ID}/messages/send-text`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					"X-API-Key": WAFINE_API_KEY,
-				},
-				body: JSON.stringify({ chatId, text }),
-				signal: controller.signal,
-			},
-		);
-	} finally {
-		clearTimeout(timer);
-	}
-	if (res.status !== 201) {
-		throw new Error(`WAFINE send-text to ${chatId} → HTTP ${res.status}`);
-	}
-}
-
-/** One transport attempt for a persisted customer notification. */
-export async function attemptCustomerNotification(
-	channel: "EMAIL" | "WHATSAPP",
+/** Send a customer order update only over the configured email channel. */
+export async function sendCustomerOrderUpdateEmail(
 	to: string,
 	event: CustomerNotificationEvent,
 	order: CustomerOrderUpdatePayload,
 ): Promise<void> {
-	const tpl = customerOrderUpdateEmail(event, order);
-	if (channel === "EMAIL") {
-		await sendCustomerEmail(tpl, to);
-		return;
-	}
-	await sendCustomerWhatsApp(digitsOnly(to), tpl.text);
+	await sendCustomerEmail(customerOrderUpdateEmail(event, order), to);
 }

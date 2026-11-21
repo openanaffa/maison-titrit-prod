@@ -18,7 +18,7 @@ Here "PnP" means *plug and play*, not Yarn Plug'n'Play — see [Not planned](#no
 | M0 — Product build-out | ✅ Shipped | Tasks 23–31: backoffice, ecommerce, SEO/content, Supabase, Vercel, marketing. PR #80 → `develop`, PR #81 → `main`. |
 | M1 — Quality gates | ✅ Shipped | PR #82 merged to `develop` (and released via #131/#139/#145): Biome 2.6.8, hooks, CI, LSP fixes all active. |
 | M2 — Architecture cleanup | 🔄 In progress | First pass landed with PR #83: shared React Query hooks (`web/src/hooks/api/`), repository layer (`web/src/lib/repositories/`), page/component splits. Still open: `/panier` split, YAGNI dependency audit, re-enabling `react-hooks/set-state-in-effect`. |
-| Commerce roadmap (issues #111–#128) | 🔄 In progress | M1 done (variants #115, ledger #116, transactional checkout #117, order lifecycle #118, delivery zones #119 — ADRs 0001–0005, merged with PRs #133–#143). M2 in flight: #120 inventory workspace (peer WIP), #121 fulfilment queue (PR #147), #122 customer 360 open. M3 #123–#125 blocked on the Wafine contract. M4 #126–#128 backlog. |
+| Commerce roadmap (issues #111–#128) | 🔄 In progress | M1 done (variants #115, ledger #116, transactional checkout #117, order lifecycle #118, delivery zones #119 — ADRs 0001–0005, merged with PRs #133–#143). M2 in flight: #120 inventory workspace, #121 fulfilment queue, #122 customer 360. Automated WhatsApp issues #113/#123–#125 are closed as Not planned; storefront wa.me links remain customer-initiated. M4 #126–#128 backlog. |
 | M3 — Forkable plug-and-play starter | 📋 Planned | De-brand, zero-secret bootstrap, packaging, fork docs, fork-agnostic CI. |
 | M4 — Hardening & scale | 🗓️ Backlog | Test coverage (now 59 tests), a11y, perf budgets, dependency cadence. |
 
