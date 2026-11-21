@@ -70,7 +70,7 @@ test("guest checkout persists a COD order end to end", async ({ page }) => {
 		'SELECT count(*) AS n FROM "StockMovement" sm JOIN "ProductVariant" pv ON pv.id = sm."variantId" JOIN "Product" p ON p.id = pv."productId" WHERE p.ref = $1',
 		["E2E-LEGACY-001"],
 	);
-	expect(movements[0].n).toBe(0);
+	expect(Number(movements[0].n)).toBe(0);
 
 	const history = await queryDb(
 		'SELECT "fromStatus", "toStatus" FROM "OrderStatusHistory" WHERE "orderId" = $1',
@@ -107,5 +107,5 @@ test("an out-of-zone delivery city is rejected and persists nothing", async ({
 		'SELECT count(*) AS n FROM "Order" WHERE "customerName" = $1',
 		["E2E Sans Zone"],
 	);
-	expect(orders[0].n).toBe(0);
+	expect(Number(orders[0].n)).toBe(0);
 });

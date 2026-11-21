@@ -41,7 +41,7 @@ test("double submission creates exactly one order", async ({ page }) => {
 		'SELECT count(*) AS n FROM "Order" WHERE "customerName" = $1',
 		["E2E Doublon"],
 	);
-	expect(orders[0].n).toBe(1);
+	expect(Number(orders[0].n)).toBe(1);
 	// And the UI never reported two order numbers.
 	expect(postUrls.length).toBeLessThanOrEqual(3);
 });
@@ -81,6 +81,6 @@ test("a replayed idempotency key returns the original order", async ({ page }) =
 		'SELECT count(*) AS n FROM "Order" WHERE "idempotencyKey" = $1',
 		[idempotencyKey],
 	);
-	expect(orders[0].n).toBe(1);
+	expect(Number(orders[0].n)).toBe(1);
 	await ctx.dispose();
 });

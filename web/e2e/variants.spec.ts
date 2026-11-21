@@ -86,7 +86,7 @@ test("a size without stock is rejected and persists nothing", async ({ request }
 		'SELECT count(*) AS n FROM "Order" WHERE "customerName" = $1',
 		["E2E Sans Stock"],
 	);
-	expect(orders[0].n).toBe(0);
+	expect(Number(orders[0].n)).toBe(0);
 });
 
 test("the variant product page renders its size options", async ({ page }) => {
@@ -109,5 +109,5 @@ test("the sold-out product page shows the unavailable state", async ({ page }) =
 		'SELECT count(*) AS n FROM "OrderItem" oi JOIN "Product" p ON p.id = oi."productId" WHERE p.ref = $1',
 		["E2E-SOLDOUT-001"],
 	);
-	expect(orders[0].n).toBe(0);
+	expect(Number(orders[0].n)).toBe(0);
 });

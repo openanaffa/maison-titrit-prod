@@ -174,7 +174,7 @@ test("cancelling an order releases its variant reservation", async ({ page }) =>
 			[`${idempotencyKey}:reserve:%`, "RELEASE"],
 		)
 	)[0];
-	expect(movement.n).toBe(1);
+	expect(Number(movement.n)).toBe(1);
 	const variantAfter = (
 		await queryDb<{ reserved: number }>(
 			'SELECT reserved FROM "ProductVariant" WHERE sku = \'E2E-VAR-S\'',
