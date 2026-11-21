@@ -3,6 +3,8 @@
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { CartDrawer } from "@/components/maison/cart-drawer";
+import { AccountButton } from "@/components/maison/header-account-button";
 import { ThemeToggle } from "@/components/maison/header-theme-toggle";
 import { WhatsAppIcon } from "@/components/maison/motifs";
 import { TitritLogo } from "@/components/maison/titrit-logo";
@@ -54,9 +56,15 @@ export function MobileMenu({
 					>
 						<TitritLogo showWordmark={false} logoClassName="h-10 w-10" />
 					</Link>
-					<div className="mt-6 flex items-center gap-2 border-y border-bronze/25 py-3">
-						<LanguageSwitcher />
-						<ThemeToggle />
+					<div className="mt-6 flex items-center justify-between gap-3 border-y border-bronze/25 py-3">
+						<div className="flex items-center gap-2">
+							<LanguageSwitcher />
+							<ThemeToggle />
+						</div>
+						<div className="flex items-center gap-2">
+							<AccountButton />
+							<CartDrawer />
+						</div>
 					</div>
 					<nav className="mt-6 flex flex-col" aria-label={t("footer.menu")}>
 						{site.nav.map((item) => (
@@ -70,6 +78,24 @@ export function MobileMenu({
 							</SheetClose>
 						))}
 					</nav>
+					<div className="mt-5 grid gap-2 border-t border-bronze/25 pt-4">
+						<SheetClose asChild>
+							<Link
+								href="/guide-des-tailles"
+								className="flex min-h-11 items-center font-serif text-sm text-ink underline decoration-bronze/40 underline-offset-4 dark:text-cream"
+							>
+								{t("legal.sizing")}
+							</Link>
+						</SheetClose>
+						<SheetClose asChild>
+							<Link
+								href="/livraison-retours"
+								className="flex min-h-11 items-center font-serif text-sm text-ink underline decoration-bronze/40 underline-offset-4 dark:text-cream"
+							>
+								{t("legal.deliveryReturns")}
+							</Link>
+						</SheetClose>
+					</div>
 					<div className="mt-auto pt-6">
 						<SheetClose asChild>
 							<a

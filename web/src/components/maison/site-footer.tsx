@@ -7,7 +7,6 @@ import {
 	NeedleThread,
 	WhatsAppIcon,
 } from "@/components/maison/motifs";
-import { SocialIcons } from "@/components/maison/social-icons";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
 import { whatsappCatalog } from "@/lib/brand";
@@ -144,17 +143,11 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 								</a>
 							</li>
 						</ul>
-						<div className="mt-5">
-							<SocialIcons size={44} variant="solid" />
-						</div>
 					</div>
 				</div>
 
 				{/* Legal identity — only verified, owner-provided values are shown. */}
 				<div className="mt-12 border-t border-cream/15 pt-6">
-					<p className="max-w-4xl font-serif text-xs leading-relaxed text-cream/60">
-						{t("footer.legal")}
-					</p>
 					<ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 font-serif text-xs text-cream/70">
 						{showOperator ? (
 							<li className="font-label text-[0.6rem] uppercase tracking-[0.18em] text-bronze-light">

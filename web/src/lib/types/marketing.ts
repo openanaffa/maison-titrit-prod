@@ -16,5 +16,6 @@ export type MarketingData = {
 		orders: number;
 		revenue: number;
 	}>;
+	orders: OrderUtmRow[];
 	recent: OrderUtmRow[];
 };

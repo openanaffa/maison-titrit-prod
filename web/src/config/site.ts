@@ -1,11 +1,11 @@
 /**
  * ============================================================================
- *  MAISON TITRIT â€” CENTRAL SITE CONFIG
+ *  MAISON TITRIT — CENTRAL SITE CONFIG
  * ----------------------------------------------------------------------------
  *  This is the SINGLE source of truth for brand identity, contact details,
  *  social profiles, store location/hours, navigation, and tracking IDs.
  *
- *  ðŸ‘‰ To refine the site, edit values in THIS file. No other file needs to
+ *  👉 To refine the site, edit values in THIS file. No other file needs to
  *     change for content/contact/socials/analytics IDs.
  *
  *  UI text strings (FR / AR / EN) live in  src/i18n/dictionaries.ts
@@ -22,10 +22,10 @@ export function baseUrl(): string {
 export const site = {
 	/* --- Identity ----------------------------------------------------------- */
 	name: "Maison Titrit",
-	nameAmazigh: "âµœâµ‰âµŸâµ”âµ‰âµœ",
+	nameAmazigh: "ⵜⵉⵜⵔⵉⵜ",
 	taglineKey: "brand.tagline", // resolved via i18n: "Maison de Couture"
-	signature: "100% MADE IN MOROCCO ðŸ‡²ðŸ‡¦",
-	arabicWelcome: "Ù…Ø±Ø­Ø¨Ø§ Ø¨ Ø·Ù„Ø¨Ø§ØªÙƒÙ… ðŸ¥°", // shown as a flourish / in AR locale
+	signature: "100% MADE IN MOROCCO 🇲🇦",
+	arabicWelcome: "مرحبا ب طلباتكم 🥰", // shown as a flourish / in AR locale
 
 	/* --- Contact ------------------------------------------------------------ */
 	phones: [
@@ -57,7 +57,7 @@ export const site = {
 	],
 
 	/* --- Social profiles ---------------------------------------------------- */
-	// Instagram Â· Pinterest Â· Facebook Â· TikTok Â· YouTube
+	// Instagram · Pinterest · Facebook · TikTok · YouTube
 	socials: {
 		instagram: "https://www.instagram.com/maison__titrit/",
 		instagramHandle: "@maison__titrit",
@@ -81,7 +81,7 @@ export const site = {
 	},
 
 	/* --- Map (Google Maps) -------------------------------------------------- */
-	// Basic embed via google.com/maps?q=...&output=embed â€” no API key required.
+	// Basic embed via google.com/maps?q=...&output=embed — no API key required.
 	// To upgrade to a keyed Maps JavaScript API embed, set NEXT_PUBLIC_GMAPS_KEY.
 	map: {
 		lat: 33.4496,
@@ -96,7 +96,7 @@ export const site = {
 
 	/* --- Navigation --------------------------------------------------------- */
 	nav: [
-		// Anchors are home-scoped (/#â€¦) so the header works from every page;
+		// Anchors are home-scoped (/#…) so the header works from every page;
 		// /blog is a real route (Journal).
 		{ href: "/#maison", labelKey: "nav.maison" },
 		{ href: "/#collection", labelKey: "nav.collection" },
@@ -113,7 +113,7 @@ export type SiteConfig = typeof site;
  *  ANALYTICS & MARKETING TAGS
  * ----------------------------------------------------------------------------
  *  Replace the placeholder IDs with your real IDs (or set the env vars).
- *  Scripts are consent-gated by the cookie banner â€” they only load after the
+ *  Scripts are consent-gated by the cookie banner — they only load after the
  *  visitor accepts analytics/marketing cookies.
  * ============================================================================
  */
@@ -127,11 +127,11 @@ export const analytics = {
 	// Domain for Meta verification (optional)
 	metaDomainVerification: process.env.NEXT_PUBLIC_META_DOMAIN || "",
 	/* --- Phase-2 marketing SDK IDs (each activates only when set + real) ---- */
-	// Pinterest Tag ID â€” numeric, from Pinterest Ads â†’ Conversions â†’ Tag Manager â†’ Install tag
+	// Pinterest Tag ID — numeric, from Pinterest Ads → Conversions → Tag Manager → Install tag
 	pinterestTagId: process.env.NEXT_PUBLIC_PINTEREST_TAG_ID || "",
-	// TikTok Pixel ID â€” numeric, from TikTok Ads â†’ Events â†’ Pixel
+	// TikTok Pixel ID — numeric, from TikTok Ads → Events → Pixel
 	tiktokPixelId: process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID || "",
-	// YouTube channel handle or channel ID (e.g. "@maison__titrit" or "UCâ€¦")
+	// YouTube channel handle or channel ID (e.g. "@maison__titrit" or "UC…")
 	youtubeChannelId: process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_ID || "",
 } as const;
 export type SiteAnalytics = typeof analytics;

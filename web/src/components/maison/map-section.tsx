@@ -1,19 +1,10 @@
 "use client";
 
-import { Clock, ExternalLink, MapPin, Navigation } from "lucide-react";
-import {
-	AmazighStar,
-	OrnamentDivider,
-	Reveal,
-} from "@/components/maison/motifs";
+import { Clock, MapPin, Navigation } from "lucide-react";
+import { OrnamentDivider, Reveal } from "@/components/maison/motifs";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
-import {
-	googleMapsDirectionsUrl,
-	googleMapsEmbedUrl,
-	googleMapsLink,
-	osmLink,
-} from "@/lib/brand";
+import { googleMapsDirectionsUrl, googleMapsEmbedUrl } from "@/lib/brand";
 
 export function MapSection() {
 	const { t } = useT();
@@ -89,15 +80,6 @@ export function MapSection() {
 									<Navigation className="size-4" />
 									{t("cta.openMap")}
 								</a>
-								<a
-									href={googleMapsLink()}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-bronze/50 px-5 py-3 font-label text-[0.72rem] uppercase tracking-[0.18em] text-ink transition-colors hover:border-terracotta hover:bg-bronze/10 hover:text-terracotta dark:text-cream"
-								>
-									<ExternalLink className="size-4" />
-									{t("cta.openMap")}
-								</a>
 							</div>
 						</div>
 					</Reveal>
@@ -106,23 +88,13 @@ export function MapSection() {
 					<Reveal delay={0.12} y={24}>
 						<div className="vintage-frame relative h-full min-h-90 overflow-hidden rounded-sm">
 							<iframe
-								title="Google Maps â€” Maison Titrit, Bouskoura"
+								title="Google Maps — Maison Titrit, Bouskoura"
 								src={googleMapsEmbedUrl()}
 								className="h-full min-h-90 w-full border-0 grayscale-[0.15] sepia-[0.12]"
 								loading="lazy"
 								referrerPolicy="no-referrer-when-downgrade"
 								allowFullScreen
 							/>
-							{/* OpenStreetMap fallback link (open-source alternative) */}
-							<a
-								href={osmLink()}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="absolute bottom-2 inset-e-2 inline-flex items-center gap-1.5 rounded-full bg-card/85 px-3 py-1.5 font-label text-[0.56rem] uppercase tracking-[0.16em] text-bronze backdrop-blur transition-colors hover:text-terracotta"
-							>
-								<AmazighStar className="size-3" strokeWidth={1.6} />
-								{t("map.openSource")}
-							</a>
 						</div>
 					</Reveal>
 				</div>

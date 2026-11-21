@@ -14,10 +14,15 @@ const nextConfig: NextConfig = {
 			"/checkout/:path*",
 			"/panier/:path*",
 			"/auth/:path*",
-		].map((source) => ({
-			source,
-			headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
-		}));
+		]
+			.map((source) => ({
+				source,
+				headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+			}))
+			.concat({
+				source: "/((?!api/|_next/|.*\\.).*)",
+				headers: [{ key: "Content-Type", value: "text/html; charset=utf-8" }],
+			});
 	},
 	images: {
 		remotePatterns: [

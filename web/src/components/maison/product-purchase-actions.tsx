@@ -1,7 +1,6 @@
 "use client";
 
 import { Minus, Plus, Share2, ShoppingBag, Truck } from "lucide-react";
-import * as React from "react";
 import { WhatsAppIcon } from "@/components/maison/motifs";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/i18n/locale-provider";
@@ -14,13 +13,10 @@ export type ProductPurchaseActionsProps = {
 	sizes: string[];
 	size: string;
 	qty: number;
-	unitPrice: number;
 	total: number;
-	catalogHref: string;
 	onSizeChange: (v: string) => void;
 	onSizePromptDismiss: () => void;
 	onQtyChange: (v: number) => void;
-	onSizePrompt: () => void;
 	onAddToCart: () => void;
 	onOrder: () => void;
 	onShare: () => void;
@@ -38,13 +34,10 @@ export function ProductPurchaseActions({
 	sizes,
 	size,
 	qty,
-	unitPrice,
 	total,
-	catalogHref,
 	onSizeChange,
 	onSizePromptDismiss,
 	onQtyChange,
-	onSizePrompt,
 	onAddToCart,
 	onOrder,
 	onShare,
@@ -163,19 +156,23 @@ export function ProductPurchaseActions({
 				</Button>
 			</div>
 
-			<a
-				href={catalogHref}
-				target="_blank"
-				rel="noopener noreferrer"
-				className="mt-3 inline-flex items-center gap-2 font-label text-[0.62rem] uppercase tracking-[0.2em] text-bronze/80 transition-colors hover:text-terracotta"
-			>
-				<WhatsAppIcon className="size-3.5" />
-				{t("cta.viewCatalog")} →
-			</a>
-
-			<p className="mt-4 flex items-center gap-2 font-serif text-sm text-ink-soft/80 dark:text-cream/60">
-				<Truck className="size-4 text-terracotta" />
-				{t("detail.cod")} · {t("catalog.footnote")}
+			<div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-bronze/25 pt-4">
+				<a
+					href="/guide-des-tailles"
+					className="min-h-11 inline-flex items-center font-label text-xs font-semibold text-ink underline decoration-bronze/60 underline-offset-4 hover:text-terracotta focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink dark:text-cream dark:focus-visible:outline-cream"
+				>
+					{t("legal.sizing")}
+				</a>
+				<a
+					href="/livraison-retours"
+					className="min-h-11 inline-flex items-center gap-2 font-serif text-sm font-medium text-ink underline decoration-bronze/60 underline-offset-4 hover:text-terracotta focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink dark:text-cream dark:focus-visible:outline-cream"
+				>
+					<Truck className="size-4 text-terracotta" />
+					{t("legal.deliveryReturns")}
+				</a>
+			</div>
+			<p className="mt-1 font-serif text-sm text-ink-soft dark:text-cream/75">
+				{t("detail.cod")}
 			</p>
 		</>
 	);

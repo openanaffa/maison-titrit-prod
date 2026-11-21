@@ -184,7 +184,7 @@ export const French = {
 	"footer.made": "Made with care in Morocco",
 	"footer.menu": "Menu de navigation de la maison de couture Maison Titrit.",
 	"footer.legal":
-		"Conformément à la loi marocaine 09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel et au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679), vos données personnelles sont collectées et traitées avec votre consentement, en toute transparence et de manière limitée aux finalités de commande et de communication. Vous disposez d'un droit d'accès, de rectification et d'opposition — contactez notre responsable de la protection des données.",
+		"Vos données sont traitées avec soin. Consultez notre politique de confidentialité pour connaître vos droits et les détails du traitement.",
 
 	"legal.privacy": "Politique de confidentialité",
 	"legal.terms": "Conditions générales de vente",
@@ -305,6 +305,32 @@ export const French = {
 	"admin.marketing.colOrder": "Commande",
 	"admin.marketing.colTotal": "Total",
 	"admin.marketing.empty": "Aucune commande attribuée sur cette période.",
+	"admin.marketing.kpis": "Indicateurs marketing",
+	"admin.marketing.announcement":
+		"{orders} commandes, dont {attributed} attribuées. Revenu : {revenue}.",
+	"admin.marketing.controls": "Filtres et export des attributions",
+	"admin.marketing.search":
+		"Rechercher une commande, une source ou une campagne",
+	"admin.marketing.searchPlaceholder":
+		"Rechercher une source, campagne ou commande…",
+	"admin.marketing.excludeTestOn": "Trafic de test exclu",
+	"admin.marketing.excludeTestOff": "Inclure le trafic de test",
+	"admin.marketing.export": "Exporter CSV",
+	"admin.marketing.sort": "Trier par",
+	"admin.marketing.sortDate": "Date",
+	"admin.marketing.sortOrder": "Commande",
+	"admin.marketing.sortTotal": "Montant",
+	"admin.marketing.sortAscending": "Trier par ordre croissant",
+	"admin.marketing.sortDescending": "Trier par ordre décroissant",
+	"admin.marketing.normalizedSources":
+		"Les sources « ms-egde » sont regroupées sous « ms-edge ».",
+	"admin.marketing.treeKeyHelp":
+		"Navigation au clavier : flèches haut et bas pour parcourir, droite pour développer, gauche pour réduire, Entrée ou Espace pour ouvrir ou fermer.",
+	"admin.marketing.collapse": "Réduire",
+	"admin.marketing.expand": "Développer",
+	"admin.marketing.treeSource": "SOURCE",
+	"admin.marketing.treeCampaign": "CAMPAGNE",
+	"admin.marketing.treeMedium": "SUPPORT",
 	"admin.team.title": "Équipe",
 	"admin.team.subtitle":
 		"Gérez les rôles des comptes de la maison. Les changements prennent effet à la prochaine connexion.",

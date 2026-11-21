@@ -179,7 +179,7 @@ export const Arabic = {
 	"footer.made": "صُنع بعناية في المغرب",
 	"footer.menu": "قائمة تنقل دار خياطة ميزون تيتريت.",
 	"footer.legal":
-		"وفقاً للقانون المغربي 09-08 المتعلق بحماية الأشخاص الذاتيين تجاه معالجة المعطيات ذات الطابع الشخصي، وللائحة الأوروبية العامة لحماية البيانات (GDPR — 2016/679)، تُجمع بياناتكم الشخصية بموافقتكم وتُعالج بشفافية ولمصلحة الطلبيات والتواصل فقط. لكم حق الوصول والتصحيح والمعارضة — تواصوا مع مسؤول حماية البيانات لدينا.",
+		"نحرص على حماية بياناتكم. راجعوا سياسة الخصوصية لمعرفة حقوقكم وتفاصيل معالجة البيانات.",
 
 	"legal.privacy": "سياسة الخصوصية",
 	"legal.terms": "شروط البيع العامة",
@@ -295,6 +295,30 @@ export const Arabic = {
 	"admin.marketing.colOrder": "الطلب",
 	"admin.marketing.colTotal": "المجموع",
 	"admin.marketing.empty": "لا توجد طلبات مُسندة خلال هذه الفترة.",
+	"admin.marketing.kpis": "مؤشرات التسويق",
+	"admin.marketing.announcement":
+		"{orders} طلب، منها {attributed} طلبات منسوبة. الإيراد: {revenue}.",
+	"admin.marketing.controls": "تصفية الإسناد والتصدير",
+	"admin.marketing.search": "ابحث عن طلب أو مصدر أو حملة",
+	"admin.marketing.searchPlaceholder": "ابحث عن مصدر أو حملة أو طلب…",
+	"admin.marketing.excludeTestOn": "تم استبعاد زيارات الاختبار",
+	"admin.marketing.excludeTestOff": "تضمين زيارات الاختبار",
+	"admin.marketing.export": "تصدير CSV",
+	"admin.marketing.sort": "ترتيب حسب",
+	"admin.marketing.sortDate": "التاريخ",
+	"admin.marketing.sortOrder": "الطلب",
+	"admin.marketing.sortTotal": "المبلغ",
+	"admin.marketing.sortAscending": "ترتيب تصاعدي",
+	"admin.marketing.sortDescending": "ترتيب تنازلي",
+	"admin.marketing.normalizedSources":
+		"تُجمع المصادر المكتوبة «ms-egde» مع «ms-edge».",
+	"admin.marketing.treeKeyHelp":
+		"التنقل بلوحة المفاتيح: السهمان للأعلى والأسفل للتنقل، اليمين للتوسيع، اليسار للطي، وEnter أو المسافة للفتح والإغلاق.",
+	"admin.marketing.collapse": "طي",
+	"admin.marketing.expand": "توسيع",
+	"admin.marketing.treeSource": "المصدر",
+	"admin.marketing.treeCampaign": "الحملة",
+	"admin.marketing.treeMedium": "الوسيط",
 	"admin.team.title": "الفريق",
 	"admin.team.subtitle":
 		"إدارة أدوار حسابات الدار. تسري التغييرات عند تسجيل الدخول التالي.",

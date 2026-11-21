@@ -70,14 +70,14 @@ export default async function Home() {
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD requires an inline script
 				dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListLd) }}
 			/>
-			<main id="accueil" className="flex-1">
+			<div id="accueil" className="flex-1">
 				<Hero />
 				<About />
 				<CraftBand />
 				<ProductCatalogue />
 				<MapSection />
 				<ContactSocial />
-			</main>
+			</div>
 			<WhatsAppFloat />
 		</>
 	);

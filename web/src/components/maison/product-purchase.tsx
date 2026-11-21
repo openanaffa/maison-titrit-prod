@@ -4,13 +4,11 @@ import * as React from "react";
 import { CategoryIcon } from "@/components/maison/category-icons";
 import { NeedleThread, Reveal } from "@/components/maison/motifs";
 import { ProductPurchaseActions } from "@/components/maison/product-purchase-actions";
-import { Button } from "@/components/ui/button";
 import { CATEGORIES } from "@/config/products";
 import { site } from "@/config/site";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import { track, trackAddToCart, trackFacebook } from "@/lib/analytics";
-import { whatsappCatalog } from "@/lib/brand";
 import { useCart } from "@/lib/cart";
 import type { ProductDTO } from "@/lib/types";
 
@@ -180,13 +178,10 @@ export function ProductPurchase({
 					sizes={sizes}
 					size={size}
 					qty={qty}
-					unitPrice={unitPrice}
 					total={total}
-					catalogHref={whatsappCatalog}
 					onSizeChange={setSize}
 					onSizePromptDismiss={() => setSizePrompt(false)}
 					onQtyChange={setQty}
-					onSizePrompt={() => setSizePrompt(true)}
 					onAddToCart={handleAddToCart}
 					onOrder={handleOrder}
 					onShare={handleShare}

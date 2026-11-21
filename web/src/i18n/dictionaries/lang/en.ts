@@ -182,7 +182,7 @@ export const English = {
 	"footer.made": "Made with care in Morocco",
 	"footer.menu": "Navigation menu of the Maison Titrit couture house.",
 	"footer.legal":
-		"In accordance with Moroccan Law 09-08 on the protection of individuals with regard to the processing of personal data and the EU General Data Protection Regulation (GDPR — Regulation (EU) 2016/679), your personal data is collected with your consent and processed transparently, limited to order and communication purposes. You have the right to access, rectify and object — contact our data protection officer.",
+		"We handle your data with care. Read our privacy policy for your rights and details about how we process information.",
 
 	"legal.privacy": "Privacy policy",
 	"legal.terms": "Terms of sale",
@@ -302,6 +302,30 @@ export const English = {
 	"admin.marketing.colOrder": "Order",
 	"admin.marketing.colTotal": "Total",
 	"admin.marketing.empty": "No attributed orders in this period.",
+	"admin.marketing.kpis": "Marketing metrics",
+	"admin.marketing.announcement":
+		"{orders} orders, including {attributed} attributed. Revenue: {revenue}.",
+	"admin.marketing.controls": "Attribution filters and export",
+	"admin.marketing.search": "Search order, source or campaign",
+	"admin.marketing.searchPlaceholder": "Search source, campaign or order…",
+	"admin.marketing.excludeTestOn": "Test traffic excluded",
+	"admin.marketing.excludeTestOff": "Include test traffic",
+	"admin.marketing.export": "Export CSV",
+	"admin.marketing.sort": "Sort by",
+	"admin.marketing.sortDate": "Date",
+	"admin.marketing.sortOrder": "Order",
+	"admin.marketing.sortTotal": "Amount",
+	"admin.marketing.sortAscending": "Sort ascending",
+	"admin.marketing.sortDescending": "Sort descending",
+	"admin.marketing.normalizedSources":
+		"Sources named “ms-egde” are grouped under “ms-edge”.",
+	"admin.marketing.treeKeyHelp":
+		"Keyboard navigation: up and down arrows move, right expands, left collapses, Enter or Space toggles.",
+	"admin.marketing.collapse": "Collapse",
+	"admin.marketing.expand": "Expand",
+	"admin.marketing.treeSource": "SOURCE",
+	"admin.marketing.treeCampaign": "CAMPAIGN",
+	"admin.marketing.treeMedium": "MEDIUM",
 	"admin.team.title": "Team",
 	"admin.team.subtitle":
 		"Manage the roles of the house's accounts. Changes take effect at the next sign-in.",

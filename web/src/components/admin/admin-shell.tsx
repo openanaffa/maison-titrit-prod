@@ -77,7 +77,10 @@ export function AdminShell({
 				</div>
 
 				{/* Nav */}
-				<nav className="flex-1 space-y-1 overflow-y-auto p-3">
+				<nav
+					aria-label="Navigation principale"
+					className="flex-1 space-y-1 overflow-y-auto p-3"
+				>
 					{items.map((item) => {
 						const active =
 							pathname === item.href ||
@@ -89,8 +92,9 @@ export function AdminShell({
 								key={item.href}
 								href={item.href}
 								onClick={() => setOpen(false)}
+								aria-current={active ? "page" : undefined}
 								className={cn(
-									"flex items-center gap-3 rounded-sm px-3 py-2.5 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-colors",
+									"flex min-h-11 items-center gap-3 rounded-sm px-3 py-2.5 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream",
 									active
 										? "bg-sidebar-accent text-sidebar-accent-foreground"
 										: "text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
@@ -169,7 +173,11 @@ export function AdminShell({
 					</div>
 				</header>
 
-				<main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 print:overflow-visible print:p-0">
+				<main
+					id="main-content"
+					tabIndex={-1}
+					className="flex-1 overflow-y-auto p-4 outline-none focus-visible:ring-2 focus-visible:ring-ink sm:p-6 lg:p-8 print:overflow-visible print:p-0 dark:focus-visible:ring-cream"
+				>
 					{children}
 				</main>
 			</div>

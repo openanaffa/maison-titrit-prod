@@ -143,11 +143,13 @@ export function SiteHeader() {
 								<LanguageSwitcher darkSurface={onDark} />
 								<ThemeToggle darkSurface={onDark} />
 							</div>
-							<AccountButton darkSurface={onDark} />
-							<CartDrawer darkSurface={onDark} />
+							<div className="hidden items-center gap-1.5 lg:flex">
+								<AccountButton darkSurface={onDark} />
+								<CartDrawer darkSurface={onDark} />
+							</div>
 							<Button
 								asChild
-								className="hidden h-11 rounded-full bg-ink px-4 font-label text-[0.68rem] uppercase tracking-[0.14em] text-cream transition-colors hover:bg-terracotta lg:inline-flex dark:bg-cream dark:text-ink dark:hover:bg-cream/85"
+								className="h-11 rounded-full bg-ink px-3 font-label text-[0.62rem] uppercase tracking-[0.1em] text-cream transition-colors hover:bg-terracotta sm:px-4 sm:text-[0.68rem] lg:px-4 lg:text-[0.68rem] dark:bg-cream dark:text-ink dark:hover:bg-cream/85"
 							>
 								<a
 									href={whatsappContactLink(t("float.msg"))}

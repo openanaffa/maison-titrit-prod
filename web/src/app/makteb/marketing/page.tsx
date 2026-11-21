@@ -29,15 +29,19 @@ function aggregate(orders: OrderUtmRow[], periodDays: 30 | 0): MarketingData {
 		attributed += 1;
 		if (!cancelled) attributedRevenue += o.total;
 
-		const src = bySource.get(o.utmSource) ?? { orders: 0, revenue: 0 };
+		const source = o.utmSource
+			.trim()
+			.toLowerCase()
+			.replace(/ms-egde/g, "ms-edge");
+		const src = bySource.get(source) ?? { orders: 0, revenue: 0 };
 		src.orders += 1;
 		if (!cancelled) src.revenue += o.total;
-		bySource.set(o.utmSource, src);
+		bySource.set(source, src);
 
 		const campaign = o.utmCampaign || "—";
-		const ck = `${o.utmSource}||${campaign}`;
+		const ck = `${source}||${campaign}`;
 		const camp = byCampaign.get(ck) ?? {
-			source: o.utmSource,
+			source,
 			campaign,
 			orders: 0,
 			revenue: 0,
@@ -68,6 +72,17 @@ function aggregate(orders: OrderUtmRow[], periodDays: 30 | 0): MarketingData {
 			.map(([source, v]) => ({ source, ...v }))
 			.sort((a, b) => b.orders - a.orders),
 		byCampaign: [...byCampaign.values()].sort((a, b) => b.orders - a.orders),
+		orders: scoped.map((o) => ({
+			id: o.id,
+			number: o.number,
+			status: o.status,
+			total: o.total,
+			currency: o.currency,
+			utmSource: o.utmSource,
+			utmMedium: o.utmMedium,
+			utmCampaign: o.utmCampaign,
+			createdAt: o.createdAt,
+		})),
 		recent: recentAttributed,
 	};
 }

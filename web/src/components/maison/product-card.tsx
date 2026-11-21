@@ -12,7 +12,6 @@ import { site } from "@/config/site";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n/locale-provider";
 import { track, trackAddToCart, trackFacebook } from "@/lib/analytics";
-import { whatsappCatalog } from "@/lib/brand";
 import { useCart } from "@/lib/cart";
 import { parseSizes } from "@/lib/checkout";
 import type { ProductDTO } from "@/lib/types";
@@ -260,14 +259,6 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 					>
 						{t("cta.viewDetails")} →
 					</Link>
-					<a
-						href={whatsappCatalog}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="mt-1 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/70 transition-colors hover:text-terracotta"
-					>
-						{t("cta.viewCatalog")} →
-					</a>
 					<p className="mt-1.5 text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/80">
 						{t("brand.payment")}
 					</p>
