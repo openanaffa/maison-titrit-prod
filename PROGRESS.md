@@ -1,23 +1,23 @@
 # Maison Titrit — Engineering & Release Progress
 
-Last updated: 2026-11-21 18:56 UTC
-Current phase: Phase 1 — PR inventory & reconciliation (complete) → P0 implementation starting
+Last updated: 2026-11-21 20:10 UTC
+Current phase: Phase 3 — P0 implementation (#120 CSV import → #127/#128) + docs sync
 Overall status: IN PROGRESS
 
 ## Progress
-- PRs inventoried: 5 / 5 open at audit start (+#156 merged during audit, all merged/closed PRs reviewed)
-- PRs reviewed by Codex: 5 / 5 relevant PRs (#151–#156)
+- PRs inventoried: 6 / 6 relevant PRs at audit start (+#156 merged during audit, all merged/closed PRs reviewed)
+- PRs reviewed by Codex: 6 / 6 relevant PRs (#151–#156 + docs-sync #157)
 - PRs with actionable findings: 5
 - Findings resolved: 17 / 17 (all threads resolved; final rounds clean)
 - Review threads unresolved: 0
-- CI passing: develop `a9032d3` (verify + e2e) ✅
-- Open blockers: 3 (owner decisions) + 3 P0 workstreams
+- CI passing: develop `b079432` (#157 docs sync merged; verify + e2e) ✅
+- Open blockers: 2 (owner decisions) + 3 P0 workstreams
 - Production release: NOT PREPARED
 
 ## 1. Overall status
 
-Audit snapshot verified 2026-11-21 18:40 UTC:
-- `develop` = `a9032d3` (Wafine removal #156 merged)
+Audit snapshot verified 2026-11-21 20:05 UTC:
+- `develop` = `b079432` (#157 docs sync merged: Wafine env/ROADMAP reconciliation)
 - `main` = `7a9b437`
 - Default branch: develop
 - Divergence: main is 15 commits behind / 41 commits ahead of merge-base — **diverged**, release requires a dedicated reconciliation PR (see Production Release Gate).
@@ -36,6 +36,8 @@ Audit snapshot verified 2026-11-21 18:40 UTC:
 | #153 | A11y audit + CWV budgets (#127) | Merged | Yes | Completed (merged after conflict rebase) | 0 new | 0 | Pass | DONE |
 | #154 | Attribution UX, a11y landmarks, UTF-8 (#154) | Merged | Yes | Complete (3 rounds, final round 0) | 9 | 9 | Pass | DONE |
 | #156 | Remove Wafine WhatsApp integration | Merged | Yes | Complete, 0 findings (`b21a2ad`) | 0 | 0 | Pass | DONE |
+| #157 | Docs: ROADMAP/env reconciliation with Wafine removal (B-05) | Merged | Yes | Complete, 0 findings (`598e74c`) | 0 | 0 | Pass | DONE |
+| #158 | Inventory CSV import (#120 remainder) | Open — awaiting Codex | No (PR open) | Requested (`@codex review`) | pending | — | Pass (verify+e2e) | IN REVIEW |
 | #155 | Storefront+makteb revamp | Closed unmerged | No (superseded) | Complete (2×P1 + 1×P2 unresolved) | 3 | 0 | Pass | NOT APPLICABLE — superseded by #154; P1 Flight/content-type bug documented; storefront-only parts re-proposable |
 | #149 | PostHog wizard | Closed unmerged | No | n/a (bot PR; verify failing: frozen lockfile + no deps installed) | 0 | 0 | Fail | NOT APPLICABLE — redundant with consent-gated GA4/Meta layer + Sentry |
 
@@ -65,7 +67,7 @@ All findings across #147–#156 were resolved in-cycle with threaded replies and
 | B-02 | Legal identity/retention/policy facts require owner confirmation (#92/#93 closed as COMPLETED 2026-11-19 — claims need re-verification against current code) | Trust/compliance content | Owner/legal review | Open (audit pending, P1) |
 | B-03 | Cookie-based locale selection is not crawlable per-URL (i18n/SEO, #96 closed COMPLETED) — no independent FR/AR/EN URLs exist | SEO | Owner decision on locale-URL migration | Open (audit pending, P1) |
 | B-04 | Production release: develop↔main diverged; 41 commits unreleased incl. schema migrations + RBAC + Wafine removal env changes | Blocks release | Release-readiness report → release PR → human approval | Not prepared |
-| B-05 | WAFINE_*/STAFF_WHATSAPP vars still present in `web/.env.example`; ROADMAP.md has stale M2/M3 status | Documentation drift | Docs-sync PR (in progress) | In progress |
+| B-05 | WAFINE_*/STAFF_WHATSAPP vars still present in `web/.env.example`; ROADMAP.md has stale M2/M3 status | Documentation drift | Docs-sync PR | **Resolved — PR #157 merged** (env example verified clean upstream + ROADMAP refreshed) |
 
 ## 5. Reconciliation matrix (Issue → AC → Implementation → PR → develop → main → Remaining)
 
@@ -80,7 +82,7 @@ All findings across #147–#156 were resolved in-cycle with threaded replies and
 | #121 fulfilment | Met (email notifications after Wafine removal) | 6 queues + delivery fields + notification ledger | #147, #156 | ✅ | ❌ | release sync; WhatsApp retries removed per B-01 |
 | #122 customer 360 | Met | Segments, 360 view, notes/consent, audits | #150 | ✅ | ❌ | release sync |
 | #126 E2E | Met | 15 Playwright tests on prod-build + isolated Supabase | #151 | ✅ | ❌ | release sync |
-| **#120 inventory** | **Partial** — CSV import with preview/validation missing | Stock table, actions, history, CSV export | #152 | ✅ | ❌ | **P0: CSV import + row validation + atomicity + tests** |
+| **#120 inventory** | **Partial** — CSV import in review | Stock table, actions, history, CSV export + **CSV import (PR #158)** | #152, #158 | ✅ (#158 pending review) | ❌ | Codex review → merge |
 | **#127 a11y/CWV** | **Partial** — audit done; remaining contrast + Lighthouse gate | Contrast fixes + budgets + LHCI (suppressed) | #153 | ✅ | ❌ | **P0: remaining contrast, LHCI startup fix or explicit field-data gate** |
 | **#128 ops/recovery** | **Not met** — backup creation only; no restore drill | Nightly encrypted backups to R2 (`db-backup.yml`) | — | ✅ | ❌ | **P0: restore drill, R2 recovery, correlation IDs, runbooks, Sentry routing** |
 | #92/#93 legal | Closed COMPLETED — re-verify claims vs code/owner facts | Settings + legal pages + email templates | #136 | ✅ | ⚠️ | P1 audit; owner confirmations |
@@ -92,10 +94,10 @@ All findings across #147–#156 were resolved in-cycle with threaded replies and
 
 | Check | Command / workflow | Result | Evidence |
 |---|---|---|---|
-| Remote state | `git fetch` + `gh pr list` | Pass | develop `a9032d3`, main `7a9b437`, 0 open PRs |
+| Remote state | `git fetch` + `gh pr list` | Pass | develop `b079432`, main `7a9b437`; open PRs: #158 only |
 | Develop CI | CI run on `a9032d3` | Pass | verify ✅ e2e ✅ |
 | Issue states | `gh issue view` | Pass | #120 REOPENED, #127 OPEN, #128 OPEN, #113/#123–#125 NOT_PLANNED |
-| Wafine removal | `grep WAFINE` across docs/code | **Fail** | `web/.env.example` still lists WAFINE_* + STAFF_WHATSAPP; ROADMAP.md line 21 stale → docs-sync PR |
+| Wafine removal | `grep WAFINE` across docs/code | Pass (post-#157) | `web/.env.example` clean; ROADMAP.md reflects M3 cancellation (#157) |
 
 ## 7. Production Release Gate
 
@@ -103,7 +105,7 @@ All findings across #147–#156 were resolved in-cycle with threaded replies and
 - [ ] All required Codex reviews completed — ✅ (#147–#156)
 - [ ] All actionable findings resolved — ✅ (0 unresolved threads)
 - [ ] No unresolved review threads — ✅
-- [x] Full develop CI passing — ✅ (`a9032d3`)
+- [x] Full develop CI passing — ✅ (`b079432`)
 - [ ] Production diff reviewed against main (15/41 diverged; release PR must reconcile main's release commits with develop)
 - [ ] Database migrations reviewed and ordered (supabase/migrations vs Prisma schemas — audit pending)
 - [ ] Production environment variables verified (WAFINE_* removal → Vercel env cleanup needed)
