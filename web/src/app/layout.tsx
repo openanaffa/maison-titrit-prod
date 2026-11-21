@@ -14,6 +14,8 @@ import { AnnouncementBar } from "@/components/maison/announcement-bar";
 import { SkipLink } from "@/components/maison/skip-link";
 import { SupabaseAuthProvider } from "@/components/maison/supabase-auth-provider";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
+import { OfflineIndicator } from "@/components/pwa/offline-indicator";
 import { SwRegister } from "@/components/pwa/sw-register";
 import { SiteJsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -236,6 +238,8 @@ gtag('consent', 'default', {
 				<Toaster />
 				<VercelTelemetry />
 				<SwRegister />
+				<OfflineIndicator />
+				<InstallPrompt />
 			</body>
 		</html>
 	);

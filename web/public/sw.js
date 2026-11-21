@@ -1,5 +1,5 @@
 /* Maison Titrit service worker — conservative, Next.js/Vercel compatible. */
-const VERSION = "mt-sw-v1";
+const VERSION = "mt-sw-v2";
 const STATIC_CACHE = `${VERSION}-static`;
 const PAGE_CACHE = `${VERSION}-pages`;
 
@@ -10,7 +10,15 @@ function isPrivate(pathname) {
 }
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(PAGE_CACHE);
+      await cache.addAll(["/", "/offline"]).catch(() => {
+        /* precache is best-effort */
+      });
+      await self.skipWaiting();
+    })(),
+  );
 });
 
 self.addEventListener("activate", (event) => {
@@ -94,8 +102,10 @@ async function networkFirstNavigation(req) {
     const cached = await cache.match(req);
     if (cached) return cached;
     // Fall back to a cached homepage shell if available.
-    const fallback = await cache.match("/");
-    if (fallback) return fallback;
+    const shell = await cache.match("/");
+    if (shell) return shell;
+    const offline = await cache.match("/offline");
+    if (offline) return offline;
     return new Response("Offline", {
       status: 503,
       statusText: "Offline",
