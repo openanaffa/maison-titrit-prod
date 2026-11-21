@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/session";
-import { z } from "zod";
 
 export const dynamic = "force-dynamic";
 
@@ -13,15 +13,17 @@ const schema = z.object({
 });
 
 export async function GET() {
-	const { allowed } = await requirePermission("products:read");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	const { allowed } = await requirePermission("orders:write");
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const zones = await db.deliveryZone.findMany({ orderBy: { name: "asc" } });
 	return NextResponse.json({ zones });
 }
 
 export async function POST(req: Request) {
-	const { allowed } = await requirePermission("products:write");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	const { allowed } = await requirePermission("orders:write");
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	try {
 		const body = await req.json();
 		const parsed = schema.parse(body);

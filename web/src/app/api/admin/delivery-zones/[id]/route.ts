@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/session";
-import { z } from "zod";
 
 export const dynamic = "force-dynamic";
 
@@ -16,8 +16,9 @@ export async function PATCH(
 	req: Request,
 	{ params }: { params: Promise<{ id: string }> },
 ) {
-	const { allowed } = await requirePermission("products:write");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	const { allowed } = await requirePermission("orders:write");
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const { id } = await params;
 	try {
 		const body = await req.json();
@@ -26,7 +27,9 @@ export async function PATCH(
 			where: { id },
 			data: {
 				...(parsed.name !== undefined ? { name: parsed.name.trim() } : {}),
-				...(parsed.cities !== undefined ? { cities: parsed.cities.trim() } : {}),
+				...(parsed.cities !== undefined
+					? { cities: parsed.cities.trim() }
+					: {}),
 				...(parsed.fee !== undefined ? { fee: parsed.fee } : {}),
 				...(parsed.isActive !== undefined ? { isActive: parsed.isActive } : {}),
 			},
@@ -41,13 +44,17 @@ export async function DELETE(
 	_req: Request,
 	{ params }: { params: Promise<{ id: string }> },
 ) {
-	const { allowed } = await requirePermission("products:write");
-	if (!allowed) return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
+	const { allowed } = await requirePermission("orders:write");
+	if (!allowed)
+		return NextResponse.json({ error: "Non autorisé." }, { status: 403 });
 	const { id } = await params;
 	try {
 		await db.deliveryZone.delete({ where: { id } });
 		return NextResponse.json({ ok: true });
 	} catch (e) {
-		return NextResponse.json({ error: "Suppression impossible." }, { status: 500 });
+		return NextResponse.json(
+			{ error: "Suppression impossible." },
+			{ status: 500 },
+		);
 	}
 }

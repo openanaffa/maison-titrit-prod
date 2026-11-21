@@ -36,7 +36,9 @@ export async function listDeliveryZones(activeOnly = false) {
 	});
 }
 
-export async function getDeliveryQuote(city: string | null | undefined): Promise<DeliveryQuote> {
+export async function getDeliveryQuote(
+	city: string | null | undefined,
+): Promise<DeliveryQuote> {
 	if (!city || !city.trim()) {
 		return { covered: false, zoneId: null, zoneName: null, fee: 0 };
 	}
@@ -67,7 +69,12 @@ export async function createDeliveryZone(input: {
 
 export async function updateDeliveryZone(
 	id: string,
-	input: Partial<{ name: string; cities: string; fee: number; isActive: boolean }>,
+	input: Partial<{
+		name: string;
+		cities: string;
+		fee: number;
+		isActive: boolean;
+	}>,
 ) {
 	return db.deliveryZone.update({
 		where: { id },

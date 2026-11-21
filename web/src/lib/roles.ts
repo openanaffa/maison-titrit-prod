@@ -56,8 +56,18 @@ export function can(
 		case "categories:write":
 			return role === "FOUNDER" || role === "DEVELOPER" || role === "ADMIN";
 		case "orders:read":
-		case "customers:read":
 			return isStaffRole(role);
+		case "customers:read":
+			// MANAGER excluded to match the deliberate profile RLS narrowing
+			// (20261115120000_rbac_developer_marketer.sql) — Codex P2 on #150.
+			return (
+				role === "FOUNDER" ||
+				role === "DEVELOPER" ||
+				role === "ADMIN" ||
+				role === "MARKETER"
+			);
+		case "customers:write":
+			return role === "FOUNDER" || role === "DEVELOPER" || role === "ADMIN";
 		case "content:write":
 			return (
 				role === "FOUNDER" ||
@@ -87,6 +97,7 @@ export type Permission =
 	| "categories:write"
 	| "content:write"
 	| "customers:read"
+	| "customers:write"
 	| "integrations:write"
 	| "users:manage"
 	| "invites:manage"

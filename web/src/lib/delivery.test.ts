@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { parseCities, matchZone } from "./delivery";
+import { matchZone, parseCities } from "./delivery";
 
 describe("parseCities", () => {
 	test("splits on comma/newline/semicolon", () => {

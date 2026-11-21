@@ -62,6 +62,9 @@ describe("RBAC role helpers", () => {
 			"MARKETER",
 		]) {
 			expect(can(role, "orders:read")).toBe(true);
+		}
+		// customers:read excludes MANAGER (profile RLS alignment, Codex P2 #150).
+		for (const role of ["FOUNDER", "DEVELOPER", "ADMIN", "MARKETER"]) {
 			expect(can(role, "customers:read")).toBe(true);
 		}
 		expect(can("CUSTOMER", "orders:read")).toBe(false);
@@ -93,6 +96,27 @@ describe("RBAC role helpers", () => {
 			expect(can("FOUNDER", action)).toBe(true);
 			expect(can("DEVELOPER", action)).toBe(true);
 			expect(can("ADMIN", action)).toBe(false);
+		}
+	});
+});
+
+describe("customers permissions (#122)", () => {
+	test("customers:read excludes MANAGER (profile RLS alignment)", () => {
+		for (const role of ["FOUNDER", "DEVELOPER", "ADMIN", "MARKETER"]) {
+			expect(can(role, "customers:read")).toBe(true);
+		}
+		// Matches the deliberate profile RLS narrowing in
+		// 20261115120000_rbac_developer_marketer.sql (Codex P2 on #150).
+		for (const role of ["MANAGER", "CUSTOMER"]) {
+			expect(can(role, "customers:read")).toBe(false);
+		}
+	});
+	test("customers:write excludes managers and marketers", () => {
+		for (const role of ["FOUNDER", "DEVELOPER", "ADMIN"]) {
+			expect(can(role, "customers:write")).toBe(true);
+		}
+		for (const role of ["MANAGER", "MARKETER", "CUSTOMER"]) {
+			expect(can(role, "customers:write")).toBe(false);
 		}
 	});
 });
