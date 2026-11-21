@@ -12,8 +12,6 @@ const state = {
 	transportCalls: 0,
 	sendMailCalls: [] as MailMessage[],
 	transportError: null as Error | null,
-	fetchCalls: [] as Array<{ url: string; chatId: string; text: string }>,
-	fetchError: null as Error | null,
 };
 
 mock.module("nodemailer", () => {
@@ -31,10 +29,6 @@ const { notifyStaffNewOrder } = await import("./notify");
 
 const NOTIFY_ENV_KEYS = [
 	"STAFF_EMAILS",
-	"STAFF_WHATSAPP",
-	"WAFINE_API_URL",
-	"WAFINE_API_KEY",
-	"WAFINE_SESSION_ID",
 	"EMAIL_SERVER_HOST",
 	"EMAIL_SERVER_PORT",
 	"EMAIL_SERVER_USER",
@@ -62,33 +56,14 @@ const originalEnv = NOTIFY_ENV_KEYS.reduce<Record<string, string | undefined>>(
 
 function setEnvs() {
 	process.env.STAFF_EMAILS = "staff1@t.test, staff2@t.test";
-	process.env.STAFF_WHATSAPP = "+212684921942, 212777513838";
 	process.env.EMAIL_SERVER_HOST = "smtp.t.test";
-	process.env.WAFINE_API_URL = "https://wafine.t.test";
-	process.env.WAFINE_API_KEY = "key-123";
-	process.env.WAFINE_SESSION_ID = "sess-1";
 }
 
 beforeEach(() => {
 	state.transportCalls = 0;
 	state.sendMailCalls.length = 0;
-	state.fetchCalls.length = 0;
 	state.transportError = null;
-	state.fetchError = null;
 	for (const k of NOTIFY_ENV_KEYS) delete process.env[k];
-	globalThis.fetch = (async (input: unknown, init?: RequestInit) => {
-		const body = JSON.parse(String(init?.body ?? "{}")) as {
-			chatId?: string;
-			text?: string;
-		};
-		state.fetchCalls.push({
-			url: String(input),
-			chatId: body.chatId ?? "",
-			text: body.text ?? "",
-		});
-		if (state.fetchError) throw state.fetchError;
-		return { status: 201, ok: true } as Response;
-	}) as unknown as typeof fetch;
 });
 
 afterEach(() => {
@@ -100,46 +75,30 @@ afterEach(() => {
 });
 
 describe("notifyStaffNewOrder", () => {
-	test("skips both channels when their env vars are missing", async () => {
+	test("skips staff email when its env vars are missing", async () => {
 		await expect(notifyStaffNewOrder(order)).resolves.toBeUndefined();
 		expect(state.sendMailCalls).toHaveLength(0);
-		expect(state.fetchCalls).toHaveLength(0);
 	});
 
-	test("sends email + WhatsApp when configured (@c.us chatId)", async () => {
+	test("sends the new-order email without making HTTP calls", async () => {
 		setEnvs();
+		const fetch = mock(() => Promise.reject(new Error("unexpected HTTP call")));
+		globalThis.fetch = fetch as unknown as typeof globalThis.fetch;
+
 		await notifyStaffNewOrder(order);
+
 		expect(state.sendMailCalls).toHaveLength(1);
 		expect(state.sendMailCalls[0].to).toBe("staff1@t.test, staff2@t.test");
 		expect(state.sendMailCalls[0].subject).toContain(
 			"Nouvelle commande MT-1042",
 		);
-		expect(state.fetchCalls).toHaveLength(2);
-		expect(state.fetchCalls[0]).toEqual({
-			url: "https://wafine.t.test/api/sessions/sess-1/messages/send-text",
-			chatId: "212684921942@c.us",
-			text: expect.stringContaining("MT-1042"),
-		});
-		expect(state.fetchCalls[1].chatId).toBe("212777513838@c.us");
+		expect(fetch).not.toHaveBeenCalled();
 	});
 
-	test("resolves when fetch rejects (WhatsApp failure), email still sent", async () => {
-		setEnvs();
-		state.fetchError = new Error("network down");
-		await expect(notifyStaffNewOrder(order)).resolves.toBeUndefined();
-		expect(state.fetchCalls).toHaveLength(2);
-		expect(state.sendMailCalls).toHaveLength(1);
-	});
-
-	test("resolves when the SMTP transport throws, WhatsApp still sent", async () => {
+	test("resolves when the SMTP transport throws", async () => {
 		setEnvs();
 		state.transportError = new Error("smtp down");
 		await expect(notifyStaffNewOrder(order)).resolves.toBeUndefined();
 		expect(state.sendMailCalls).toHaveLength(0);
-		expect(state.fetchCalls).toHaveLength(2);
-		expect(state.fetchCalls[0].url).toContain(
-			"/api/sessions/sess-1/messages/send-text",
-		);
-		expect(state.fetchCalls[0].chatId).toBe("212684921942@c.us");
 	});
 });

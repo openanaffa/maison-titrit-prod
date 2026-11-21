@@ -59,7 +59,8 @@ export const English = {
 	"checkout.loginRequired": "Sign in or create an account to continue.",
 	"checkout.guest": "Checkout as guest",
 	"checkout.success": "Order confirmed!",
-	"checkout.successDesc": "We'll contact you on WhatsApp to confirm.",
+	"checkout.successDesc":
+		"Your order is saved. Use the WhatsApp link to send its summary to our team.",
 	"checkout.empty": "Your cart is empty.",
 	"checkout.orderNumber": "Order no.",
 

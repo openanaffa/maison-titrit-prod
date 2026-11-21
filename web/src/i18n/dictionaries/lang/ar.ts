@@ -59,7 +59,8 @@ export const Arabic = {
 	"checkout.loginRequired": "سجّل الدخول أو أنشئ حساباً للمتابعة.",
 	"checkout.guest": "اطلب كزائر",
 	"checkout.success": "تم تأكيد الطلب!",
-	"checkout.successDesc": "سنتواصل معك على واتساب للتأكيد.",
+	"checkout.successDesc":
+		"تم حفظ طلبك. استخدم رابط واتساب لإرسال ملخص الطلب إلى فريقنا.",
 	"checkout.empty": "سلتك فارغة.",
 	"checkout.orderNumber": "رقم الطلب",
 

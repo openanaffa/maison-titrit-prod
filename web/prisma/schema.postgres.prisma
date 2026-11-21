@@ -287,8 +287,8 @@ model OrderNotification {
   orderId       String
   order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   event         String   // CONFIRMED | DISPATCHED | DELIVERED
-  channel       String   // EMAIL | WHATSAPP
-  to            String   // email address or digits-only phone
+  channel       String   // EMAIL; legacy WHATSAPP records are historical only
+  to            String   // email address; legacy phone destinations remain historical
   status        String   @default("PENDING") // SENT | FAILED | PENDING | SENDING
   attempts      Int      @default(0)
   lastError     String?

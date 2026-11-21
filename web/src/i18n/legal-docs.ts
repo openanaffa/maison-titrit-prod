@@ -81,7 +81,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. Destinataires des données",
 					p: [
-						"Vos données sont hébergées par Vercel (site), Supabase (base de données et authentification, Union européenne), Cloudflare R2 (images) et Brevo (alertes email internes). Les services de mesure d'audience et de publicité ne sont chargés qu'après votre consentement. Le détail de votre commande est transmis à notre équipe via WhatsApp et email pour préparer l'expédition.",
+						"Vos données sont hébergées par Vercel (site), Supabase (base de données et authentification, Union européenne), Cloudflare R2 (images) et Brevo (alertes email internes). Les services de mesure d'audience et de publicité ne sont chargés qu'après votre consentement. Le site peut ouvrir WhatsApp avec un message prérempli contenant les détails de votre commande ; vous choisissez de l'envoyer à notre équipe. Le site n'envoie pas de messages via une API WhatsApp.",
 						"Nous ne vendons ni ne louons vos données personnelles à des tiers.",
 					],
 				},
@@ -440,7 +440,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. الجهات المتلقية للبيانات",
 					p: [
-						"تُستضاف بياناتك لدى Vercel (الموقع) وSupabase (قاعدة البيانات والمصادقة، الاتحاد الأوروبي) وCloudflare R2 (الصور) وBrevo (تنبيهات البريد الداخلية). ولا تُحمَّل خدمات قياس الجمهور والإعلانات إلا بعد موافقتك. ويُرسَل تفاصيل طلبك إلى فريقنا عبر واتساب والبريد لإعداد الشحنة.",
+						"تُستضاف بياناتك لدى Vercel (الموقع) وSupabase (قاعدة البيانات والمصادقة، الاتحاد الأوروبي) وCloudflare R2 (الصور) وBrevo (تنبيهات البريد الداخلية). ولا تُحمَّل خدمات قياس الجمهور والإعلانات إلا بعد موافقتك. يمكن للموقع فتح واتساب برسالة مُعدّة مسبقًا تتضمن تفاصيل طلبك؛ وأنت تختار إرسالها إلى فريقنا. لا يرسل الموقع رسائل عبر واجهة واتساب البرمجية.",
 						"لا نبيع بياناتك الشخصية ولا نؤجّرها إلى أي طرف ثالث.",
 					],
 				},
@@ -798,7 +798,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. Recipients",
 					p: [
-						"Your data is hosted by Vercel (site), Supabase (database and authentication, European Union), Cloudflare R2 (images) and Brevo (internal email alerts). Analytics and advertising services are only loaded after your consent. Your order details are sent to our team via WhatsApp and email to prepare the shipment.",
+						"Your data is hosted by Vercel (site), Supabase (database and authentication, European Union), Cloudflare R2 (images) and Brevo (internal email alerts). Analytics and advertising services are only loaded after your consent. The site can open WhatsApp with a prefilled message containing your order details; you choose whether to send it to our team. The site does not send messages through a WhatsApp API.",
 						"We do not sell or rent your personal data to third parties.",
 					],
 				},

@@ -60,7 +60,8 @@ export const French = {
 	"checkout.loginRequired": "Connectez-vous ou créez un compte pour finaliser.",
 	"checkout.guest": "Commander en tant qu'invité",
 	"checkout.success": "Commande confirmée !",
-	"checkout.successDesc": "Nous vous contacterons sur WhatsApp pour confirmer.",
+	"checkout.successDesc":
+		"Votre commande est enregistrée. Utilisez le lien WhatsApp pour envoyer son récapitulatif à notre équipe.",
 	"checkout.empty": "Votre panier est vide.",
 	"checkout.orderNumber": "N° de commande",
 

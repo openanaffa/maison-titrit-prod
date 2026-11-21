@@ -94,9 +94,11 @@ export function FulfilmentQueueClient({
 		try {
 			const res = await apiFetch(`/api/admin/orders/${row.id}/notifications`);
 			const { notifications } = (await res.json()) as {
-				notifications: { id: string; status: string }[];
+				notifications: { id: string; status: string; channel: string }[];
 			};
-			const failed = notifications.filter((n) => n.status === "FAILED");
+			const failed = notifications.filter(
+				(n) => n.status === "FAILED" && n.channel === "EMAIL",
+			);
 			const results = await Promise.allSettled(
 				failed.map((n) =>
 					apiFetch(`/api/admin/notifications/${n.id}/retry`, {
