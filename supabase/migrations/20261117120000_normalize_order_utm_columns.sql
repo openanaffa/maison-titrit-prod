@@ -74,6 +74,12 @@ BEGIN
         column_pair.legacy_name,
         column_pair.canonical_name
       );
+    ELSIF canonical_exists THEN
+      -- Already normalized (e.g. a fresh Prisma-managed database): nothing
+      -- to reconcile. This used to hard-raise, which made the migration
+      -- unusable on any database that never had the legacy columns.
+      RAISE NOTICE 'Column % already canonical on public."Order" — nothing to normalize',
+        column_pair.canonical_name;
     ELSE
       RAISE EXCEPTION
         'Neither expected UTM column % nor legacy column % exists on public."Order"',

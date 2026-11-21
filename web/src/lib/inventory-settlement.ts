@@ -44,7 +44,10 @@ async function activeReservations(
 		where: {
 			type: "RESERVE",
 			idempotencyKey: {
-				startsWith: `${RESERVE_PREFIX}${orderKey}${RESERVE_INFIX}`,
+				// The order's own idempotencyKey is the reservation namespace:
+				// checkout reserves use `<orderKey>:reserve:<index>` (the default
+				// client key already carries the "checkout:" prefix).
+				startsWith: `${orderKey}${RESERVE_INFIX}`,
 			},
 		},
 		select: { id: true, variantId: true, idempotencyKey: true, quantity: true },

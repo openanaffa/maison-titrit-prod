@@ -1,0 +1,26 @@
+# Local Supabase configuration for the E2E suite (#126).
+# `supabase start` runs the stack in Docker; `supabase db reset` applies
+# supabase/migrations/*.sql to the local database. The E2E seed reads the
+# local anon/service keys from `supabase status` at runtime, so no secret
+# is committed here.
+
+project_id = "maison-titrit-e2e"
+
+[api]
+enabled = true
+port = 54321
+
+[db]
+port = 54322
+major_version = 15
+
+[studio]
+enabled = false
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["http://127.0.0.1:3000/auth/callback"]
+# E2E staff accounts sign in with a fixed password — the seed creates
+# confirmed users via the local admin API, so no mail catcher is needed.
+enable_confirmations = false
