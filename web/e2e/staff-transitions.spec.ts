@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { isFullSuite, queryDb, signInAsStaff, signOut, waitForHydration } from "./helpers";
 
 /**
@@ -34,6 +34,15 @@ async function createSeededOrder(): Promise<string> {
 	return body.order.number;
 }
 
+
+/** Wait for the app's transition toast ("MT-… → TARGET") — the PATCH must
+ * complete before navigating to the next queue, or the request is lost. */
+function transitionedTo(page: Page, number: string, target: string) {
+	return expect(
+		page.getByText(new RegExp(`${number} → ${target}`)),
+	).toBeVisible({ timeout: 20_000 });
+}
+
 test("staff processes an order through every allowed COD transition", async ({ page }) => {
 	test.setTimeout(120_000);
 	const number = await createSeededOrder();
@@ -50,38 +59,41 @@ test("staff processes an order through every allowed COD transition", async ({ p
 	await hydrateQueue();
 
 	await row.getByRole("button", { name: /confirmer/i }).click();
-	await expect(
-		page.locator("tr", { hasText: number }).getByText(/CONFIRMED|Confirmée/i, { exact: false }).first(),
-	).toBeVisible({ timeout: 20_000 });
+	await transitionedTo(page, number, "CONFIRMED");
 
-	// to-prepare → start preparing.
+	// Transitioned orders move to the next queue: the to-prepare queue now
+	// holds this order with its CONFIRMED status badge.
 	await page.goto("/makteb/fulfilment?queue=to-prepare");
+	const confirmedRow = page.locator("tr", { hasText: number });
+	await expect(
+		confirmedRow.getByText(/CONFIRMED|Confirmée/i, { exact: false }).first(),
+	).toBeVisible({ timeout: 20_000 });
 	await hydrateQueue();
-	await page
-		.locator("tr", { hasText: number })
-		.getByRole("button", { name: /préparer/i })
-		.click();
+	await confirmedRow.getByRole("button", { name: /préparer/i }).click();
+	await transitionedTo(page, number, "PROCESSING");
+
+	// PROCESSING moves to the to-dispatch queue.
 	await page.goto("/makteb/fulfilment?queue=to-dispatch");
 	await hydrateQueue();
-	await page
-		.locator("tr", { hasText: number })
-		.getByRole("button", { name: /expédier/i })
-		.click();
-	// Dispatch opens the inline form (provider/reference).
 	const dispatchRow = page.locator("tr", { hasText: number });
+	await dispatchRow.getByRole("button", { name: /expédier/i }).click();
+	// Dispatch opens the inline form (provider/reference).
 	await waitForHydration(page, /valider/);
 	await dispatchRow.getByRole("button", { name: /valider/i }).click();
-	await expect(
-		page.locator("tr", { hasText: number }).getByText(/DISPATCHED|Expédiée/i, { exact: false }).first(),
-	).toBeVisible({ timeout: 20_000 });
+	await transitionedTo(page, number, "DISPATCHED");
 
-	// In transit → deliver.
+	// DISPATCHED moves to the in-transit queue.
 	await page.goto("/makteb/fulfilment?queue=in-transit");
 	await hydrateQueue();
-	await page
-		.locator("tr", { hasText: number })
-		.getByRole("button", { name: /livrer/i })
-		.click();
+	const transitRow = page.locator("tr", { hasText: number });
+	await expect(
+		transitRow.getByText(/DISPATCHED|Expédiée/i, { exact: false }).first(),
+	).toBeVisible({ timeout: 20_000 });
+	await transitRow.getByRole("button", { name: /livrer/i }).click();
+	await transitionedTo(page, number, "DELIVERED");
+
+	// DELIVERED lands in the delivered queue.
+	await page.goto("/makteb/fulfilment?queue=delivered");
 	await expect(
 		page.locator("tr", { hasText: number }).getByText(/DELIVERED|Livrée/i, { exact: false }).first(),
 	).toBeVisible({ timeout: 20_000 });
@@ -147,6 +159,9 @@ test("cancelling an order releases its variant reservation", async ({ page }) =>
 	await waitForHydration(page, /annuler|valider/);
 	await row.getByRole("button", { name: /annuler/i }).click();
 	await row.getByRole("button", { name: /valider/i }).click();
+	await transitionedTo(page, number, "CANCELLED");
+	// Cancelled orders move to the exceptions queue (and out of to-confirm).
+	await page.goto("/makteb/fulfilment?queue=exceptions");
 	await expect(
 		page.locator("tr", { hasText: number }).getByText(/CANCELLED|Annulée/i, { exact: false }).first(),
 	).toBeVisible({ timeout: 20_000 });

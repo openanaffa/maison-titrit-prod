@@ -257,6 +257,20 @@ export async function POST(req: Request) {
 			throw e;
 		}
 
+		// Seed the status ledger with the initial state so the audit trail is
+		// complete from the moment the order exists (the queue walk in the
+		// E2E suite and the admin history view both expect a PENDING entry).
+		await db.orderStatusHistory.create({
+			data: {
+				orderId: order.id,
+				fromStatus: null,
+				toStatus: "PENDING",
+				paymentStatus: order.paymentStatus,
+				fulfilmentStatus: order.fulfilmentStatus,
+				actorId: userId,
+			},
+		});
+
 		const pricedItems = items.map((i) => ({
 			name: i.name,
 			size: i.size,
