@@ -30,7 +30,7 @@ const IDENTITY_LABELS: Record<string, Record<string, string>> = {
 	},
 	ar: {
 		heading: "الإشعارات القانونية الموثوقة",
-		operator: "المُشغِّل",
+		operator: "المُشغِّل",
 		status: "الوضع القانوني",
 		publisher: "المسؤول عن النشر",
 		address: "العنوان",

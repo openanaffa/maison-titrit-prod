@@ -8,7 +8,7 @@ import type {
 
 function esc(s: string): string {
 	return s
-		.replace(/&/g, "&amp;")
+		.replace(/&/g, "&")
 		.replace(/</g, "&lt;")
 		.replace(/>/g, "&gt;")
 		.replace(/"/g, "&quot;");

@@ -35,6 +35,35 @@ export function AdminShell({
 		(n) => !n.permission || can(user.role, n.permission),
 	);
 
+	const groups = [
+		{
+			label: "Aperçu",
+			items: items.filter((i) => i.href === "/makteb"),
+		},
+		{
+			label: "Catalogue & commandes",
+			items: items.filter((i) =>
+				["/makteb/products", "/makteb/orders", "/makteb/categories"].includes(
+					i.href,
+				),
+			),
+		},
+		{
+			label: "Marketing & contenu",
+			items: items.filter((i) =>
+				["/makteb/marketing", "/makteb/tags", "/makteb/blog"].includes(i.href),
+			),
+		},
+		{
+			label: "Gestion",
+			items: items.filter((i) =>
+				["/makteb/customers", "/makteb/team", "/makteb/settings"].includes(
+					i.href,
+				),
+			),
+		},
+	].filter((g) => g.items.length > 0);
+
 	return (
 		<div className="flex min-h-screen bg-background text-foreground">
 			{/* Sidebar */}
@@ -78,38 +107,52 @@ export function AdminShell({
 
 				{/* Nav */}
 				<nav className="flex-1 space-y-1 overflow-y-auto p-3">
-					{items.map((item) => {
-						const active =
-							pathname === item.href ||
-							(item.href !== "/makteb" && pathname.startsWith(item.href));
-						const Icon = item.icon;
-						const badge = item.badgeKey ? stats[item.badgeKey] : undefined;
-						return (
-							<Link
-								key={item.href}
-								href={item.href}
-								onClick={() => setOpen(false)}
-								className={cn(
-									"flex items-center gap-3 rounded-sm px-3 py-2.5 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-colors",
-									active
-										? "bg-sidebar-accent text-sidebar-accent-foreground"
-										: "text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
-								)}
-							>
-								<Icon className="size-4" />
-								<span className="flex-1">{t(item.labelKey)}</span>
-								{badge !== undefined && badge > 0 && (
-									<span className="rounded-full bg-terracotta px-1.5 py-0.5 text-[0.55rem] text-cream">
-										{badge}
-									</span>
-								)}
-							</Link>
-						);
-					})}
+					{groups.map((group) => (
+						<div key={group.label} className="space-y-1">
+							<h2 className="px-3 pt-3 pb-1 font-label text-[0.55rem] uppercase tracking-[0.22em] text-bronze/80">
+								{group.label}
+							</h2>
+							{group.items.map((item) => {
+								const active =
+									pathname === item.href ||
+									(item.href !== "/makteb" &&
+										pathname.startsWith(item.href));
+								const Icon = item.icon;
+								const badge = item.badgeKey
+									? stats[item.badgeKey]
+									: undefined;
+								return (
+									<Link
+										key={item.href}
+										href={item.href}
+										onClick={() => setOpen(false)}
+										aria-current={active ? "page" : undefined}
+										className={cn(
+											"flex items-center gap-3 rounded-sm px-3 py-2.5 font-label text-[0.72rem] uppercase tracking-[0.14em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2",
+											active
+												? "bg-sidebar-accent text-sidebar-accent-foreground"
+												: "text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
+										)}
+									>
+										<Icon className="size-4" aria-hidden="true" />
+										<span className="flex-1">{t(item.labelKey)}</span>
+										{badge !== undefined && badge > 0 && (
+											<span className="rounded-full bg-terracotta px-1.5 py-0.5 text-[0.55rem] text-cream">
+												{badge}
+											</span>
+										)}
+									</Link>
+								);
+							})}
+						</div>
+					))}
 				</nav>
 
 				{/* Footer — view site + sign out */}
-				<div className="border-t border-sidebar-border p-3">
+				<nav
+					aria-label="Compte et site"
+					className="border-t border-sidebar-border p-3"
+				>
 					<Link
 						href="/"
 						className="flex items-center gap-3 rounded-sm px-3 py-2.5 font-label text-[0.68rem] uppercase tracking-[0.14em] text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent/60"
@@ -125,7 +168,7 @@ export function AdminShell({
 						<LogOut className="size-4" />
 						Déconnexion
 					</button>
-				</div>
+				</nav>
 			</aside>
 
 			{/* Mobile overlay */}
@@ -169,7 +212,11 @@ export function AdminShell({
 					</div>
 				</header>
 
-				<main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 print:overflow-visible print:p-0">
+				<main
+					id="main-content"
+					tabIndex={-1}
+					className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 print:overflow-visible print:p-0 outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+				>
 					{children}
 				</main>
 			</div>
