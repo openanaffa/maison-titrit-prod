@@ -34,7 +34,10 @@ export function isLocalPostgres(databaseUrl: string): boolean {
 }
 
 export function isSqlite(databaseUrl: string): boolean {
-	return databaseUrl.startsWith("file:");
+	// Only E2E-dedicated SQLite files may be seeded/cleaned — a developer's
+	// dev.db holds real local catalog/order data that deleteMany() would
+	// erase (Codex P2 on #151).
+	return databaseUrl.startsWith("file:") && /e2e/i.test(databaseUrl);
 }
 
 /**

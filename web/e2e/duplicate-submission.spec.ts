@@ -38,7 +38,7 @@ test("double submission creates exactly one order", async ({ page }) => {
 
 	// Persisted state: exactly one order for this customer.
 	const orders = await queryDb<{ n: number }>(
-		'SELECT count(*)::int AS n FROM "Order" WHERE "customerName" = $1',
+		'SELECT count(*) AS n FROM "Order" WHERE "customerName" = $1',
 		["E2E Doublon"],
 	);
 	expect(orders[0].n).toBe(1);
@@ -78,7 +78,7 @@ test("a replayed idempotency key returns the original order", async ({ page }) =
 	expect(body2.order?.number).toBe(body1.order?.number);
 
 	const orders = await queryDb<{ n: number }>(
-		'SELECT count(*)::int AS n FROM "Order" WHERE "idempotencyKey" = $1',
+		'SELECT count(*) AS n FROM "Order" WHERE "idempotencyKey" = $1',
 		[idempotencyKey],
 	);
 	expect(orders[0].n).toBe(1);

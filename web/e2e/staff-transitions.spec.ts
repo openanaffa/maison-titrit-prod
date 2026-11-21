@@ -170,7 +170,7 @@ test("cancelling an order releases its variant reservation", async ({ page }) =>
 	// the variant's reserved counter is back to zero.
 	const movement = (
 		await queryDb<{ n: number }>(
-			'SELECT count(*)::int AS n FROM "StockMovement" WHERE "idempotencyKey" LIKE $1 AND type = $2',
+			'SELECT count(*) AS n FROM "StockMovement" WHERE "idempotencyKey" LIKE $1 AND type = $2',
 			[`${idempotencyKey}:reserve:%`, "RELEASE"],
 		)
 	)[0];

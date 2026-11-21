@@ -83,7 +83,7 @@ test("a size without stock is rejected and persists nothing", async ({ request }
 	expect(res.status()).toBeGreaterThanOrEqual(400);
 	// Persisted state: no order for this customer.
 	const orders = await queryDb<{ n: number }>(
-		'SELECT count(*)::int AS n FROM "Order" WHERE "customerName" = $1',
+		'SELECT count(*) AS n FROM "Order" WHERE "customerName" = $1',
 		["E2E Sans Stock"],
 	);
 	expect(orders[0].n).toBe(0);
@@ -106,7 +106,7 @@ test("the sold-out product page shows the unavailable state", async ({ page }) =
 	).toBeVisible();
 	// Persisted state: no order has ever contained this product.
 	const orders = await queryDb<{ n: number }>(
-		'SELECT count(*)::int AS n FROM "OrderItem" oi JOIN "Product" p ON p.id = oi."productId" WHERE p.ref = $1',
+		'SELECT count(*) AS n FROM "OrderItem" oi JOIN "Product" p ON p.id = oi."productId" WHERE p.ref = $1',
 		["E2E-SOLDOUT-001"],
 	);
 	expect(orders[0].n).toBe(0);

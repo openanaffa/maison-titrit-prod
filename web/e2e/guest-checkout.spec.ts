@@ -67,7 +67,7 @@ test("guest checkout persists a COD order end to end", async ({ page }) => {
 
 	// Legacy product has no variants → no variant reservation movement.
 	const movements = await queryDb<{ n: number }>(
-		'SELECT count(*)::int AS n FROM "StockMovement" sm JOIN "ProductVariant" pv ON pv.id = sm."variantId" JOIN "Product" p ON p.id = pv."productId" WHERE p.ref = $1',
+		'SELECT count(*) AS n FROM "StockMovement" sm JOIN "ProductVariant" pv ON pv.id = sm."variantId" JOIN "Product" p ON p.id = pv."productId" WHERE p.ref = $1',
 		["E2E-LEGACY-001"],
 	);
 	expect(movements[0].n).toBe(0);
@@ -104,7 +104,7 @@ test("an out-of-zone delivery city is rejected and persists nothing", async ({
 	});
 	expect(res.status()).toBe(409);
 	const orders = await queryDb<{ n: number }>(
-		'SELECT count(*)::int AS n FROM "Order" WHERE "customerName" = $1',
+		'SELECT count(*) AS n FROM "Order" WHERE "customerName" = $1',
 		["E2E Sans Zone"],
 	);
 	expect(orders[0].n).toBe(0);
