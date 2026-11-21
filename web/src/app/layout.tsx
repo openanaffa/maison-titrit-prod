@@ -169,6 +169,7 @@ export default async function RootLayout({
 	return (
 		<html lang={locale} dir={dir} suppressHydrationWarning>
 			<head>
+				<meta charSet="utf-8" />
 				<link
 					rel="icon"
 					type="image/png"

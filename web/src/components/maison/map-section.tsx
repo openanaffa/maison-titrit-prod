@@ -106,7 +106,7 @@ export function MapSection() {
 					<Reveal delay={0.12} y={24}>
 						<div className="vintage-frame relative h-full min-h-90 overflow-hidden rounded-sm">
 							<iframe
-								title="Google Maps â€” Maison Titrit, Bouskoura"
+								title="Google Maps — Maison Titrit, Bouskoura"
 								src={googleMapsEmbedUrl()}
 								className="h-full min-h-90 w-full border-0 grayscale-[0.15] sepia-[0.12]"
 								loading="lazy"
