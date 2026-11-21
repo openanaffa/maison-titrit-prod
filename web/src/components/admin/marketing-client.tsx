@@ -96,8 +96,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 
 	const tree = useMemo<SourceNode[]>(() => {
 		const q = query.trim().toLowerCase();
-		const match = (v?: string | null) =>
-			(v ?? "").toLowerCase().includes(q);
+		const match = (v?: string | null) => (v ?? "").toLowerCase().includes(q);
 
 		const sources = data.bySource
 			.filter((s) => !(excludeTest && isTestValue(s.source)))
@@ -106,7 +105,10 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 					.filter(
 						(c) =>
 							c.source === s.source &&
-							!(excludeTest && (isTestValue(c.source) || isTestValue(c.campaign))),
+							!(
+								excludeTest &&
+								(isTestValue(c.source) || isTestValue(c.campaign))
+							),
 					)
 					.map((c): CampaignNode | null => {
 						const orders = data.recent.filter(
@@ -131,8 +133,8 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 						for (const o of orders) {
 							const m = o.utmMedium || "—";
 							if (!mediumMap.has(m)) mediumMap.set(m, []);
-										const bucket = mediumMap.get(m);
-										if (bucket) bucket.push(o);
+							const bucket = mediumMap.get(m);
+							if (bucket) bucket.push(o);
 						}
 						const mediums: MediumNode[] = [...mediumMap.entries()]
 							.map(([medium, ords]) => ({
@@ -141,8 +143,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 								orders: ords,
 								ordersCount: ords.length,
 								revenue: ords.reduce(
-									(a, o) =>
-										a + (o.status === "CANCELLED" ? 0 : o.total),
+									(a, o) => a + (o.status === "CANCELLED" ? 0 : o.total),
 									0,
 								),
 							}))
@@ -167,18 +168,23 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 							mediums.length > 0;
 						if (!campaignMatches) return null;
 
+						const filteredCampaignOrders = orders.length;
+						const filteredCampaignRevenue = orders.reduce(
+							(a, o) => a + (o.status === "CANCELLED" ? 0 : o.total),
+							0,
+						);
+
 						return {
 							id: `cmp:${s.source}::${c.campaign}`,
 							campaign: c.campaign,
-							orders: c.orders,
-							revenue: c.revenue,
+							orders: filteredCampaignOrders,
+							revenue: filteredCampaignRevenue,
 							mediums,
 						};
 					})
 					.filter((c): c is CampaignNode => c !== null);
 
-				const sourceMatches =
-					!q || match(s.source) || campaigns.length > 0;
+				const sourceMatches = !q || match(s.source) || campaigns.length > 0;
 				if (!sourceMatches) return null;
 
 				return {
@@ -296,6 +302,8 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 	const handleKeyDown = (index: number) => (e: React.KeyboardEvent) => {
 		const node = visibleNodes[index];
 		if (!node) return;
+		const target = e.target as HTMLElement | null;
+		if (target?.closest("a")) return;
 		switch (e.key) {
 			case "ArrowDown":
 				e.preventDefault();
@@ -348,6 +356,11 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 		}
 	};
 
+	function csvCell(value: unknown) {
+		const s = String(value);
+		return /^[=+\-@\t\r]/.test(s) ? `'${s}` : s;
+	}
+
 	const exportCsv = () => {
 		const rows: string[] = [];
 		rows.push(["Source", "Campagne", "Support", "Commande", "Total"].join(","));
@@ -357,7 +370,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 					for (const o of m.orders) {
 						rows.push(
 							[s.source, c.campaign, m.medium, o.number, o.total]
-								.map((v) => `"${String(v).replace(/"/g, '""')}"`)
+								.map((v) => `"${csvCell(v).replace(/"/g, '""')}"`)
 								.join(","),
 						);
 					}
@@ -368,7 +381,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 			for (const s of tree) {
 				rows.push(
 					[s.source, "", "", "", s.revenue]
-						.map((v) => `"${String(v).replace(/"/g, '""')}"`)
+						.map((v) => `"${csvCell(v).replace(/"/g, '""')}"`)
 						.join(","),
 				);
 			}
@@ -393,9 +406,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 		<div className="space-y-8">
 			<div className="flex flex-wrap items-end justify-between gap-3">
 				<div>
-					<h1 className="heading-vintage-lg">
-						{t("admin.marketing.title")}
-					</h1>
+					<h1 className="heading-vintage-lg">{t("admin.marketing.title")}</h1>
 					<p className="mt-1 body-vintage">{t("admin.marketing.subtitle")}</p>
 				</div>
 				<nav
@@ -416,8 +427,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 							},
 						] as const
 					).map((p) => {
-						const active =
-							(data.period === 0 ? "all" : "30") === p.key;
+						const active = (data.period === 0 ? "all" : "30") === p.key;
 						return (
 							<Link
 								key={p.key}
@@ -483,9 +493,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 				className="space-y-3"
 			>
 				<div className="flex flex-wrap items-center justify-between gap-3">
-					<h2 className="label-vintage-lg">
-						{t("admin.marketing.sources")}
-					</h2>
+					<h2 className="label-vintage-lg">{t("admin.marketing.sources")}</h2>
 					<div className="flex flex-wrap items-center gap-2">
 						<label className="relative">
 							<Search
@@ -496,8 +504,8 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 								type="search"
 								value={query}
 								onChange={(e) => setQuery(e.target.value)}
-								placeholder="Rechercher source, campagne, commande…"
-								aria-label="Rechercher dans l'attribution"
+								placeholder={t("admin.marketing.searchPlaceholder")}
+								aria-label={t("admin.marketing.search")}
 								className="rounded-sm border border-border bg-background ps-8 pe-3 py-1.5 font-label text-[0.62rem] uppercase tracking-[0.14em] text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 							/>
 						</label>
@@ -508,29 +516,25 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 							className="rounded-sm border border-border px-3 py-1.5 font-label text-[0.62rem] uppercase tracking-[0.14em] text-ink transition-colors hover:bg-sidebar-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 						>
 							{excludeTest
-								? "Trafic test masqué"
-								: "Trafic test visible"}
+								? t("admin.marketing.testTrafficHide")
+								: t("admin.marketing.testTrafficShow")}
 						</button>
 						<select
-							aria-label="Trier par"
+							aria-label={t("admin.marketing.sortBy")}
 							value={sortKey}
 							onChange={(e) =>
-								setSortKey(
-									e.target.value as "source" | "orders" | "revenue",
-								)
+								setSortKey(e.target.value as "source" | "orders" | "revenue")
 							}
 							className="rounded-sm border border-border bg-background px-3 py-1.5 font-label text-[0.62rem] uppercase tracking-[0.14em] text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 						>
-							<option value="orders">Commandes</option>
-							<option value="revenue">Revenu</option>
-							<option value="source">Source</option>
+							<option value="orders">{t("admin.marketing.colOrders")}</option>
+							<option value="revenue">{t("admin.marketing.colRevenue")}</option>
+							<option value="source">{t("admin.marketing.colSource")}</option>
 						</select>
 						<select
-							aria-label="Ordre de tri"
+							aria-label={t("admin.marketing.sortOrder")}
 							value={sortDir}
-							onChange={(e) =>
-								setSortDir(e.target.value as "asc" | "desc")
-							}
+							onChange={(e) => setSortDir(e.target.value as "asc" | "desc")}
 							className="rounded-sm border border-border bg-background px-3 py-1.5 font-label text-[0.62rem] uppercase tracking-[0.14em] text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 						>
 							<option value="desc">Desc</option>
@@ -542,7 +546,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 							className="inline-flex items-center gap-1.5 rounded-sm border border-border px-3 py-1.5 font-label text-[0.62rem] uppercase tracking-[0.14em] text-ink transition-colors hover:bg-sidebar-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 						>
 							<Download className="size-3.5" aria-hidden="true" />
-							CSV
+							{t("admin.marketing.exportCsv")}
 						</button>
 					</div>
 				</div>
@@ -558,15 +562,11 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 							aria-hidden="true"
 						>
 							<span>Source / Campagne / Support</span>
-							<span className="text-end">
-								{t("admin.marketing.colOrders")}
-							</span>
+							<span className="text-end">{t("admin.marketing.colOrders")}</span>
 							<span className="text-end">
 								{t("admin.marketing.colRevenue")}
 							</span>
-							<span className="text-end">
-								{t("admin.marketing.colShare")}
-							</span>
+							<span className="text-end">{t("admin.marketing.colShare")}</span>
 						</div>
 						<div
 							role="tree"
@@ -580,9 +580,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 										key={node.id}
 										role="treeitem"
 										aria-level={node.level}
-										aria-expanded={
-											node.hasChildren ? isExpanded : undefined
-										}
+										aria-expanded={node.hasChildren ? isExpanded : undefined}
 										aria-selected={node.id === selectedId}
 										tabIndex={index === focusIndex ? 0 : -1}
 										ref={(el) => {
@@ -610,9 +608,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 													e.stopPropagation();
 													toggle(node.id);
 												}}
-												aria-label={
-													isExpanded ? "Réduire" : "Développer"
-												}
+												aria-label={isExpanded ? "Réduire" : "Développer"}
 												className="inline-flex size-5 items-center justify-center rounded text-bronze focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 											>
 												{isExpanded ? (

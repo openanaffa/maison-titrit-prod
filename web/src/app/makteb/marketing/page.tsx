@@ -46,19 +46,17 @@ function aggregate(orders: OrderUtmRow[], periodDays: 30 | 0): MarketingData {
 		if (!cancelled) camp.revenue += o.total;
 		byCampaign.set(ck, camp);
 
-		if (recentAttributed.length < 10) {
-			recentAttributed.push({
-				id: o.id,
-				number: o.number,
-				status: o.status,
-				total: o.total,
-				currency: o.currency,
-				utmSource: o.utmSource,
-				utmMedium: o.utmMedium,
-				utmCampaign: o.utmCampaign,
-				createdAt: o.createdAt,
-			});
-		}
+		recentAttributed.push({
+			id: o.id,
+			number: o.number,
+			status: o.status,
+			total: o.total,
+			currency: o.currency,
+			utmSource: o.utmSource,
+			utmMedium: o.utmMedium,
+			utmCampaign: o.utmCampaign,
+			createdAt: o.createdAt,
+		});
 	}
 
 	return {

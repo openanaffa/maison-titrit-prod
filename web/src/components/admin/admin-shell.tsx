@@ -37,25 +37,28 @@ export function AdminShell({
 
 	const groups = [
 		{
-			label: "Aperçu",
+			label: t("admin.nav.group.overview"),
 			items: items.filter((i) => i.href === "/makteb"),
 		},
 		{
-			label: "Catalogue & commandes",
+			label: t("admin.nav.group.catalog"),
 			items: items.filter((i) =>
-				["/makteb/products", "/makteb/orders", "/makteb/categories"].includes(
-					i.href,
-				),
+				[
+					"/makteb/products",
+					"/makteb/orders",
+					"/makteb/categories",
+					"/makteb/fulfilment",
+				].includes(i.href),
 			),
 		},
 		{
-			label: "Marketing & contenu",
+			label: t("admin.nav.group.marketing"),
 			items: items.filter((i) =>
 				["/makteb/marketing", "/makteb/tags", "/makteb/blog"].includes(i.href),
 			),
 		},
 		{
-			label: "Gestion",
+			label: t("admin.nav.group.management"),
 			items: items.filter((i) =>
 				["/makteb/customers", "/makteb/team", "/makteb/settings"].includes(
 					i.href,
@@ -115,12 +118,9 @@ export function AdminShell({
 							{group.items.map((item) => {
 								const active =
 									pathname === item.href ||
-									(item.href !== "/makteb" &&
-										pathname.startsWith(item.href));
+									(item.href !== "/makteb" && pathname.startsWith(item.href));
 								const Icon = item.icon;
-								const badge = item.badgeKey
-									? stats[item.badgeKey]
-									: undefined;
+								const badge = item.badgeKey ? stats[item.badgeKey] : undefined;
 								return (
 									<Link
 										key={item.href}
@@ -150,7 +150,7 @@ export function AdminShell({
 
 				{/* Footer — view site + sign out */}
 				<nav
-					aria-label="Compte et site"
+					aria-label={t("admin.nav.group.account")}
 					className="border-t border-sidebar-border p-3"
 				>
 					<Link
