@@ -331,6 +331,9 @@ export const French = {
 	"admin.marketing.treeSource": "SOURCE",
 	"admin.marketing.treeCampaign": "CAMPAGNE",
 	"admin.marketing.treeMedium": "SUPPORT",
+	"admin.marketing.missingSource": "Sans source",
+	"admin.marketing.missingCampaign": "Sans campagne",
+	"admin.marketing.missingMedium": "Sans support",
 	"admin.team.title": "Équipe",
 	"admin.team.subtitle":
 		"Gérez les rôles des comptes de la maison. Les changements prennent effet à la prochaine connexion.",

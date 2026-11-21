@@ -8,21 +8,23 @@ const nextConfig: NextConfig = {
 	// Private paths stay crawlable so Google sees noindex (robots.txt Disallow caused "indexed though blocked").
 	async headers() {
 		return [
-			"/makteb/:path*",
-			"/api/:path*",
-			"/compte/:path*",
-			"/checkout/:path*",
-			"/panier/:path*",
-			"/auth/:path*",
-		]
-			.map((source) => ({
+			...[
+				"/makteb/:path*",
+				"/api/:path*",
+				"/compte/:path*",
+				"/checkout/:path*",
+				"/panier/:path*",
+				"/auth/:path*",
+			].map((source) => ({
 				source,
 				headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
-			}))
-			.concat({
+			})),
+			{
 				source: "/((?!api/|_next/|.*\\.).*)",
+				has: [{ type: "header", key: "accept", value: "text/html" }],
 				headers: [{ key: "Content-Type", value: "text/html; charset=utf-8" }],
-			});
+			},
+		];
 	},
 	images: {
 		remotePatterns: [

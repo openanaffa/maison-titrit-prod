@@ -319,6 +319,9 @@ export const Arabic = {
 	"admin.marketing.treeSource": "المصدر",
 	"admin.marketing.treeCampaign": "الحملة",
 	"admin.marketing.treeMedium": "الوسيط",
+	"admin.marketing.missingSource": "بلا مصدر",
+	"admin.marketing.missingCampaign": "بلا حملة",
+	"admin.marketing.missingMedium": "بلا وسيط",
 	"admin.team.title": "الفريق",
 	"admin.team.subtitle":
 		"إدارة أدوار حسابات الدار. تسري التغييرات عند تسجيل الدخول التالي.",

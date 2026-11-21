@@ -22,11 +22,12 @@ type TreeNode = {
 	children: TreeNode[];
 };
 
-function cleanSource(value: string | null) {
-	return (value || "direct / organic")
-		.trim()
+function cleanSource(value: string | null, missingSource: string) {
+	const source = value
+		?.trim()
 		.toLowerCase()
 		.replace(/ms-egde/g, "ms-edge");
+	return source || missingSource;
 }
 
 function isTestTraffic(order: OrderUtmRow) {
@@ -46,9 +47,10 @@ function buildTree(
 	query: string,
 	sort: string,
 	ascending: boolean,
+	fallbacks: { source: string; campaign: string; medium: string },
 ) {
 	const filtered = orders.filter((order) => {
-		const source = cleanSource(order.utmSource);
+		const source = cleanSource(order.utmSource, fallbacks.source);
 		const searchable = [
 			order.number,
 			source,
@@ -71,9 +73,9 @@ function buildTree(
 	};
 	const sources = new Map<string, Map<string, Map<string, OrderUtmRow[]>>>();
 	for (const order of filtered) {
-		const source = cleanSource(order.utmSource);
-		const campaign = order.utmCampaign?.trim() || "Sans campagne";
-		const medium = order.utmMedium?.trim() || "Sans support";
+		const source = cleanSource(order.utmSource, fallbacks.source);
+		const campaign = order.utmCampaign?.trim() || fallbacks.campaign;
+		const medium = order.utmMedium?.trim() || fallbacks.medium;
 		const campaigns = sources.get(source) ?? new Map();
 		const media = campaigns.get(campaign) ?? new Map();
 		const groupedOrders = media.get(medium) ?? [];
@@ -173,6 +175,9 @@ export function share(orders: number, total: number) {
 
 export function MarketingClient({ data }: { data: MarketingData }) {
 	const { t } = useT();
+	const missingSource = t("admin.marketing.missingSource");
+	const missingCampaign = t("admin.marketing.missingCampaign");
+	const missingMedium = t("admin.marketing.missingMedium");
 	const [excludeTest, setExcludeTest] = React.useState(true);
 	const [query, setQuery] = React.useState("");
 	const [sort, setSort] = React.useState("date");
@@ -187,8 +192,21 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 		[data.orders, excludeTest],
 	);
 	const { filtered, tree } = React.useMemo(
-		() => buildTree(visibleOrders, query, sort, ascending),
-		[visibleOrders, query, sort, ascending],
+		() =>
+			buildTree(visibleOrders, query, sort, ascending, {
+				source: missingSource,
+				campaign: missingCampaign,
+				medium: missingMedium,
+			}),
+		[
+			visibleOrders,
+			query,
+			sort,
+			ascending,
+			missingSource,
+			missingCampaign,
+			missingMedium,
+		],
 	);
 	const attributedOrders = filtered.filter((order) => order.utmSource);
 	const direct = filtered.filter((order) => !order.utmSource);
@@ -294,7 +312,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 			],
 			...filtered.map((order) => [
 				order.number,
-				cleanSource(order.utmSource),
+				cleanSource(order.utmSource, missingSource),
 				order.utmCampaign || "",
 				order.utmMedium || "",
 				order.status,
@@ -649,7 +667,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 											</Link>
 										</td>
 										<td className="px-4 py-3 text-ink-soft dark:text-cream/85">
-											{cleanSource(order.utmSource)}
+											{cleanSource(order.utmSource, missingSource)}
 										</td>
 										<td className="px-4 py-3 text-ink-soft dark:text-cream/85">
 											{order.utmCampaign || "—"}
