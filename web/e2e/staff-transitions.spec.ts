@@ -39,7 +39,7 @@ async function createSeededOrder(): Promise<string> {
  * complete before navigating to the next queue, or the request is lost. */
 function transitionedTo(page: Page, number: string, target: string) {
 	return expect(
-		page.getByText(new RegExp(`${number} → ${target}`)),
+		page.getByText(new RegExp(`${number} → ${target}`)).first(),
 	).toBeVisible({ timeout: 20_000 });
 }
 
