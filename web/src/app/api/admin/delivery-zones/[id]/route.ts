@@ -35,7 +35,7 @@ export async function PATCH(
 			},
 		});
 		return NextResponse.json({ zone });
-	} catch (e) {
+	} catch {
 		return NextResponse.json({ error: "Données invalides." }, { status: 400 });
 	}
 }
@@ -51,7 +51,7 @@ export async function DELETE(
 	try {
 		await db.deliveryZone.delete({ where: { id } });
 		return NextResponse.json({ ok: true });
-	} catch (e) {
+	} catch {
 		return NextResponse.json(
 			{ error: "Suppression impossible." },
 			{ status: 500 },

@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 			},
 		});
 		return NextResponse.json({ zone });
-	} catch (e) {
+	} catch {
 		return NextResponse.json({ error: "Données invalides." }, { status: 400 });
 	}
 }
