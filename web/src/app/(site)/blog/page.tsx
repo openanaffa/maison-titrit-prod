@@ -70,7 +70,7 @@ export default async function BlogPage() {
 									</Link>
 								)}
 								<div className="p-6 sm:p-8">
-									<p className="font-label text-[0.62rem] uppercase tracking-[0.2em] text-bronze">
+									<p className="font-label text-[0.62rem] uppercase tracking-[0.2em] text-ink">
 										{post.publishedAt
 											? new Date(post.publishedAt).toLocaleDateString("fr-FR", {
 													day: "numeric",
@@ -95,7 +95,7 @@ export default async function BlogPage() {
 									</p>
 									<Link
 										href={`/blog/${post.slug}`}
-										className="mt-4 inline-flex items-center gap-1 font-label text-[0.66rem] uppercase tracking-[0.18em] text-bronze transition-colors hover:text-terracotta"
+										className="mt-4 inline-flex items-center gap-1 font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink transition-colors hover:text-terracotta"
 									>
 										Lire la suite →
 									</Link>

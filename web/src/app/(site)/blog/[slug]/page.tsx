@@ -74,7 +74,7 @@ export default async function BlogPostPage({
 			<div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
 				<Link
 					href="/blog"
-					className="inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-bronze hover:text-terracotta"
+					className="inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink hover:text-terracotta"
 				>
 					← Journal
 				</Link>
@@ -84,7 +84,7 @@ export default async function BlogPostPage({
 					<h1 className="wordmark mt-4 text-3xl uppercase text-ink sm:text-4xl dark:text-cream">
 						{post.title}
 					</h1>
-					<p className="mt-3 font-label text-[0.62rem] uppercase tracking-[0.2em] text-bronze">
+					<p className="mt-3 font-label text-[0.62rem] uppercase tracking-[0.2em] text-ink">
 						{post.publishedAt
 							? new Date(post.publishedAt).toLocaleDateString("fr-FR", {
 									day: "numeric",
@@ -121,7 +121,7 @@ export default async function BlogPostPage({
 					</p>
 					<Link
 						href="/blog"
-						className="mt-4 inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-bronze hover:text-terracotta"
+						className="mt-4 inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink hover:text-terracotta"
 					>
 						← Tous les articles
 					</Link>

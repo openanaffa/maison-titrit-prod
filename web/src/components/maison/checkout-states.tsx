@@ -19,10 +19,14 @@ export function CheckoutSuccess({
 }) {
 	const { t } = useT();
 	return (
-		<section className="vintage-paper flex min-h-[80vh] items-center justify-center px-4 py-16">
+		<section
+			className="vintage-paper flex min-h-[80vh] items-center justify-center px-4 py-16"
+			aria-live="polite"
+			aria-atomic="true"
+		>
 			<div className="vintage-frame max-w-md rounded-sm bg-card/95 p-9 text-center">
 				<span className="mx-auto inline-flex size-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
-					<Check className="size-7" />
+					<Check className="size-7" aria-hidden="true" />
 				</span>
 				<h1 className="wordmark mt-4 text-2xl uppercase text-ink dark:text-cream">
 					{t("checkout.success")}
