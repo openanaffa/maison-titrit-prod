@@ -1,15 +1,19 @@
 import { Prisma } from "@prisma/client";
-import { after, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
+import { after, NextResponse } from "next/server";
 import { site } from "@/config/site";
 import { rejectBots } from "@/lib/bot";
 import { parseCartLines, priceCart } from "@/lib/checkout";
+import {
+	CORRELATION_ID_HEADER,
+	getCorrelationId,
+	logWithCorrelation,
+} from "@/lib/correlation";
 import { db } from "@/lib/db";
 import { getDeliveryQuote } from "@/lib/delivery";
 import { releaseReservation, reserveStock } from "@/lib/inventory";
 import { notifyStaffNewOrder } from "@/lib/notify";
 import { getCurrentUser } from "@/lib/session";
-import { getCorrelationId, logWithCorrelation } from "@/lib/correlation";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +27,14 @@ export async function POST(req: Request) {
 	const correlationId = getCorrelationId(req);
 	Sentry.setContext("correlation", { correlationId });
 	logWithCorrelation(correlationId, "info", "checkout.start");
+
+	/** Every response carries the correlation ID so a failure reported by
+	 *  the customer can be traced back through logs and Sentry. */
+	const respond = (body: unknown, init?: ResponseInit) => {
+		const res = NextResponse.json(body, init);
+		res.headers.set(CORRELATION_ID_HEADER, correlationId);
+		return res;
+	};
 
 	const blocked = await rejectBots();
 	if (blocked) {
@@ -41,10 +53,7 @@ export async function POST(req: Request) {
 
 		if (!cartLines) {
 			logWithCorrelation(correlationId, "warn", "checkout.empty_cart");
-			return NextResponse.json(
-				{ error: "Panier vide ou invalide." },
-				{ status: 400 },
-			);
+			return respond({ error: "Panier vide ou invalide." }, { status: 400 });
 		}
 		if (
 			typeof customer.name !== "string" ||
@@ -53,10 +62,7 @@ export async function POST(req: Request) {
 			!customer.phone.trim()
 		) {
 			logWithCorrelation(correlationId, "warn", "checkout.missing_customer");
-			return NextResponse.json(
-				{ error: "Nom et téléphone requis." },
-				{ status: 400 },
-			);
+			return respond({ error: "Nom et téléphone requis." }, { status: 400 });
 		}
 
 		// Idempotent replay: return the existing order instead of creating a duplicate.
@@ -67,7 +73,7 @@ export async function POST(req: Request) {
 			});
 			if (existing) {
 				const whatsapp = buildWhatsappLink(existing, site);
-				return NextResponse.json({
+				return respond({
 					order: { number: existing.number, total: existing.total },
 					whatsapp,
 					idempotent: true,
@@ -91,8 +97,10 @@ export async function POST(req: Request) {
 		});
 		const priced = priceCart(cartLines, products);
 		if (!priced.ok) {
-			logWithCorrelation(correlationId, "warn", "checkout.pricing_fail", { error: priced.error });
-			return NextResponse.json({ error: priced.error }, { status: 409 });
+			logWithCorrelation(correlationId, "warn", "checkout.pricing_fail", {
+				error: priced.error,
+			});
+			return respond({ error: priced.error }, { status: 409 });
 		}
 		const { items, total: itemsTotal } = priced;
 
@@ -101,8 +109,12 @@ export async function POST(req: Request) {
 			typeof customer.city === "string" ? customer.city : null,
 		);
 		if (!quote.covered) {
-			logWithCorrelation(correlationId, "warn", "checkout.delivery_not_covered");
-			return NextResponse.json(
+			logWithCorrelation(
+				correlationId,
+				"warn",
+				"checkout.delivery_not_covered",
+			);
+			return respond(
 				{ error: "Destination de livraison non couverte." },
 				{ status: 409 },
 			);
@@ -138,8 +150,11 @@ export async function POST(req: Request) {
 						where: { productId: line.productId },
 					});
 					if (variantCount > 0) {
-								logWithCorrelation(correlationId, "warn", "checkout.out_of_stock", { productId: line.productId, size: line.size });
-								throw new Error("OUT_OF_STOCK");
+						logWithCorrelation(correlationId, "warn", "checkout.out_of_stock", {
+							productId: line.productId,
+							size: line.size,
+						});
+						throw new Error("OUT_OF_STOCK");
 					}
 				}
 				lineVariants.push(variant?.id ?? null);
@@ -186,7 +201,12 @@ export async function POST(req: Request) {
 		} catch (e) {
 			// Release any reservations already made.
 			for (const r of reservations) {
-				logWithCorrelation(correlationId, "info", "checkout.release_reservation", { variantId: r.variantId });
+				logWithCorrelation(
+					correlationId,
+					"info",
+					"checkout.release_reservation",
+					{ variantId: r.variantId },
+				);
 				try {
 					await releaseReservation(r.variantId, r.qty, {
 						idempotencyKey: `${r.key}:release`,
@@ -200,7 +220,7 @@ export async function POST(req: Request) {
 				e instanceof Error && e.message === "OUT_OF_STOCK"
 					? "Un article du panier n'est plus disponible."
 					: "Stock insuffisant.";
-			return NextResponse.json({ error: msg }, { status: 409 });
+			return respond({ error: msg }, { status: 409 });
 		}
 
 		const userId = user ? await getOrderUserId(user) : null;
@@ -244,7 +264,12 @@ export async function POST(req: Request) {
 		} catch (e) {
 			// Release reservations on order creation failure.
 			for (const r of reservations) {
-				logWithCorrelation(correlationId, "info", "checkout.release_reservation", { variantId: r.variantId });
+				logWithCorrelation(
+					correlationId,
+					"info",
+					"checkout.release_reservation",
+					{ variantId: r.variantId },
+				);
 				try {
 					await releaseReservation(r.variantId, r.qty, {
 						idempotencyKey: `${r.key}:release`,
@@ -266,7 +291,7 @@ export async function POST(req: Request) {
 				});
 				if (existing) {
 					const whatsapp = buildWhatsappLink(existing, site);
-					return NextResponse.json({
+					return respond({
 						order: { number: existing.number, total: existing.total },
 						whatsapp,
 						idempotent: true,
@@ -276,7 +301,10 @@ export async function POST(req: Request) {
 			throw e;
 		}
 
-		logWithCorrelation(correlationId, "info", "checkout.order_created", { orderNumber: order.number, total });
+		logWithCorrelation(correlationId, "info", "checkout.order_created", {
+			orderNumber: order.number,
+			total,
+		});
 		const pricedItems = items.map((i) => ({
 			name: i.name,
 			size: i.size,
@@ -320,19 +348,18 @@ export async function POST(req: Request) {
 			}),
 		);
 
-		return NextResponse.json({
+		return respond({
 			order: { number: order.number, total },
 			whatsapp,
 			correlationId,
 		});
 	} catch (e) {
-		logWithCorrelation(correlationId, "error", "checkout.failed", { error: String(e) });
+		logWithCorrelation(correlationId, "error", "checkout.failed", {
+			error: String(e),
+		});
 		Sentry.captureException(e, { tags: { correlationId } });
 		console.error("POST /api/checkout failed", e);
-		return NextResponse.json(
-			{ error: "Commande impossible." },
-			{ status: 500 },
-		);
+		return respond({ error: "Commande impossible." }, { status: 500 });
 	}
 }
 
