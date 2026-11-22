@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import {
@@ -13,7 +14,6 @@ import {
 	validateImportRows,
 } from "@/lib/inventory-import";
 import { requirePermission } from "@/lib/session";
-import { createHash } from "crypto";
 
 export const dynamic = "force-dynamic";
 
@@ -56,12 +56,12 @@ export async function POST(req: Request) {
 	const importKey =
 		typeof data.idempotencyKey === "string" && data.idempotencyKey.trim()
 			? data.idempotencyKey.trim()
-			: `imp-${crypto.createHash("sha256").update(JSON.stringify(data.rows)).digest("hex").slice(0, 16)}`;
+			: `imp-${createHash("sha256").update(JSON.stringify(data.rows)).digest("hex").slice(0, 16)}`;
 
 	const rows: ImportRow[] = [];
 	const shapeIssues: { row: number; sku: string; errors: string[] }[] = [];
 	data.rows.forEach((raw, i) => {
-		const row = normalizeRow(raw);
+		const row = normalizeRow(raw, i + 1);
 		if (row) rows.push(row);
 		else shapeIssues.push({ row: i + 1, sku: "", errors: ["ROW_MALFORMED"] });
 	});

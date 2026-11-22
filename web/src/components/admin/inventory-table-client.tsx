@@ -163,7 +163,9 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 			const qtyIdx = header.findIndex(
 				(h) => h === "qty" || h === "quantite" || h === "quantité",
 			);
-			const reasonIdx = header.indexOf("reason");
+			const reasonIdx = header.findIndex(
+				(h) => h === "reason" || h === "raison",
+			);
 			const parsedRows: (ImportRow | null)[] = [];
 			for (let i = 1; i < table.length; i++) {
 				const cells = table[i];
@@ -173,12 +175,15 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 				}
 				const rawAction = (cells[actionIdx] ?? "").trim().toLowerCase();
 				parsedRows.push(
-					normalizeRow({
-						sku: cells[skuIdx] ?? "",
-						action: ACTION_ALIASES[rawAction] ?? rawAction,
-						qty: cells[qtyIdx] ?? "",
-						reason: reasonIdx >= 0 ? (cells[reasonIdx] ?? "") : "",
-					}),
+					normalizeRow(
+						{
+							sku: cells[skuIdx] ?? "",
+							action: ACTION_ALIASES[rawAction] ?? rawAction,
+							qty: cells[qtyIdx] ?? "",
+							reason: reasonIdx >= 0 ? (cells[reasonIdx] ?? "") : "",
+						},
+						i + 1,
+					),
 				);
 			}
 			const validRows = parsedRows.filter((r): r is ImportRow => r !== null);

@@ -290,7 +290,7 @@ export const English = {
 	"admin.inventory.noMovements": "No movements recorded.",
 	"admin.inventory.import": "Import CSV",
 	"admin.inventory.importHint":
-		"Colonnes acceptées : sku, action, qty, raison. Actions : réception, ajustement, casse, retour.",
+		"Accepted columns: sku, action, qty, reason (or raison). Actions: receive, adjust, damage, return.",
 	"admin.inventory.importPreview": "Aperçu de l'import",
 	"admin.inventory.importApply": "Appliquer l'import",
 	"admin.inventory.importCancel": "Annuler",

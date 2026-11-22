@@ -47,9 +47,7 @@ describe("inventory import validation", () => {
 			normalizeRow({ sku: "X", action: "receive", qty: "abc" }, 2),
 		).toBeNull();
 		expect(normalizeRow(null, 3)).toBeNull();
-		expect(
-			normalizeRow({ sku: "X", action: "receive", qty: 2 }, 4),
-		).toEqual({
+		expect(normalizeRow({ sku: "X", action: "receive", qty: 2 }, 4)).toEqual({
 			sku: "X",
 			action: "receive",
 			qty: 2,
