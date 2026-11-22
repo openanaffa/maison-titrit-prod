@@ -12,6 +12,7 @@
 REVOKE SELECT ON TABLE public."ProductVariant" FROM anon;
 
 DROP POLICY IF EXISTS "catalog_read_variants" ON public."ProductVariant";
+DROP POLICY IF EXISTS "staff_read_variants" ON public."ProductVariant";
 CREATE POLICY "staff_read_variants" ON public."ProductVariant"
   FOR SELECT TO authenticated
   USING (
