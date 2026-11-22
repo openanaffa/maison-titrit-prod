@@ -39,15 +39,6 @@ jobs:
       - name: Build
         run: bun run build
 
-      - name: Core Web Vitals (Lighthouse CI, where practical)
-        continue-on-error: true
-        run: |
-          # Lab-based Core Web Vitals check against key routes. Requires a
-          # running dev server; when the environment cannot start one, budgets
-          # are enforced instead via Vercel Speed Insights field data (75th
-          # percentile) at release time — see docs/performance-budgets.md.
-          bunx @lhci/cli@0.12.x autorun --config=.lighthouserc.cjs || true
-
   e2e:
     # Issue #126: browser-level commerce paths against an isolated local
     # Supabase (auth + Postgres). Never touches the deployed project —
@@ -142,3 +133,12 @@ jobs:
             web/playwright-report/
             web/test-results/
           retention-days: 7
+
+      - name: Core Web Vitals (Lighthouse CI)
+        # Lab-based CWV gate (#127) against key routes. Runs in the e2e job
+        # because a production server needs a reachable database: this job
+        # has already provisioned the isolated local Supabase and seeded it.
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+        run: bunx @lhci/cli@0.12.x autorun --config=.lighthouserc.cjs

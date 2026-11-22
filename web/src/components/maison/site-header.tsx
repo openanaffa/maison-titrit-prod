@@ -101,7 +101,7 @@ export function SiteHeader() {
 								<a
 									key={item.href}
 									href={item.href}
-									className={`${linkClass} text-ink-soft hover:text-terracotta dark:text-cream/85 dark:hover:text-bronze-light`}
+									className={`${linkClass} text-ink-soft hover:text-ink dark:text-cream/85 dark:hover:text-bronze-light`}
 								>
 									{t(item.labelKey)}
 								</a>
@@ -132,7 +132,7 @@ export function SiteHeader() {
 								<a
 									key={item.href}
 									href={item.href}
-									className={`${linkClass} text-ink-soft hover:text-terracotta dark:text-cream/85 dark:hover:text-bronze-light`}
+									className={`${linkClass} text-ink-soft hover:text-ink dark:text-cream/85 dark:hover:text-bronze-light`}
 								>
 									{t(item.labelKey)}
 								</a>

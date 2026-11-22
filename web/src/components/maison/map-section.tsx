@@ -32,12 +32,12 @@ export function MapSection() {
 					<Reveal>
 						<div className="vintage-frame h-full rounded-sm p-7 sm:p-8">
 							<div className="flex items-start gap-3">
-								<span className="mt-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-bronze/15 text-terracotta">
+								<span className="mt-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-bronze/15 text-ink">
 									<MapPin className="size-4" />
 								</span>
 								<div>
 									<h3 className="heading-vintage-md">{site.name}</h3>
-									<p className="font-label text-[0.66rem] uppercase tracking-[0.24em] text-bronze">
+									<p className="font-label text-[0.66rem] uppercase tracking-[0.24em] text-ink">
 										{t("map.brandSub")}
 									</p>
 								</div>
@@ -54,7 +54,7 @@ export function MapSection() {
 							</address>
 
 							<div className="mt-6 border-t border-bronze/25 pt-5">
-								<p className="flex items-center gap-2 font-label text-[0.66rem] uppercase tracking-[0.22em] text-bronze">
+								<p className="flex items-center gap-2 font-label text-[0.66rem] uppercase tracking-[0.22em] text-ink">
 									<Clock className="size-3.5" />
 									{t("map.hours")}
 								</p>
@@ -68,7 +68,7 @@ export function MapSection() {
 											<span
 												className={
 													h.time.startsWith("Ferm")
-														? "text-terracotta"
+														? "text-ink"
 														: "text-ink dark:text-cream"
 												}
 											>
@@ -93,7 +93,7 @@ export function MapSection() {
 									href={googleMapsLink()}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-bronze/50 px-5 py-3 font-label text-[0.72rem] uppercase tracking-[0.18em] text-ink transition-colors hover:border-terracotta hover:bg-bronze/10 hover:text-terracotta dark:text-cream"
+									className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-bronze/50 px-5 py-3 font-label text-[0.72rem] uppercase tracking-[0.18em] text-ink transition-colors hover:border-terracotta hover:bg-bronze/10 hover:text-ink dark:text-cream"
 								>
 									<ExternalLink className="size-4" />
 									{t("cta.openMap")}
@@ -118,7 +118,7 @@ export function MapSection() {
 								href={osmLink()}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="absolute bottom-2 inset-e-2 inline-flex items-center gap-1.5 rounded-full bg-card/85 px-3 py-1.5 font-label text-[0.56rem] uppercase tracking-[0.16em] text-bronze backdrop-blur transition-colors hover:text-terracotta"
+								className="absolute bottom-2 inset-e-2 inline-flex items-center gap-1.5 rounded-full bg-card/85 px-3 py-1.5 font-label text-[0.56rem] uppercase tracking-[0.16em] text-ink backdrop-blur transition-colors hover:text-ink"
 							>
 								<AmazighStar className="size-3" strokeWidth={1.6} />
 								{t("map.openSource")}

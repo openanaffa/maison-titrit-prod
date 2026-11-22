@@ -95,7 +95,7 @@ export function AccountButton({
 						<button
 							type="button"
 							onClick={() => void signOut("/")}
-							className="flex min-h-11 items-center gap-2 rounded-sm px-4 text-start font-label text-sm text-ink transition-colors hover:bg-terracotta/10 hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:text-cream"
+							className="flex min-h-11 items-center gap-2 rounded-sm px-4 text-start font-label text-sm text-ink transition-colors hover:bg-terracotta/10 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:text-cream"
 						>
 							<LogOut className="size-4" />
 							{t("compte.signout")}

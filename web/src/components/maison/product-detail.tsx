@@ -50,7 +50,7 @@ export function ProductDetailClient({
 	return (
 		<section className="vintage-paper relative min-h-screen pb-24 pt-6 sm:pt-10">
 			<AmazighStar
-				className="pointer-events-none absolute -right-10 top-24 size-44 text-bronze/10"
+				className="pointer-events-none absolute -right-10 top-24 size-44 text-ink/10"
 				strokeWidth={1}
 				aria-hidden="true"
 			/>
@@ -58,16 +58,16 @@ export function ProductDetailClient({
 			<div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 				<nav
 					aria-label="breadcrumb"
-					className="flex items-center gap-2 text-[0.66rem] uppercase tracking-[0.18em] text-bronze"
+					className="flex items-center gap-2 text-[0.66rem] uppercase tracking-[0.18em] text-ink"
 				>
-					<Link href="/#accueil" className="hover:text-terracotta">
+					<Link href="/#accueil" className="hover:text-ink">
 						{t("detail.home")}
 					</Link>
-					<span className="text-bronze/40">/</span>
-					<Link href="/#collection" className="hover:text-terracotta">
+					<span className="text-ink/40">/</span>
+					<Link href="/#collection" className="hover:text-ink">
 						{t("detail.collection")}
 					</Link>
-					<span className="text-bronze/40">/</span>
+					<span className="text-ink/40">/</span>
 					<span className="truncate text-ink/70 dark:text-cream/70">
 						{product.name}
 					</span>
@@ -75,7 +75,7 @@ export function ProductDetailClient({
 
 				<Link
 					href="/#collection"
-					className="mt-5 inline-flex items-center gap-2 font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink-soft transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream/70"
+					className="mt-5 inline-flex items-center gap-2 font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink-soft transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream/70"
 				>
 					<ArrowLeft className="size-3.5 rtl:rotate-180" />
 					{t("detail.back")}

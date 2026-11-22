@@ -68,12 +68,12 @@ export function CompteClient({
 						className="scroll-mt-24 card-vintage rounded-sm p-6"
 					>
 						<div className="flex items-center gap-3">
-							<span className="inline-flex size-11 items-center justify-center rounded-full bg-bronze/20 text-bronze">
+							<span className="inline-flex size-11 items-center justify-center rounded-full bg-bronze/20 text-ink">
 								<User className="size-5" />
 							</span>
 							<div>
 								<h2 className="heading-vintage">{t("compte.profile")}</h2>
-								<p className="font-label text-[0.55rem] uppercase tracking-[0.18em] text-bronze">
+								<p className="font-label text-[0.55rem] uppercase tracking-[0.18em] text-ink">
 									{user.role}
 								</p>
 							</div>
@@ -129,7 +129,7 @@ export function CompteClient({
 						<button
 							type="button"
 							onClick={() => void signOut("/")}
-							className="mt-4 flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-bronze/50 px-4 py-2.5 font-label text-[0.66rem] uppercase tracking-[0.16em] text-ink-soft transition-colors hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:text-cream/70"
+							className="mt-4 flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-bronze/50 px-4 py-2.5 font-label text-[0.66rem] uppercase tracking-[0.16em] text-ink-soft transition-colors hover:border-terracotta hover:bg-terracotta/10 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta dark:text-cream/70"
 						>
 							<LogOut className="size-3.5" />
 							{t("compte.signout")}
@@ -139,13 +139,13 @@ export function CompteClient({
 					{/* Orders */}
 					<div id="orders" className="scroll-mt-24 card-vintage rounded-sm p-6">
 						<div className="flex items-center gap-3 border-b border-bronze/20 pb-4">
-							<Package className="size-5 text-terracotta" />
+							<Package className="size-5 text-ink" />
 							<h2 className="heading-vintage">{t("compte.orders")}</h2>
 						</div>
 						{orders.length === 0 ? (
 							<div className="mt-6 flex flex-col items-center gap-3 text-center">
 								<AmazighStar
-									className="size-10 text-bronze/40"
+									className="size-10 text-ink/40"
 									strokeWidth={1.4}
 								/>
 								<p className="body-vintage-muted">{t("compte.noOrders")}</p>

@@ -59,7 +59,7 @@ export function TitritLogo({
 					>
 						{t("hero.wordmark")}
 					</span>
-					<span className="tifinagh mt-1 text-[0.6rem] text-bronze sm:text-[0.66rem]">
+					<span className="tifinagh mt-1 text-[0.6rem] text-ink sm:text-[0.66rem]">
 						{site.nameAmazigh}
 					</span>
 				</span>

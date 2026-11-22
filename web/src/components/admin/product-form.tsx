@@ -114,7 +114,7 @@ export function ProductForm({
 				<div>
 					<Link
 						href="/makteb/products"
-						className="inline-flex items-center gap-2 font-label text-[0.62rem] uppercase tracking-[0.18em] text-bronze hover:text-terracotta"
+						className="inline-flex items-center gap-2 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink hover:text-ink"
 					>
 						<ArrowLeft className="size-3.5" />
 						{t("admin.common.back")}

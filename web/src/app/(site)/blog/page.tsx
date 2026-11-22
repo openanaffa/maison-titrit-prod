@@ -34,7 +34,7 @@ export default async function BlogPage() {
 		<section className="vintage-paper min-h-[80vh] py-16 sm:py-20">
 			<div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
 				<Reveal className="text-center">
-					<AmazighStar className="mx-auto size-9 text-terracotta" />
+					<AmazighStar className="mx-auto size-9 text-ink" />
 					<p className="eyebrow mt-4">Le journal</p>
 					<h1 className="wordmark mt-3 text-4xl uppercase text-ink sm:text-5xl dark:text-cream">
 						Histoires & héritage
@@ -85,7 +85,7 @@ export default async function BlogPage() {
 									<h2 className="mt-2 heading-vintage-md">
 										<Link
 											href={`/blog/${post.slug}`}
-											className="hover:text-terracotta"
+											className="hover:text-ink"
 										>
 											{post.title}
 										</Link>
@@ -95,7 +95,7 @@ export default async function BlogPage() {
 									</p>
 									<Link
 										href={`/blog/${post.slug}`}
-										className="mt-4 inline-flex items-center gap-1 font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink transition-colors hover:text-terracotta"
+										className="mt-4 inline-flex items-center gap-1 font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink transition-colors hover:text-ink"
 									>
 										Lire la suite →
 									</Link>

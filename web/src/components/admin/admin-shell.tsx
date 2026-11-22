@@ -112,7 +112,7 @@ export function AdminShell({
 				<nav className="flex-1 space-y-1 overflow-y-auto p-3">
 					{groups.map((group) => (
 						<div key={group.label} className="space-y-1">
-							<h2 className="px-3 pt-3 pb-1 font-label text-[0.55rem] uppercase tracking-[0.22em] text-bronze/80">
+							<h2 className="px-3 pt-3 pb-1 font-label text-[0.55rem] uppercase tracking-[0.22em] text-ink/80">
 								{group.label}
 							</h2>
 							{group.items.map((item) => {
@@ -197,14 +197,14 @@ export function AdminShell({
 					</div>
 					<div className="flex items-center gap-3">
 						<div className="flex items-center gap-2.5">
-							<div className="flex size-8 items-center justify-center rounded-full bg-bronze/20 font-display text-sm font-semibold text-bronze">
+							<div className="flex size-8 items-center justify-center rounded-full bg-bronze/20 font-display text-sm font-semibold text-ink">
 								{(user.name?.[0] || user.email[0]).toUpperCase()}
 							</div>
 							<div className="hidden flex-col leading-none sm:flex">
 								<span className="body-vintage-sm">
 									{user.name || user.email}
 								</span>
-								<span className="font-label text-[0.54rem] uppercase tracking-label-wide text-bronze">
+								<span className="font-label text-[0.54rem] uppercase tracking-label-wide text-ink">
 									{user.role}
 								</span>
 							</div>

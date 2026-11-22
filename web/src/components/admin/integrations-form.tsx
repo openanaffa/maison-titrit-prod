@@ -131,7 +131,7 @@ export function IntegrationsForm({ mode }: { mode: "full" | "trackers" }) {
 			className="card-vintage rounded-sm p-6 space-y-8"
 		>
 			<div className="flex items-center gap-3">
-				<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+				<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-ink">
 					<Activity className="size-5" />
 				</span>
 				<div>

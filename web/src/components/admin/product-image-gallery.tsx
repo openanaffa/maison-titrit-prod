@@ -71,7 +71,7 @@ export function ProductImageGallery({
 											className="h-full w-full object-cover"
 										/>
 									) : (
-										<div className="flex h-full items-center justify-center text-bronze/40">
+										<div className="flex h-full items-center justify-center text-ink/40">
 											{uploading ? (
 												<Loader2 className="size-5 animate-spin" />
 											) : (
@@ -94,7 +94,7 @@ export function ProductImageGallery({
 										className="field-vintage text-xs"
 									/>
 									<div className="flex items-center gap-2">
-										<label className="inline-flex cursor-pointer items-center gap-1 font-label text-[0.58rem] uppercase tracking-[0.14em] text-bronze hover:text-terracotta">
+										<label className="inline-flex cursor-pointer items-center gap-1 font-label text-[0.58rem] uppercase tracking-[0.14em] text-ink hover:text-ink">
 											<Upload className="size-3" /> Uploader
 											<input
 												type="file"
@@ -109,7 +109,7 @@ export function ProductImageGallery({
 										<button
 											type="button"
 											onClick={() => removeImage(i)}
-											className="ms-auto inline-flex items-center gap-1 font-label text-[0.58rem] uppercase tracking-[0.14em] text-terracotta hover:underline"
+											className="ms-auto inline-flex items-center gap-1 font-label text-[0.58rem] uppercase tracking-[0.14em] text-ink hover:underline"
 										>
 											<Trash2 className="size-3" /> {t("admin.products.delete")}
 										</button>

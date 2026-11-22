@@ -7,7 +7,7 @@ export default function ProductNotFound() {
 	return (
 		<section className="vintage-paper flex min-h-[70vh] items-center justify-center px-4 py-24">
 			<div className="vintage-frame max-w-lg rounded-sm p-10 text-center">
-				<AmazighStar className="mx-auto size-10 text-terracotta" />
+				<AmazighStar className="mx-auto size-10 text-ink" />
 				<h1 className="wordmark mt-5 text-3xl uppercase text-ink dark:text-cream">
 					Pièce introuvable
 				</h1>

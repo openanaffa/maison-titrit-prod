@@ -47,7 +47,7 @@ export function StatusSelector({
 					className={`rounded-full border px-3 py-1.5 font-label text-[0.6rem] uppercase tracking-[0.12em] transition-colors ${
 						order.status === s
 							? "border-ink bg-ink text-cream"
-							: "border-bronze/45 text-ink-soft hover:border-terracotta hover:text-terracotta dark:text-cream/70"
+							: "border-bronze/45 text-ink-soft hover:border-terracotta hover:text-ink dark:text-cream/70"
 					}`}
 				>
 					{STATUS_LABELS[s] ?? s}

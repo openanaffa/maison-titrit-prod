@@ -25,7 +25,7 @@ export function ContactSupportPage() {
 		<section className="vintage-paper min-h-[80vh] py-16 sm:py-20">
 			<div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
 				<Reveal className="text-center">
-					<AmazighStar className="mx-auto size-9 text-terracotta" />
+					<AmazighStar className="mx-auto size-9 text-ink" />
 					<p className="eyebrow mt-4">{t("contact.eyebrow")}</p>
 					<h1 className="wordmark mt-3 text-3xl uppercase text-ink sm:text-4xl">
 						{t("contact.title")}
@@ -45,7 +45,7 @@ export function ContactSupportPage() {
 								rel="noopener noreferrer"
 								className="group flex items-start gap-4 rounded-sm border border-terracotta/35 bg-terracotta/5 p-5 transition-all hover:border-terracotta hover:bg-terracotta/10 sm:col-span-2"
 							>
-								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-terracotta/40 bg-terracotta/10 text-terracotta transition-colors group-hover:bg-terracotta group-hover:text-cream">
+								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-terracotta/40 bg-terracotta/10 text-ink transition-colors group-hover:bg-terracotta group-hover:text-cream">
 									<WhatsAppIcon className="size-4" />
 								</span>
 								<span>
@@ -65,7 +65,7 @@ export function ContactSupportPage() {
 								href={`tel:${site.phones[0].e164}`}
 								className="group flex items-start gap-4 rounded-sm border border-bronze/30 p-5 transition-all hover:border-bronze hover:bg-bronze/5"
 							>
-								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-bronze transition-colors group-hover:border-bronze group-hover:bg-bronze group-hover:text-cream">
+								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-ink transition-colors group-hover:border-bronze group-hover:bg-bronze group-hover:text-cream">
 									<Phone className="size-4" />
 								</span>
 								<span>
@@ -87,7 +87,7 @@ export function ContactSupportPage() {
 								href={`mailto:${site.email}`}
 								className="group flex items-start gap-4 rounded-sm border border-bronze/30 p-5 transition-all hover:border-bronze hover:bg-bronze/5"
 							>
-								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-bronze transition-colors group-hover:border-bronze group-hover:bg-bronze group-hover:text-cream">
+								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-ink transition-colors group-hover:border-bronze group-hover:bg-bronze group-hover:text-cream">
 									<Mail className="size-4" />
 								</span>
 								<span className="min-w-0 overflow-hidden">
@@ -106,7 +106,7 @@ export function ContactSupportPage() {
 								rel="noopener noreferrer"
 								className="group flex items-start gap-4 rounded-sm border border-bronze/30 p-5 transition-all hover:border-bronze hover:bg-bronze/5"
 							>
-								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-bronze transition-colors group-hover:border-bronze group-hover:bg-bronze group-hover:text-cream">
+								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-ink transition-colors group-hover:border-bronze group-hover:bg-bronze group-hover:text-cream">
 									<Instagram className="size-4" />
 								</span>
 								<span className="min-w-0">
@@ -125,7 +125,7 @@ export function ContactSupportPage() {
 								rel="noopener noreferrer"
 								className="group flex items-start gap-4 rounded-sm border border-bronze/30 p-5 transition-all hover:border-bronze hover:bg-bronze/5"
 							>
-								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-bronze transition-colors group-hover:border-bronze group-hover:bg-bronze group-hover:text-cream">
+								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-ink transition-colors group-hover:border-bronze group-hover:bg-bronze group-hover:text-cream">
 									<MapPin className="size-4" />
 								</span>
 								<span className="min-w-0">
@@ -135,14 +135,14 @@ export function ContactSupportPage() {
 									<span className="mt-1 block font-serif text-[1rem] leading-relaxed text-ink dark:text-cream">
 										{address}
 									</span>
-									<span className="mt-1 block font-label text-[0.62rem] uppercase tracking-[0.18em] text-terracotta">
+									<span className="mt-1 block font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink">
 										{t("find.directions")}
 									</span>
 								</span>
 							</a>
 
 							<div className="flex items-start gap-4 rounded-sm border border-bronze/30 p-5 sm:col-span-2">
-								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-bronze">
+								<span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-bronze/35 text-ink">
 									<Clock className="size-4" />
 								</span>
 								<span className="min-w-0">
@@ -170,13 +170,13 @@ export function ContactSupportPage() {
 						<div className="mt-8 grid gap-3 text-center font-serif text-sm text-ink-soft dark:text-cream/75 sm:grid-cols-3">
 							<Link
 								href="/livraison-retours"
-								className="rounded-sm border border-bronze/25 px-4 py-3 transition-colors hover:border-bronze hover:text-terracotta"
+								className="rounded-sm border border-bronze/25 px-4 py-3 transition-colors hover:border-bronze hover:text-ink"
 							>
 								{t("legal.deliveryReturns")}
 							</Link>
 							<Link
 								href="/guide-des-tailles"
-								className="rounded-sm border border-bronze/25 px-4 py-3 transition-colors hover:border-bronze hover:text-terracotta"
+								className="rounded-sm border border-bronze/25 px-4 py-3 transition-colors hover:border-bronze hover:text-ink"
 							>
 								{t("legal.sizing")}
 							</Link>
@@ -184,7 +184,7 @@ export function ContactSupportPage() {
 								href={whatsappContactLink()}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="rounded-sm border border-bronze/25 px-4 py-3 transition-colors hover:border-bronze hover:text-terracotta"
+								className="rounded-sm border border-bronze/25 px-4 py-3 transition-colors hover:border-bronze hover:text-ink"
 							>
 								{t("contact.whatsapp")}
 							</Link>

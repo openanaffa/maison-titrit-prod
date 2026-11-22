@@ -129,7 +129,7 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
 						return (
 							<li key={c.id} className="flex items-center justify-between p-4">
 								<div className="flex items-center gap-3">
-									<span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+									<span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-ink">
 										<CategoryIcon slug={c.slug} className="size-5" />
 									</span>
 									<div>
@@ -160,7 +160,7 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
 												<Button
 													variant="ghost"
 													size="icon"
-													className="size-8 text-bronze hover:bg-bronze/10"
+													className="size-8 text-ink hover:bg-bronze/10"
 													onClick={cancelEdit}
 												>
 													<Trash2 className="size-3" />
@@ -180,7 +180,7 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
 									<Button
 										variant="ghost"
 										size="icon"
-										className="size-8 text-bronze hover:bg-bronze/10"
+										className="size-8 text-ink hover:bg-bronze/10"
 										onClick={() => beginEdit(c)}
 									>
 										<Pencil className="size-3.5" />
@@ -188,7 +188,7 @@ export function CategoriesClient({ initial }: { initial: Category[] }) {
 									<Button
 										variant="ghost"
 										size="icon"
-										className="size-8 text-terracotta hover:bg-terracotta/10"
+										className="size-8 text-ink hover:bg-terracotta/10"
 										onClick={() => onDelete(c.id, c.name)}
 									>
 										<Trash2 className="size-3.5" />

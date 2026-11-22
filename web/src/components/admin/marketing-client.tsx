@@ -32,12 +32,12 @@ export function Kpi({
 		<div className="card-vintage rounded-sm p-5">
 			<div className="flex items-start justify-between">
 				<div>
-					<p className="font-label text-[0.62rem] uppercase tracking-[0.2em] text-bronze">
+					<p className="font-label text-[0.62rem] uppercase tracking-[0.2em] text-ink">
 						{label}
 					</p>
 					<p className="mt-2 heading-vintage-md">{value}</p>
 				</div>
-				<span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+				<span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-ink">
 					<Icon className="size-4" />
 				</span>
 			</div>
@@ -511,7 +511,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 					<div className="flex flex-wrap items-center gap-2">
 						<label className="relative">
 							<Search
-								className="pointer-events-none absolute start-2 top-1/2 size-3.5 -translate-y-1/2 text-bronze"
+								className="pointer-events-none absolute start-2 top-1/2 size-3.5 -translate-y-1/2 text-ink"
 								aria-hidden="true"
 							/>
 							<input
@@ -623,7 +623,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 													toggle(node.id);
 												}}
 												aria-label={isExpanded ? "Réduire" : "Développer"}
-												className="inline-flex size-5 items-center justify-center rounded text-bronze focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+												className="inline-flex size-5 items-center justify-center rounded text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 											>
 												{isExpanded ? (
 													<ChevronDown
@@ -647,7 +647,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 													{node.payload.source}
 												</span>
 												{node.payload.suspectedTypo && (
-													<span className="rounded-full bg-terracotta/15 px-2 py-0.5 text-[0.55rem] text-terracotta">
+													<span className="rounded-full bg-terracotta/15 px-2 py-0.5 text-[0.55rem] text-ink">
 														typo ? ms-edge
 													</span>
 												)}
@@ -701,7 +701,7 @@ export function MarketingClient({ data }: { data: MarketingData }) {
 											<>
 												<Link
 													href={`/makteb/orders/${node.payload.id}`}
-													className="flex-1 font-serif text-sm text-ink underline decoration-bronze/40 underline-offset-4 hover:text-bronze"
+													className="flex-1 font-serif text-sm text-ink underline decoration-bronze/40 underline-offset-4 hover:text-ink"
 												>
 													{node.payload.number}
 												</Link>

@@ -17,7 +17,7 @@ export function ProductStory({ product }: { product: ProductDTO }) {
 		<Reveal delay={0.1}>
 			<div className="mt-16 vintage-frame rounded-sm p-7 sm:p-10">
 				<div className="text-center">
-					<AmazighStar className="mx-auto size-8 text-terracotta" />
+					<AmazighStar className="mx-auto size-8 text-ink" />
 					<h2 className="wordmark mt-4 text-xl uppercase text-ink dark:text-cream">
 						{t("detail.story")}
 					</h2>
@@ -29,10 +29,7 @@ export function ProductStory({ product }: { product: ProductDTO }) {
 				<p className="mt-4 max-w-2xl mx-auto text-center font-serif text-base leading-relaxed text-ink-soft/85 dark:text-cream/70">
 					{product.materials}. {product.sizes}. {t("detail.cod")}.
 				</p>
-				<p
-					className="mt-6 text-center font-serif text-base text-bronze"
-					dir="rtl"
-				>
+				<p className="mt-6 text-center font-serif text-base text-ink" dir="rtl">
 					{site.arabicWelcome}
 				</p>
 			</div>

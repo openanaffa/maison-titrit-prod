@@ -158,7 +158,7 @@ export function FulfilmentQueueClient({
 						className="w-full pl-9 pr-3 py-2 rounded border border-bronze/45 bg-transparent text-sm text-ink dark:text-cream placeholder-ink-soft dark:placeholder-cream/60 focus:border-bronze outline-none"
 					/>
 				</div>
-				<Calendar className="w-4 h-4 text-bronze" />
+				<Calendar className="w-4 h-4 text-ink" />
 				<input
 					type="date"
 					defaultValue={searchParams.get("from") ?? ""}
@@ -241,7 +241,7 @@ export function FulfilmentQueueClient({
 											<td className="p-3 text-center">
 												<StatusBadge status={o.status} />
 												{o.failedNotifications > 0 && (
-													<p className="mt-1 flex items-center justify-center gap-1 text-[0.6rem] font-label uppercase tracking-[0.12em] text-terracotta">
+													<p className="mt-1 flex items-center justify-center gap-1 text-[0.6rem] font-label uppercase tracking-[0.12em] text-ink">
 														<AlertTriangle className="w-3 h-3" />
 														{t("admin.fulfilment.failedCount", {
 															count: o.failedNotifications,
@@ -271,7 +271,7 @@ export function FulfilmentQueueClient({
 															type="button"
 															onClick={() => retryFailed(o)}
 															disabled={retries === o.id || pending === o.id}
-															className="inline-flex items-center gap-1 rounded border border-terracotta/60 px-2 py-1.5 font-label text-[0.6rem] uppercase tracking-[0.12em] text-terracotta hover:bg-terracotta/10 disabled:opacity-50"
+															className="inline-flex items-center gap-1 rounded border border-terracotta/60 px-2 py-1.5 font-label text-[0.6rem] uppercase tracking-[0.12em] text-ink hover:bg-terracotta/10 disabled:opacity-50"
 														>
 															<RefreshCcw className="w-3 h-3" />
 															{t("admin.fulfilment.retry")}

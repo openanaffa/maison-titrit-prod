@@ -43,7 +43,7 @@ export function CraftBand() {
 						<Reveal key={p.title} delay={i * 0.1}>
 							<div className="card-vintage group h-full rounded-sm p-7 text-center transition-transform duration-500 hover:-translate-y-1">
 								<AmazighStar
-									className="mx-auto size-9 text-terracotta transition-transform duration-500 group-hover:rotate-45"
+									className="mx-auto size-9 text-ink transition-transform duration-500 group-hover:rotate-45"
 									strokeWidth={1.4}
 								/>
 								<h3 className="mt-5 heading-vintage-md">{p.title}</h3>
@@ -56,7 +56,7 @@ export function CraftBand() {
 				</div>
 
 				<Reveal delay={0.3}>
-					<p className="mt-12 text-center font-label text-[0.72rem] uppercase tracking-[0.32em] text-bronze">
+					<p className="mt-12 text-center font-label text-[0.72rem] uppercase tracking-[0.32em] text-ink">
 						{t("craft.signature")}
 					</p>
 				</Reveal>
