@@ -71,6 +71,7 @@ export async function POST(req: Request) {
 					order: { number: existing.number, total: existing.total },
 					whatsapp,
 					idempotent: true,
+					correlationId,
 				});
 			}
 		}
@@ -322,6 +323,7 @@ export async function POST(req: Request) {
 		return NextResponse.json({
 			order: { number: order.number, total },
 			whatsapp,
+			correlationId,
 		});
 	} catch (e) {
 		logWithCorrelation(correlationId, "error", "checkout.failed", { error: String(e) });
