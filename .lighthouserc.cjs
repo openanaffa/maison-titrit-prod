@@ -9,7 +9,7 @@ module.exports = {
         "http://localhost:3000/checkout",
         "http://localhost:3000/makteb/orders",
       ],
-      startServerCommand: "PORT=3000 bun --cwd web run start",
+      startServerCommand: "cd web && bun run start",
       startServerReadyPattern: "Ready in",
       startServerReadyTimeout: 60000,
     },
