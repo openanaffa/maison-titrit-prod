@@ -94,7 +94,7 @@ All findings across #147–#156 were resolved in-cycle with threaded replies and
 
 | Check | Command / workflow | Result | Evidence |
 |---|---|---|---|
-| Remote state | `git fetch` + `gh pr list` | Pass | develop `48b9bde`, main `7a9b437`; open PRs: #131, #151, #152, #153, #158, #159, #160, #161, #162 |
+| Remote state | `git fetch` + `gh pr list` | Pass | develop `f033308`, main `7a9b437`; open PRs: none — review queue drained 2026-11-22 (#158–#162 merged) |
 | Develop CI | CI run on `a9032d3` | Pass | verify ✅ e2e ✅ |
 | Issue states | `gh issue view` | Pass | #120 REOPENED, #127 OPEN, #128 OPEN, #113/#123–#125 NOT_PLANNED |
 | Wafine removal | `grep WAFINE` across docs/code | Pass (post-#157) | `web/.env.example` clean; ROADMAP.md reflects M3 cancellation (#157) |
