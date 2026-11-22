@@ -28,7 +28,7 @@ export function Hero() {
 						{t("hero.eyebrow")}
 					</p>
 
-					<p className="tifinagh mt-5 text-2xl text-ink sm:text-3xl">
+					<p className="tifinagh mt-5 text-2xl text-ink dark:text-bronze-light sm:text-3xl">
 						{site.nameAmazigh}
 					</p>
 
@@ -36,7 +36,7 @@ export function Hero() {
 						{t("hero.wordmark")}
 					</h1>
 
-					<p className="script-tagline mt-3 text-xl text-ink sm:text-2xl">
+					<p className="script-tagline mt-3 text-xl text-ink dark:text-bronze-light sm:text-2xl">
 						{t("hero.script")}
 					</p>
 
@@ -70,13 +70,13 @@ export function Hero() {
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<WhatsAppIcon className="size-4 text-ink" />
+								<WhatsAppIcon className="size-4 text-ink dark:text-cream" />
 								{t("cta.viewCatalog")}
 							</a>
 						</Button>
 					</div>
 
-					<p className="mt-8 font-label text-[0.7rem] uppercase tracking-[0.3em] text-ink">
+					<p className="mt-8 font-label text-[0.7rem] uppercase tracking-[0.3em] text-ink dark:text-bronze-light">
 						{t("hero.signature")}
 					</p>
 				</div>

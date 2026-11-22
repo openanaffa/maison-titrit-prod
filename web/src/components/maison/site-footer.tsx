@@ -101,7 +101,7 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 								<li key={n.href}>
 									<a
 										href={n.href}
-										className="font-serif text-sm text-cream/80 transition-colors hover:text-ink"
+										className="font-serif text-sm text-cream/80 transition-colors hover:text-bronze-light"
 									>
 										{t(n.labelKey)}
 									</a>
