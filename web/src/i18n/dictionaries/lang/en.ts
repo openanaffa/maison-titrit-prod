@@ -511,4 +511,19 @@ export const English = {
 	"admin.common.loading": "Loading…",
 
 	"cookie.reopen": "Cookie preferences",
+
+	"pwa.offlineBanner": "Offline — some features are limited",
+	"pwa.install.title": "Install the app",
+	"pwa.install.desc": "Quick access from your home screen, even offline.",
+	"pwa.install.cta": "Install",
+	"pwa.install.later": "Later",
+	"pwa.install.ios.title": "Install Maison Titrit",
+	"pwa.install.ios.desc":
+		"On iPhone/iPad: tap Share, then “Add to Home Screen”.",
+	"pwa.close": "Close",
+	"pwa.offline.title": "Offline",
+	"pwa.offline.desc": "You are currently offline. Some pages remain available.",
+	"pwa.offline.body":
+		"The connection is unavailable. Pages you already visited and the cached catalogue stay accessible. Reconnect to refresh.",
+	"pwa.offline.cta": "Back to home",
 };

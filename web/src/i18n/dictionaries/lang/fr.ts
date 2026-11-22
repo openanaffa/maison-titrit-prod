@@ -515,4 +515,20 @@ export const French = {
 	"admin.common.loading": "Chargement…",
 
 	"cookie.reopen": "Préférences cookies",
+
+	"pwa.offlineBanner": "Hors ligne — certaines fonctions sont limitées",
+	"pwa.install.title": "Installer l’application",
+	"pwa.install.desc": "Accès rapide depuis l’écran d’accueil, même hors ligne.",
+	"pwa.install.cta": "Installer",
+	"pwa.install.later": "Plus tard",
+	"pwa.install.ios.title": "Installer Maison Titrit",
+	"pwa.install.ios.desc":
+		"Sur iPhone/iPad : touchez Partager puis « Sur l’écran d’accueil ».",
+	"pwa.close": "Fermer",
+	"pwa.offline.title": "Hors ligne",
+	"pwa.offline.desc":
+		"Vous êtes actuellement hors ligne. Certaines pages restent disponibles.",
+	"pwa.offline.body":
+		"La connexion est indisponible. Les pages déjà consultées et le catalogue mis en cache restent accessibles. Reconnectez-vous pour actualiser.",
+	"pwa.offline.cta": "Retour à l’accueil",
 };
