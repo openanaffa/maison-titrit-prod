@@ -17,9 +17,7 @@ export function About() {
 				<Reveal className="text-center">
 					<p className="eyebrow">{t("about.eyebrow")}</p>
 					<h2 className="mt-4 heading-vintage-xl">{t("about.title")}</h2>
-					<p className="tifinagh mt-3 text-lg text-ink">
-						{site.nameAmazigh}
-					</p>
+					<p className="tifinagh mt-3 text-lg text-ink">{site.nameAmazigh}</p>
 					<OrnamentDivider className="mt-6" width={220} />
 				</Reveal>
 

@@ -170,10 +170,7 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 						) : null}
 						{showEmail ? (
 							<li>
-								<a
-									href={`mailto:${legal?.email}`}
-									className="hover:text-ink"
-								>
+								<a href={`mailto:${legal?.email}`} className="hover:text-ink">
 									{legal?.email}
 								</a>
 							</li>

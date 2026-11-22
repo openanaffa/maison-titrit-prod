@@ -144,9 +144,7 @@ export function SettingsClient() {
 							</span>
 							<span
 								className={
-									d.key === "sun"
-										? "text-ink"
-										: "text-ink dark:text-cream"
+									d.key === "sun" ? "text-ink" : "text-ink dark:text-cream"
 								}
 							>
 								{d.key === "sun"

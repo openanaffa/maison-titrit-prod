@@ -74,9 +74,7 @@ export function SigninForm({
 						<h1 className="wordmark mt-3 text-xl uppercase text-ink dark:text-cream">
 							{site.name}
 						</h1>
-						<p className="tifinagh mt-1 text-sm text-ink">
-							{site.nameAmazigh}
-						</p>
+						<p className="tifinagh mt-1 text-sm text-ink">{site.nameAmazigh}</p>
 						<OrnamentDivider className="mt-4" width={160} />
 					</div>
 

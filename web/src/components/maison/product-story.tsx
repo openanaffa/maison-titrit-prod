@@ -29,10 +29,7 @@ export function ProductStory({ product }: { product: ProductDTO }) {
 				<p className="mt-4 max-w-2xl mx-auto text-center font-serif text-base leading-relaxed text-ink-soft/85 dark:text-cream/70">
 					{product.materials}. {product.sizes}. {t("detail.cod")}.
 				</p>
-				<p
-					className="mt-6 text-center font-serif text-base text-ink"
-					dir="rtl"
-				>
+				<p className="mt-6 text-center font-serif text-base text-ink" dir="rtl">
 					{site.arabicWelcome}
 				</p>
 			</div>
