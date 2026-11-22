@@ -10,10 +10,12 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
+import { useT } from "@/i18n/locale-provider";
 
 export function InstallPrompt() {
 	const { canInstall, installed, isIOS, promptInstall, dismiss } =
 		usePwaInstall();
+	const { t } = useT();
 	const [iosHidden, setIosHidden] = React.useState(false);
 
 	if (installed) return null;
@@ -27,16 +29,15 @@ export function InstallPrompt() {
 						<div className="flex items-start justify-between gap-3">
 							<div>
 								<CardTitle className="font-display text-base">
-									Installer Maison Titrit
+									{t("pwa.install.ios.title")}
 								</CardTitle>
 								<CardDescription className="mt-1 font-serif text-sm">
-									Sur iPhone/iPad : touchez Partager puis « Sur l&apos;écran
-									d&apos;accueil ».
+									{t("pwa.install.ios.desc")}
 								</CardDescription>
 							</div>
 							<button
 								type="button"
-								aria-label="Fermer"
+								aria-label={t("pwa.close")}
 								onClick={() => setIosHidden(true)}
 								className="inline-flex size-8 items-center justify-center rounded-full text-ink-soft/60 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
 							>
@@ -61,24 +62,23 @@ export function InstallPrompt() {
 						</div>
 						<div className="flex-1">
 							<CardTitle className="font-display text-base">
-								Installer l&apos;application
+								{t("pwa.install.title")}
 							</CardTitle>
 							<CardDescription className="mt-1 font-serif text-sm">
-								Accès rapide depuis l&apos;écran d&apos;accueil, même hors
-								ligne.
+								{t("pwa.install.desc")}
 							</CardDescription>
 							<div className="mt-3 flex gap-2">
 								<Button size="sm" onClick={() => void promptInstall()}>
-									Installer
+									{t("pwa.install.cta")}
 								</Button>
 								<Button size="sm" variant="ghost" onClick={dismiss}>
-									Plus tard
+									{t("pwa.install.later")}
 								</Button>
 							</div>
 						</div>
 						<button
 							type="button"
-							aria-label="Fermer"
+							aria-label={t("pwa.close")}
 							onClick={dismiss}
 							className="inline-flex size-8 items-center justify-center rounded-full text-ink-soft/60 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
 						>

@@ -441,4 +441,19 @@ export const Arabic = {
 	"admin.common.loading": "تحميل…",
 
 	"cookie.reopen": "تفضيلات الكوكيز",
+
+	"pwa.offlineBanner": "غير متصل — بعض الوظائف محدودة",
+	"pwa.install.title": "تثبيت التطبيق",
+	"pwa.install.desc": "وصول سريع من الشاشة الرئيسية، حتى دون اتصال.",
+	"pwa.install.cta": "تثبيت",
+	"pwa.install.later": "لاحقاً",
+	"pwa.install.ios.title": "تثبيت Maison Titrit",
+	"pwa.install.ios.desc":
+		"على iPhone/iPad: انقر مشاركة ثم «إضافة إلى الشاشة الرئيسية».",
+	"pwa.close": "إغلاق",
+	"pwa.offline.title": "غير متصل",
+	"pwa.offline.desc": "أنت غير متصل حالياً. بعض الصفحات تبقى متاحة.",
+	"pwa.offline.body":
+		"الاتصال غير متوفر. الصفحات التي زرتها سابقاً والكتالوج المخزَّن يبقى قابلاً للوصول. أعد الاتصال للتحديث.",
+	"pwa.offline.cta": "العودة إلى الرئيسية",
 };
