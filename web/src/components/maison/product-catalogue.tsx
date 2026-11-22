@@ -63,7 +63,7 @@ export function ProductCatalogue() {
 									className={`inline-flex h-10 items-center gap-2 rounded-full border px-4 font-label text-[0.72rem] uppercase tracking-[0.18em] transition-all ${
 										isActive
 											? "border-ink bg-ink text-cream dark:border-cream dark:bg-cream dark:text-ink"
-											: "border-bronze/45 text-ink/80 hover:border-terracotta hover:text-terracotta dark:text-cream/80"
+											: "border-bronze/45 text-ink/80 hover:border-terracotta hover:text-ink dark:text-cream/80"
 									}`}
 								>
 									{slug ? (
@@ -80,7 +80,7 @@ export function ProductCatalogue() {
 
 				<div className="mt-10">
 					{error ? (
-						<p className="py-16 text-center font-serif text-lg text-terracotta">
+						<p className="py-16 text-center font-serif text-lg text-ink">
 							{error}
 						</p>
 					) : loading ? (
@@ -127,14 +127,14 @@ export function ProductCatalogue() {
 						<Button
 							asChild
 							variant="outline"
-							className="h-11 rounded-full border-bronze/50 px-6 font-label text-[0.72rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:text-terracotta dark:text-cream"
+							className="h-11 rounded-full border-bronze/50 px-6 font-label text-[0.72rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:text-ink dark:text-cream"
 						>
 							<a
 								href={whatsappCatalog}
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<WhatsAppIcon className="size-4 text-terracotta" />
+								<WhatsAppIcon className="size-4 text-ink" />
 								{t("cta.viewCatalog")}
 							</a>
 						</Button>

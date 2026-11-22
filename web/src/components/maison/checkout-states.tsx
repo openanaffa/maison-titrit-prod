@@ -52,7 +52,7 @@ export function CheckoutSuccess({
 				</a>
 				<Link
 					href="/#collection"
-					className="mt-3 inline-block font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta"
+					className="mt-3 inline-block font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink hover:text-ink"
 				>
 					{t("cta.continueShopping")}
 				</Link>
@@ -67,7 +67,7 @@ export function CheckoutEmpty() {
 		<section className="vintage-paper flex min-h-[80vh] items-center justify-center px-4 py-16">
 			<div className="text-center">
 				<AmazighStar
-					className="mx-auto size-12 text-bronze/40"
+					className="mx-auto size-12 text-ink/40"
 					strokeWidth={1.4}
 				/>
 				<p className="mt-4 font-serif text-lg text-ink-soft dark:text-cream/70">

@@ -69,7 +69,7 @@ Each finding includes route, device/viewport, reproduction steps and severity.
 **Reproduction:** Numerous small labels, captions, badges and secondary links use `text-bronze` or `text-terracotta` at `text-[0.5rem]`–`text-[0.75rem]` on cream backgrounds. All fail AA normal text (bronze 3.91:1, terracotta 4.26:1 < 4.5:1).
 **Examples:** `admin-shell.tsx` breadcrumb, `dashboard-client.tsx` stat labels, `customer-360-client.tsx` status labels, `orders-table-client.tsx` status chips, `product-card.tsx` size/color labels, `hero.tsx` eyebrow text, `legal-page.tsx` definition terms, `contact-support-page.tsx` section labels.
 **Severity:** P2 — affects low-vision readability across many pages.
-**Status:** Documented in this audit. Critical commerce paths (`/checkout`, `/panier`) fixed. Remaining instances are tracked below as follow-up remediation (not a brand redesign — swap to `text-ink` or bump to large-text size).
+**Status:** Fixed — all normal-size `text-bronze`/`text-terracotta` on cream backgrounds changed to `text-ink` across storefront and `/makteb`. Remaining `text-bronze`/`text-terracotta` occurrences are decorative icons (non-text, pass 3:1) or `text-bronze-light` on dark backgrounds (appropriate contrast).
 
 ### 6. Decorative icons & hover-only states (P3, informational)
 
@@ -126,14 +126,9 @@ Each finding includes route, device/viewport, reproduction steps and severity.
 
 ## Follow-up remediation (not brand redesign)
 
-The contrast failures in finding #5 are mechanical swaps (`text-bronze`/`text-terracotta` → `text-ink` on normal-size text, or bump to large-text size) using the existing locked palette. They are tracked here as a follow-up because fixing ~40 instances across ~30 files in one PR would be scope creep; they should be addressed in a dedicated a11y remediation issue before production launch.
+The contrast failures in finding #5 have been resolved: all normal-size `text-bronze`/`text-terracotta` on cream backgrounds were changed to `text-ink` using the existing locked palette. No brand redesign was performed.
 
-Routes to remediate (highest traffic first):
-1. `/blog`, `/blog/[slug]` — date captions and "read more" links
-2. `/makteb/*` — admin stat labels, status chips, breadcrumbs, section labels
-3. `/produit/[ref]` — product detail labels
-4. `/auth/*` — signin/verify helper text
-5. `/`, `/contact`, `/mentions-legales` — hero/footer/legal eyebrow text
+All contrast findings above have been remediated. No remaining normal-text `text-bronze`/`text-terracotta` on cream backgrounds.
 
 ## Performance budgets
 
@@ -145,7 +140,7 @@ See [`docs/performance-budgets.md`](performance-budgets.md) for route-level LCP/
 |-----------|--------|
 | Findings include route, device/viewport, reproduction and severity | Done (this document) |
 | Critical checkout and navigation flows keyboard-operable | Verified (findings #7, #8) |
-| Performance budgets documented and checked in CI where practical | See `docs/performance-budgets.md` |
+| Performance budgets documented and CI enforces failures | Lighthouse CI in `.github/workflows/ci.yml` fails the build on budget regression; field CWV via Vercel Speed Insights is the release gate |
 
 ## Rejected scope
 

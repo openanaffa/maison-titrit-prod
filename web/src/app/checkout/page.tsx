@@ -224,7 +224,7 @@ export default function CheckoutPage() {
 							</span>
 						</div>
 						<p className="mt-3 flex items-center gap-2 font-serif text-xs text-ink-soft/80 dark:text-cream/60">
-							<Truck className="size-3.5 text-terracotta" />
+							<Truck className="size-3.5 text-ink" />
 							{t("checkout.payment")}
 						</p>
 
@@ -252,7 +252,7 @@ export default function CheckoutPage() {
 						</Button>
 						<Link
 							href="/panier"
-							className="mt-3 flex items-center justify-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
+							className="mt-3 flex items-center justify-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
 						>
 							<ArrowLeft className="size-3 rtl:rotate-180" />
 							{t("cart.title")}

@@ -55,7 +55,7 @@ export function LanguageSwitcher({
 				}`}
 			>
 				<Globe
-					className={`size-3.5 ${darkSurface ? "text-bronze-light" : "text-bronze"}`}
+					className={`size-3.5 ${darkSurface ? "text-bronze-light" : "text-ink"}`}
 				/>
 				<span>{current.short}</span>
 			</button>
@@ -88,7 +88,7 @@ export function LanguageSwitcher({
 									active
 										? darkSurface
 											? "bg-bronze/25 text-cream"
-											: "bg-bronze/15 text-terracotta"
+											: "bg-bronze/15 text-ink"
 										: darkSurface
 											? "text-cream hover:bg-cream/10"
 											: "text-ink hover:bg-bronze/10 dark:text-cream"
@@ -97,7 +97,7 @@ export function LanguageSwitcher({
 								<span className="flex items-center gap-2">
 									<span
 										className={`font-label text-[0.6rem] tracking-[0.14em] ${
-											darkSurface ? "text-bronze-light" : "text-bronze"
+											darkSurface ? "text-bronze-light" : "text-ink"
 										}`}
 									>
 										{l.short}
@@ -106,7 +106,7 @@ export function LanguageSwitcher({
 								</span>
 								{active && (
 									<Check
-										className={`size-4 ${darkSurface ? "text-bronze-light" : "text-terracotta"}`}
+										className={`size-4 ${darkSurface ? "text-bronze-light" : "text-ink"}`}
 									/>
 								)}
 							</button>

@@ -52,7 +52,7 @@ export function TeamClient({
 
 			{error && (
 				<p
-					className="flex items-center gap-2 rounded-sm border border-terracotta/40 bg-terracotta/10 px-4 py-3 font-serif text-sm text-terracotta"
+					className="flex items-center gap-2 rounded-sm border border-terracotta/40 bg-terracotta/10 px-4 py-3 font-serif text-sm text-ink"
 					role="alert"
 				>
 					<CircleAlert className="size-4" /> {error}
@@ -117,7 +117,7 @@ export function TeamClient({
 													))}
 												</select>
 												{pendingId === u.id && (
-													<Loader2 className="size-3.5 animate-spin text-bronze" />
+													<Loader2 className="size-3.5 animate-spin text-ink" />
 												)}
 												{savedId === u.id && (
 													<Check
@@ -150,7 +150,7 @@ export function TeamClient({
 			</div>
 
 			<p className="flex items-start gap-2 font-serif text-xs text-ink-soft/80 dark:text-cream/60">
-				<UserCog className="mt-0.5 size-4 shrink-0 text-bronze" />
+				<UserCog className="mt-0.5 size-4 shrink-0 text-ink" />
 				{t("admin.team.hint")}
 			</p>
 		</div>

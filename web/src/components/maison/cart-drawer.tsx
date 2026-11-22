@@ -77,7 +77,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 					<div className="flex-1 overflow-y-auto p-4 scroll-vintage">
 						{items.length === 0 ? (
 							<div className="flex h-full flex-col items-center justify-center gap-3 text-center">
-								<ShoppingBag className="size-10 text-bronze/40" />
+								<ShoppingBag className="size-10 text-ink/40" />
 								<p className="font-serif text-base text-ink-soft dark:text-cream/70">
 									{t("cart.empty")}
 								</p>
@@ -85,7 +85,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 								<SheetClose asChild>
 									<Link
 										href="#collection"
-										className="mt-2 rounded-full border border-bronze/50 px-5 py-2 font-label text-[0.66rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:text-terracotta dark:text-cream"
+										className="mt-2 rounded-full border border-bronze/50 px-5 py-2 font-label text-[0.66rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:text-ink dark:text-cream"
 									>
 										{t("cta.continueShopping")}
 									</Link>
@@ -119,7 +119,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 														}
 														disabled={item.qty <= 1}
 														aria-label={t("cart.decreaseQty")}
-														className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
+														className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-ink disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
 													>
 														<Minus className="size-3" />
 													</button>
@@ -136,7 +136,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 														}
 														disabled={item.qty >= 20}
 														aria-label={t("cart.increaseQty")}
-														className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
+														className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-ink disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
 													>
 														<Plus className="size-3" />
 													</button>
@@ -151,7 +151,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 											type="button"
 											onClick={() => remove(item.productId, item.size)}
 											aria-label={t("cart.remove")}
-											className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+											className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 										>
 											<Trash2 className="size-4" />
 										</button>
@@ -165,7 +165,7 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 					{items.length > 0 && (
 						<div className="border-t border-bronze/25 p-5">
 							<div className="flex items-center justify-between">
-								<span className="font-label text-[0.66rem] uppercase tracking-[0.18em] text-bronze">
+								<span className="font-label text-[0.66rem] uppercase tracking-[0.18em] text-ink">
 									{t("cart.total")}
 								</span>
 								<span className="heading-vintage-md">
@@ -188,14 +188,14 @@ export function CartDrawer({ darkSurface = false }: { darkSurface?: boolean }) {
 									<Button
 										asChild
 										variant="outline"
-										className="h-11 w-full rounded-full border-bronze/50 font-label text-[0.68rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:text-terracotta dark:text-cream"
+										className="h-11 w-full rounded-full border-bronze/50 font-label text-[0.68rem] uppercase tracking-[0.16em] text-ink hover:border-terracotta hover:text-ink dark:text-cream"
 									>
 										<a
 											href={whatsappCatalog}
 											target="_blank"
 											rel="noopener noreferrer"
 										>
-											<WhatsAppIcon className="size-4 text-terracotta" />
+											<WhatsAppIcon className="size-4 text-ink" />
 											{t("cta.viewCatalog")}
 										</a>
 									</Button>

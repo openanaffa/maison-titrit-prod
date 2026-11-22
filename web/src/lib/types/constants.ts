@@ -14,8 +14,8 @@ import {
 import type { AdminNavItem, AnalyticsForm, VerificationForm } from ".";
 
 export const ROLE_BADGE: Record<string, string> = {
-	FOUNDER: "bg-bronze/15 text-bronze",
-	DEVELOPER: "bg-terracotta/15 text-terracotta",
+	FOUNDER: "bg-bronze/15 text-ink",
+	DEVELOPER: "bg-terracotta/15 text-ink",
 	ADMIN: "bg-henna/15 text-henna",
 	MANAGER: "bg-ink/10 text-ink dark:bg-cream/10 dark:text-cream",
 	MARKETER: "bg-olive/15 text-olive",

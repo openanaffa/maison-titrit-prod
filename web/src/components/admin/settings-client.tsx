@@ -61,7 +61,7 @@ export function SettingsClient() {
 			{/* Announcement bar */}
 			<form onSubmit={saveAnnouncement} className="card-vintage rounded-sm p-6">
 				<div className="flex items-center gap-3">
-					<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+					<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-ink">
 						<Megaphone className="size-5" />
 					</span>
 					<div>
@@ -125,7 +125,7 @@ export function SettingsClient() {
 			{/* Store hours (read-only display for now; editing arrives in a later pass) */}
 			<div className="card-vintage rounded-sm p-6">
 				<div className="flex items-center gap-3">
-					<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+					<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-ink">
 						<Clock className="size-5" />
 					</span>
 					<div>
@@ -145,7 +145,7 @@ export function SettingsClient() {
 							<span
 								className={
 									d.key === "sun"
-										? "text-terracotta"
+										? "text-ink"
 										: "text-ink dark:text-cream"
 								}
 							>
@@ -169,7 +169,7 @@ export function SettingsClient() {
 			{/* SEO files */}
 			<div className="card-vintage rounded-sm p-6">
 				<div className="flex items-center gap-3">
-					<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+					<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-ink">
 						<AmazighStar className="size-5" strokeWidth={1.5} />
 					</span>
 					<div>
@@ -183,7 +183,7 @@ export function SettingsClient() {
 						<a
 							href="/robots.txt"
 							target="_blank"
-							className="text-bronze hover:text-terracotta"
+							className="text-ink hover:text-ink"
 							rel="noopener"
 						>
 							/robots.txt
@@ -194,7 +194,7 @@ export function SettingsClient() {
 						<a
 							href="/sitemap.xml"
 							target="_blank"
-							className="text-bronze hover:text-terracotta"
+							className="text-ink hover:text-ink"
 							rel="noopener"
 						>
 							/sitemap.xml
@@ -205,7 +205,7 @@ export function SettingsClient() {
 						<a
 							href="/feed.xml"
 							target="_blank"
-							className="text-bronze hover:text-terracotta"
+							className="text-ink hover:text-ink"
 							rel="noopener"
 						>
 							/feed.xml
@@ -216,7 +216,7 @@ export function SettingsClient() {
 						<a
 							href="/LLMs.md"
 							target="_blank"
-							className="text-bronze hover:text-terracotta"
+							className="text-ink hover:text-ink"
 							rel="noopener"
 						>
 							/LLMs.md
@@ -227,7 +227,7 @@ export function SettingsClient() {
 						<a
 							href="/humans.txt"
 							target="_blank"
-							className="text-bronze hover:text-terracotta"
+							className="text-ink hover:text-ink"
 							rel="noopener"
 						>
 							/humans.txt

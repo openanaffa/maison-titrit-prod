@@ -77,7 +77,7 @@ export function ProductsTableClient({
 			{/* Search + filter */}
 			<div className="flex flex-wrap items-center gap-3">
 				<div className="relative max-w-xs flex-1">
-					<Search className="pointer-events-none absolute inset-s-3 top-1/2 size-4 -translate-y-1/2 text-bronze/60" />
+					<Search className="pointer-events-none absolute inset-s-3 top-1/2 size-4 -translate-y-1/2 text-ink/60" />
 					<Input
 						value={query}
 						onChange={(e) => setQuery(e.target.value)}
@@ -154,7 +154,7 @@ export function ProductsTableClient({
 												<div className="min-w-0">
 													<p className="truncate heading-vintage-sm">
 														{r.featured && (
-															<Star className="me-1 inline size-3 text-terracotta" />
+															<Star className="me-1 inline size-3 text-ink" />
 														)}
 														{r.name}
 													</p>
@@ -166,7 +166,7 @@ export function ProductsTableClient({
 											<span className="inline-flex items-center gap-2 body-vintage-muted">
 												<CategoryIcon
 													slug={r.categorySlug}
-													className="size-4 shrink-0 text-bronze"
+													className="size-4 shrink-0 text-ink"
 												/>
 												{r.category}
 											</span>
@@ -174,7 +174,7 @@ export function ProductsTableClient({
 										<td className="p-3 text-end heading-vintage-sm">
 											{r.salePrice ? (
 												<>
-													<span className="text-terracotta">
+													<span className="text-ink">
 														{r.salePrice.toLocaleString("fr-FR")} {r.currency}
 													</span>
 													<span className="ms-1 text-xs text-ink-soft/60 line-through">
@@ -200,9 +200,9 @@ export function ProductsTableClient({
 										</td>
 										<td className="p-3 text-center">
 											{r.featured ? (
-												<Star className="mx-auto size-4 text-terracotta" />
+												<Star className="mx-auto size-4 text-ink" />
 											) : (
-												<StarOff className="mx-auto size-4 text-bronze/30" />
+												<StarOff className="mx-auto size-4 text-ink/30" />
 											)}
 										</td>
 										<td className="p-3">
@@ -223,7 +223,7 @@ export function ProductsTableClient({
 												<Button
 													variant="ghost"
 													size="icon"
-													className="size-8 text-terracotta hover:bg-terracotta/10"
+													className="size-8 text-ink hover:bg-terracotta/10"
 													onClick={() => onDelete(r)}
 													aria-label={t("admin.products.delete")}
 												>

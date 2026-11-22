@@ -63,7 +63,7 @@ export function MobileMenu({
 							<SheetClose asChild key={item.href}>
 								<a
 									href={item.href}
-									className="flex min-h-12 items-center border-b border-bronze/20 font-label text-[0.75rem] uppercase tracking-[0.16em] text-ink transition-colors duration-200 hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream dark:hover:text-bronze-light"
+									className="flex min-h-12 items-center border-b border-bronze/20 font-label text-[0.75rem] uppercase tracking-[0.16em] text-ink transition-colors duration-200 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream dark:hover:text-bronze-light"
 								>
 									{t(item.labelKey)}
 								</a>

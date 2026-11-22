@@ -49,7 +49,7 @@ export function OrderCustomer({ order }: { order: OrderView }) {
 			</p>
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				<div className="flex items-center gap-2">
-					<Phone className="w-4 h-4 text-bronze" />
+					<Phone className="w-4 h-4 text-ink" />
 					<div>
 						<p className="body-vintage-sm">{order.customerName}</p>
 						{order.user ? (
@@ -62,13 +62,13 @@ export function OrderCustomer({ order }: { order: OrderView }) {
 					</div>
 				</div>
 				<div className="flex items-center gap-2">
-					<Mail className="w-4 h-4 text-bronze" />
+					<Mail className="w-4 h-4 text-ink" />
 					<p className="body-vintage-sm">
 						{order.customerEmail ?? t("admin.orders.detail.noEmail")}
 					</p>
 				</div>
 				<div className="flex items-center gap-2">
-					<MapPin className="w-4 h-4 text-bronze" />
+					<MapPin className="w-4 h-4 text-ink" />
 					<div>
 						<p className="body-vintage-sm">
 							{order.city ?? ""} {order.address ?? ""}

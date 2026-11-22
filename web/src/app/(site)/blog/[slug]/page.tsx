@@ -74,13 +74,13 @@ export default async function BlogPostPage({
 			<div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
 				<Link
 					href="/blog"
-					className="inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink hover:text-terracotta"
+					className="inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink hover:text-ink"
 				>
 					← Journal
 				</Link>
 
 				<Reveal className="mt-6 text-center">
-					<AmazighStar className="mx-auto size-8 text-terracotta" />
+					<AmazighStar className="mx-auto size-8 text-ink" />
 					<h1 className="wordmark mt-4 text-3xl uppercase text-ink sm:text-4xl dark:text-cream">
 						{post.title}
 					</h1>
@@ -121,7 +121,7 @@ export default async function BlogPostPage({
 					</p>
 					<Link
 						href="/blog"
-						className="mt-4 inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink hover:text-terracotta"
+						className="mt-4 inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink hover:text-ink"
 					>
 						← Tous les articles
 					</Link>

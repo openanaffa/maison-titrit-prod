@@ -28,7 +28,7 @@ export function Hero() {
 						{t("hero.eyebrow")}
 					</p>
 
-					<p className="tifinagh mt-5 text-2xl text-bronze sm:text-3xl">
+					<p className="tifinagh mt-5 text-2xl text-ink sm:text-3xl">
 						{site.nameAmazigh}
 					</p>
 
@@ -36,17 +36,17 @@ export function Hero() {
 						{t("hero.wordmark")}
 					</h1>
 
-					<p className="script-tagline mt-3 text-xl text-terracotta sm:text-2xl">
+					<p className="script-tagline mt-3 text-xl text-ink sm:text-2xl">
 						{t("hero.script")}
 					</p>
 
 					<div className="mt-6 max-w-md">
-						<NeedleThread className="h-6 text-bronze/70" />
+						<NeedleThread className="h-6 text-ink/70" />
 						<p className="mt-4 font-serif text-lg leading-relaxed text-ink-soft sm:text-xl dark:text-cream/80">
 							{t("hero.about")}
 						</p>
 						<p
-							className="mt-3 font-serif text-base italic text-terracotta/90"
+							className="mt-3 font-serif text-base italic text-ink/90"
 							dir="rtl"
 						>
 							{site.arabicWelcome}
@@ -63,20 +63,20 @@ export function Hero() {
 						<Button
 							asChild
 							variant="outline"
-							className="h-12 rounded-full border-bronze/50 bg-transparent px-7 font-label text-[0.74rem] uppercase tracking-[0.2em] text-ink hover:border-terracotta hover:bg-bronze/10 hover:text-terracotta dark:text-cream"
+							className="h-12 rounded-full border-bronze/50 bg-transparent px-7 font-label text-[0.74rem] uppercase tracking-[0.2em] text-ink hover:border-terracotta hover:bg-bronze/10 hover:text-ink dark:text-cream"
 						>
 							<a
 								href={whatsappCatalog}
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								<WhatsAppIcon className="size-4 text-terracotta" />
+								<WhatsAppIcon className="size-4 text-ink" />
 								{t("cta.viewCatalog")}
 							</a>
 						</Button>
 					</div>
 
-					<p className="mt-8 font-label text-[0.7rem] uppercase tracking-[0.3em] text-bronze">
+					<p className="mt-8 font-label text-[0.7rem] uppercase tracking-[0.3em] text-ink">
 						{t("hero.signature")}
 					</p>
 				</div>
@@ -111,7 +111,7 @@ export function Hero() {
 								<p className="wordmark text-sm uppercase text-ink dark:text-cream">
 									{t("hero.imageCaption")}
 								</p>
-								<p className="font-label text-[0.6rem] uppercase tracking-[0.25em] text-bronze">
+								<p className="font-label text-[0.6rem] uppercase tracking-[0.25em] text-ink">
 									{t("hero.imageSub")}
 								</p>
 							</div>
@@ -124,7 +124,7 @@ export function Hero() {
 
 			<a
 				href="#maison"
-				className="mx-auto flex w-fit flex-col items-center gap-1 pb-10 text-bronze/70 transition-colors hover:text-terracotta"
+				className="mx-auto flex w-fit flex-col items-center gap-1 pb-10 text-ink/70 transition-colors hover:text-ink"
 				aria-label={t("hero.scroll")}
 			>
 				<span className="font-label text-[0.62rem] uppercase tracking-[0.3em]">

@@ -115,7 +115,7 @@ export function ArticlesTableClient({ rows }: { rows: ArticleTableRow[] }) {
 								<Button
 									variant="ghost"
 									size="icon"
-									className="size-8 text-terracotta hover:bg-terracotta/10"
+									className="size-8 text-ink hover:bg-terracotta/10"
 									onClick={() => onDelete(a)}
 									aria-label="Supprimer"
 								>

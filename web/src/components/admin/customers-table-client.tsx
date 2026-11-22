@@ -113,7 +113,7 @@ export function CustomersTableClient({
 											<Link href={`/makteb/customers/${c.id}`}>
 												<span className="heading-vintage-sm hover:underline">
 													<div className="flex items-center gap-2.5">
-														<div className="flex size-8 items-center justify-center rounded-full bg-bronze/20 font-display text-xs font-semibold text-bronze">
+														<div className="flex size-8 items-center justify-center rounded-full bg-bronze/20 font-display text-xs font-semibold text-ink">
 															{(c.name?.[0] || c.email[0]).toUpperCase()}
 														</div>
 														{c.name || c.email}

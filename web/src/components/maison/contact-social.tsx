@@ -20,7 +20,7 @@ export function ContactSocial() {
 			className="vintage-paper relative scroll-mt-20 overflow-hidden py-20 sm:py-28"
 		>
 			<AmazighStar
-				className="pointer-events-none absolute -left-12 top-10 size-52 text-bronze/10"
+				className="pointer-events-none absolute -left-12 top-10 size-52 text-ink/10"
 				strokeWidth={1}
 				aria-hidden="true"
 			/>
@@ -46,7 +46,7 @@ export function ContactSocial() {
 				<Reveal delay={0.18}>
 					<div className="mt-12 grid gap-6 sm:grid-cols-3">
 						<div className="text-center">
-							<p className="font-label text-[0.66rem] uppercase tracking-[0.22em] text-bronze">
+							<p className="font-label text-[0.66rem] uppercase tracking-[0.22em] text-ink">
 								{t("contact.phone")}
 							</p>
 							<p className="mt-2 font-serif text-lg text-ink dark:text-cream">
@@ -57,25 +57,25 @@ export function ContactSocial() {
 							</p>
 						</div>
 						<div className="text-center sm:border-x sm:border-bronze/25">
-							<p className="font-label text-[0.66rem] uppercase tracking-[0.22em] text-bronze">
+							<p className="font-label text-[0.66rem] uppercase tracking-[0.22em] text-ink">
 								{t("contact.email")}
 							</p>
 							<a
 								href={`mailto:${site.email}`}
-								className="mt-2 block break-all font-serif text-lg text-ink transition-colors hover:text-terracotta dark:text-cream"
+								className="mt-2 block break-all font-serif text-lg text-ink transition-colors hover:text-ink dark:text-cream"
 							>
 								{site.email}
 							</a>
 						</div>
 						<div className="text-center">
-							<p className="font-label text-[0.66rem] uppercase tracking-[0.22em] text-bronze">
+							<p className="font-label text-[0.66rem] uppercase tracking-[0.22em] text-ink">
 								{t("contact.instagram")}
 							</p>
 							<a
 								href={site.socials.instagram}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="mt-2 block font-serif text-lg text-ink transition-colors hover:text-terracotta dark:text-cream"
+								className="mt-2 block font-serif text-lg text-ink transition-colors hover:text-ink dark:text-cream"
 							>
 								{site.socials.instagramHandle}
 							</a>
@@ -85,7 +85,7 @@ export function ContactSocial() {
 
 				<Reveal delay={0.24}>
 					<div className="mt-12 flex items-center justify-center gap-3 text-ink-soft dark:text-cream/70">
-						<MapPin className="size-4 text-terracotta" />
+						<MapPin className="size-4 text-ink" />
 						<p className="font-serif text-base">
 							{site.address.line1}, {site.address.line2}
 						</p>

@@ -53,7 +53,7 @@ export function AuthErrorClient() {
 	return (
 		<section className="vintage-paper flex min-h-svh items-center justify-center px-4 pt-12 pb-44 sm:pb-40">
 			<div className="vintage-frame max-w-md rounded-sm bg-card/95 p-9 text-center">
-				<AmazighStar className="mx-auto size-9 text-terracotta" />
+				<AmazighStar className="mx-auto size-9 text-ink" />
 				<h1 className="wordmark mt-4 text-xl uppercase text-ink dark:text-cream">
 					{copy.title}
 				</h1>

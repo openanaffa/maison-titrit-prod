@@ -56,7 +56,7 @@ export function OrnamentDivider({
 	return (
 		<div
 			className={cn(
-				"flex items-center justify-center gap-3 text-bronze",
+				"flex items-center justify-center gap-3 text-ink",
 				className,
 			)}
 			aria-hidden="true"
@@ -134,7 +134,7 @@ export function Monogram({ className }: { className?: string }) {
 				T
 			</span>
 			<AmazighStar
-				className="absolute -right-1 -top-1 size-3.5 text-terracotta"
+				className="absolute -right-1 -top-1 size-3.5 text-ink"
 				strokeWidth={1.4}
 			/>
 		</span>

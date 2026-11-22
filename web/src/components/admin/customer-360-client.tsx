@@ -36,7 +36,7 @@ export function Customer360Client({ customer }: { customer: Customer360 }) {
 						{t("admin.customers.detail.email")}:{" "}
 					</span>
 					{customer.email}{" "}
-					<span className="font-label text-[0.6rem] uppercase tracking-[0.12em] text-bronze">
+					<span className="font-label text-[0.6rem] uppercase tracking-[0.12em] text-ink">
 						{customer.emailVerified
 							? t("admin.customers.verified")
 							: t("admin.customers.unverified")}
@@ -122,7 +122,7 @@ export function Customer360Client({ customer }: { customer: Customer360 }) {
 										</td>
 										<td className="p-3">
 											{o.linkedBy === "guest-match" ? (
-												<span className="font-label text-[0.6rem] uppercase tracking-[0.12em] text-terracotta">
+												<span className="font-label text-[0.6rem] uppercase tracking-[0.12em] text-ink">
 													{t("admin.customers.detail.guestMatch")}
 												</span>
 											) : (
@@ -158,7 +158,7 @@ export function Customer360Client({ customer }: { customer: Customer360 }) {
 								<span className="label-vintage-sm">{n.channel}</span>
 								<span className="label-vintage-sm">{n.event}</span>
 								<span
-									className={`font-label text-[0.6rem] uppercase tracking-[0.12em] ${n.status === "SENT" ? "text-olive" : n.status === "FAILED" ? "text-terracotta" : "text-ink-soft dark:text-cream/60"}`}
+									className={`font-label text-[0.6rem] uppercase tracking-[0.12em] ${n.status === "SENT" ? "text-olive" : n.status === "FAILED" ? "text-ink" : "text-ink-soft dark:text-cream/60"}`}
 								>
 									{n.status}
 									{n.status === "FAILED" && n.attempts > 1

@@ -34,7 +34,7 @@ export function ProductGallery({
 					priority
 				/>
 				{product.featured && (
-					<span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-cream/90 px-2.5 py-1 font-label text-[0.6rem] uppercase tracking-[0.18em] text-terracotta backdrop-blur dark:bg-ink/80">
+					<span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-cream/90 px-2.5 py-1 font-label text-[0.6rem] uppercase tracking-[0.18em] text-ink backdrop-blur dark:bg-ink/80">
 						<Sparkles className="size-3" />
 						{t("card.signature")}
 					</span>

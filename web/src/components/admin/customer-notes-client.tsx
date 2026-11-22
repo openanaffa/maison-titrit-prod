@@ -128,7 +128,7 @@ export function CustomerNotesClient({
 					type="button"
 					onClick={() => setConsent("OPTED_OUT")}
 					disabled={pending}
-					className="rounded border border-terracotta/60 px-2 py-1 font-label text-[0.6rem] uppercase tracking-[0.12em] text-terracotta hover:bg-terracotta/10 disabled:opacity-50"
+					className="rounded border border-terracotta/60 px-2 py-1 font-label text-[0.6rem] uppercase tracking-[0.12em] text-ink hover:bg-terracotta/10 disabled:opacity-50"
 				>
 					{t("admin.customers.consentOut")}
 				</button>

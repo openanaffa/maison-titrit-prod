@@ -112,7 +112,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 				</span>
 
 				{product.featured && (
-					<span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-cream/90 px-2.5 py-1 font-label text-[0.6rem] uppercase tracking-[0.18em] text-terracotta backdrop-blur dark:bg-ink/80">
+					<span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-cream/90 px-2.5 py-1 font-label text-[0.6rem] uppercase tracking-[0.18em] text-ink backdrop-blur dark:bg-ink/80">
 						<Sparkles className="size-3" />
 						{t("card.signature")}
 					</span>
@@ -130,17 +130,17 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 			</Link>
 
 			<div className="flex flex-1 flex-col p-5">
-				<p className="inline-flex items-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.28em] text-bronze">
+				<p className="inline-flex items-center gap-1.5 font-label text-[0.62rem] uppercase tracking-[0.28em] text-ink">
 					<CategoryIcon slug={slugFor(product.category)} className="size-3.5" />
 					{product.category}
 				</p>
 				<Link href={detailHref} className="mt-2">
-					<h3 className="font-display text-2xl font-semibold leading-tight text-ink transition-colors duration-200 group-hover:text-terracotta dark:text-cream dark:group-hover:text-bronze-light">
+					<h3 className="font-display text-2xl font-semibold leading-tight text-ink transition-colors duration-200 group-hover:text-ink dark:text-cream dark:group-hover:text-bronze-light">
 						{product.name}
 					</h3>
 				</Link>
 				{product.nameAmazigh && (
-					<p className="tifinagh mt-1 text-sm text-bronze/90">
+					<p className="tifinagh mt-1 text-sm text-ink/90">
 						{product.nameAmazigh}
 					</p>
 				)}
@@ -151,7 +151,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 
 				<dl className="mt-4 space-y-1.5 text-[0.78rem] text-ink-soft/90 dark:text-cream/70">
 					<div className="flex gap-2">
-						<dt className="font-label shrink-0 uppercase tracking-[0.18em] text-bronze/80">
+						<dt className="font-label shrink-0 uppercase tracking-[0.18em] text-ink/80">
 							{t("card.materialLabel")}
 						</dt>
 						<dd className="font-serif">{product.materials}</dd>
@@ -159,7 +159,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 					<div className="flex gap-2">
 						<dt
 							id={sizeId}
-							className="font-label shrink-0 uppercase tracking-[0.18em] text-bronze/80"
+							className="font-label shrink-0 uppercase tracking-[0.18em] text-ink/80"
 						>
 							{t("card.sizesLabel")}
 						</dt>
@@ -205,20 +205,20 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 										</del>
 									)}
 								{currentPrice.toLocaleString("fr-FR")}{" "}
-								<span className="text-base font-normal text-bronze">
+								<span className="text-base font-normal text-ink">
 									{product.currency}
 								</span>
 							</p>
 						</div>
 						<AmazighStar
-							className="mb-1 size-6 text-bronze/50"
+							className="mb-1 size-6 text-ink/50"
 							strokeWidth={1.4}
 						/>
 					</div>
 
 					<p
 						aria-live="polite"
-						className="mt-3 min-h-4 font-label text-[0.62rem] uppercase tracking-[0.16em] text-terracotta"
+						className="mt-3 min-h-4 font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink"
 					>
 						{sizePrompt ? t("detail.sizePrompt") : ""}
 					</p>
@@ -256,7 +256,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 					</div>
 					<Link
 						href={detailHref}
-						className="mt-2 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/80 transition-colors hover:text-terracotta"
+						className="mt-2 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-ink/80 transition-colors hover:text-ink"
 					>
 						{t("cta.viewDetails")} →
 					</Link>
@@ -264,11 +264,11 @@ export function ProductCard({ product }: { product: ProductDTO }) {
 						href={whatsappCatalog}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="mt-1 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/70 transition-colors hover:text-terracotta"
+						className="mt-1 block text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-ink/70 transition-colors hover:text-ink"
 					>
 						{t("cta.viewCatalog")} →
 					</a>
-					<p className="mt-1.5 text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-bronze/80">
+					<p className="mt-1.5 text-center font-label text-[0.58rem] uppercase tracking-[0.2em] text-ink/80">
 						{t("brand.payment")}
 					</p>
 				</div>

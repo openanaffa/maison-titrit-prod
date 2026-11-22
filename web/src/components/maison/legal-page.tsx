@@ -116,7 +116,7 @@ export function LegalPage({
 		<section className="vintage-paper min-h-[80vh] py-16 sm:py-20">
 			<div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
 				<Reveal className="text-center">
-					<AmazighStar className="mx-auto size-9 text-terracotta" />
+					<AmazighStar className="mx-auto size-9 text-ink" />
 					<p className="eyebrow mt-4">{d.eyebrow}</p>
 					<h1 className="wordmark mt-3 text-3xl uppercase text-ink sm:text-4xl dark:text-cream">
 						{d.title}
@@ -139,7 +139,7 @@ export function LegalPage({
 						<dl className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2">
 							{identityRows.map((row) => (
 								<div key={row.label}>
-									<dt className="font-label text-[0.62rem] uppercase tracking-[0.18em] text-bronze">
+									<dt className="font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink">
 										{row.label}
 									</dt>
 									<dd className="mt-1 whitespace-pre-line font-serif text-sm text-ink-soft dark:text-cream/80">
@@ -171,7 +171,7 @@ export function LegalPage({
 					<div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
 						<Link
 							href="/"
-							className="font-label text-[0.7rem] uppercase tracking-[0.18em] text-bronze transition-colors hover:text-terracotta"
+							className="font-label text-[0.7rem] uppercase tracking-[0.18em] text-ink transition-colors hover:text-ink"
 						>
 							{t("detail.home")}
 						</Link>
@@ -179,7 +179,7 @@ export function LegalPage({
 							<Link
 								key={r.href}
 								href={r.href}
-								className="font-label text-[0.7rem] uppercase tracking-[0.18em] text-bronze transition-colors hover:text-terracotta"
+								className="font-label text-[0.7rem] uppercase tracking-[0.18em] text-ink transition-colors hover:text-ink"
 							>
 								{r.label}
 							</Link>

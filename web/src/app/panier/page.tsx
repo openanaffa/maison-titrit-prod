@@ -39,7 +39,7 @@ export default function CartPage() {
 
 				{items.length === 0 ? (
 					<div className="mt-12 flex flex-col items-center gap-4 text-center">
-						<AmazighStar className="size-12 text-bronze/40" strokeWidth={1.4} />
+						<AmazighStar className="size-12 text-ink/40" strokeWidth={1.4} />
 						<p className="font-serif text-lg text-ink-soft dark:text-cream/70">
 							{t("cart.empty")}
 						</p>
@@ -70,7 +70,7 @@ export default function CartPage() {
 									<div className="flex-1">
 										<Link
 											href={`/produit/${item.ref}`}
-											className="font-display text-lg font-semibold text-ink hover:text-terracotta dark:text-cream"
+											className="font-display text-lg font-semibold text-ink hover:text-ink dark:text-cream"
 										>
 											{item.name}
 										</Link>
@@ -86,7 +86,7 @@ export default function CartPage() {
 													}
 													disabled={item.qty <= 1}
 													aria-label={t("cart.decreaseQty")}
-													className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
+													className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-ink disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
 												>
 													<Minus className="size-3.5" />
 												</button>
@@ -103,7 +103,7 @@ export default function CartPage() {
 													}
 													disabled={item.qty >= 20}
 													aria-label={t("cart.increaseQty")}
-													className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-terracotta disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
+													className="inline-flex size-11 items-center justify-center text-ink transition-colors hover:text-ink disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light dark:text-cream"
 												>
 													<Plus className="size-3.5" />
 												</button>
@@ -118,7 +118,7 @@ export default function CartPage() {
 										type="button"
 										onClick={() => remove(item.productId, item.size)}
 										aria-label={t("cart.remove")}
-										className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
+										className="self-start inline-flex size-11 items-center justify-center rounded-full text-ink-soft/60 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta"
 									>
 										<Trash2 className="size-4" />
 									</button>
@@ -168,7 +168,7 @@ export default function CartPage() {
 							</Button>
 							<Link
 								href="/#collection"
-								className="mt-3 flex items-center justify-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink transition-colors hover:text-terracotta focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
+								className="mt-3 flex items-center justify-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-light"
 							>
 								<ArrowLeft className="size-3 rtl:rotate-180" />
 								{t("cta.continueShopping")}

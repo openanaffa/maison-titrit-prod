@@ -17,7 +17,7 @@ export function About() {
 				<Reveal className="text-center">
 					<p className="eyebrow">{t("about.eyebrow")}</p>
 					<h2 className="mt-4 heading-vintage-xl">{t("about.title")}</h2>
-					<p className="tifinagh mt-3 text-lg text-bronze">
+					<p className="tifinagh mt-3 text-lg text-ink">
 						{site.nameAmazigh}
 					</p>
 					<OrnamentDivider className="mt-6" width={220} />
@@ -27,11 +27,11 @@ export function About() {
 					<Reveal>
 						<div className="vintage-frame rounded-sm p-7 sm:p-10">
 							<div className="text-center">
-								<AmazighStar className="mx-auto size-8 text-terracotta" />
+								<AmazighStar className="mx-auto size-8 text-ink" />
 								<h3 className="wordmark mt-4 text-2xl uppercase text-ink dark:text-cream">
 									{t("about.heading")}
 								</h3>
-								<p className="script-tagline mt-2 text-2xl text-terracotta">
+								<p className="script-tagline mt-2 text-2xl text-ink">
 									{t("about.script")}
 								</p>
 								<OrnamentDivider className="mt-5" width={180} />
@@ -43,12 +43,12 @@ export function About() {
 								{t("about.p2")}
 							</p>
 							<p
-								className="mt-6 text-center font-serif text-xl text-terracotta"
+								className="mt-6 text-center font-serif text-xl text-ink"
 								dir="rtl"
 							>
 								{t("about.welcome")}
 							</p>
-							<p className="mt-5 text-center font-label text-[0.7rem] uppercase tracking-[0.3em] text-bronze">
+							<p className="mt-5 text-center font-label text-[0.7rem] uppercase tracking-[0.3em] text-ink">
 								{site.signature}
 							</p>
 						</div>
@@ -66,7 +66,7 @@ export function About() {
 								/>
 							</div>
 							<div className="mt-4 flex items-start gap-3">
-								<AmazighStar className="mt-1 size-5 shrink-0 text-terracotta" />
+								<AmazighStar className="mt-1 size-5 shrink-0 text-ink" />
 								<figcaption className="font-serif text-sm italic leading-relaxed text-ink-soft dark:text-cream/70">
 									La main, le fil, l'étoile. Chaque pièce naît d'un geste
 									patient hérité des couturières de l'Atlas.
