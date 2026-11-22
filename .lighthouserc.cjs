@@ -16,9 +16,9 @@ module.exports = {
     assert: {
       assertions: {
         "categories:performance": ["error", { minScore: 0.9 }],
-        "LCP": ["error", { minScore: 0.9 }],
-        "CLS": ["error", { minScore: 0.9 }],
-        "INP": ["error", { minScore: 0.9 }],
+        "largest-contentful-paint": ["error", { minScore: 0.9 }],
+        "cumulative-layout-shift": ["error", { minScore: 0.9 }],
+        "interaction-to-next-paint": ["error", { minScore: 0.9 }],
       },
     },
     upload: {
