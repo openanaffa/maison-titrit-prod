@@ -1,6 +1,6 @@
 # Maison Titrit — Roadmap
 
-**Last updated:** 2026-11-19
+**Last updated:** 2026-11-21
 
 This file is the plan. For conventions and topology read [`ENTRYPOINT.md`](ENTRYPOINT.md), for the current system read [`README.md`](README.md), for deployment read [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md), and for *why* past choices were made read [`docs/history/worklog-ws2.md`](docs/history/worklog-ws2.md) (tasks 1–31).
 
@@ -18,7 +18,7 @@ Here "PnP" means *plug and play*, not Yarn Plug'n'Play — see [Not planned](#no
 | M0 — Product build-out | ✅ Shipped | Tasks 23–31: backoffice, ecommerce, SEO/content, Supabase, Vercel, marketing. PR #80 → `develop`, PR #81 → `main`. |
 | M1 — Quality gates | ✅ Shipped | PR #82 merged to `develop` (and released via #131/#139/#145): Biome 2.6.8, hooks, CI, LSP fixes all active. |
 | M2 — Architecture cleanup | 🔄 In progress | First pass landed with PR #83: shared React Query hooks (`web/src/hooks/api/`), repository layer (`web/src/lib/repositories/`), page/component splits. Still open: `/panier` split, YAGNI dependency audit, re-enabling `react-hooks/set-state-in-effect`. |
-| Commerce roadmap (issues #111–#128) | 🔄 In progress | Delivered: variants #115, ledger #116, transactional checkout #117, order lifecycle #118, delivery zones #119 (ADRs 0001–0005, PRs #133–#143), fulfilment queue #121 (PR #147), customer 360 #122 (PR #150), E2E suite #126 (PR #151), inventory workspace #120 (PR #152 — CSV import still open). Automated WhatsApp messaging (#113, #123–#125) is closed as Not planned — the Wafine integration was intentionally removed in PR #156 (unofficial API; account-ban risk). Staff notifications are email-only (Brevo); storefront wa.me links remain customer-initiated. Open: #120 CSV import, #127 remaining a11y/CWV findings, #128 monitoring/restore drill. |
+| Commerce roadmap (issues #111–#128) | 🔄 In review | Delivered: variants #115, ledger #116, transactional checkout #117, order lifecycle #118, delivery zones #119 (ADRs 0001–0005, PRs #133–#143), fulfilment queue #121 (PR #147), customer 360 #122 (PR #150), E2E suite #126 (PR #151), inventory workspace #120 (PR #152 + CSV import PR #158), a11y/CWV #127 (audit PR #153 + contrast/CI-gate follow-up PR #162), monitoring/backup-runbooks #128 (PR #161: Sentry configs, correlation IDs, restore drill, runbooks, ADR-0006). Automated WhatsApp messaging (#113, #123–#125) is closed as Not planned — the Wafine integration was intentionally removed in PR #156 (unofficial API; account-ban risk). Staff notifications are email-only (Brevo); storefront wa.me links remain customer-initiated. All issues now have a PR awaiting review; nothing is un-started. |
 | M3 — Forkable plug-and-play starter | 📋 Planned | De-brand, zero-secret bootstrap, packaging, fork docs, fork-agnostic CI. |
 | M4 — Hardening & scale | 🗓️ Backlog | Test coverage (now 59 tests), a11y, perf budgets, dependency cadence. |
 
@@ -95,11 +95,34 @@ Goal: a fresh GitHub template clone boots with `bun install → cp .env.example 
 
 ## M4 — Hardening & scale 🗓️
 
-- [ ] Expand coverage beyond the current 59 tests: checkout, auth/RBAC, i18n, storage provider selection; E2E suite (issue #126).
-- [ ] Accessibility pass on storefront + `/makteb` (keyboard paths, ARIA, contrast) — issue #127.
+- [ ] Expand coverage beyond the current 59 tests: checkout, auth/RBAC, i18n, storage provider selection; E2E suite (issue #126 — PR #151 in review).
+- [ ] Accessibility pass on storefront + `/makteb` (keyboard paths, ARIA, contrast) — issue #127 (PR #153 in review; remaining contrast + CWV CI gate in PR #162).
+- [ ] Monitoring & recovery — issue #128 (PR #161 in review: Sentry configs, correlation IDs, restore drill, runbooks, ADR-0006; drill must be **executed**, not just documented, before sign-off).
 - [ ] Performance budgets + bundle audit; keep images on `next/image`.
 - [ ] Dependency upgrade cadence for Next / React / Tailwind / Prisma; revisit the Bun 1.3 `bun.lock` v1 constraint once Vercel's build image ships Bun ≥ 1.4.
 - [x] `trail` CLI works in this shell; run `trail build` after large structural changes.
+
+## Next up — prepared milestone tasks
+
+Distilled from `INVENTORY.md` (full inventory) and the PROGRESS.md reconciliation matrix. Ordered by execution readiness.
+
+### R0 — Review & merge queue (blocking everything else)
+PRs awaiting review, in dependency order: **#158** (CSV import), **#151** (E2E), **#152** (inventory), **#153** (a11y audit), **#162** (contrast + CWV gate), **#161** (monitoring/runbooks), **#160** (PWA M7), **#159** (agent tooling, this PR), **#131** (compliance release → main). Each: Codex review → resolve threads → merge to `develop`.
+
+### R1 — Close the Wafine epic on GitHub (docs-only)
+ROADMAP and PROGRESS record #113/#123–#125 as Not planned (decision in #156/#157), but GitHub issues #123 (blocked), #124, #125 are still open. Task: owner sign-off, then close all four as *Not planned* with a pointer to PR #156. Unblocks the M3 milestone slot in the issue tracker.
+
+### R2 — Production release gate (B-04)
+After the queue drains: release PR `develop` → `main` (41 commits unreleased), diff review vs main, migration ordering audit (supabase/migrations vs Prisma), Vercel env cleanup (WAFINE_* removal), changelog + release notes, final Codex review, human approval.
+
+### R3 — #128 residual (after PR #161 merges)
+**Execute** the restore drill for real (pg_dump → age → R2 → scratch DB), rotate `BACKUP_DATABASE_URL`, verify backup-r2 plan items (upload route 200, R2 URL, lifecycle policy), wire Sentry alert routing with owners.
+
+### R4 — M2 architecture cleanup (next tasks)
+From the M2 section below, first three: split `/panier` page, migrate the 19 admin `fetch` calls to React Query shared hooks, re-enable `react-hooks/set-state-in-effect` after refactoring the ~8 hydration-gated effects.
+
+### R5 — M3 forkable starter (first tasks)
+Extend `web/src/config/site.ts` into a single `brand.config.ts`, sanitize `web/.env.example`, add provider-agnostic `bun run db:init`. Full list in the M3 section.
 
 ## Not planned
 

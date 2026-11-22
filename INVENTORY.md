@@ -7,13 +7,15 @@ Consolidated from ROADMAP.md, PROGRESS.md, TODO.md (frontend standards), TODO_EN
 | Issue | Status | Remaining |
 |---|---|---|
 | #120 Inventory | Partial — CSV import PR #158 in review | Codex review → merge |
-| #127 a11y/CWV | Partial — audit done | remaining contrast swaps (~40 instances), LHCI gate or field-data gate |
-| #128 ops/recovery | Not met | restore drill, R2 recovery, correlation IDs, runbooks, Sentry routing |
+| #127 a11y/CWV | Partial — audit #153 + contrast/CWV-gate #162 both in review | merge both; CWV gate is CI-enforced |
+| #128 ops/recovery | Partial — PR #161 in review (configs, correlation IDs, drill + runbooks, ADR-0006) | merge #161, then **execute** the restore drill, rotate `BACKUP_DATABASE_URL`, wire alert routing |
 | #92/#93 legal | Closed COMPLETED — re-verify | owner confirmations on identity/retention/policy facts |
 | #96 SEO | Closed COMPLETED — cookie locale | document limitation, propose locale-URL strategy |
 | #112/#114 epics | Open | close when P0s above close |
 
 ## 2. ROADMAP milestones
+
+Milestone definitions and the ordered "Next up" task list (R0 review queue → R1 Wafine issue closure → R2 release gate → R3 drill → R4 M2 cleanup → R5 M3 starter) now live in `ROADMAP.md` — keep this inventory as the detail layer.
 
 - M2 Architecture cleanup (in progress): /panier split, YAGNI dep audit, re-enable react-hooks/set-state-in-effect, DRY (19 admin fetch → react-query), KISS (split 3 page components + 4 oversized components), Hexagonal, Structure/domain grouping.
 - M3 Forkable plug-and-play starter (planned): de-brand, bootstrap, packaging, fork docs, fork-agnostic CI, optionality.

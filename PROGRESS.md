@@ -84,7 +84,7 @@ All findings across #147–#156 were resolved in-cycle with threaded replies and
 | #126 E2E | Met | 15 Playwright tests on prod-build + isolated Supabase | #151 | ✅ | ❌ | release sync |
 | **#120 inventory** | **Partial** — CSV import in review | Stock table, actions, history, CSV export + **CSV import (PR #158)** | #152, #158 | ✅ (#158 pending review) | ❌ | Codex review → merge |
 | **#127 a11y/CWV** | **Partial** — audit done; remaining contrast + Lighthouse gate | Contrast fixes + budgets + LHCI (suppressed) | #153 | ✅ | ❌ | **P0: remaining contrast, LHCI startup fix or explicit field-data gate** |
-| **#128 ops/recovery** | **Not met** — backup creation only; no restore drill | Nightly encrypted backups to R2 (`db-backup.yml`) | — | ✅ | ❌ | **P0: restore drill, R2 recovery, correlation IDs, runbooks, Sentry routing** |
+| **#128 ops/recovery** | **Partial** — PR #161 in review: Sentry configs (server/edge were silently broken), correlation IDs on checkout, restore drill + runbooks, ADR-0006 | Nightly encrypted backups to R2 (`db-backup.yml`) + PR #161 deliverables | #161 | ✅ | ❌ | merge #161, then **execute** the restore drill + rotate `BACKUP_DATABASE_URL` (R3) |
 | #92/#93 legal | Closed COMPLETED — re-verify claims vs code/owner facts | Settings + legal pages + email templates | #136 | ✅ | ⚠️ | P1 audit; owner confirmations |
 | #96 SEO | Closed COMPLETED — cookie locale, no per-locale URLs | Locale cookie + buildPageMetadata | pre-#136 | ✅ | ⚠️ | P1: document limitation, propose locale-URL strategy |
 | #113/#123–#125 | NOT PLANNED (Wafine) | Removed by #156 | #156 | ✅ | ❌ | none — keep closed |
@@ -94,7 +94,7 @@ All findings across #147–#156 were resolved in-cycle with threaded replies and
 
 | Check | Command / workflow | Result | Evidence |
 |---|---|---|---|
-| Remote state | `git fetch` + `gh pr list` | Pass | develop `b079432`, main `7a9b437`; open PRs: #158 only |
+| Remote state | `git fetch` + `gh pr list` | Pass | develop `48b9bde`, main `7a9b437`; open PRs: #131, #151, #152, #153, #158, #159, #160, #161, #162 |
 | Develop CI | CI run on `a9032d3` | Pass | verify ✅ e2e ✅ |
 | Issue states | `gh issue view` | Pass | #120 REOPENED, #127 OPEN, #128 OPEN, #113/#123–#125 NOT_PLANNED |
 | Wafine removal | `grep WAFINE` across docs/code | Pass (post-#157) | `web/.env.example` clean; ROADMAP.md reflects M3 cancellation (#157) |
