@@ -10,6 +10,8 @@ Maison Titrit is a full stack web app for local stores, built specialy for <http
 - [Deployments](docs/DEPLOYMENT.md)
 - [Build history / design decisions](docs/history/worklog-ws2.md)
 - [README](README.md)
+- [Modern Web Guidance audit](docs/engineering/modern-web-guidance-audit.md)
+- [Browser verification](docs/engineering/browser-verification.md)
 
 ## Technologies
 
@@ -40,6 +42,11 @@ bunx tsc --noEmit -p web
 bun run build         # next build
 cd web && bun test    # colocated unit tests (*.test.ts)
 ```
+
+## Tooling (agents)
+
+- **Modern Web Guidance** is installed under `.agents/skills/modern-web-guidance/`. Consult its guides before implementing web-platform features (HTML semantics/a11y, CSS, dialogs/popovers, forms, animation/reduced-motion, performance, security, cross-browser). Run `bunx modern-web-guidance@latest legacy-scan .` for modernization audits; verify findings against Keep/Drop criteria before changing code. Report: `docs/engineering/modern-web-guidance-audit.md`.
+- **Chrome DevTools for agents** is registered as `chrome-devtools` in `opencode.json` (plus `.cursor/mcp.json`, `.kiro/settings/mcp.json`) using `chrome-devtools-mcp@latest --isolated --no-usage-statistics`. Use for live inspection; never expose to CI/prod. Details: `docs/engineering/browser-verification.md`.
 
 ## Environments Variables
 

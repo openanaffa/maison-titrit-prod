@@ -59,3 +59,6 @@ repomix-output*
 web/.env.e2e
 web/playwright-report/
 web/test-results/
+
+# trail local thread/workspace binding (runtime state; .trail/cache + learnings stay committed)
+.trail/workspace.json
