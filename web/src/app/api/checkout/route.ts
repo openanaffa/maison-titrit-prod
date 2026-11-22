@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { after, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { site } from "@/config/site";
 import { rejectBots } from "@/lib/bot";
 import { parseCartLines, priceCart } from "@/lib/checkout";
@@ -8,6 +9,7 @@ import { getDeliveryQuote } from "@/lib/delivery";
 import { releaseReservation, reserveStock } from "@/lib/inventory";
 import { notifyStaffNewOrder } from "@/lib/notify";
 import { getCurrentUser } from "@/lib/session";
+import { getCorrelationId, logWithCorrelation } from "@/lib/correlation";
 
 export const dynamic = "force-dynamic";
 
@@ -18,8 +20,15 @@ export const dynamic = "force-dynamic";
  * Returns { order: { number, total }, whatsapp: <deeplink with summary> }
  */
 export async function POST(req: Request) {
+	const correlationId = getCorrelationId(req);
+	Sentry.setContext("correlation", { correlationId });
+	logWithCorrelation(correlationId, "info", "checkout.start");
+
 	const blocked = await rejectBots();
-	if (blocked) return blocked;
+	if (blocked) {
+		logWithCorrelation(correlationId, "warn", "checkout.blocked_by_bot");
+		return blocked;
+	}
 	const user = await getCurrentUser();
 	try {
 		const body = await req.json();
@@ -31,6 +40,7 @@ export async function POST(req: Request) {
 				: `checkout:${crypto.randomUUID()}`;
 
 		if (!cartLines) {
+			logWithCorrelation(correlationId, "warn", "checkout.empty_cart");
 			return NextResponse.json(
 				{ error: "Panier vide ou invalide." },
 				{ status: 400 },
@@ -42,6 +52,7 @@ export async function POST(req: Request) {
 			!customer.name.trim() ||
 			!customer.phone.trim()
 		) {
+			logWithCorrelation(correlationId, "warn", "checkout.missing_customer");
 			return NextResponse.json(
 				{ error: "Nom et téléphone requis." },
 				{ status: 400 },
@@ -79,6 +90,7 @@ export async function POST(req: Request) {
 		});
 		const priced = priceCart(cartLines, products);
 		if (!priced.ok) {
+			logWithCorrelation(correlationId, "warn", "checkout.pricing_fail", { error: priced.error });
 			return NextResponse.json({ error: priced.error }, { status: 409 });
 		}
 		const { items, total: itemsTotal } = priced;
@@ -88,6 +100,7 @@ export async function POST(req: Request) {
 			typeof customer.city === "string" ? customer.city : null,
 		);
 		if (!quote.covered) {
+			logWithCorrelation(correlationId, "warn", "checkout.delivery_not_covered");
 			return NextResponse.json(
 				{ error: "Destination de livraison non couverte." },
 				{ status: 409 },
@@ -115,6 +128,7 @@ export async function POST(req: Request) {
 				// size, the size is not purchasable — do NOT fall back to the
 				// product-level inStock flag. The legacy product-level fallback
 				// applies only to products with zero variant rows.
+				logWithCorrelation(correlationId, "warn", "checkout.out_of_stock", { productId: line.productId, size: line.size });
 				const variant = await db.productVariant.findFirst({
 					where: { productId: line.productId, size: line.size, color: null },
 					select: { id: true, sku: true },
@@ -169,6 +183,7 @@ export async function POST(req: Request) {
 		} catch (e) {
 			// Release any reservations already made.
 			for (const r of reservations) {
+				logWithCorrelation(correlationId, "info", "checkout.release_reservation", { variantId: r.variantId });
 				try {
 					await releaseReservation(r.variantId, r.qty, {
 						idempotencyKey: `${r.key}:release`,
@@ -226,6 +241,7 @@ export async function POST(req: Request) {
 		} catch (e) {
 			// Release reservations on order creation failure.
 			for (const r of reservations) {
+				logWithCorrelation(correlationId, "info", "checkout.release_reservation", { variantId: r.variantId });
 				try {
 					await releaseReservation(r.variantId, r.qty, {
 						idempotencyKey: `${r.key}:release`,
@@ -257,6 +273,7 @@ export async function POST(req: Request) {
 			throw e;
 		}
 
+		logWithCorrelation(correlationId, "info", "checkout.order_created", { orderNumber: order.number, total });
 		const pricedItems = items.map((i) => ({
 			name: i.name,
 			size: i.size,
@@ -305,6 +322,8 @@ export async function POST(req: Request) {
 			whatsapp,
 		});
 	} catch (e) {
+		logWithCorrelation(correlationId, "error", "checkout.failed", { error: String(e) });
+		Sentry.captureException(e, { tags: { correlationId } });
 		console.error("POST /api/checkout failed", e);
 		return NextResponse.json(
 			{ error: "Commande impossible." },
