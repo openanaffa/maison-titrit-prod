@@ -1,12 +1,14 @@
 import { site } from "@/config/site";
 import type {
+	CustomerNotificationEvent,
+	CustomerOrderUpdatePayload,
 	EmailTemplate,
 	StaffOrderPayload,
 } from "@/lib/types/notifications";
 
 function esc(s: string): string {
 	return s
-		.replace(/&/g, "&amp;")
+		.replace(/&/g, "&")
 		.replace(/</g, "&lt;")
 		.replace(/>/g, "&gt;")
 		.replace(/"/g, "&quot;");
@@ -114,7 +116,7 @@ export function staffNewOrderEmail(
 	};
 }
 
-/** Plain-text version — used for the email fallback AND the WAFINE WhatsApp message. */
+/** Plain-text version of the staff new-order email. */
 export function staffNewOrderText(
 	order: StaffOrderPayload,
 	ordersUrl: string,
@@ -135,4 +137,70 @@ export function staffNewOrderText(
 		``,
 		`Détails : ${ordersUrl}`,
 	].join("\n");
+}
+
+const CUSTOMER_ORDER_UPDATE_COPY: Record<
+	CustomerNotificationEvent,
+	{ subject: string; heading: string; body: string; textLine: string }
+> = {
+	CONFIRMED: {
+		subject: "Commande confirmée",
+		heading: "Votre commande est confirmée",
+		body: "Merci pour votre confiance. Nous préparons votre commande pour la livraison.",
+		textLine:
+			"Votre commande est confirmée. Nous la préparons pour la livraison.",
+	},
+	DISPATCHED: {
+		subject: "Commande expédiée",
+		heading: "Votre commande est en route",
+		body: "Votre commande a été remise à la livraison et arrive bientôt chez vous.",
+		textLine:
+			"Votre commande a été remise à la livraison et arrive bientôt chez vous.",
+	},
+	DELIVERED: {
+		subject: "Commande livrée",
+		heading: "Votre commande a été livrée",
+		body: "Votre commande vous a été remise. Merci de votre visite, à bientôt !",
+		textLine:
+			"Votre commande vous a été remise. Merci de votre visite, à bientôt !",
+	},
+};
+
+/** Customer order-update email (issue #121): lifecycle event + delivery ref. */
+export function customerOrderUpdateEmail(
+	event: CustomerNotificationEvent,
+	order: CustomerOrderUpdatePayload,
+): EmailTemplate {
+	const copy = CUSTOMER_ORDER_UPDATE_COPY[event];
+	const tracking =
+		order.deliveryProvider || order.deliveryReference
+			? `<tr><td style="padding:4px 0;font-size:14px;line-height:1.6;color:#1C1A17;">
+              Livraison&nbsp;: ${esc(order.deliveryProvider || "—")}${order.deliveryReference ? ` — réf.&nbsp;${esc(order.deliveryReference)}` : ""}
+            </td></tr>`
+			: "";
+	const html = shell(`
+      <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#1C1A17;">Bonjour ${esc(order.customerName)} 👋</p>
+      <p style="margin:4px 0 0;font-size:14px;line-height:1.6;color:#1C1A17;"><strong>${esc(copy.heading)}</strong></p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td style="padding:4px 0;font-size:14px;line-height:1.6;color:#1C1A17;">Commande&nbsp;: <strong>${esc(order.number)}</strong></td></tr>
+        <tr><td style="padding:4px 0;font-size:14px;line-height:1.6;color:#1C1A17;">Total&nbsp;: ${money(order.total)} (à la livraison)</td></tr>
+        ${tracking}
+        <tr><td style="padding:4px 0;font-size:14px;line-height:1.6;color:#1C1A17;">${esc(copy.body)}</td></tr>
+      </table>
+  `);
+	const text = [
+		`Bonjour ${order.customerName} 👋`,
+		``,
+		`${copy.heading} — ${order.number}`,
+		`Total : ${money(order.total)} (à la livraison)`,
+		order.deliveryProvider || order.deliveryReference
+			? `Livraison : ${order.deliveryProvider || "—"}${order.deliveryReference ? ` — réf. ${order.deliveryReference}` : ""}`
+			: null,
+		copy.textLine,
+	].filter(Boolean) as string[];
+	return {
+		subject: `${copy.subject} — ${order.number}`,
+		html,
+		text: text.join("\n"),
+	};
 }

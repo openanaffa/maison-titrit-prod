@@ -101,7 +101,7 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 								<li key={n.href}>
 									<a
 										href={n.href}
-										className="font-serif text-sm text-cream/80 transition-colors hover:text-terracotta"
+										className="font-serif text-sm text-cream/80 transition-colors hover:text-bronze-light"
 									>
 										{t(n.labelKey)}
 									</a>
@@ -119,7 +119,7 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 							<li>
 								<a
 									href={`tel:${site.phones[0].e164}`}
-									className="hover:text-terracotta"
+									className="hover:text-ink"
 								>
 									{site.phones[0].display}
 								</a>
@@ -127,7 +127,7 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 							<li>
 								<a
 									href={`mailto:${site.email}`}
-									className="break-all hover:text-terracotta"
+									className="break-all hover:text-ink"
 								>
 									{site.email}
 								</a>
@@ -137,7 +137,7 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 									href={whatsappCatalog}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="inline-flex items-center gap-2 hover:text-terracotta"
+									className="inline-flex items-center gap-2 hover:text-ink"
 								>
 									<WhatsAppIcon className="size-3.5" />
 									{t("cta.viewCatalog")}
@@ -170,32 +170,29 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 						) : null}
 						{showEmail ? (
 							<li>
-								<a
-									href={`mailto:${legal?.email}`}
-									className="hover:text-terracotta"
-								>
+								<a href={`mailto:${legal?.email}`} className="hover:text-ink">
 									{legal?.email}
 								</a>
 							</li>
 						) : null}
 						{showPhone ? <li>{legal?.phone}</li> : null}
 						<li>
-							<Link href="/mentions-legales" className="hover:text-terracotta">
+							<Link href="/mentions-legales" className="hover:text-ink">
 								{t("legal.notice")}
 							</Link>
 						</li>
 						<li>
-							<Link href="/confidentialite" className="hover:text-terracotta">
+							<Link href="/confidentialite" className="hover:text-ink">
 								{t("legal.privacy")}
 							</Link>
 						</li>
 						<li>
-							<Link href="/cookies" className="hover:text-terracotta">
+							<Link href="/cookies" className="hover:text-ink">
 								{t("legal.cookies")}
 							</Link>
 						</li>
 						<li>
-							<Link href="/cgv" className="hover:text-terracotta">
+							<Link href="/cgv" className="hover:text-ink">
 								{t("legal.terms")}
 							</Link>
 						</li>
@@ -210,17 +207,17 @@ export function SiteFooter({ legalIdentity }: SiteFooterProps) {
 							<li>DPO / confidentialité&nbsp;: {legal?.dpoContact}</li>
 						) : null}
 						<li>
-							<Link href="/livraison-retours" className="hover:text-terracotta">
+							<Link href="/livraison-retours" className="hover:text-ink">
 								{t("legal.deliveryReturns")}
 							</Link>
 						</li>
 						<li>
-							<Link href="/guide-des-tailles" className="hover:text-terracotta">
+							<Link href="/guide-des-tailles" className="hover:text-ink">
 								{t("legal.sizing")}
 							</Link>
 						</li>
 						<li>
-							<Link href="/contact" className="hover:text-terracotta">
+							<Link href="/contact" className="hover:text-ink">
 								{t("nav.contact")}
 							</Link>
 						</li>

@@ -87,7 +87,7 @@ maison-titrit-prod/
 
 ## 8. MCP servers configured (18)
 
-trail, next-devtools, serena, repomix, context7, figma, open-knowledge, filesystem, filesystem-brain (F:\0brain), supabase, prisma, cloudflare, github, postgres, sqlite, vercel, terraform, docker.
+trail, next-devtools, chrome-devtools, serena, repomix, context7, figma, open-knowledge, filesystem, filesystem-brain (F:\0brain), supabase, prisma, cloudflare, github, postgres, sqlite, vercel, terraform, docker.
 
 Secrets via env vars; see `web/.env.example`. Serena uses Python 3.12 (via uv). Cloudflare MCP needs `npx wrangler login` + `CLOUDFLARE_ACCOUNT_ID`. Terraform/Docker CLIs must be installed to use those MCPs.
 

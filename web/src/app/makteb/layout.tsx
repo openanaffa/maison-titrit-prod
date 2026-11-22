@@ -23,6 +23,7 @@ export default async function MaktebLayout({
 		pendingOrdersResult,
 		customersResult,
 		categoriesResult,
+		fulfilmentQueueResult,
 	] = await Promise.all([
 		supabase
 			.from("Product")
@@ -42,6 +43,11 @@ export default async function MaktebLayout({
 			.from("Category")
 			.select("id", { count: "exact", head: true })
 			.throwOnError(),
+		supabase
+			.from("Order")
+			.select("id", { count: "exact", head: true })
+			.in("status", ["PENDING", "CONFIRMED", "PROCESSING"])
+			.throwOnError(),
 	]);
 
 	return (
@@ -52,6 +58,7 @@ export default async function MaktebLayout({
 				pendingOrders: pendingOrdersResult.count ?? 0,
 				customers: customersResult.count ?? 0,
 				categories: categoriesResult.count ?? 0,
+				fulfilmentQueue: fulfilmentQueueResult.count ?? 0,
 			}}
 		>
 			{children}

@@ -19,10 +19,14 @@ export function CheckoutSuccess({
 }) {
 	const { t } = useT();
 	return (
-		<section className="vintage-paper flex min-h-[80vh] items-center justify-center px-4 py-16">
+		<section
+			className="vintage-paper flex min-h-[80vh] items-center justify-center px-4 py-16"
+			aria-live="polite"
+			aria-atomic="true"
+		>
 			<div className="vintage-frame max-w-md rounded-sm bg-card/95 p-9 text-center">
 				<span className="mx-auto inline-flex size-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
-					<Check className="size-7" />
+					<Check className="size-7" aria-hidden="true" />
 				</span>
 				<h1 className="wordmark mt-4 text-2xl uppercase text-ink dark:text-cream">
 					{t("checkout.success")}
@@ -48,7 +52,7 @@ export function CheckoutSuccess({
 				</a>
 				<Link
 					href="/#collection"
-					className="mt-3 inline-block font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta"
+					className="mt-3 inline-block font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink hover:text-ink"
 				>
 					{t("cta.continueShopping")}
 				</Link>
@@ -63,7 +67,7 @@ export function CheckoutEmpty() {
 		<section className="vintage-paper flex min-h-[80vh] items-center justify-center px-4 py-16">
 			<div className="text-center">
 				<AmazighStar
-					className="mx-auto size-12 text-bronze/40"
+					className="mx-auto size-12 text-ink/40"
 					strokeWidth={1.4}
 				/>
 				<p className="mt-4 font-serif text-lg text-ink-soft dark:text-cream/70">

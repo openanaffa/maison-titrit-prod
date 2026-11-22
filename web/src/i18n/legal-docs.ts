@@ -81,7 +81,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. Destinataires des données",
 					p: [
-						"Vos données sont hébergées par Vercel (site), Supabase (base de données et authentification, Union européenne), Cloudflare R2 (images) et Brevo (alertes email internes). Les services de mesure d'audience et de publicité ne sont chargés qu'après votre consentement. Le détail de votre commande est transmis à notre équipe via WhatsApp et email pour préparer l'expédition.",
+						"Vos données sont hébergées par Vercel (site), Supabase (base de données et authentification, Union européenne), Cloudflare R2 (images) et Brevo (alertes email internes). Les services de mesure d'audience et de publicité ne sont chargés qu'après votre consentement. Le site peut ouvrir WhatsApp avec un message prérempli contenant les détails de votre commande ; vous choisissez de l'envoyer à notre équipe. Le site n'envoie pas de messages via une API WhatsApp.",
 						"Nous ne vendons ni ne louons vos données personnelles à des tiers.",
 					],
 				},
@@ -440,7 +440,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. الجهات المتلقية للبيانات",
 					p: [
-						"تُستضاف بياناتك لدى Vercel (الموقع) وSupabase (قاعدة البيانات والمصادقة، الاتحاد الأوروبي) وCloudflare R2 (الصور) وBrevo (تنبيهات البريد الداخلية). ولا تُحمَّل خدمات قياس الجمهور والإعلانات إلا بعد موافقتك. ويُرسَل تفاصيل طلبك إلى فريقنا عبر واتساب والبريد لإعداد الشحنة.",
+						"تُستضاف بياناتك لدى Vercel (الموقع) وSupabase (قاعدة البيانات والمصادقة، الاتحاد الأوروبي) وCloudflare R2 (الصور) وBrevo (تنبيهات البريد الداخلية). ولا تُحمَّل خدمات قياس الجمهور والإعلانات إلا بعد موافقتك. يمكن للموقع فتح واتساب برسالة مُعدّة مسبقًا تتضمن تفاصيل طلبك؛ وأنت تختار إرسالها إلى فريقنا. لا يرسل الموقع رسائل عبر واجهة واتساب البرمجية.",
 						"لا نبيع بياناتك الشخصية ولا نؤجّرها إلى أي طرف ثالث.",
 					],
 				},
@@ -604,7 +604,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. البيانات الشخصية وملفات تعريف الارتباط",
 					p: [
-						"تُفصَّل معالجة البيانات الشخصية واستخدام ملفات تعريف الارتباط في سياسة الخصوصية وصفحتنا المخصصة لملفات تعريف الارتباط. ويمكنكم تعديل تفضيلات الموافقة في أي وقت عبر زر التفضيلات المعروض على الموقع.",
+						"تُفصَّل معالجة البيانات الشخصية واستخدام ملفات تعريف الارتباط في سياسة الخصوصية وصفحتنا المخصصة لملفات تعريف الارتباط. ويمكنكم تعديل تفضيلات الموافقة في أي وقت عبر زر التفضيلات المعروض على الموقع.",
 					],
 				},
 				{
@@ -630,7 +630,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "1. ما هي ملفات تعريف الارتباط؟",
 					p: [
-						"ملف تعريف الارتباط هو ملف صغير أو معلومة تُخزَّن على جهازكم (المتصفح أو الهاتف أو الحاسوب) عند زيارة موقع. وقد تُستخدم تقنيات مشابهة (مثل التخزين المحلي أو المعرّفات التقنية) لأغراض مماثلة.",
+						"ملف تعريف الارتباط هو ملف صغير أو معلومة تُخزَّن على جهازكم (المتصفح أو الهاتف أو الحاسوب) عند زيارة موقع. وقد تُستخدم تقنيات مشابهة (مثل التخزين المحلي أو المعرّفات التقنية) لأغراض مماثلة.",
 					],
 				},
 				{
@@ -642,13 +642,13 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "3. قياس الجمهور (بموافقتكم)",
 					p: [
-						"إذا سمحتم بذلك، يمكننا استخدام أدوات لقياس الجمهور والأداء (مثل أدوات Vercel Analytics/Speed Insights، وعند تهيئتها خدمات مثل Google Tag Manager/Google Analytics). تعمل بعض خدمات Google بنمط الموافقة: يكون التخزين المتعلق بالتحليلات والإعلانات مرفوضًا افتراضيًا، ثم يُحدَّث وفقًا لخياراتكم.",
+						"إذا سمحتم بذلك، يمكننا استخدام أدوات لقياس الجمهور والأداء (مثل أدوات Vercel Analytics/Speed Insights، وعند تهيئتها خدمات مثل Google Tag Manager/Google Analytics). تعمل بعض خدمات Google بنمط الموافقة: يكون التخزين المتعلق بالتحليلات والإعلانات مرفوضًا افتراضيًا، ثم يُحدَّث وفقًا لخياراتكم.",
 					],
 				},
 				{
 					h: "4. التسويق (بموافقتكم)",
 					p: [
-						"إذا سمحتم بذلك، قد تُفعَّل أدوات لقياس الحملات والإجراءات التسويقية (مثل Meta أو Pinterest أو TikTok عند تهيئتها). ولا تُحمَّل هذه الأدوات إلا بعد موافقتكم الصريحة عبر شريط الموافقة.",
+						"إذا سمحتم بذلك، قد تُفعَّل أدوات لقياس الحملات والإجراءات التسويقية (مثل Meta أو Pinterest أو TikTok عند تهيئتها). ولا تُحمَّل هذه الأدوات إلا بعد موافقتكم الصريحة عبر شريط الموافقة.",
 					],
 				},
 				{
@@ -685,7 +685,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "2. التوصيل",
 					p: [
-						"نقوم بالتوصيل داخل المغرب. وتُبلَّغ الآجال والإجراءات العملية عند تأكيد الطلب، بحسب وجهة التسليم وتوفر القطع.",
+						"نقوم بالتوصيل داخل المغرب. وتُبلَّغ الآجال والإجراءات العملية عند تأكيد الطلب، بحسب وجهة التسليم وتوفر القطع.",
 						"يرجى تقديم عنوان دقيق ورقم هاتف يمكن الوصول إليه. وفي حال الغياب وقت التسليم، قد تترتب على محاولات إضافية رسوم وفقًا للشروط المعمول بها.",
 					],
 				},
@@ -798,7 +798,7 @@ export const legalDocs: Record<Locale, Record<LegalDocKey, LegalDoc>> = {
 				{
 					h: "5. Recipients",
 					p: [
-						"Your data is hosted by Vercel (site), Supabase (database and authentication, European Union), Cloudflare R2 (images) and Brevo (internal email alerts). Analytics and advertising services are only loaded after your consent. Your order details are sent to our team via WhatsApp and email to prepare the shipment.",
+						"Your data is hosted by Vercel (site), Supabase (database and authentication, European Union), Cloudflare R2 (images) and Brevo (internal email alerts). Analytics and advertising services are only loaded after your consent. The site can open WhatsApp with a prefilled message containing your order details; you choose whether to send it to our team. The site does not send messages through a WhatsApp API.",
 						"We do not sell or rent your personal data to third parties.",
 					],
 				},

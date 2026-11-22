@@ -140,7 +140,7 @@ export function LegalIdentityForm() {
 	return (
 		<form onSubmit={save} className="card-vintage rounded-sm p-6">
 			<div className="flex items-center gap-3">
-				<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+				<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-ink">
 					<Scale className="size-5" />
 				</span>
 				<div>

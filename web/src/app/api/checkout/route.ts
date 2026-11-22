@@ -1,9 +1,16 @@
 import { Prisma } from "@prisma/client";
+import * as Sentry from "@sentry/nextjs";
 import { after, NextResponse } from "next/server";
 import { site } from "@/config/site";
 import { rejectBots } from "@/lib/bot";
 import { parseCartLines, priceCart } from "@/lib/checkout";
+import {
+	CORRELATION_ID_HEADER,
+	getCorrelationId,
+	logWithCorrelation,
+} from "@/lib/correlation";
 import { db } from "@/lib/db";
+import { getDeliveryQuote } from "@/lib/delivery";
 import { releaseReservation, reserveStock } from "@/lib/inventory";
 import { notifyStaffNewOrder } from "@/lib/notify";
 import { getCurrentUser } from "@/lib/session";
@@ -17,8 +24,23 @@ export const dynamic = "force-dynamic";
  * Returns { order: { number, total }, whatsapp: <deeplink with summary> }
  */
 export async function POST(req: Request) {
+	const correlationId = getCorrelationId(req);
+	Sentry.setContext("correlation", { correlationId });
+	logWithCorrelation(correlationId, "info", "checkout.start");
+
+	/** Every response carries the correlation ID so a failure reported by
+	 *  the customer can be traced back through logs and Sentry. */
+	const respond = (body: unknown, init?: ResponseInit) => {
+		const res = NextResponse.json(body, init);
+		res.headers.set(CORRELATION_ID_HEADER, correlationId);
+		return res;
+	};
+
 	const blocked = await rejectBots();
-	if (blocked) return blocked;
+	if (blocked) {
+		logWithCorrelation(correlationId, "warn", "checkout.blocked_by_bot");
+		return blocked;
+	}
 	const user = await getCurrentUser();
 	try {
 		const body = await req.json();
@@ -30,10 +52,8 @@ export async function POST(req: Request) {
 				: `checkout:${crypto.randomUUID()}`;
 
 		if (!cartLines) {
-			return NextResponse.json(
-				{ error: "Panier vide ou invalide." },
-				{ status: 400 },
-			);
+			logWithCorrelation(correlationId, "warn", "checkout.empty_cart");
+			return respond({ error: "Panier vide ou invalide." }, { status: 400 });
 		}
 		if (
 			typeof customer.name !== "string" ||
@@ -41,10 +61,8 @@ export async function POST(req: Request) {
 			!customer.name.trim() ||
 			!customer.phone.trim()
 		) {
-			return NextResponse.json(
-				{ error: "Nom et téléphone requis." },
-				{ status: 400 },
-			);
+			logWithCorrelation(correlationId, "warn", "checkout.missing_customer");
+			return respond({ error: "Nom et téléphone requis." }, { status: 400 });
 		}
 
 		// Idempotent replay: return the existing order instead of creating a duplicate.
@@ -55,10 +73,11 @@ export async function POST(req: Request) {
 			});
 			if (existing) {
 				const whatsapp = buildWhatsappLink(existing, site);
-				return NextResponse.json({
+				return respond({
 					order: { number: existing.number, total: existing.total },
 					whatsapp,
 					idempotent: true,
+					correlationId,
 				});
 			}
 		}
@@ -78,9 +97,29 @@ export async function POST(req: Request) {
 		});
 		const priced = priceCart(cartLines, products);
 		if (!priced.ok) {
-			return NextResponse.json({ error: priced.error }, { status: 409 });
+			logWithCorrelation(correlationId, "warn", "checkout.pricing_fail", {
+				error: priced.error,
+			});
+			return respond({ error: priced.error }, { status: 409 });
 		}
-		const { items, total } = priced;
+		const { items, total: itemsTotal } = priced;
+
+		// Delivery quote (server-side source of truth).
+		const quote = await getDeliveryQuote(
+			typeof customer.city === "string" ? customer.city : null,
+		);
+		if (!quote.covered) {
+			logWithCorrelation(
+				correlationId,
+				"warn",
+				"checkout.delivery_not_covered",
+			);
+			return respond(
+				{ error: "Destination de livraison non couverte." },
+				{ status: 409 },
+			);
+		}
+		const total = itemsTotal + quote.fee;
 
 		// Resolve variants per line and reserve stock. Track reservations so we
 		// can release them if any later step fails (compensation).
@@ -97,12 +136,27 @@ export async function POST(req: Request) {
 				const line = cartLines[i];
 				const product = products.find((p) => p.id === line.productId);
 				if (!product) throw new Error("OUT_OF_STOCK");
-				// Resolve a variant matching (product, size, null color). Fall back
-				// to null when none exists (legacy product-level availability).
+				// Per-variant inventory enforcement (issue #145 follow-up): if the
+				// product carries variant rows but none matches the requested
+				// size, the size is not purchasable — do NOT fall back to the
+				// product-level inStock flag. The legacy product-level fallback
+				// applies only to products with zero variant rows.
 				const variant = await db.productVariant.findFirst({
 					where: { productId: line.productId, size: line.size, color: null },
 					select: { id: true, sku: true },
 				});
+				if (!variant) {
+					const variantCount = await db.productVariant.count({
+						where: { productId: line.productId },
+					});
+					if (variantCount > 0) {
+						logWithCorrelation(correlationId, "warn", "checkout.out_of_stock", {
+							productId: line.productId,
+							size: line.size,
+						});
+						throw new Error("OUT_OF_STOCK");
+					}
+				}
 				lineVariants.push(variant?.id ?? null);
 				lineVariantSkus.push(variant?.sku ?? null);
 				if (variant) {
@@ -147,6 +201,12 @@ export async function POST(req: Request) {
 		} catch (e) {
 			// Release any reservations already made.
 			for (const r of reservations) {
+				logWithCorrelation(
+					correlationId,
+					"info",
+					"checkout.release_reservation",
+					{ variantId: r.variantId },
+				);
 				try {
 					await releaseReservation(r.variantId, r.qty, {
 						idempotencyKey: `${r.key}:release`,
@@ -160,7 +220,7 @@ export async function POST(req: Request) {
 				e instanceof Error && e.message === "OUT_OF_STOCK"
 					? "Un article du panier n'est plus disponible."
 					: "Stock insuffisant.";
-			return NextResponse.json({ error: msg }, { status: 409 });
+			return respond({ error: msg }, { status: 409 });
 		}
 
 		const userId = user ? await getOrderUserId(user) : null;
@@ -184,6 +244,9 @@ export async function POST(req: Request) {
 				payment: "COD",
 				userId,
 				idempotencyKey,
+				deliveryZoneId: quote.zoneId,
+				deliveryZoneName: quote.zoneName,
+				deliveryFee: quote.fee,
 				items: {
 					create: items.map((it, idx) => ({
 						productId: it.productId,
@@ -201,6 +264,12 @@ export async function POST(req: Request) {
 		} catch (e) {
 			// Release reservations on order creation failure.
 			for (const r of reservations) {
+				logWithCorrelation(
+					correlationId,
+					"info",
+					"checkout.release_reservation",
+					{ variantId: r.variantId },
+				);
 				try {
 					await releaseReservation(r.variantId, r.qty, {
 						idempotencyKey: `${r.key}:release`,
@@ -222,7 +291,7 @@ export async function POST(req: Request) {
 				});
 				if (existing) {
 					const whatsapp = buildWhatsappLink(existing, site);
-					return NextResponse.json({
+					return respond({
 						order: { number: existing.number, total: existing.total },
 						whatsapp,
 						idempotent: true,
@@ -232,6 +301,10 @@ export async function POST(req: Request) {
 			throw e;
 		}
 
+		logWithCorrelation(correlationId, "info", "checkout.order_created", {
+			orderNumber: order.number,
+			total,
+		});
 		const pricedItems = items.map((i) => ({
 			name: i.name,
 			size: i.size,
@@ -275,16 +348,18 @@ export async function POST(req: Request) {
 			}),
 		);
 
-		return NextResponse.json({
+		return respond({
 			order: { number: order.number, total },
 			whatsapp,
+			correlationId,
 		});
 	} catch (e) {
+		logWithCorrelation(correlationId, "error", "checkout.failed", {
+			error: String(e),
+		});
+		Sentry.captureException(e, { tags: { correlationId } });
 		console.error("POST /api/checkout failed", e);
-		return NextResponse.json(
-			{ error: "Commande impossible." },
-			{ status: 500 },
-		);
+		return respond({ error: "Commande impossible." }, { status: 500 });
 	}
 }
 
@@ -312,8 +387,23 @@ async function createOrderWithNumber(
 	for (let attempt = 0; ; attempt++) {
 		const count = await db.order.count();
 		try {
-			return await db.order.create({
-				data: { ...data, number: `MT-${1001 + count + attempt}` },
+			// Order + initial ledger entry commit atomically: a failure here
+			// leaves nothing behind, so a retry creates both cleanly.
+			return await db.$transaction(async (tx) => {
+				const order = await tx.order.create({
+					data: { ...data, number: `MT-${1001 + count + attempt}` },
+				});
+				await tx.orderStatusHistory.create({
+					data: {
+						orderId: order.id,
+						fromStatus: null,
+						toStatus: "PENDING",
+						paymentStatus: order.paymentStatus,
+						fulfilmentStatus: order.fulfilmentStatus,
+						actorId: data.userId ?? null,
+					},
+				});
+				return order;
 			});
 		} catch (e) {
 			const collision =

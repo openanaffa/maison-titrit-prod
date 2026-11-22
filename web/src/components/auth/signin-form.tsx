@@ -74,9 +74,7 @@ export function SigninForm({
 						<h1 className="wordmark mt-3 text-xl uppercase text-ink dark:text-cream">
 							{site.name}
 						</h1>
-						<p className="tifinagh mt-1 text-sm text-bronze">
-							{site.nameAmazigh}
-						</p>
+						<p className="tifinagh mt-1 text-sm text-ink">{site.nameAmazigh}</p>
 						<OrnamentDivider className="mt-4" width={160} />
 					</div>
 
@@ -91,7 +89,7 @@ export function SigninForm({
 							role={error ? "alert" : "status"}
 							className={`mt-4 rounded-sm p-3 text-center font-serif text-sm ${
 								error
-									? "bg-terracotta/10 text-terracotta"
+									? "bg-terracotta/10 text-ink"
 									: "bg-bronze/10 text-ink-soft dark:text-cream/80"
 							}`}
 						>
@@ -159,7 +157,7 @@ export function SigninForm({
 						</Button>
 					</form>
 
-					<div className="my-5 flex items-center gap-3 text-bronze/70">
+					<div className="my-5 flex items-center gap-3 text-ink/70">
 						<span className="h-px flex-1 bg-bronze/25" />
 						<span className="font-label text-[0.6rem] uppercase tracking-[0.16em]">
 							{t("auth.or")}
@@ -171,7 +169,7 @@ export function SigninForm({
 						type="button"
 						onClick={onGoogle}
 						disabled={loading}
-						className="h-12 w-full gap-3 rounded-full border border-bronze/45 bg-cream px-6 font-label text-[0.74rem] uppercase tracking-[0.16em] text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:ring-2 focus-visible:ring-bronze-light disabled:opacity-70 dark:bg-cream dark:text-ink"
+						className="h-12 w-full gap-3 rounded-full border border-bronze/45 bg-cream px-6 font-label text-[0.74rem] uppercase tracking-[0.16em] text-ink transition-colors hover:border-terracotta hover:text-ink focus-visible:ring-2 focus-visible:ring-bronze-light disabled:opacity-70 dark:bg-cream dark:text-ink"
 					>
 						<GoogleIcon className="size-5 shrink-0" />
 						{t("auth.continueGoogle")}
@@ -182,13 +180,13 @@ export function SigninForm({
 						<button
 							type="button"
 							onClick={onModeToggle}
-							className="font-semibold text-terracotta underline underline-offset-2"
+							className="font-semibold text-ink underline underline-offset-2"
 						>
 							{mode === "signin" ? t("auth.signup") : t("auth.signin")}
 						</button>
 					</p>
 
-					<p className="mt-6 flex items-center justify-center gap-2 text-center font-serif text-xs text-bronze/80">
+					<p className="mt-6 flex items-center justify-center gap-2 text-center font-serif text-xs text-ink/80">
 						<AmazighStar className="size-3" strokeWidth={1.6} />
 						{site.nameAmazigh}
 					</p>
@@ -197,14 +195,14 @@ export function SigninForm({
 						{t("auth.termsBefore")}
 						<Link
 							href="/cgv"
-							className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-terracotta"
+							className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-ink"
 						>
 							{t("auth.termsConditions")}
 						</Link>
 						{t("auth.termsAnd")}
 						<Link
 							href="/confidentialite"
-							className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-terracotta"
+							className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-ink"
 						>
 							{t("auth.termsPrivacy")}
 						</Link>

@@ -15,7 +15,7 @@ export function ArticleBody({ markdown }: { markdown: string }) {
 				"[&_ul]:mt-4 [&_ul]:space-y-2 [&_ul]:ps-6 [&_li]:list-disc",
 				"[&_blockquote]:border-s-2 [&_blockquote]:border-terracotta [&_blockquote]:ps-4 [&_blockquote]:italic [&_blockquote]:text-ink-soft dark:[&_blockquote]:text-cream/70 [&_blockquote]:my-6",
 				"[&_strong]:text-ink dark:[&_strong]:text-cream [&_strong]:font-semibold",
-				"[&_a]:text-terracotta [&_a]:underline [&_a]:underline-offset-2",
+				"[&_a]:text-ink [&_a]:underline [&_a]:underline-offset-2",
 			)}
 		>
 			<ReactMarkdown>{markdown}</ReactMarkdown>

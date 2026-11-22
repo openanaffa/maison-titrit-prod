@@ -20,7 +20,7 @@ export default function ErrorPage({
 	return (
 		<section className="vintage-paper flex min-h-[70vh] items-center py-16 sm:py-20">
 			<div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
-				<AmazighStar className="mx-auto size-9 text-terracotta" />
+				<AmazighStar className="mx-auto size-9 text-ink" />
 				<p className="eyebrow mt-4">Erreur technique</p>
 				<h1 className="wordmark mt-3 text-4xl uppercase text-ink sm:text-5xl dark:text-cream">
 					Un fil s'est cassé
@@ -40,7 +40,7 @@ export default function ErrorPage({
 					</button>
 					<Link
 						href="/"
-						className="inline-flex min-h-12 items-center justify-center rounded-full border border-bronze/50 px-6 font-label text-[0.72rem] uppercase tracking-[0.16em] text-ink transition-colors hover:border-terracotta hover:text-terracotta focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-terracotta dark:text-cream"
+						className="inline-flex min-h-12 items-center justify-center rounded-full border border-bronze/50 px-6 font-label text-[0.72rem] uppercase tracking-[0.16em] text-ink transition-colors hover:border-terracotta hover:text-ink focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-terracotta dark:text-cream"
 					>
 						Retour à l'accueil
 					</Link>

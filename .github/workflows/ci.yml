@@ -34,7 +34,111 @@ jobs:
 
       - name: Test
         working-directory: web
-        run: bun test
+        run: bun test src
 
       - name: Build
         run: bun run build
+
+  e2e:
+    # Issue #126: browser-level commerce paths against an isolated local
+    # Supabase (auth + Postgres). Never touches the deployed project —
+    # web/e2e/env.ts hard-fails on non-local URLs.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services: {}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.14"
+
+      # The CLI runs via npx (the npm package bundles the platform binary) —
+      # supabase/setup-cli resolves GitHub releases and can hit API rate limits.
+      - name: Start local Supabase (migrations deferred)
+        # supabase start auto-applies supabase/migrations on a fresh DB, but
+        # those migrations ALTER Prisma-created tables — they must run AFTER
+        # prisma db push. So the migrations dir is deferred: start the stack
+        # clean, push the schema, then apply the migrations explicitly.
+        # Exclusions follow the container names accepted by supabase CLI 3.x
+        # (mailpit = the mail catcher; the seed creates confirmed users via
+        # the local admin API, so no mail service is needed).
+        run: |
+          mv supabase/migrations /tmp/supabase-migrations
+          npx supabase start -x studio,imgproxy,logflare,mailpit,vector,edge-runtime
+          mv /tmp/supabase-migrations supabase/migrations
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('web/package.json') }}
+
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps chromium
+
+      - name: Push Prisma schema, apply migrations, seed
+        working-directory: web
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+        run: |
+          bunx prisma generate --schema=prisma/schema.postgres.prisma
+          bunx prisma db push --schema=prisma/schema.postgres.prisma --skip-generate --accept-data-loss
+          for f in ../supabase/migrations/*.sql; do
+            echo "applying $f"
+            bunx prisma db execute --schema=prisma/schema.postgres.prisma --file "$f"
+          done
+          # supabase-js (anon/authenticated roles) needs API grants for the
+          # Prisma-owned tables; row access is governed by the RLS policies
+          # the migrations just installed.
+          bunx prisma db execute --schema=prisma/schema.postgres.prisma --stdin <<'SQL'
+          GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+          GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+          SQL
+          bun e2e/seed.ts
+
+      - name: Auth smoke test
+        working-directory: web
+        run: |
+          ANON=$(sed -n 's/^NEXT_PUBLIC_SUPABASE_ANON_KEY=//p' .env.e2e)
+          curl -s -o /dev/null -w 'auth health: %{http_code}\n' http://127.0.0.1:54321/auth/v1/health
+          RESP=$(curl -s -X POST 'http://127.0.0.1:54321/auth/v1/token?grant_type=password' \
+            -H "apikey: $ANON" -H 'Content-Type: application/json' \
+            -d '{"email":"e2e-founder@e2e.local","password":"e2e-founder-password"}')
+          TOKEN=$(printf '%s' "$RESP" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("access_token",""))')
+          echo "token acquired: ${#TOKEN} chars"
+          SUB=$(printf '%s' "$TOKEN" | python3 -c 'import sys,json,base64; p=sys.stdin.read().split(".")[1]; p += "=" * (-len(p) % 4); print(json.loads(base64.urlsafe_b64decode(p)).get("sub",""))')
+          echo "sub: $SUB"
+          curl -s "http://127.0.0.1:54321/rest/v1/User?select=id,supabaseId,role&supabaseId=eq.$SUB" \
+            -H "apikey: $ANON" -H "Authorization: Bearer $TOKEN"; echo
+      - name: Run E2E
+        working-directory: web
+        env:
+          CI: "1"
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+        run: bunx playwright test
+
+      - name: Upload E2E report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            web/playwright-report/
+            web/test-results/
+          retention-days: 7
+
+      - name: Core Web Vitals (Lighthouse CI)
+        # Lab-based CWV gate (#127) against key routes. Runs in the e2e job
+        # because a production server needs a reachable database: this job
+        # has already provisioned the isolated local Supabase and seeded it.
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+        run: bunx @lhci/cli@0.12.x autorun --config=.lighthouserc.cjs

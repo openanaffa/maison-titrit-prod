@@ -132,7 +132,7 @@ export function OrdersTableClient({ rows }: { rows: OrderRow[] }) {
 											<Button
 												type="button"
 												onClick={() => setSelected(o)}
-												className="font-label text-[0.62rem] uppercase tracking-[0.16em] text-bronze hover:text-terracotta"
+												className="font-label text-[0.62rem] uppercase tracking-[0.16em] text-ink hover:text-ink"
 											>
 												Détails
 											</Button>

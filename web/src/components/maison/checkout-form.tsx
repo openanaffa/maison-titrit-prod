@@ -60,7 +60,7 @@ export function CheckoutForm({ form, onChange, user }: CheckoutFormProps) {
 					<div className="rounded-sm bg-bronze/10 p-4 font-serif text-sm text-ink-soft dark:text-cream/75">
 						<Link
 							href={`/auth/signin?callbackUrl=/checkout`}
-							className="font-display font-semibold text-terracotta hover:underline"
+							className="font-display font-semibold text-ink hover:underline"
 						>
 							{t("auth.signin")}
 						</Link>{" "}

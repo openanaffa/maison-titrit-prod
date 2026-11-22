@@ -1,8 +1,14 @@
 import nodemailer from "nodemailer";
-import type { StaffOrderPayload } from "@/lib/types/notifications";
-import { staffNewOrderEmail } from "./email-templates";
-
-const WAFINE_TIMEOUT_MS = 5_000;
+import type {
+	CustomerNotificationEvent,
+	CustomerOrderUpdatePayload,
+	EmailTemplate,
+	StaffOrderPayload,
+} from "@/lib/types/notifications";
+import {
+	customerOrderUpdateEmail,
+	staffNewOrderEmail,
+} from "./email-templates";
 
 const smtpPort = Number(process.env.EMAIL_SERVER_PORT ?? 587);
 /** SMTP config shared with the auth magic-link email (lib/auth.ts). */
@@ -52,55 +58,9 @@ async function sendStaffEmail(tpl: {
 	}
 }
 
-async function sendStaffWhatsApp(text: string): Promise<void> {
-	const { WAFINE_API_URL, WAFINE_API_KEY, WAFINE_SESSION_ID } = process.env;
-	if (!WAFINE_API_URL || !WAFINE_API_KEY || !WAFINE_SESSION_ID) {
-		console.info("[notify] WAFINE_* unset — staff WhatsApp skipped");
-		return;
-	}
-	const numbers = commaList(process.env.STAFF_WHATSAPP)
-		.map((w) => w.replace(/^\+/, ""))
-		.filter((w) => /^\d+$/.test(w));
-	if (numbers.length === 0) {
-		console.info("[notify] STAFF_WHATSAPP unset — staff WhatsApp skipped");
-		return;
-	}
-	for (const digits of numbers) {
-		const chatId = `${digits}@c.us`;
-		try {
-			const controller = new AbortController();
-			const timer = setTimeout(() => controller.abort(), WAFINE_TIMEOUT_MS);
-			let res: Response;
-			try {
-				res = await fetch(
-					`${WAFINE_API_URL}/api/sessions/${WAFINE_SESSION_ID}/messages/send-text`,
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							"X-API-Key": WAFINE_API_KEY,
-						},
-						body: JSON.stringify({ chatId, text }),
-						signal: controller.signal,
-					},
-				);
-			} finally {
-				clearTimeout(timer);
-			}
-			if (res.status !== 201) {
-				console.error(
-					`[notify] WAFINE send-text to ${chatId} → HTTP ${res.status}`,
-				);
-			}
-		} catch (e) {
-			console.error(`[notify] WAFINE send-text to ${chatId} failed`, e);
-		}
-	}
-}
-
 /**
- * Notify the store staff of a new order (email + WhatsApp). Fire-and-forget:
- * resolves even when every channel fails; never throws.
+ * Notify the store staff of a new order by email. Fire-and-forget: resolves
+ * even when email delivery fails; never throws.
  */
 export async function notifyStaffNewOrder(
 	order: StaffOrderPayload,
@@ -108,8 +68,34 @@ export async function notifyStaffNewOrder(
 	try {
 		const ordersUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://maisontitrit.com"}/makteb/orders`;
 		const tpl = staffNewOrderEmail(order, ordersUrl);
-		await Promise.all([sendStaffEmail(tpl), sendStaffWhatsApp(tpl.text)]);
+		await sendStaffEmail(tpl);
 	} catch (e) {
 		console.error("[notify] notifyStaffNewOrder failed", e);
 	}
+}
+
+async function sendCustomerEmail(
+	tpl: EmailTemplate,
+	to: string,
+): Promise<void> {
+	if (!process.env.EMAIL_SERVER_HOST) {
+		throw new Error("EMAIL_SERVER_HOST unset");
+	}
+	const transport = nodemailer.createTransport(smtpServer);
+	await transport.sendMail({
+		from: process.env.EMAIL_FROM ?? "Maison Titrit <hello@maisontitrit.com>",
+		to,
+		subject: tpl.subject,
+		html: tpl.html,
+		text: tpl.text,
+	});
+}
+
+/** Send a customer order update only over the configured email channel. */
+export async function sendCustomerOrderUpdateEmail(
+	to: string,
+	event: CustomerNotificationEvent,
+	order: CustomerOrderUpdatePayload,
+): Promise<void> {
+	await sendCustomerEmail(customerOrderUpdateEmail(event, order), to);
 }

@@ -42,7 +42,7 @@ export function CookiePreferencesButton() {
 			className="fixed bottom-4 start-4 z-40 inline-flex items-center gap-2 rounded-full border border-bronze/40 bg-card/90 px-3 py-2 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink backdrop-blur transition-colors hover:bg-bronze/10 dark:text-cream sm:start-auto sm:end-4"
 			aria-label={t("cookie.reopen")}
 		>
-			<Cookie className="size-3.5 text-bronze" />
+			<Cookie className="size-3.5 text-ink" />
 			<span className="hidden sm:inline">{t("cookie.reopen")}</span>
 		</button>
 	);
@@ -93,7 +93,7 @@ export function CookieConsent() {
 		>
 			<div className="vintage-frame rounded-sm bg-card/95 p-5 shadow-[0_-12px_40px_-20px_rgba(28,26,23,0.4)] backdrop-blur sm:p-6">
 				<div className="flex items-start gap-3">
-					<span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+					<span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-bronze/15 text-ink">
 						<ShieldCheck className="size-4" />
 					</span>
 					<div className="min-w-0 flex-1">
@@ -104,7 +104,7 @@ export function CookieConsent() {
 						<p className="mt-1 font-serif text-xs text-ink-soft/80 dark:text-cream/60">
 							<Link
 								href="/confidentialite"
-								className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-terracotta"
+								className="underline decoration-bronze/40 underline-offset-2 transition-colors hover:text-ink"
 							>
 								{t("cookie.privacy")}
 							</Link>

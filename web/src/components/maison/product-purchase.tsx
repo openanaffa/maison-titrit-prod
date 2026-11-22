@@ -130,7 +130,7 @@ export function ProductPurchase({
 					{product.name}
 				</h1>
 				{product.nameAmazigh && (
-					<p className="tifinagh mt-2 text-lg text-bronze">
+					<p className="tifinagh mt-2 text-lg text-ink">
 						{product.nameAmazigh}
 					</p>
 				)}
@@ -138,7 +138,7 @@ export function ProductPurchase({
 				<div className="mt-5 flex items-end gap-3">
 					{product.salePrice ? (
 						<>
-							<p className="font-display text-4xl font-semibold text-terracotta">
+							<p className="font-display text-4xl font-semibold text-ink">
 								{product.salePrice.toLocaleString("fr-FR")}{" "}
 								<span className="text-xl font-normal">{product.currency}</span>
 							</p>
@@ -149,7 +149,7 @@ export function ProductPurchase({
 					) : (
 						<p className="font-display text-4xl font-semibold text-ink dark:text-cream">
 							{product.price.toLocaleString("fr-FR")}{" "}
-							<span className="text-xl font-normal text-bronze">
+							<span className="text-xl font-normal text-ink">
 								{product.currency}
 							</span>
 						</p>
@@ -159,14 +159,14 @@ export function ProductPurchase({
 					</span>
 				</div>
 
-				<NeedleThread className="mt-5 h-6 text-bronze/70" />
+				<NeedleThread className="mt-5 h-6 text-ink/70" />
 				<p className="mt-5 font-serif text-lg leading-relaxed text-ink-soft dark:text-cream/80">
 					{product.shortStory}
 				</p>
 
 				<dl className="mt-6 space-y-2 border-t border-bronze/25 pt-5 text-sm">
 					<div className="flex gap-3">
-						<dt className="font-label w-28 shrink-0 uppercase tracking-[0.18em] text-bronze/80">
+						<dt className="font-label w-28 shrink-0 uppercase tracking-[0.18em] text-ink/80">
 							{t("detail.materials")}
 						</dt>
 						<dd className="font-serif text-ink-soft dark:text-cream/80">

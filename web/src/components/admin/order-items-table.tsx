@@ -60,7 +60,7 @@ export function OrderItems({ order }: { order: OrderView }) {
 										/>
 									) : (
 										<div className="w-14 h-14 rounded border border-bronze/30 flex items-center justify-center bg-muted/40">
-											<ProductImageIcon className="w-6 h-6 text-bronze/40" />
+											<ProductImageIcon className="w-6 h-6 text-ink/40" />
 										</div>
 									)}
 								</td>

@@ -26,6 +26,7 @@ export type Database = {
           phone: string | null
           createdAt: string
           updatedAt: string
+          marketingConsent: string | null
         }
         Insert: {
           id?: string
@@ -38,6 +39,7 @@ export type Database = {
           phone?: string | null
           createdAt?: string
           updatedAt?: string
+          marketingConsent?: string | null
         }
         Update: {
           id?: string
@@ -50,6 +52,58 @@ export type Database = {
           phone?: string | null
           createdAt?: string
           updatedAt?: string
+          marketingConsent?: string | null
+        }
+        Relationships: []
+      }
+      CustomerNote: {
+        Row: {
+          id: string
+          userId: string
+          authorId: string
+          body: string
+          createdAt: string
+        }
+        Insert: {
+          id?: string
+          userId: string
+          authorId: string
+          body: string
+          createdAt?: string
+        }
+        Update: {
+          id?: string
+          userId?: string
+          authorId?: string
+          body?: string
+          createdAt?: string
+        }
+        Relationships: []
+      }
+      CustomerAuditEvent: {
+        Row: {
+          id: string
+          userId: string | null
+          actorId: string
+          action: string
+          detail: string | null
+          createdAt: string
+        }
+        Insert: {
+          id?: string
+          userId?: string | null
+          actorId: string
+          action: string
+          detail?: string | null
+          createdAt?: string
+        }
+        Update: {
+          id?: string
+          userId?: string | null
+          actorId?: string
+          action?: string
+          detail?: string | null
+          createdAt?: string
         }
         Relationships: []
       }
@@ -176,6 +230,129 @@ export type Database = {
         }
         Relationships: []
       }
+      ProductVariant: {
+        Row: {
+          id: string
+          productId: string
+          sku: string
+          size: string | null
+          color: string | null
+          priceOverride: number | null
+          isActive: boolean
+          position: number
+          onHand: number
+          reserved: number
+          lowStockThreshold: number
+          version: number
+          createdAt: string
+          updatedAt: string
+        }
+        Insert: {
+          id?: string
+          productId: string
+          sku: string
+          size?: string | null
+          color?: string | null
+          priceOverride?: number | null
+          isActive?: boolean
+          position?: number
+          onHand?: number
+          reserved?: number
+          lowStockThreshold?: number
+          version?: number
+          createdAt?: string
+          updatedAt?: string
+        }
+        Update: {
+          id?: string
+          productId?: string
+          sku?: string
+          size?: string | null
+          color?: string | null
+          priceOverride?: number | null
+          isActive?: boolean
+          position?: number
+          onHand?: number
+          reserved?: number
+          lowStockThreshold?: number
+          version?: number
+          createdAt?: string
+          updatedAt?: string
+        }
+        Relationships: []
+      }
+      StockMovement: {
+        Row: {
+          id: string
+          variantId: string
+          type: string
+          quantity: number
+          onHandAfter: number
+          reservedAfter: number
+          reason: string | null
+          actorId: string | null
+          sourceRef: string | null
+          idempotencyKey: string | null
+          createdAt: string
+        }
+        Insert: {
+          id?: string
+          variantId: string
+          type: string
+          quantity: number
+          onHandAfter: number
+          reservedAfter: number
+          reason?: string | null
+          actorId?: string | null
+          sourceRef?: string | null
+          idempotencyKey?: string | null
+          createdAt?: string
+        }
+        Update: {
+          id?: string
+          variantId?: string
+          type?: string
+          quantity?: number
+          onHandAfter?: number
+          reservedAfter?: number
+          reason?: string | null
+          actorId?: string | null
+          sourceRef?: string | null
+          idempotencyKey?: string | null
+          createdAt?: string
+        }
+        Relationships: []
+      }
+      DeliveryZone: {
+        Row: {
+          id: string
+          name: string
+          cities: string
+          fee: number
+          isActive: boolean
+          createdAt: string
+          updatedAt: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          cities: string
+          fee?: number
+          isActive?: boolean
+          createdAt?: string
+          updatedAt?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          cities?: string
+          fee?: number
+          isActive?: boolean
+          createdAt?: string
+          updatedAt?: string
+        }
+        Relationships: []
+      }
       Image: {
         Row: {
           id: string
@@ -208,6 +385,8 @@ export type Database = {
           id: string
           number: string
           status: string
+          paymentStatus: string
+          fulfilmentStatus: string
           customerName: string
           customerPhone: string
           customerEmail: string | null
@@ -223,6 +402,12 @@ export type Database = {
           currency: string
           payment: string
           userId: string | null
+          idempotencyKey: string | null
+          deliveryZoneId: string | null
+          deliveryZoneName: string | null
+          deliveryFee: number
+          deliveryProvider: string | null
+          deliveryReference: string | null
           createdAt: string
           updatedAt: string
         }
@@ -230,6 +415,8 @@ export type Database = {
           id?: string
           number: string
           status?: string
+          paymentStatus?: string
+          fulfilmentStatus?: string
           customerName: string
           customerPhone: string
           customerEmail?: string | null
@@ -245,6 +432,12 @@ export type Database = {
           currency?: string
           payment?: string
           userId?: string | null
+          idempotencyKey?: string | null
+          deliveryZoneId?: string | null
+          deliveryZoneName?: string | null
+          deliveryFee?: number
+          deliveryProvider?: string | null
+          deliveryReference?: string | null
           createdAt?: string
           updatedAt?: string
         }
@@ -252,6 +445,8 @@ export type Database = {
           id?: string
           number?: string
           status?: string
+          paymentStatus?: string
+          fulfilmentStatus?: string
           customerName?: string
           customerPhone?: string
           customerEmail?: string | null
@@ -267,8 +462,89 @@ export type Database = {
           currency?: string
           payment?: string
           userId?: string | null
+          idempotencyKey?: string | null
+          deliveryZoneId?: string | null
+          deliveryZoneName?: string | null
+          deliveryFee?: number
+          deliveryProvider?: string | null
+          deliveryReference?: string | null
           createdAt?: string
           updatedAt?: string
+        }
+        Relationships: []
+      }
+      OrderStatusHistory: {
+        Row: {
+          id: string
+          orderId: string
+          fromStatus: string | null
+          toStatus: string
+          paymentStatus: string | null
+          fulfilmentStatus: string | null
+          actorId: string | null
+          reason: string | null
+          createdAt: string
+        }
+        Insert: {
+          id?: string
+          orderId: string
+          fromStatus?: string | null
+          toStatus: string
+          paymentStatus?: string | null
+          fulfilmentStatus?: string | null
+          actorId?: string | null
+          reason?: string | null
+          createdAt?: string
+        }
+        Update: {
+          id?: string
+          orderId?: string
+          fromStatus?: string | null
+          toStatus?: string
+          paymentStatus?: string | null
+          fulfilmentStatus?: string | null
+          actorId?: string | null
+          reason?: string | null
+          createdAt?: string
+        }
+        Relationships: []
+      }
+      OrderNotification: {
+        Row: {
+          id: string
+          orderId: string
+          event: string
+          channel: string
+          to: string
+          status: string
+          attempts: number
+          lastError: string | null
+          lastAttemptAt: string | null
+          createdAt: string
+        }
+        Insert: {
+          id?: string
+          orderId: string
+          event: string
+          channel: string
+          to: string
+          status?: string
+          attempts?: number
+          lastError?: string | null
+          lastAttemptAt?: string | null
+          createdAt?: string
+        }
+        Update: {
+          id?: string
+          orderId?: string
+          event?: string
+          channel?: string
+          to?: string
+          status?: string
+          attempts?: number
+          lastError?: string | null
+          lastAttemptAt?: string | null
+          createdAt?: string
         }
         Relationships: []
       }
@@ -277,31 +553,40 @@ export type Database = {
           id: string
           orderId: string
           productId: string
+          variantId: string | null
+          sku: string | null
           ref: string
           name: string
           price: number
           quantity: number
           size: string | null
+          color: string | null
         }
         Insert: {
           id?: string
           orderId: string
           productId: string
+          variantId?: string | null
+          sku?: string | null
           ref: string
           name: string
           price: number
           quantity: number
           size?: string | null
+          color?: string | null
         }
         Update: {
           id?: string
           orderId?: string
           productId?: string
+          variantId?: string | null
+          sku?: string | null
           ref?: string
           name?: string
           price?: number
           quantity?: number
           size?: string | null
+          color?: string | null
         }
         Relationships: []
       }

@@ -14,6 +14,8 @@ import { AnnouncementBar } from "@/components/maison/announcement-bar";
 import { SkipLink } from "@/components/maison/skip-link";
 import { SupabaseAuthProvider } from "@/components/maison/supabase-auth-provider";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
+import { OfflineIndicator } from "@/components/pwa/offline-indicator";
 import { SwRegister } from "@/components/pwa/sw-register";
 import { SiteJsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -169,6 +171,7 @@ export default async function RootLayout({
 	return (
 		<html lang={locale} dir={dir} suppressHydrationWarning>
 			<head>
+				<meta charSet="utf-8" />
 				<link
 					rel="icon"
 					type="image/png"
@@ -217,6 +220,8 @@ gtag('consent', 'default', {
 							<ReactQueryProvider>
 								<AttributionCapture />
 								<AnnouncementBar />
+								<OfflineIndicator />
+								<InstallPrompt />
 								<AnalyticsScripts
 									gtmId={analytics.gtmId}
 									ga4Id={analytics.ga4Id}

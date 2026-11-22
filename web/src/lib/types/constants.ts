@@ -7,14 +7,15 @@ import {
 	Settings,
 	ShoppingCart,
 	Tags,
+	Truck,
 	UserCog,
 	Users,
 } from "lucide-react";
 import type { AdminNavItem, AnalyticsForm, VerificationForm } from ".";
 
 export const ROLE_BADGE: Record<string, string> = {
-	FOUNDER: "bg-bronze/15 text-bronze",
-	DEVELOPER: "bg-terracotta/15 text-terracotta",
+	FOUNDER: "bg-bronze/15 text-ink",
+	DEVELOPER: "bg-terracotta/15 text-ink",
 	ADMIN: "bg-henna/15 text-henna",
 	MANAGER: "bg-ink/10 text-ink dark:bg-cream/10 dark:text-cream",
 	MARKETER: "bg-olive/15 text-olive",
@@ -73,6 +74,24 @@ export const ALLOWED_TRANSITIONS: Record<string, string[]> = {
 	RETURNED: [],
 };
 
+/** Work queues for the fulfilment workspace (issue #121). */
+export const FULFILMENT_QUEUES: { key: string; statuses: string[] }[] = [
+	{ key: "to-confirm", statuses: ["PENDING"] },
+	{ key: "to-prepare", statuses: ["CONFIRMED"] },
+	{ key: "to-dispatch", statuses: ["PROCESSING"] },
+	{ key: "in-transit", statuses: ["DISPATCHED"] },
+	{ key: "delivered", statuses: ["DELIVERED", "RETURN_REQUESTED", "RETURNED"] },
+	{ key: "exceptions", statuses: ["CANCELLED"] },
+];
+
+/** The primary forward transition per queue row. */
+export const QUEUE_NEXT_ACTION: Record<string, string> = {
+	"to-confirm": "CONFIRMED",
+	"to-prepare": "PROCESSING",
+	"to-dispatch": "DISPATCHED",
+	"in-transit": "DELIVERED",
+};
+
 export const mad = (n: number) => `${n.toLocaleString("fr-FR")} Dhs`;
 
 export const EMPTY_ANALYTICS: AnalyticsForm = {
@@ -129,6 +148,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
 		labelKey: "admin.nav.products",
 		badgeKey: "products",
 		permission: "products:read",
+	},
+	{
+		href: "/makteb/fulfilment",
+		icon: Truck,
+		labelKey: "admin.nav.fulfilment",
+		badgeKey: "fulfilmentQueue",
+		permission: "orders:read",
 	},
 	{
 		href: "/makteb/orders",

@@ -41,7 +41,7 @@ export function IntegrationsVerification({
 		<>
 			{/* Domain verification */}
 			<div className="flex items-center gap-3 pt-2">
-				<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-bronze">
+				<span className="inline-flex size-10 items-center justify-center rounded-full bg-bronze/15 text-ink">
 					<ShieldCheck className="size-5" />
 				</span>
 				<div>

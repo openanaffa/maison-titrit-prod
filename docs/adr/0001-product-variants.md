@@ -6,8 +6,8 @@ Status: Accepted (issue #115)
 
 Products previously modelled availability as free-text `colors` / `sizes` strings
 plus a single `inStock` boolean. There was no stable identity for a
-size/colour combination, so inventory, checkout and (later) Wafine tooling
-could not reason about a specific sellable unit.
+size/colour combination, so inventory and checkout could not reason about a
+specific sellable unit.
 
 ## Decision
 

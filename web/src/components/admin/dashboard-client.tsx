@@ -68,6 +68,13 @@ export function DashboardClient({
 			label: t("admin.dashboard.lowStock"),
 			href: "/makteb/products",
 		},
+		{
+			key: "inventory",
+			icon: Package,
+			value: "—",
+			label: "Inventaire",
+			href: "/makteb/inventory",
+		},
 	];
 
 	return (
@@ -93,7 +100,7 @@ export function DashboardClient({
 						>
 							<div className="flex items-start justify-between">
 								<div>
-									<p className="font-label text-[0.62rem] uppercase tracking-[0.2em] text-bronze">
+									<p className="font-label text-[0.62rem] uppercase tracking-[0.2em] text-ink">
 										{c.label}
 									</p>
 									<p className="mt-2 heading-vintage-lg">{c.value}</p>
@@ -103,7 +110,7 @@ export function DashboardClient({
 										</p>
 									)}
 								</div>
-								<span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-bronze transition-colors group-hover:bg-terracotta group-hover:text-cream">
+								<span className="inline-flex size-9 items-center justify-center rounded-full bg-bronze/15 text-ink transition-colors group-hover:bg-terracotta group-hover:text-cream">
 									<Icon className="size-4" />
 								</span>
 							</div>
@@ -120,7 +127,7 @@ export function DashboardClient({
 					</h2>
 					<Link
 						href="/makteb/orders"
-						className="inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-bronze hover:text-terracotta"
+						className="inline-flex items-center gap-1 font-label text-[0.62rem] uppercase tracking-[0.18em] text-ink hover:text-ink"
 					>
 						{t("admin.orders.title")} <ArrowRight className="size-3" />
 					</Link>
