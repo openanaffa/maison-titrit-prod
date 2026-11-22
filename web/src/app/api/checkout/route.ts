@@ -128,7 +128,6 @@ export async function POST(req: Request) {
 				// size, the size is not purchasable — do NOT fall back to the
 				// product-level inStock flag. The legacy product-level fallback
 				// applies only to products with zero variant rows.
-				logWithCorrelation(correlationId, "warn", "checkout.out_of_stock", { productId: line.productId, size: line.size });
 				const variant = await db.productVariant.findFirst({
 					where: { productId: line.productId, size: line.size, color: null },
 					select: { id: true, sku: true },
@@ -137,7 +136,10 @@ export async function POST(req: Request) {
 					const variantCount = await db.productVariant.count({
 						where: { productId: line.productId },
 					});
-					if (variantCount > 0) throw new Error("OUT_OF_STOCK");
+					if (variantCount > 0) {
+								logWithCorrelation(correlationId, "warn", "checkout.out_of_stock", { productId: line.productId, size: line.size });
+								throw new Error("OUT_OF_STOCK");
+					}
 				}
 				lineVariants.push(variant?.id ?? null);
 				lineVariantSkus.push(variant?.sku ?? null);

@@ -183,6 +183,8 @@ Nightly at 02:17 UTC, `.github/workflows/db-backup.yml`:
 
 **Rotation steps:** Generate new credential → update in secret store (Vercel env / Supabase dashboard / R2 / pass) → deploy → verify health check → revoke old credential.
 
+**Age key rotation:** When rotating the age private key (`pass maison-titrit/backup/age-identity`), also update `AGE_RECIPIENT` in `.github/workflows/db-backup.yml` to the new age public key. New backups will be encrypted for the new identity; old backups remain decryptable with the old private key, so retain old identities in `pass` until all backups encrypted under them have expired (R2 lifecycle: 30 days).
+
 ## 6. No-Redis guardrail
 
 Per the roadmap, Redis is not added unless a measured requirement exists (concrete bottleneck, expected workload, cost/operational impact, failure-mode analysis, documented ADR, approval). No Redis is in use.
