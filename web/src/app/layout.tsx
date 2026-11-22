@@ -220,6 +220,8 @@ gtag('consent', 'default', {
 							<ReactQueryProvider>
 								<AttributionCapture />
 								<AnnouncementBar />
+								<OfflineIndicator />
+								<InstallPrompt />
 								<AnalyticsScripts
 									gtmId={analytics.gtmId}
 									ga4Id={analytics.ga4Id}
@@ -238,8 +240,6 @@ gtag('consent', 'default', {
 				<Toaster />
 				<VercelTelemetry />
 				<SwRegister />
-				<OfflineIndicator />
-				<InstallPrompt />
 			</body>
 		</html>
 	);
