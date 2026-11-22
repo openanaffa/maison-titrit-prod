@@ -9,15 +9,15 @@ export async function GET() {
 Maison Titrit is a Moroccan couture house (maison de couture) specializing in
 **modest fashion for women**. All pieces are 100% Made in Morocco. The brand
 is founded by two designers and based in Bouskoura, near Casablanca.
-"Titrit" (ⵜⵉⵟⵔⵉⵜ) means "star" in Tamazight (Amazigh/Berber).
+"Titrit" (âµœâµ‰âµŸâµ”âµ‰âµœ) means "star" in Tamazight (Amazigh/Berber).
 
 ## What we sell
 Modest women's clothing, made-to-order and in limited editions:
-- **Robes** (dresses) — flowing, modest cuts
-- **Tuniques** — linen and crepe tops with subtle embroidery
-- **Ensembles** — two-piece sets (top + wide trousers)
-- **Abayas** — long flowing robes
-- **Caftans** — belted Moroccan caftans
+- **Robes** (dresses) â€” flowing, modest cuts
+- **Tuniques** â€” linen and crepe tops with subtle embroidery
+- **Ensembles** â€” two-piece sets (top + wide trousers)
+- **Abayas** â€” long flowing robes
+- **Caftans** â€” belted Moroccan caftans
 
 Prices are in **Moroccan Dirham (MAD)**. Payment is **cash on delivery (COD)**
 across Morocco. Orders are placed via **WhatsApp** to the atelier.
@@ -26,8 +26,8 @@ across Morocco. Orders are placed via **WhatsApp** to the atelier.
 1. Browse the collection at [https://maisontitrit.com/#collection](https://maisontitrit.com/#collection)
 2. Open a product detail page (for example [https://maisontitrit.com/produit/MT-LORA](https://maisontitrit.com/produit/MT-LORA)), choose a size and quantity
 3. Click "Ajouter au panier" (add to cart) then "Commander" (checkout)
-4. Fill the COD form — name, phone, city, address
-5. Confirm — the order is sent to the atelier on WhatsApp
+4. Fill the COD form â€” name, phone, city, address
+5. Confirm â€” the order is sent to the atelier on WhatsApp
 
 The full WhatsApp Business Catalog is at [https://wa.me/c/105815813947432](https://wa.me/c/105815813947432).
 
@@ -35,11 +35,11 @@ The full WhatsApp Business Catalog is at [https://wa.me/c/105815813947432](https
 - Phone/WhatsApp: +212 684 921 942 / +212 777 513 838
 - Email: [hello@maisontitrit.com](mailto:hello@maisontitrit.com)
 - Instagram: [@maison__titrit](https://www.instagram.com/maison__titrit/)
-- Atelier: Magasin N°4, Lotissement Dar Najeddine, Bouskoura, Casablanca, Maroc
+- Atelier: Magasin NÂ°4, Lotissement Dar Najeddine, Bouskoura, Casablanca, Maroc
 
 ## Languages
 The site is available in **French** (default), **Arabic** (RTL), and **English**.
-Amazigh (Tifinagh ⵜⵉⵟⵔⵉⵜ) accents appear throughout.
+Amazigh (Tifinagh âµœâµ‰âµŸâµ”âµ‰âµœ) accents appear throughout.
 
 ## Public resources
 - [Homepage](https://maisontitrit.com/)

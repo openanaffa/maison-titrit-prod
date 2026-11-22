@@ -1,11 +1,11 @@
 /**
  * ============================================================================
- *  MAISON TITRIT — CENTRAL SITE CONFIG
+ *  MAISON TITRIT â€” CENTRAL SITE CONFIG
  * ----------------------------------------------------------------------------
  *  This is the SINGLE source of truth for brand identity, contact details,
  *  social profiles, store location/hours, navigation, and tracking IDs.
  *
- *  👉 To refine the site, edit values in THIS file. No other file needs to
+ *  ðŸ‘‰ To refine the site, edit values in THIS file. No other file needs to
  *     change for content/contact/socials/analytics IDs.
  *
  *  UI text strings (FR / AR / EN) live in  src/i18n/dictionaries.ts
@@ -113,7 +113,7 @@ export type SiteConfig = typeof site;
  *  ANALYTICS & MARKETING TAGS
  * ----------------------------------------------------------------------------
  *  Replace the placeholder IDs with your real IDs (or set the env vars).
- *  Scripts are consent-gated by the cookie banner — they only load after the
+ *  Scripts are consent-gated by the cookie banner â€” they only load after the
  *  visitor accepts analytics/marketing cookies.
  * ============================================================================
  */
