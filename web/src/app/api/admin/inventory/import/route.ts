@@ -13,6 +13,7 @@ import {
 	validateImportRows,
 } from "@/lib/inventory-import";
 import { requirePermission } from "@/lib/session";
+import { createHash } from "crypto";
 
 export const dynamic = "force-dynamic";
 
@@ -55,7 +56,7 @@ export async function POST(req: Request) {
 	const importKey =
 		typeof data.idempotencyKey === "string" && data.idempotencyKey.trim()
 			? data.idempotencyKey.trim()
-			: `imp-${Date.now()}`;
+			: `imp-${crypto.createHash("sha256").update(JSON.stringify(data.rows)).digest("hex").slice(0, 16)}`;
 
 	const rows: ImportRow[] = [];
 	const shapeIssues: { row: number; sku: string; errors: string[] }[] = [];
@@ -93,8 +94,8 @@ export async function POST(req: Request) {
 	const applied: number[] = [];
 	const replayed: number[] = [];
 	const failed: { row: number; sku: string; error: string }[] = [];
-	for (const [i, row] of rows.entries()) {
-		const n = i + 1;
+	for (const row of rows) {
+		const n = row.originalRow;
 		const variantId = bySku.get(row.sku);
 		if (!variantId) {
 			failed.push({ row: n, sku: row.sku, error: "SKU_UNKNOWN" });
@@ -103,7 +104,7 @@ export async function POST(req: Request) {
 		const opts = {
 			actorId: user.id,
 			reason: row.reason ?? `import ${importKey}`,
-			idempotencyKey: importRowKey(importKey, i),
+			idempotencyKey: importRowKey(importKey, n),
 		};
 		try {
 			let result: Awaited<ReturnType<typeof receiveStock>>;

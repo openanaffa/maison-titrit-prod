@@ -42,16 +42,19 @@ describe("inventory import validation", () => {
 	});
 
 	test("normalization rejects malformed raw rows", () => {
-		expect(normalizeRow({ sku: "X", action: "unknown", qty: 1 })).toBeNull();
+		expect(normalizeRow({ sku: "X", action: "unknown", qty: 1 }, 1)).toBeNull();
 		expect(
-			normalizeRow({ sku: "X", action: "receive", qty: "abc" }),
+			normalizeRow({ sku: "X", action: "receive", qty: "abc" }, 2),
 		).toBeNull();
-		expect(normalizeRow(null)).toBeNull();
-		expect(normalizeRow({ sku: "X", action: "receive", qty: 2 })).toEqual({
+		expect(normalizeRow(null, 3)).toBeNull();
+		expect(
+			normalizeRow({ sku: "X", action: "receive", qty: 2 }, 4),
+		).toEqual({
 			sku: "X",
 			action: "receive",
 			qty: 2,
 			reason: undefined,
+			originalRow: 4,
 		});
 	});
 });
@@ -75,6 +78,7 @@ describe("csv parsing", () => {
 			action: "receive",
 			qty: 4,
 			reason: undefined,
+			originalRow: 2,
 		});
 		expect(parseIssues).toEqual([
 			{ row: 3, sku: "E2E-SKU-M", errors: ["ROW_MALFORMED"] },

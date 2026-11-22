@@ -25,6 +25,8 @@ export type ImportRow = {
 	action: ImportAction;
 	qty: number;
 	reason?: string;
+	/** Original 1-based row number in the source CSV, for error reporting. */
+	originalRow: number;
 };
 
 export type RowIssues = { row: number; sku: string; errors: string[] };
@@ -39,7 +41,10 @@ function isRecord(v: unknown): v is Record<string, unknown> {
 }
 
 /** Normalize + type-check one raw parsed row. Returns null on shape errors. */
-export function normalizeRow(raw: unknown): ImportRow | null {
+export function normalizeRow(
+	raw: unknown,
+	originalRow: number,
+): ImportRow | null {
 	if (!isRecord(raw)) return null;
 	const sku = typeof raw.sku === "string" ? raw.sku.trim() : "";
 	const action = typeof raw.action === "string" ? raw.action.trim() : "";
@@ -50,7 +55,13 @@ export function normalizeRow(raw: unknown): ImportRow | null {
 			: typeof qtyRaw === "string" && qtyRaw.trim() !== ""
 				? Number(qtyRaw)
 				: Number.NaN;
-	const reason = typeof raw.reason === "string" ? raw.reason.trim() : undefined;
+	// Accept both `reason` (English) and `raison` (French) as the reason field.
+	const reason =
+		typeof raw.reason === "string"
+			? raw.reason.trim()
+			: typeof raw.raison === "string"
+				? raw.raison.trim()
+				: undefined;
 	if (!sku || !IMPORT_ACTIONS.includes(action as ImportAction)) return null;
 	if (!Number.isFinite(qty)) return null;
 	return {
@@ -58,6 +69,7 @@ export function normalizeRow(raw: unknown): ImportRow | null {
 		action: action as ImportAction,
 		qty,
 		reason: reason || undefined,
+		originalRow,
 	};
 }
 
@@ -171,7 +183,7 @@ export function rowsFromCsv(text: string): {
 			qty: cells[qtyIdx] ?? "",
 			reason: reasonIdx >= 0 ? (cells[reasonIdx] ?? "") : "",
 		};
-		const row = normalizeRow(raw);
+		const row = normalizeRow(raw, i + 2);
 		if (row) rows.push(row);
 		else
 			parseIssues.push({
