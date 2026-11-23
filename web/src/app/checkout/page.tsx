@@ -37,7 +37,7 @@ type CheckoutValues = {
 
 export default function CheckoutPage() {
 	const { t } = useT();
-	const router = useRouter();
+	const _router = useRouter();
 	const { user } = useSupabaseAuth();
 	const items = useCart((s) => s.items);
 	const clear = useCart((s) => s.clear);

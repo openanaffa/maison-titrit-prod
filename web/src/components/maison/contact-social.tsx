@@ -1,6 +1,6 @@
 "use client";
 
-import { Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { MapPin } from "lucide-react";
 import {
 	AmazighStar,
 	OrnamentDivider,
@@ -10,7 +10,7 @@ import {
 import { SocialIcons } from "@/components/maison/social-icons";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
-import { whatsappCatalog, whatsappContactLink } from "@/lib/brand";
+import { whatsappCatalog } from "@/lib/brand";
 
 export function ContactSocial() {
 	const { t } = useT();

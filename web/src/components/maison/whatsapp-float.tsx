@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { WhatsAppIcon } from "@/components/maison/motifs";
-import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
 import { whatsappContactLink } from "@/lib/brand";
 

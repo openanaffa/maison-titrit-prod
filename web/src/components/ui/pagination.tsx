@@ -4,7 +4,7 @@ import {
 	MoreHorizontalIcon,
 } from "lucide-react";
 import type * as React from "react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import type { PaginationLinkProps } from "@/components/ui/types";
 import { cn } from "@/lib/utils";
 

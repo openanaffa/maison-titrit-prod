@@ -21,7 +21,7 @@ export async function listArticles(
 		.select("*")
 		.order("createdAt", { ascending: false });
 	if (published !== undefined) query = query.eq("published", published);
-	const { data, error } = await query.throwOnError();
+	const { data } = await query.throwOnError();
 	return (data ?? []) as ArticleRow[];
 }
 
@@ -30,7 +30,7 @@ export async function getArticle(
 	supabase: SupabaseClient<Database>,
 	id: string,
 ) {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Article")
 		.select("*")
 		.eq("id", id)
@@ -44,7 +44,7 @@ export async function getArticleBySlug(
 	supabase: SupabaseClient<Database>,
 	slug: string,
 ) {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Article")
 		.select("*")
 		.eq("slug", slug)
@@ -58,7 +58,7 @@ export async function createArticle(
 	supabase: SupabaseClient<Database>,
 	input: ArticleInsert,
 ) {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Article")
 		.insert(input)
 		.select("*")
@@ -73,7 +73,7 @@ export async function updateArticle(
 	id: string,
 	input: ArticleUpdate,
 ) {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Article")
 		.update({ ...input, updatedAt: new Date().toISOString() })
 		.eq("id", id)

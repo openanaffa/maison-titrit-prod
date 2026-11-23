@@ -62,7 +62,7 @@ export async function listProducts(
 	const categoryIds = productRows
 		.filter((p) => p.categoryId)
 		.map((p) => p.categoryId as string);
-	const uniqueCategoryIds = [...new Set(categoryIds)];
+	const _uniqueCategoryIds = [...new Set(categoryIds)];
 	const categoriesById = new Map<string, CategoryRow>();
 	if (categoryIds.length) {
 		const { data: categories } = await supabase
@@ -87,7 +87,7 @@ export async function getProduct(
 	supabase: SupabaseClient<Database>,
 	id: string,
 ) {
-	const { data: product, error } = await supabase
+	const { data: product } = await supabase
 		.from("Product")
 		.select("*")
 		.eq("id", id)
@@ -125,7 +125,7 @@ export async function createProduct(
 	supabase: SupabaseClient<Database>,
 	input: ProductInsert,
 ) {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Product")
 		.insert({ ...input, id: input.id ?? crypto.randomUUID() })
 		.select("*")
@@ -140,7 +140,7 @@ export async function updateProduct(
 	id: string,
 	input: ProductUpdate,
 ) {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Product")
 		.update({ ...input, updatedAt: new Date().toISOString() })
 		.eq("id", id)
@@ -185,7 +185,7 @@ export async function setImages(
 export async function listCategories(
 	supabase: SupabaseClient<Database>,
 ): Promise<CategoryRow[]> {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Category")
 		.select("*")
 		.order("position", { ascending: true })
@@ -198,7 +198,7 @@ export async function createCategory(
 	supabase: SupabaseClient<Database>,
 	input: CategoryInsert,
 ) {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Category")
 		.insert({ ...input, id: input.id ?? crypto.randomUUID() })
 		.select("*")
@@ -213,7 +213,7 @@ export async function updateCategory(
 	id: string,
 	input: CategoryUpdate,
 ) {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Category")
 		.update({ ...input, updatedAt: new Date().toISOString() })
 		.eq("id", id)
@@ -242,7 +242,7 @@ export async function listImages(
 	supabase: SupabaseClient<Database>,
 	productId: string,
 ): Promise<ImageRow[]> {
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from("Image")
 		.select("*")
 		.eq("productId", productId)
@@ -281,7 +281,7 @@ export async function insertImages(
  */
 export function toProductFormValues(
 	product: ProductWithRelations,
-	categories: { id: string; name: string }[],
+	_categories: { id: string; name: string }[],
 ): ProductFormValues {
 	return {
 		ref: product.ref,

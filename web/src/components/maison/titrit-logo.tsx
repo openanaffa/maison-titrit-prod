@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import * as React from "react";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
 import { cn } from "@/lib/utils";

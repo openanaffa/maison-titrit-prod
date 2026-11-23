@@ -209,7 +209,7 @@ export function Reveal({
 	// Cap staggered delays so entrances don't drag out (reduces motion jank).
 	const cappedDelay = Math.min(delay, 0.12);
 
-	const revealStyle: any = {
+	const revealStyle = {
 		"--reveal-y": `${y}px`,
 		"--reveal-delay": `${cappedDelay}s`,
 		...(reduce ? { opacity: 1, transform: "none" } : {}),
@@ -219,7 +219,7 @@ export function Reveal({
 		<div
 			ref={ref}
 			className={cn("reveal", (isVisible || reduce) && "is-visible", className)}
-			style={revealStyle}
+			style={revealStyle as React.CSSProperties}
 		>
 			{children}
 		</div>

@@ -4,7 +4,6 @@ import * as React from "react";
 import { CategoryIcon } from "@/components/maison/category-icons";
 import { NeedleThread, Reveal } from "@/components/maison/motifs";
 import { ProductPurchaseActions } from "@/components/maison/product-purchase-actions";
-import { Button } from "@/components/ui/button";
 import { CATEGORIES } from "@/config/products";
 import { site } from "@/config/site";
 import { useToast } from "@/hooks/use-toast";

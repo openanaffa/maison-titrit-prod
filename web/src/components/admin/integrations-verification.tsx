@@ -1,11 +1,9 @@
 "use client";
 
 import { ShieldCheck } from "lucide-react";
-import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useT } from "@/i18n/locale-provider";
 import { VERIFICATION_HINTS } from "@/lib/types/constants";
 
 export type VerificationFormValues = {
@@ -31,8 +29,6 @@ export function IntegrationsVerification({
 	verification,
 	onChange,
 }: IntegrationsVerificationProps) {
-	const { t } = useT();
-
 	function set<K extends keyof VerificationFormValues>(k: K, v: string) {
 		onChange((current) => ({ ...current, [k]: v }));
 	}

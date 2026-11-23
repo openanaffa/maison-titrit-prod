@@ -7,7 +7,9 @@
  * Guards: refuses to touch any remote/production database.
  */
 import path from "node:path";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../src/generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 import {
 	assertIsolated,
 	CUSTOMER,
@@ -20,12 +22,21 @@ import {
 	type E2eEnv,
 } from "./env";
 
+function createDb(url: string): PrismaClient {
+	return new PrismaClient({
+		adapter: url.startsWith("postgres")
+			? new PrismaPg(url)
+			: new PrismaLibSql({ url }),
+	});
+}
+
 async function main() {
 	const dotEnv = readDotEnv();
 	const databaseUrl =
 		process.env.DATABASE_URL ||
 		dotEnv.DATABASE_URL ||
 		(isLocalPostgresAvailable() ? "" : "");
+	process.env.DATABASE_URL = databaseUrl;
 	if (!databaseUrl) {
 		console.error("DATABASE_URL is not set (.env or environment).");
 		process.exit(1);
@@ -76,7 +87,7 @@ function isLocalPostgresAvailable(): boolean {
 
 /** Deterministic catalog + delivery zone. */
 async function seedCatalog() {
-	const db = new PrismaClient();
+	const db = createDb(process.env.DATABASE_URL!);
 	try {
 		await db.orderNotification.deleteMany();
 		await db.customerNote.deleteMany();
@@ -162,7 +173,7 @@ async function seedCatalog() {
 
 /** Local-Supabase-only: auth users + app User rows with roles. */
 async function seedAuthUsers(env: E2eEnv) {
-	const db = new PrismaClient();
+	const db = createDb(process.env.DATABASE_URL!);
 	try {
 		for (const identity of [STAFF, CUSTOMER]) {
 			const userId = await createSupabaseUser(env, identity.email, identity.password);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import * as React from "react";
 import { apiFetch } from "@/lib/react-query/fetch";
 
 /** GET /api/products?category=... */

@@ -1,7 +1,7 @@
-import { Prisma } from "@prisma/client";
 import * as Sentry from "@sentry/nextjs";
 import { after, NextResponse } from "next/server";
 import { site } from "@/config/site";
+import { Prisma } from "@/generated/prisma/client";
 import { rejectBots } from "@/lib/bot";
 import { parseCartLines, priceCart } from "@/lib/checkout";
 import {

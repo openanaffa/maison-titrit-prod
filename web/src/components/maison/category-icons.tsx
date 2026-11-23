@@ -1,7 +1,6 @@
 "use client";
 
 import type * as React from "react";
-import { cn } from "@/lib/utils";
 
 /**
  * Category ideograms / pictograms — minimalist garment silhouettes as inline SVG.
@@ -25,7 +24,7 @@ const ICONS: Record<string, React.FC<{ className?: string }>> = {
 /** Resolve an icon by category slug (falls back to a generic garment). */
 export function CategoryIcon({
 	slug,
-	category,
+	category: _category,
 	className,
 }: {
 	slug?: string;

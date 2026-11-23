@@ -89,7 +89,7 @@ export function ProductForm({
 				toast({ title: "Produit créé" });
 			} else {
 				await updateProduct.mutateAsync({
-					id: productId!,
+					id: productId as string,
 					body: payload,
 				});
 				track("admin_product_update", { ref: values.ref });

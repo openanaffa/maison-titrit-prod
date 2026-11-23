@@ -36,6 +36,9 @@ tool-results/
 
 # TS build info
 tsconfig.tsbuildinfo
+
+# Prisma generated client (regenerable via postinstall / vercel:build)
+web/src/generated/
 *.tsbuildinfo
 
 # Turborepo run cache

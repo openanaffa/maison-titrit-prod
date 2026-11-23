@@ -55,8 +55,9 @@ export async function queryDb<T = Record<string, unknown>>(
 	}
 	// SQLite: delegate to bun + Prisma in a subprocess.
 	const script = [
-		`const {PrismaClient}=require("@prisma/client");`,
-		`const db=new PrismaClient();`,
+		`const {PrismaClient}=require("./src/generated/prisma/client");`,
+		`const {PrismaLibSql}=require("@prisma/adapter-libsql");`,
+		`const db=new PrismaClient({adapter:new PrismaLibSql({url:process.env.DATABASE_URL})});`,
 		`db.$queryRawUnsafe(${JSON.stringify(sql)}, ...${JSON.stringify(params)}).then(r=>{console.log(JSON.stringify(r));return db.$disconnect();}).catch(e=>{console.error(e);process.exit(1);})`,
 	].join("");
 	const res = spawnSync("bun", ["-e", script], {

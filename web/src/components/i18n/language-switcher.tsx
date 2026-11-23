@@ -11,7 +11,7 @@ import { LOCALES, type Locale, useT } from "@/i18n/locale-provider";
  * Single-route client-side switching; persists choice; flips RTL for Arabic.
  */
 export function LanguageSwitcher({
-	compact = false,
+	compact: _compact = false,
 	darkSurface = false,
 }: {
 	compact?: boolean;

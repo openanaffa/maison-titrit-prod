@@ -1,12 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import {
-	createArticle,
-	deleteArticle,
-	getArticle,
-	listArticles,
-	updateArticle,
-} from "@/lib/repositories/articles";
+import { createArticle } from "@/lib/repositories/articles";
 import { requirePermission } from "@/lib/session";
 import { slugify } from "@/lib/slug";
 import { createSupabaseServerClient } from "@/lib/supabase/server";

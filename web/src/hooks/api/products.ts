@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import * as React from "react";
 import { apiFetch } from "@/lib/react-query/fetch";
 
 type ProductFormValues = Record<string, unknown>;
@@ -53,7 +52,13 @@ export function useDeleteProduct() {
 /** POST /api/admin/upload */
 export function useUploadImage() {
 	return useMutation({
-		mutationFn: async ({ file, index }: { file: File; index: number }) => {
+		mutationFn: async ({
+			file,
+			index: _index,
+		}: {
+			file: File;
+			index: number;
+		}) => {
 			const fd = new FormData();
 			fd.append("file", file);
 			const res = await fetch("/api/admin/upload", {

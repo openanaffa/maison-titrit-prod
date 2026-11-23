@@ -52,7 +52,7 @@ describe("priceCart", () => {
 	test("uses DB sale price, ignores client price", () => {
 		const lines = parseCartLines([
 			{ productId: "p1", qty: 2, size: "M", price: 1 },
-		])!;
+		]) as NonNullable<ReturnType<typeof parseCartLines>>;
 		const r = priceCart(lines, [caftan]);
 		expect(r).toEqual({
 			ok: true,

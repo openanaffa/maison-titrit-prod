@@ -1,12 +1,3 @@
-import {
-	AlertCircle,
-	Package,
-	ShoppingCart,
-	Star,
-	TrendingUp,
-	Users,
-} from "lucide-react";
-import Link from "next/link";
 import { DashboardClient } from "@/components/admin/dashboard-client";
 import { getCurrentUser } from "@/lib/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";

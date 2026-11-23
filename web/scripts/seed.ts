@@ -2,12 +2,23 @@
 
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
-import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { SEED_ARTICLES } from "@/config/articles";
 import { CATEGORIES, PRODUCTS } from "@/config/products";
+import { PrismaClient } from "../src/generated/prisma/client";
 
-const db = new PrismaClient();
 const publishedAt = new Date("2026-11-14T12:00:00.000Z");
+
+function createDb() {
+	const url = process.env.DATABASE_URL;
+	if (!url)
+		throw new Error(
+			"DATABASE_URL must point to the Supabase Postgres database.",
+		);
+	return new PrismaClient({ adapter: new PrismaPg(url) });
+}
+
+const db = createDb();
 
 function requirePostgresDatabaseUrl() {
 	const value = process.env.DATABASE_URL;

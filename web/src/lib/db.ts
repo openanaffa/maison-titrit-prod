@@ -1,4 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@/generated/prisma/client";
+
+const url = process.env.DATABASE_URL ?? "";
+
+const adapter = url.startsWith("postgres")
+	? new PrismaPg(url)
+	: new PrismaLibSql({ url });
 
 const globalForPrisma = globalThis as unknown as {
 	prisma: PrismaClient | undefined;
@@ -7,6 +15,7 @@ const globalForPrisma = globalThis as unknown as {
 export const db =
 	globalForPrisma.prisma ??
 	new PrismaClient({
+		adapter,
 		log: ["query"],
 	});
 

@@ -17,15 +17,10 @@
  * NEVER persisted or logged; there is no storage here.
  */
 
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 import { type NextRequest, NextResponse } from "next/server";
 import { rejectBots } from "@/lib/bot";
-import {
-	type ConsentFlag,
-	type LegResult,
-	TrackItem,
-	type TrackPayload,
-} from "@/lib/types";
+import type { ConsentFlag, LegResult, TrackPayload } from "@/lib/types";
 
 /* --- env (all optional) ---------------------------------------------------- */
 const META_TOKEN = process.env.META_CAPI_ACCESS_TOKEN || "";

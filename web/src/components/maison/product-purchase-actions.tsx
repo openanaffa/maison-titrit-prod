@@ -1,7 +1,6 @@
 "use client";
 
 import { Minus, Plus, Share2, ShoppingBag, Truck } from "lucide-react";
-import * as React from "react";
 import { WhatsAppIcon } from "@/components/maison/motifs";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/i18n/locale-provider";
@@ -38,13 +37,11 @@ export function ProductPurchaseActions({
 	sizes,
 	size,
 	qty,
-	unitPrice,
 	total,
 	catalogHref,
 	onSizeChange,
 	onSizePromptDismiss,
 	onQtyChange,
-	onSizePrompt,
 	onAddToCart,
 	onOrder,
 	onShare,

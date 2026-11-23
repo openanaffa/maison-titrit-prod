@@ -1,5 +1,5 @@
 import { PRODUCTS } from "@/config/products";
-import type { EditorialCategory, SeedArticle } from "@/lib/types/content";
+import type { SeedArticle } from "@/lib/types/content";
 
 const EDITORIAL_ARTICLES_FR: SeedArticle[] = [
 	{
@@ -430,9 +430,9 @@ function productLocale(
 		productRef: product.ref,
 	};
 	if (locale === "ar") {
-		base.title = "منتج " + product.ref;
-		base.excerpt = "الإصدار العربي: " + feature.excerpt;
-		base.body = feature.body + "\n\n(الترجمة العربية)";
+		base.title = `منتج ${product.ref}`;
+		base.excerpt = `الإصدار العربي: ${feature.excerpt}`;
+		base.body = `${feature.body}\n\n(الترجمة العربية)`;
 		base.tags = ["Craft", "منتج", product.ref, "الأزياء المحتشمة"];
 	}
 	if (locale === "en") {
@@ -444,8 +444,8 @@ function productLocale(
 			.replace("Djellaba", "Djellaba")
 			.replace("Jellaba", "Jellaba")
 			.replace("Takchita", "Takchita");
-		base.excerpt = "English version: " + feature.excerpt;
-		base.body = feature.body + "\n\n(English translation)";
+		base.excerpt = `English version: ${feature.excerpt}`;
+		base.body = `${feature.body}\n\n(English translation)`;
 		base.tags = ["Craft", "product", product.ref, "modest fashion"];
 	}
 	return base;

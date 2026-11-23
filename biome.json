@@ -20,7 +20,8 @@
 			"package.json",
 			"biome.json",
 			".githooks/**",
-			"!web/src/lib/supabase/database.types.ts"
+			"!web/src/lib/supabase/database.types.ts",
+			"!web/src/generated"
 		]
 	},
 	"formatter": {

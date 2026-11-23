@@ -139,7 +139,7 @@ export function InventoryTableClient({ rows }: { rows: Row[] }) {
 				r.lowStockThreshold,
 			].join(","),
 		);
-		const blob = new Blob([header + "\n" + lines.join("\n")], {
+		const blob = new Blob([`${header}\n${lines.join("\n")}`], {
 			type: "text/csv",
 		});
 		const url = URL.createObjectURL(blob);

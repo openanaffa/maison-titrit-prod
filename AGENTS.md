@@ -88,6 +88,14 @@ Full runbook: DEPLOYMENT.md
 ## Verification bar
 
 `tsc --noEmit` + `lint` 0/0 + `next build` + `bun test` green before declaring any structural change done.
+`bun run biome:check` must also be clean (0 errors / 0 warnings).
+
+## Code style enforcement
+
+- IDE: `.vscode/settings.json` pins Biome as the default formatter with format-on-save and import organization.
+- Cursor: `.cursor/rules/style.mdc` carries the style rules for agents.
+- Pre-commit: `.githooks/pre-commit` runs `biome check --write` on staged files (enable via `bun run hooks:install`).
+- Biome config (`biome.json`) uses the recommended preset; generated code under `web/src/generated/` is ignored.
 
 ## ⚠️ Important Notes for Human Reviewers
 

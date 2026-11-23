@@ -2,8 +2,6 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/database.types";
 import type { VerificationConfig } from "@/lib/types/integrations";
 
-type SettingRow = Database["public"]["Tables"]["Setting"]["Row"];
-
 /**
  * Settings repository — port for key/value settings (announcement bar,
  * analytics trackers, domain verifications).

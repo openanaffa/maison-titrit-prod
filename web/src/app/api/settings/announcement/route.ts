@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAnnouncement, setAnnouncement } from "@/lib/repositories/settings";
+import { setAnnouncement } from "@/lib/repositories/settings";
 import { requirePermission } from "@/lib/session";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { createSupabaseServerClient } from "@/lib/supabase/server";

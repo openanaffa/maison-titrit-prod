@@ -96,7 +96,7 @@ async function saveToR2(
 async function saveToLocal(
 	key: string,
 	buf: Buffer,
-	ext: string,
+	_ext: string,
 ): Promise<UploadResult> {
 	const dir = path.join(process.cwd(), "public", "uploads");
 	await mkdir(dir, { recursive: true });

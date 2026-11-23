@@ -28,5 +28,6 @@ export function readLocaleCookie(): string | null {
 /** Persist the locale cookie for a year, readable by the server on every request. */
 export function writeLocaleCookie(locale: string): void {
 	if (typeof document === "undefined") return;
+	// biome-ignore lint/suspicious/noDocumentCookie: intentional locale cookie
 	document.cookie = `${LOCALE_COOKIE}=${encodeURIComponent(locale)}; path=/; max-age=${LOCALE_COOKIE_MAX_AGE}; SameSite=Lax`;
 }

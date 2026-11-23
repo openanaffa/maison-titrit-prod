@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
-import {
-	deleteArticle,
-	getArticle,
-	updateArticle,
-} from "@/lib/repositories/articles";
+import { deleteArticle, updateArticle } from "@/lib/repositories/articles";
 import { requirePermission } from "@/lib/session";
 import type { Tables } from "@/lib/supabase/database.types";
 import { createSupabaseServerClient } from "@/lib/supabase/server";

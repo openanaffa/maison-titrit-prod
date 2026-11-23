@@ -1,11 +1,10 @@
 "use client";
 
 import { Facebook, Instagram, Mail, Phone, Youtube } from "lucide-react";
-import * as React from "react";
 import { WhatsAppIcon } from "@/components/maison/motifs";
 import { site } from "@/config/site";
 import { useT } from "@/i18n/locale-provider";
-import { whatsappCatalog, whatsappContactLink } from "@/lib/brand";
+import { whatsappCatalog } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 /* TikTok + Pinterest glyphs (not in lucide-react stable set we use) */

@@ -34,7 +34,7 @@ export function AnnouncementBar() {
 		}
 	};
 
-	if (!bar || !bar.active || dismissed || !bar.message) return null;
+	if (!bar?.active || dismissed || !bar.message) return null;
 
 	return (
 		<div className="relative z-55 bg-ink text-cream">

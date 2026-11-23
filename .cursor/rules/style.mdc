@@ -1,0 +1,18 @@
+---
+description: Code style enforcement for Maison Titrit
+globs: web/src/**/*, web/scripts/**/*, web/e2e/**/*
+alwaysApply: true
+---
+
+# Style enforcement
+
+- Run `bun run biome:check` and `bun run lint` before declaring any change done. Both must be clean (0 errors / 0 warnings).
+- Format with Biome: tabs, lineWidth 80, organize imports on save.
+- No unused imports or variables. Remove them; do not leave `// eslint-disable` for unused.
+- Use `node:` protocol for Node.js builtin imports (`node:fs`, `node:path`, etc.).
+- Prefer optional chaining over `&&` chains (useOptionalChain).
+- No `any` types; use proper types or `unknown` + narrowing.
+- No non-null assertions (`!`); use guards or `as`.
+- Do not use `document.cookie` directly without a `// biome-ignore` justification.
+- Generated code under `web/src/generated/` is gitignored and must never be hand-edited.
+- Pre-commit hook runs `biome check --write`; do not bypass with `--no-verify` unless explicitly approved.

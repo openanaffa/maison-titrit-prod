@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import * as React from "react";
 import { apiFetch } from "@/lib/react-query/fetch";
 
 /** GET /api/settings/announcement */

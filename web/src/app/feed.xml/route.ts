@@ -42,7 +42,7 @@ export async function GET() {
       <image_link>${image}</image_link>
       <g:availability>in_stock</g:availability>
       <g:price>${price} ${p.currency}</g:price>
-      <g:sale_price>${p.salePrice ? p.salePrice.toFixed(2) + " " + p.currency : ""}</g:sale_price>
+      <g:sale_price>${p.salePrice ? `${p.salePrice.toFixed(2)} ${p.currency}` : ""}</g:sale_price>
       <g:brand>${escapeXml(site.name)}</g:brand>
       <g:condition>new</g:condition>
       <g:gtin>${p.ref}</g:gtin>
