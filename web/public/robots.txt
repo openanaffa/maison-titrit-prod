@@ -18,27 +18,38 @@ Allow: /
 User-agent: *
 Allow: /
 
-# AI crawlers — welcome, with guidance to LLMs.md
+# AI training crawlers — text-and-data-mining reservation (Art. 4(3) Directive
+# (EU) 2019/790; Germany: § 44b UrhG). TDM is opt-out and a reservation only
+# counts when it is machine-readable: an absent rule reads as consent, so each
+# training crawler gets an explicit Disallow block below.
+# Human-facing AI search assistants that cite sources with links (rather than
+# corpus training) may still fetch public pages unless listed here.
 User-agent: GPTBot
-Allow: /
+Disallow: /
 
 User-agent: ClaudeBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
+Disallow: /
 
 User-agent: Google-Extended
-Allow: /
+Disallow: /
 
 User-agent: CCBot
-Allow: /
+Disallow: /
 
-User-agent: Applebot-Extended
-Allow: /
+User-agent: Bytespider
+Disallow: /
 
 User-agent: meta-externalagent
-Allow: /
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
 
 # Sitemap
 Sitemap: https://maisontitrit.com/sitemap.xml
