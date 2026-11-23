@@ -1,12 +1,11 @@
 {
   "id": "/",
   "name": "Maison Titrit",
-  "short_name": "Maison Titrit",
+  "short_name": "Titrit",
   "description": "Mode modeste pour femmes. 100% Made in Morocco.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "portrait-primary",
   "lang": "fr-MA",
   "dir": "auto",

@@ -3,7 +3,7 @@ Founders: Maison Titrit (two designers)
 Atelier: Bouskoura, Casablanca, Morocco
 
 /* SITE */
-Last update: 2025
+Last update: 2026
 Language: French / Arabic / English + Tifinagh (ⵜⵉⵟⵔⵉⵜ) accents
 Standards: HTML5, WCAG AA, responsive, RTL-aware
 
