@@ -1,15 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import * as React from "react";
-import { StatusBadge } from "@/components/admin/status-badge";
-import { Button } from "@/components/ui/button";
+import { ChipButton } from "@/components/admin/chip-button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@/components/ui/dialog";
 import { useUpdateOrderStatus } from "@/hooks/api/orders";
 import { useToast } from "@/hooks/use-toast";
@@ -34,16 +31,17 @@ export function OrderDetailDialog({ order, onClose }: OrderDetailDialogProps) {
 	const allowed = order ? (ALLOWED_TRANSITIONS[order.status] ?? []) : [];
 
 	async function updateStatus(status: string) {
+		if (!order) return;
 		try {
-			await updateOrderStatus.mutateAsync({ id: order!.id, status });
+			await updateOrderStatus.mutateAsync({ id: order.id, status });
 			toast({
-				title: "Statut mis à jour",
-				description: `${order!.number} → ${STATUS_LABELS[status] ?? status}`,
+				title: t("admin.orders.toast.statusUpdated"),
+				description: `${order.number} → ${STATUS_LABELS[status] ?? status}`,
 			});
 			router.refresh();
 			onClose();
 		} catch {
-			toast({ title: "Erreur", variant: "destructive" });
+			toast({ title: t("admin.orders.toast.error"), variant: "destructive" });
 		}
 	}
 
@@ -120,18 +118,9 @@ export function OrderDetailDialog({ order, onClose }: OrderDetailDialogProps) {
 						<p className="mb-2 label-vintage-tight">Statut</p>
 						<div className="flex flex-wrap gap-2">
 							{allowed.map((s) => (
-								<button
-									type="button"
-									key={s}
-									onClick={() => updateStatus(s)}
-									className={`rounded-full border px-3 py-1.5 font-label text-[0.6rem] uppercase tracking-[0.12em] transition-colors ${
-										order.status === s
-											? "border-ink bg-ink text-cream"
-											: "border-bronze/45 text-ink-soft hover:border-terracotta hover:text-ink dark:text-cream/70"
-									}`}
-								>
+								<ChipButton key={s} onClick={() => updateStatus(s)}>
 									{STATUS_LABELS[s] ?? s}
-								</button>
+								</ChipButton>
 							))}
 						</div>
 					</div>
